@@ -35,7 +35,10 @@
         public string SamlIdpUrl { get; set; }
 
         [JsonProperty("saml_relying_party_trust_cert")]
-        public string[] SamlRelyingPartyTrustCert { get; set; }
+        public string SamlRelyingPartyTrustCert { get; set; }
+
+        [JsonProperty("saml_x509_certs")]
+        public string[] SamlX509Certs { get; set; }
 
         [JsonProperty("domains")]
         public ConnectionDomain[] Domains { get; set; }

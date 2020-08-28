@@ -183,5 +183,77 @@
             Assert.NotNull(profile);
             Assert.Equal(mockProfile.Id, profile.Id);
         }
+
+        [Fact]
+        public void TestCreateConnection()
+        {
+            var connectionResponse = new Connection
+            {
+                Id = "connection_id",
+                Name = "Terrace House",
+                Status = "Unlinked",
+                ConnectionType = ConnectionType.OktaSAML,
+                OAuthUid = "",
+                OAuthSecret = "",
+                OAuthRedirectUri = "",
+                SamlEntityId = "http://www.okta.com/terrace-house",
+                SamlIdpUrl = "https://terrace-house.okta.com/app/terrace/house/saml",
+                SamlRelyingPartyTrustCert = "",
+                SamlX509Certs = new string[] {
+                    "-----BEGIN CERTIFICATE----------END CERTIFICATE-----"
+                },
+            };
+
+            this.httpClient.MockResponse(
+                HttpMethod.Post,
+                "/connections",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(connectionResponse));
+
+            var options = new CreateConnectionOptions
+            {
+                Source = "source",
+            };
+            var connection = this.service.CreateConnection(options);
+
+            this.httpClient.AssertRequestWasMade(HttpMethod.Post, "/connections");
+            Assert.NotNull(connection);
+        }
+
+        [Fact]
+        public async void TestCreateConnectionAsync()
+        {
+            var connectionResponse = new Connection
+            {
+                Id = "connection_id",
+                Name = "Terrace House",
+                Status = "Unlinked",
+                ConnectionType = ConnectionType.OktaSAML,
+                OAuthUid = "",
+                OAuthSecret = "",
+                OAuthRedirectUri = "",
+                SamlEntityId = "http://www.okta.com/terrace-house",
+                SamlIdpUrl = "https://terrace-house.okta.com/app/terrace/house/saml",
+                SamlRelyingPartyTrustCert = "",
+                SamlX509Certs = new string[] {
+                    "-----BEGIN CERTIFICATE----------END CERTIFICATE-----"
+                },
+            };
+
+            this.httpClient.MockResponse(
+                HttpMethod.Post,
+                "/connections",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(connectionResponse));
+
+            var options = new CreateConnectionOptions
+            {
+                Source = "source",
+            };
+            var connection = await this.service.CreateConnectionAsync(options);
+
+            this.httpClient.AssertRequestWasMade(HttpMethod.Post, "/connections");
+            Assert.NotNull(connection);
+        }
     }
 }
