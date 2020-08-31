@@ -7,8 +7,15 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// A client to manage requests to the WorkOS API.
+    /// </summary>
     public class WorkOSClient
     {
+        /// <summary>
+        /// Creates a new instance of <see cref="WorkOSClient"/>.
+        /// </summary>
+        /// <param name="options">Parameters to create the client with.</param>
         public WorkOSClient(WorkOSOptions options)
         {
             this.ApiBaseURL = options.ApiBaseURL ?? DefaultApiBaseURL;
@@ -16,16 +23,35 @@
             this.HttpClient = options.HttpClient ?? this.DefaultHttpClient();
         }
 
+        /// <summary>
+        /// Default timeout for HTTP requests.
+        /// </summary>
         public static TimeSpan DefaultTimeout => TimeSpan.FromSeconds(60);
 
+        /// <summary>
+        /// Default base URL for the WorkOS API.
+        /// </summary>
         public static string DefaultApiBaseURL => "https://api.workos.com";
 
-        public readonly string ApiBaseURL;
+        /// <summary>
+        /// The base URL for the WorkOS API.
+        /// </summary>
+        public string ApiBaseURL { get; }
 
-        public readonly string ApiKey;
+        /// <summary>
+        /// The API key used to authenticate requests to the WorkOS API.
+        /// </summary>
+        public string ApiKey { get; }
 
+        /// <summary>
+        /// The client used to make HTTP requests to the WorkOS API.
+        /// </summary>
         private readonly HttpClient HttpClient;
 
+        /// <summary>
+        /// Creates a new HTTP client instance.
+        /// </summary>
+        /// <returns>An instance of the HTTP client to make requests.</returns>
         public HttpClient DefaultHttpClient()
         {
             return new HttpClient
@@ -34,30 +60,34 @@
             };
         }
 
+        /// <summary>
+        /// Makes a request to the WorkOS API.
+        /// </summary>
+        /// <typeparam name="T">The return type from the request.</typeparam>
+        /// <param name="request">The request to make to the WorkOS API.</param>
+        /// <returns>The response object.</returns>
         public T MakeAPIRequest<T>(WorkOSRequest request)
         {
             return this.MakeAPIRequestAsync<T>(request)
                 .ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
+        /// <summary>
+        /// Makes a request to the WorkOS API asynchronously.
+        /// </summary>
+        /// <typeparam name="T">The return type from the request.</typeparam>
+        /// <param name="request">The request to make to the WorkOS API.</param>
+        /// <param name="cancellationToken">A token used to cancel the request.</param>
+        /// <returns>A Task wrapping the response.</returns>
         public async Task<T> MakeAPIRequestAsync<T>(
             WorkOSRequest request,
             CancellationToken cancellationToken = default)
         {
             var requestMessage = this.CreateHttpRequestMessage(request);
 
-            HttpResponseMessage response = null;
-
-            try
-            {
-                response = await this.HttpClient
+            HttpResponseMessage response = await this.HttpClient
                     .SendAsync(requestMessage, cancellationToken)
                     .ConfigureAwait(false);
-            }
-            catch (HttpRequestException exception)
-            {
-
-            }
 
             var reader = new StreamReader(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false));

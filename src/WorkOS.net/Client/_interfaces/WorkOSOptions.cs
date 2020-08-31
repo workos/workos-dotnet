@@ -2,12 +2,24 @@
 {
     using System.Net.Http;
 
+    /// <summary>
+    /// Describes options for a Client connecting to the WorkOS API.
+    /// </summary>
     public class WorkOSOptions
     {
-        public string ApiBaseURL;
+        /// <summary>
+        /// Base URL for the WorkOS API.
+        /// </summary>
+        public string ApiBaseURL { get; set; }
 
-        public string ApiKey;
+        /// <summary>
+        /// The API key to authenticate requests to the WorkOS API.
+        /// </summary>
+        public string ApiKey { get; set; }
 
-        public HttpClient HttpClient;
+        /// <summary>
+        /// The HTTP client to make API requests.
+        /// </summary>
+        public HttpClient HttpClient { get; set; }
     }
 }
