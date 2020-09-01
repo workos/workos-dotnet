@@ -13,7 +13,7 @@
     public class WorkOSClient
     {
         /// <summary>
-        /// Creates a new instance of <see cref="WorkOSClient"/>.
+        /// Initializes a new instance of the <see cref="WorkOSClient"/> class.
         /// </summary>
         /// <param name="options">Parameters to create the client with.</param>
         public WorkOSClient(WorkOSOptions options)

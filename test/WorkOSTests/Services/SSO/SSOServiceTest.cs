@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
-    using Xunit;
-
+    using Newtonsoft.Json;
     using WorkOS;
+    using Xunit;
 
     public class SSOServiceTest
     {
@@ -22,8 +22,7 @@
                 {
                     ApiKey = "test",
                     HttpClient = this.httpMock.HttpClient,
-                }
-            );
+                });
 
             this.service = new SSOService(client);
         }
@@ -137,7 +136,9 @@
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/sso/token");
             Assert.NotNull(profile);
-            Assert.Equal(mockProfile, profile);
+            Assert.Equal(
+                JsonConvert.SerializeObject(mockProfile),
+                JsonConvert.SerializeObject(profile));
         }
 
         [Fact]
@@ -181,7 +182,9 @@
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/sso/token");
             Assert.NotNull(profile);
-            Assert.Equal(mockProfile, profile);
+            Assert.Equal(
+                JsonConvert.SerializeObject(mockProfile),
+                JsonConvert.SerializeObject(profile));
         }
 
         [Fact]
@@ -199,8 +202,9 @@
                 SamlEntityId = "http://www.okta.com/terrace-house",
                 SamlIdpUrl = "https://terrace-house.okta.com/app/terrace/house/saml",
                 SamlRelyingPartyTrustCert = "",
-                SamlX509Certs = new string[] {
-                    "-----BEGIN CERTIFICATE----------END CERTIFICATE-----"
+                SamlX509Certs = new string[]
+                {
+                    "-----BEGIN CERTIFICATE----------END CERTIFICATE-----",
                 },
             };
 
@@ -218,7 +222,9 @@
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/connections");
             Assert.NotNull(connection);
-            Assert.Equal(mockConnection, connection);
+            Assert.Equal(
+                JsonConvert.SerializeObject(mockConnection),
+                JsonConvert.SerializeObject(connection));
         }
 
         [Fact]
@@ -236,8 +242,9 @@
                 SamlEntityId = "http://www.okta.com/terrace-house",
                 SamlIdpUrl = "https://terrace-house.okta.com/app/terrace/house/saml",
                 SamlRelyingPartyTrustCert = "",
-                SamlX509Certs = new string[] {
-                    "-----BEGIN CERTIFICATE----------END CERTIFICATE-----"
+                SamlX509Certs = new string[]
+                {
+                    "-----BEGIN CERTIFICATE----------END CERTIFICATE-----",
                 },
             };
 
@@ -255,7 +262,9 @@
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/connections");
             Assert.NotNull(connection);
-            Assert.Equal(mockConnection, connection);
+            Assert.Equal(
+                JsonConvert.SerializeObject(mockConnection),
+                JsonConvert.SerializeObject(connection));
         }
     }
 }

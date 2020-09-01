@@ -14,16 +14,16 @@
         public const string ResponseType = "code";
 
         /// <summary>
-        /// The WorkOS Project identifier. 
+        /// The WorkOS Project identifier.
         /// </summary>
         [JsonProperty("client_id")]
-        public string ClientId;
+        public string ClientId { get; set; }
 
         /// <summary>
         /// The Enterprise's domain.
         /// </summary>
         [JsonProperty("domain")]
-        public string Domain;
+        public string Domain { get; set; }
 
         /// <summary>
         /// An optional parameter that specifies the type of Connection to
@@ -31,20 +31,20 @@
         /// authenticated. Only `GoogleOAuth` is currently supported.
         /// </summary>
         [JsonProperty("provider")]
-        public ConnectionType? Provider;
+        public ConnectionType? Provider { get; set; }
 
         /// <summary>
         /// A callback URL where the application redirects the user-agent after
         /// an authorization code is granted.
         /// </summary>
         [JsonProperty("redirect_uri")]
-        public string RedirectURI;
+        public string RedirectURI { get; set; }
 
         /// <summary>
         /// An optional parameter to manage state across the authorization
         /// lifecycle.
         /// </summary>
         [JsonProperty("state")]
-        public string State;
+        public string State { get; set; }
     }
 }

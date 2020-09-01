@@ -11,7 +11,7 @@
     public class SSOService
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="SSOService"/>.
+        /// Initializes a new instance of the <see cref="SSOService"/> class.
         /// </summary>
         /// <param name="client">A client used to make requests to WorkOS.</param>
         public SSOService(WorkOSClient client)
@@ -77,7 +77,7 @@
                 Method = HttpMethod.Post,
                 Path = "/sso/token",
             };
-            return await this.Client.MakeAPIRequestAsync<GetProfileResponse >(request, cancellationToken);
+            return await this.Client.MakeAPIRequestAsync<GetProfileResponse>(request, cancellationToken);
         }
 
         /// <summary>

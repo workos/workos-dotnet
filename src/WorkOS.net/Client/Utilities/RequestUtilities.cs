@@ -53,7 +53,7 @@
                 Formatting.None,
                 new JsonSerializerSettings
                 {
-                    NullValueHandling = NullValueHandling.Ignore
+                    NullValueHandling = NullValueHandling.Ignore,
                 });
         }
 

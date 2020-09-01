@@ -1,11 +1,9 @@
 ﻿namespace WorkOSTests
 {
-    using Newtonsoft.Json;
     using System.Collections.Generic;
-    using System.Text;
-    using Xunit;
-
+    using Newtonsoft.Json;
     using WorkOS;
+    using Xunit;
 
     public class RequestUtilitiesTest
     {

@@ -11,7 +11,7 @@
         /// Specifies the grant type. Will always be `authorization_code`.
         /// </summary>
         [JsonProperty("grant_type")]
-        public string GrantType = "authorization_code";
+        public const string GrantType = "authorization_code";
 
         /// <summary>
         /// The WorkOS Project identifier.

@@ -1,9 +1,8 @@
 ﻿namespace WorkOSTests
 {
     using System;
-    using Xunit;
-
     using WorkOS;
+    using Xunit;
 
     public class WorkOSClientTest
     {
