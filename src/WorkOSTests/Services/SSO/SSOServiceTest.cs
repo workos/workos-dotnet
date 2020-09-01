@@ -10,18 +10,18 @@
 
     public class SSOServiceTest
     {
-        private readonly MockHttpClient httpClient;
+        private readonly HttpMock httpMock;
 
         private readonly SSOService service;
 
         public SSOServiceTest()
         {
-            this.httpClient = new MockHttpClient();
+            this.httpMock = new HttpMock();
             var client = new WorkOSClient(
                 new WorkOSOptions
                 {
                     ApiKey = "test",
-                    HttpClient = this.httpClient.HttpClient,
+                    HttpClient = this.httpMock.HttpClient,
                 }
             );
 
@@ -121,7 +121,7 @@
                 Profile = mockProfile,
             };
 
-            this.httpClient.MockResponse(
+            this.httpMock.MockResponse(
                 HttpMethod.Post,
                 "/sso/token",
                 HttpStatusCode.Created,
@@ -135,9 +135,9 @@
             var response = this.service.GetProfile(options);
             var profile = response.Profile;
 
-            this.httpClient.AssertRequestWasMade(HttpMethod.Post, "/sso/token");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/sso/token");
             Assert.NotNull(profile);
-            Assert.Equal(mockProfile.Id, profile.Id);
+            Assert.Equal(mockProfile, profile);
         }
 
         [Fact]
@@ -165,7 +165,7 @@
                 Profile = mockProfile,
             };
 
-            this.httpClient.MockResponse(
+            this.httpMock.MockResponse(
                 HttpMethod.Post,
                 "/sso/token",
                 HttpStatusCode.Created,
@@ -179,19 +179,19 @@
             var response = await this.service.GetProfileAsync(options);
             var profile = response.Profile;
 
-            this.httpClient.AssertRequestWasMade(HttpMethod.Post, "/sso/token");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/sso/token");
             Assert.NotNull(profile);
-            Assert.Equal(mockProfile.Id, profile.Id);
+            Assert.Equal(mockProfile, profile);
         }
 
         [Fact]
         public void TestCreateConnection()
         {
-            var connectionResponse = new Connection
+            var mockConnection = new Connection
             {
                 Id = "connection_id",
                 Name = "Terrace House",
-                Status = "Unlinked",
+                Status = ConnectionStatus.Linked,
                 ConnectionType = ConnectionType.OktaSAML,
                 OAuthUid = "",
                 OAuthSecret = "",
@@ -204,11 +204,11 @@
                 },
             };
 
-            this.httpClient.MockResponse(
+            this.httpMock.MockResponse(
                 HttpMethod.Post,
                 "/connections",
                 HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(connectionResponse));
+                RequestUtilities.ToJsonString(mockConnection));
 
             var options = new CreateConnectionOptions
             {
@@ -216,18 +216,19 @@
             };
             var connection = this.service.CreateConnection(options);
 
-            this.httpClient.AssertRequestWasMade(HttpMethod.Post, "/connections");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/connections");
             Assert.NotNull(connection);
+            Assert.Equal(mockConnection, connection);
         }
 
         [Fact]
         public async void TestCreateConnectionAsync()
         {
-            var connectionResponse = new Connection
+            var mockConnection = new Connection
             {
                 Id = "connection_id",
                 Name = "Terrace House",
-                Status = "Unlinked",
+                Status = ConnectionStatus.Linked,
                 ConnectionType = ConnectionType.OktaSAML,
                 OAuthUid = "",
                 OAuthSecret = "",
@@ -240,11 +241,11 @@
                 },
             };
 
-            this.httpClient.MockResponse(
+            this.httpMock.MockResponse(
                 HttpMethod.Post,
                 "/connections",
                 HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(connectionResponse));
+                RequestUtilities.ToJsonString(mockConnection));
 
             var options = new CreateConnectionOptions
             {
@@ -252,8 +253,9 @@
             };
             var connection = await this.service.CreateConnectionAsync(options);
 
-            this.httpClient.AssertRequestWasMade(HttpMethod.Post, "/connections");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/connections");
             Assert.NotNull(connection);
+            Assert.Equal(mockConnection, connection);
         }
     }
 }

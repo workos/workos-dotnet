@@ -1,6 +1,5 @@
 ﻿namespace WorkOSTests
 {
-    using System;
     using System.Net;
     using System.Net.Http;
     using System.Threading;
@@ -8,9 +7,9 @@
     using Moq;
     using Moq.Protected;
 
-    public class MockHttpClient
+    public class HttpMock
     {
-        public MockHttpClient()
+        public HttpMock()
         {
             this.MockHandler = new Mock<HttpClientHandler>(MockBehavior.Strict)
             {

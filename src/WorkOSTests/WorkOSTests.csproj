@@ -38,5 +38,7 @@
     <Folder Include="Services\" />
     <Folder Include="Services\SSO\" />
     <Folder Include="Utilities\" />
+    <Folder Include="Client\" />
+    <Folder Include="Client\Utilities\" />
   </ItemGroup>
 </Project>

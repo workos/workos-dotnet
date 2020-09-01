@@ -18,10 +18,20 @@
         /// <param name="options">Parameters to create the client with.</param>
         public WorkOSClient(WorkOSOptions options)
         {
+            if (options.ApiKey == null || options.ApiKey.Length == 0)
+            {
+                throw new ArgumentException("API Key is required", nameof(options.ApiKey));
+            }
+
             this.ApiBaseURL = options.ApiBaseURL ?? DefaultApiBaseURL;
             this.ApiKey = options.ApiKey;
             this.HttpClient = options.HttpClient ?? this.DefaultHttpClient();
         }
+
+        /// <summary>
+        /// Describes the .NET SDK version.
+        /// </summary>
+        public static string ApiVersion => "0.1.0";
 
         /// <summary>
         /// Default timeout for HTTP requests.
@@ -46,7 +56,7 @@
         /// <summary>
         /// The client used to make HTTP requests to the WorkOS API.
         /// </summary>
-        private readonly HttpClient HttpClient;
+        private HttpClient HttpClient { get; }
 
         /// <summary>
         /// Creates a new HTTP client instance.
@@ -105,9 +115,10 @@
                 content = RequestUtilities.CreateHttpContent(request.Options);
             }
 
+            var userAgentString = $"workos-dotnet/$.NetBindings/{ApiVersion}";
             var requestMessage = new HttpRequestMessage(request.Method, new Uri(url));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.ApiKey);
-            //requestMessage.Headers.UserAgent = 
+            requestMessage.Headers.TryAddWithoutValidation("User-Agent", userAgentString);
             requestMessage.Content = content;
             return requestMessage;
         }
