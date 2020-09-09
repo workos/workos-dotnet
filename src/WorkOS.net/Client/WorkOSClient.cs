@@ -115,7 +115,7 @@
                 content = RequestUtilities.CreateHttpContent(request);
             }
 
-            var userAgentString = $"workos-dotnet/$.NetBindings/{ApiVersion}";
+            var userAgentString = $"workos-dotnet/{ApiVersion}";
             var requestMessage = new HttpRequestMessage(request.Method, new Uri(url));
             requestMessage.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("utf-8"));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.ApiKey);

@@ -7,11 +7,11 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-  - name: Install netcoreapp3.1 and Build Project
+  - name: Run Tests 👩🏽‍🔬
     dependencies: []
     task:
       jobs:
-        - name: Install dependencies
+        - name: netcoreapp3.1 Tests
           commands:
             - checkout
             - wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
@@ -19,6 +19,6 @@ blocks:
             - sudo apt-get install -y apt-transport-https
             - sudo apt-get update
             - sudo apt-get install -y dotnet-sdk-3.1
-            - dotnet build src/WorkOS.net/WorkOS.net.csproj -c Debug
-            - dotnet build test/WorkOSTests/WorkOSTests.csproj -c Debug
-            - dotnet test test/WorkOSTests/WorkOSTests.csproj -c Debug -f netcoreapp3.1
+            - dotnet build -c Debug src/WorkOS.net/WorkOS.net.csproj
+            - dotnet build -c Debug test/WorkOSTests/WorkOSTests.csproj
+            - dotnet test -c Debug -f netcoreapp3.1 test/WorkOSTests/WorkOSTests.csproj

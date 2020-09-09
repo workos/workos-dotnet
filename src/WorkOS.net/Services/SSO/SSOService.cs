@@ -50,6 +50,7 @@
             options.ClientSecret = this.Client.ApiKey;
             var request = new WorkOSRequest
             {
+                IsJsonContentType = false,
                 Options = options,
                 Method = HttpMethod.Post,
                 Path = "/sso/token",
@@ -73,6 +74,7 @@
             options.ClientSecret = this.Client.ApiKey;
             var request = new WorkOSRequest
             {
+                IsJsonContentType = false,
                 Options = options,
                 Method = HttpMethod.Post,
                 Path = "/sso/token",

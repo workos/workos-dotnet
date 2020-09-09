@@ -4,21 +4,23 @@
     <Description>WorkOS.net is the official .NET client for the WorkOS API.</Description>
     <AssemblyName>WorkOS.net</AssemblyName>
     <Authors>WorkOS</Authors>
+    <Copyright>Copyright © WorkOS</Copyright>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
-    <PackageVersion>0.1.0</PackageVersion>
+    <NeutralLanguage>en-US</NeutralLanguage>
     <PackageId>WorkOS.net</PackageId>
     <PackageTags>workos;sso</PackageTags>
     <PackageProjectUrl>https://github.com/workos/workos-dotnet</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <ReleaseVersion>0.1.0</ReleaseVersion>
     <RootNamespace>WorkOS</RootNamespace>
     <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
     <SignAssembly>True</SignAssembly>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,7 +35,7 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Net.Http" />

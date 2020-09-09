@@ -62,7 +62,7 @@ var ssoService = new SSOService(client);
 var options = new GetProfileOptions
 {
     ClientId = "project_123",
-    Code = "authorization_code",
+    Code = "code_123",
 };
 var response = ssoService.GetProfile(options);
 ```
