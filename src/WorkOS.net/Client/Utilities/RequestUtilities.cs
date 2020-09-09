@@ -31,14 +31,22 @@
         /// <summary>
         /// Creates an encoded HTTP entity body and content headers.
         /// </summary>
-        /// <param name="options">Parameters to encode.</param>
+        /// <param name="request">Request to encode.</param>
         /// <returns>Encoded HTTP content for a request.</returns>
-        public static StringContent CreateHttpContent(BaseOptions options)
+        public static HttpContent CreateHttpContent(WorkOSRequest request)
         {
+            var options = request.Options;
             var jsonOptions = ToJsonString(options);
-            var content = new StringContent(jsonOptions, Encoding.UTF8);
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            return content;
+
+            if (request.IsJsonContentType)
+            {
+                var content = new StringContent(jsonOptions, Encoding.UTF8);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return content;
+            }
+
+            var dictionaryOptions = JsonConvert.DeserializeObject<IDictionary<string, string>>(jsonOptions);
+            return new FormUrlEncodedContent(dictionaryOptions.ToList());
         }
 
         /// <summary>

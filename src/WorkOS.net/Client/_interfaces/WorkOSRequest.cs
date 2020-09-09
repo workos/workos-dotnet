@@ -21,5 +21,10 @@
         /// The path of the WorkOS API request.
         /// </summary>
         public string Path { get; set; }
+
+        /// <summary>
+        /// Optional flag to indicate if the request is JSON encoded.
+        /// </summary>
+        public bool IsJsonContentType { get; set; } = true;
     }
 }

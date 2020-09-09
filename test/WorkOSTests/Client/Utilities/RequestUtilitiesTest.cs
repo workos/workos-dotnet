@@ -1,6 +1,7 @@
 ﻿namespace WorkOSTests
 {
     using System.Collections.Generic;
+    using System.IO;
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
@@ -29,7 +30,11 @@
                 Name = "some_name",
             };
 
-            var content = RequestUtilities.CreateHttpContent(options);
+            var content = RequestUtilities.CreateHttpContent(
+                new WorkOSRequest
+                {
+                    Options = options,
+                });
             var jsonContent = content.ReadAsStringAsync().Result;
             var dictionaryContent = JsonConvert.DeserializeObject<IDictionary<string, string>>(jsonContent);
             var expectedDictionary = new Dictionary<string, string>
@@ -38,7 +43,31 @@
                 { "name", "some_name" },
             };
 
+            Assert.Equal("application/json", content.Headers.ContentType.ToString());
             Assert.Equal(expectedDictionary, dictionaryContent);
+        }
+
+        [Fact]
+        public async void TestCreateHttpContentUrlEncoded()
+        {
+            var options = new FakeOptions
+            {
+                Id = "some_id",
+                Name = "some_name",
+            };
+
+            var content = RequestUtilities.CreateHttpContent(
+                new WorkOSRequest
+                {
+                    IsJsonContentType = false,
+                    Options = options,
+                });
+            var stream = await content.ReadAsStreamAsync();
+            var parameters = new StreamReader(stream).ReadToEnd();
+            var expectedParameters = "id=some_id&name=some_name";
+
+            Assert.Equal("application/x-www-form-urlencoded", content.Headers.ContentType.MediaType);
+            Assert.Equal(expectedParameters, parameters);
         }
 
         [Fact]

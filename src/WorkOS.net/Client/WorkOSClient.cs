@@ -108,15 +108,16 @@
         private HttpRequestMessage CreateHttpRequestMessage(WorkOSRequest request)
         {
             string url = this.ApiBaseURL + request.Path;
-            StringContent content = null;
+            HttpContent content = null;
 
-            if (request.Method == HttpMethod.Post)
+            if (request.Method != HttpMethod.Get)
             {
-                content = RequestUtilities.CreateHttpContent(request.Options);
+                content = RequestUtilities.CreateHttpContent(request);
             }
 
             var userAgentString = $"workos-dotnet/$.NetBindings/{ApiVersion}";
             var requestMessage = new HttpRequestMessage(request.Method, new Uri(url));
+            requestMessage.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("utf-8"));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.ApiKey);
             requestMessage.Headers.TryAddWithoutValidation("User-Agent", userAgentString);
             requestMessage.Content = content;
