@@ -31,7 +31,7 @@
         /// <summary>
         /// Describes the .NET SDK version.
         /// </summary>
-        public static string ApiVersion => "0.1.0";
+        public static string SdkVersion => "0.1.0";
 
         /// <summary>
         /// Default timeout for HTTP requests.
@@ -115,7 +115,7 @@
                 content = RequestUtilities.CreateHttpContent(request);
             }
 
-            var userAgentString = $"workos-dotnet/{ApiVersion}";
+            var userAgentString = $"workos-dotnet/{SdkVersion}";
             var requestMessage = new HttpRequestMessage(request.Method, new Uri(url));
             requestMessage.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("utf-8"));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.ApiKey);
