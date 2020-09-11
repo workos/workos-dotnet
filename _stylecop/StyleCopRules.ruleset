@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Rules for StyleCop.Analyzers" Description="Code analysis rules for WorkOS.net" ToolsVersion="14.0">
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <!-- Missing comment for enum members. -->
+    <Rule Id="CS1591" Action="None" />
+    <!-- Empty string enforcement.  -->
+    <Rule Id="SA1122" Action="None" />
+    <!-- Elements must be documented.  -->
+    <Rule Id="SA1600" Action="None" />
+    <!-- Remove forced header. -->
+    <Rule Id="SA1633" Action="None" />
+    <!-- Documenting enumerations. -->
+    <Rule Id="SA1602" Action="None" />
+    <!-- Accessor documentation style. -->
+    <Rule Id="SA1623" Action="None" />
+  </Rules>
+</RuleSet>
