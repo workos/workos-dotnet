@@ -1,5 +1,7 @@
 ﻿namespace WorkOS
 {
+    using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -22,10 +24,11 @@
         public static string CreateQueryString(BaseOptions options)
         {
             var jsonOptions = ToJsonString(options);
-            var dictionaryOptions = JsonConvert.DeserializeObject<IDictionary<string, string>>(jsonOptions);
+            var dictionaryOptions = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonOptions);
+            var flattenedQuery = FlattenQueryParameters(dictionaryOptions);
             return string.Join(
                 "&",
-                dictionaryOptions.Select(kvp => $"{WebUtility.UrlEncode(kvp.Key)}={WebUtility.UrlEncode(kvp.Value)}"));
+                flattenedQuery.Select(kvp => $"{UrlEncodeAndClean(kvp.Key)}={UrlEncodeAndClean(kvp.Value)}"));
         }
 
         /// <summary>
@@ -89,6 +92,57 @@
             return url.Substring(startIndex).Split('&')
                 .Select(x => x.Split(new[] { '=' }, 2))
                 .ToDictionary(x => WebUtility.UrlDecode(x[0]), x => WebUtility.UrlDecode(x[1]));
+        }
+
+        private static string UrlEncodeAndClean(string value)
+        {
+            return WebUtility.UrlEncode(value)
+                .Replace("%40", "@")
+                .Replace("%3A", ":")
+                .Replace("%5B", "[")
+                .Replace("%5D", "]");
+        }
+
+        private static List<KeyValuePair<string, string>> FlattenQueryParameters(
+            IDictionary<string, object> options)
+        {
+            List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>>();
+            foreach (var kv in options)
+            {
+                var key = kv.Key;
+                var value = kv.Value;
+                switch (value)
+                {
+                    case null:
+                        break;
+
+                    case string s:
+                        result.Add(new KeyValuePair<string, string>(key, s));
+                        break;
+
+                    case IEnumerable e:
+                        foreach (object elem in e)
+                        {
+                            result.Add(new KeyValuePair<string, string>($"{key}[]", elem.ToString()));
+                        }
+
+                        break;
+
+                    case DateTime dt:
+                        var isoDt = dt.ToString("yyyy-MM-ddTHH:mm:ssZ");
+                        result.Add(new KeyValuePair<string, string>(key, isoDt));
+                        break;
+
+                    case Enum e:
+                        result.Add(new KeyValuePair<string, string>(key, e.ToString()));
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            return result;
         }
     }
 }

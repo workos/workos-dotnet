@@ -1,5 +1,7 @@
 ﻿namespace WorkOS
 {
+    using System;
+    using System.Collections.Generic;
     using System.Net.Http;
 
     /// <summary>
@@ -21,6 +23,11 @@
         /// The path of the WorkOS API request.
         /// </summary>
         public string Path { get; set; }
+
+        /// <summary>
+        /// Dictionary of custom WorkOS headers.
+        /// </summary>
+        public IDictionary<string, string> WorkOSHeaders { get; set; }
 
         /// <summary>
         /// Optional flag to indicate if the request is JSON encoded.
