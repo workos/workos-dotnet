@@ -10,7 +10,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageId>WorkOS.net</PackageId>
-    <PackageTags>workos;sso</PackageTags>
+    <PackageTags>workos;sso;audit;trail</PackageTags>
     <PackageProjectUrl>https://github.com/workos/workos-dotnet</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
