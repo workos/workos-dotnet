@@ -1,6 +1,6 @@
 # workos-dotnet
 
-[![Build Status](https://workos.semaphoreci.com/badges/workos-dotnet/branches/v0.1.0.svg?style=shields&key=343c1d18-79da-4ea3-89ce-8a6195a9d3d9)](https://workos.semaphoreci.com/projects/workos-dotnet)
+[![Build Status](https://workos.semaphoreci.com/badges/workos-dotnet/branches/main.svg?style=shields&key=343c1d18-79da-4ea3-89ce-8a6195a9d3d9)](https://workos.semaphoreci.com/projects/workos-dotnet)
 [![NuGet version (WorkOS.net)](https://img.shields.io/nuget/v/WorkOS.net.svg?style=flat-square)](https://www.nuget.org/packages/WorkOS.net/)
 
 The official [WorkOS](https://www.workos.com/) .NET SDK supporting .NET Standard 2.0+ and .NET Framework 4.6.1+.
