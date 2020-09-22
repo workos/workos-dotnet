@@ -4,6 +4,7 @@
     using System.IO;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -107,7 +108,7 @@
 
         private HttpRequestMessage CreateHttpRequestMessage(WorkOSRequest request)
         {
-            string url = this.ApiBaseURL + request.Path;
+            Uri uri = this.BuildUri(request);
             HttpContent content = null;
 
             if (request.Method != HttpMethod.Get)
@@ -116,12 +117,41 @@
             }
 
             var userAgentString = $"workos-dotnet/{SdkVersion}";
-            var requestMessage = new HttpRequestMessage(request.Method, new Uri(url));
+            var requestMessage = new HttpRequestMessage(request.Method, uri);
             requestMessage.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("utf-8"));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.ApiKey);
+
             requestMessage.Headers.TryAddWithoutValidation("User-Agent", userAgentString);
+            if (request.WorkOSHeaders != null)
+            {
+                foreach (var header in request.WorkOSHeaders)
+                {
+                    requestMessage.Headers.Add(header.Key, header.Value);
+                }
+            }
+
             requestMessage.Content = content;
             return requestMessage;
+        }
+
+        private Uri BuildUri(WorkOSRequest request)
+        {
+            var builder = new StringBuilder();
+            var options = request.Options;
+            builder.Append(this.ApiBaseURL);
+            builder.Append(request.Path);
+
+            if (request.Method != HttpMethod.Post && options != null)
+            {
+                var queryParameters = RequestUtilities.CreateQueryString(options);
+                if (queryParameters != null && queryParameters.Length > 0)
+                {
+                    builder.Append("?");
+                    builder.Append(queryParameters);
+                }
+            }
+
+            return new Uri(builder.ToString());
         }
     }
 }

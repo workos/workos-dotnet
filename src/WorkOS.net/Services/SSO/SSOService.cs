@@ -8,21 +8,24 @@
     /// <summary>
     /// A service that offers methods to interact with WorkOS SSO.
     /// </summary>
-    public class SSOService
+    public class SSOService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SSOService"/> class.
+        /// </summary>
+        public SSOService()
+            : base(null)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SSOService"/> class.
         /// </summary>
         /// <param name="client">A client used to make requests to WorkOS.</param>
         public SSOService(WorkOSClient client)
+            : base(client)
         {
-            this.Client = client;
         }
-
-        /// <summary>
-        /// The client used to make requests to WorkOS.
-        /// </summary>
-        private WorkOSClient Client { get; }
 
         /// <summary>
         /// Generates an Authorization URL to initiate the WorkOS OAuth 2.0 flow.

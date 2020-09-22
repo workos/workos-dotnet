@@ -5,6 +5,8 @@
     <Rule Id="CS1591" Action="None" />
     <!-- Empty string enforcement.  -->
     <Rule Id="SA1122" Action="None" />
+    <!-- Field names starting with underscore. -->
+    <Rule Id="SA1309" Action="None" />
     <!-- Elements must be documented.  -->
     <Rule Id="SA1600" Action="None" />
     <!-- Remove forced header. -->
