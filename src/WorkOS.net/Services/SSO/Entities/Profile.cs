@@ -48,6 +48,6 @@
         /// The raw response of Profile attributes from the identity provider.
         /// </summary>
         [JsonProperty("raw_attributes")]
-        public Dictionary<string, string> RawAttributes { get; set; }
+        public Dictionary<string, object> RawAttributes { get; set; }
     }
 }

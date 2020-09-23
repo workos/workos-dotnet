@@ -90,7 +90,7 @@
         /// </summary>
         /// <param name="options">Filter options when searching for events.</param>
         /// <returns>A paginated list of Audit Trail Events.</returns>
-        public WorkOSList<Event> ListEvents(ListEventsOptions options)
+        public WorkOSList<Event> ListEvents(ListEventsOptions options = null)
         {
             var request = new WorkOSRequest
             {
@@ -111,7 +111,7 @@
         /// </param>
         /// <returns>A paginated list of Audit Trail Events.</returns>
         public async Task<WorkOSList<Event>> ListEventsAsync(
-            ListEventsOptions options,
+            ListEventsOptions options = null,
             CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest

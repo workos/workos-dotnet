@@ -106,7 +106,7 @@
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
                 LastName = "Sanchez",
-                RawAttributes = new Dictionary<string, string>()
+                RawAttributes = new Dictionary<string, object>()
                 {
                     { "idp_id", "123" },
                     { "email", "rick@sanchez.com" },
@@ -152,7 +152,7 @@
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
                 LastName = "Sanchez",
-                RawAttributes = new Dictionary<string, string>()
+                RawAttributes = new Dictionary<string, object>()
                 {
                     { "idp_id", "123" },
                     { "email", "rick@sanchez.com" },

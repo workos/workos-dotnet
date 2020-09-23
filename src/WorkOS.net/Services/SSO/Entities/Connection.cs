@@ -26,7 +26,7 @@
         public ConnectionStatus Status { get; set; }
 
         /// <summary>
-        /// The name of the connection.
+        /// The name of the Connection.
         /// </summary>
         [JsonProperty("name")]
         public string Name { get; set; }
