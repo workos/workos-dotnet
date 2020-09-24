@@ -18,6 +18,10 @@
 
         private readonly ListOrganizationsOptions listOrganizationsOptions;
 
+        private readonly GenerateLinkOptions generateLinkOptions;
+
+        private readonly GenerateLinkResponse mockGenerateLinkResponse;
+
         private readonly Organization mockOrganization;
 
         public PortalServiceTest()
@@ -40,12 +44,24 @@
                 },
             };
 
+            this.generateLinkOptions = new GenerateLinkOptions
+            {
+                Intent = Intent.SSO,
+                Organization = "org_123",
+                ReturnURL = "https://foo-corp.app.com/settings",
+            };
+
             this.listOrganizationsOptions = new ListOrganizationsOptions
             {
                 Domains = new string[]
                 {
                     "foo-corp.com",
                 },
+            };
+
+            this.mockGenerateLinkResponse = new GenerateLinkResponse
+            {
+                Link = "https://id.workos.test/portal/launch?secret=1234",
             };
 
             this.mockOrganization = new Organization
@@ -139,6 +155,34 @@
             Assert.Equal(
                 JsonConvert.SerializeObject(this.mockOrganization),
                 JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public void TestGenerateLink()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/portal/generate_link",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockGenerateLinkResponse));
+            var link = this.service.GenerateLink(this.generateLinkOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/portal/generate_link");
+            Assert.Equal(this.mockGenerateLinkResponse.Link, link);
+        }
+
+        [Fact]
+        public async void TestGenerateLinkAsync()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/portal/generate_link",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockGenerateLinkResponse));
+            var link = await this.service.GenerateLinkAsync(this.generateLinkOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/portal/generate_link");
+            Assert.Equal(this.mockGenerateLinkResponse.Link, link);
         }
     }
 }
