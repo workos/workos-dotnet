@@ -16,6 +16,7 @@
         /// <summary>
         /// Name of the <see cref="Organization"/>.
         /// </summary>
+        [JsonProperty("name")]
         public string Name { get; set; }
     }
 }
