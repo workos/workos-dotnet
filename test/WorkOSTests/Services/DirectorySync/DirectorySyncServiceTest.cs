@@ -1,6 +1,5 @@
 ﻿namespace WorkOSTests
 {
-    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
@@ -103,7 +102,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var response = this.service.ListDirectories();
+            var response = this.service.ListDirectories(this.listDirectoriesOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directories");
             Assert.Equal(
@@ -127,7 +126,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var response = await this.service.ListDirectoriesAsync();
+            var response = await this.service.ListDirectoriesAsync(this.listDirectoriesOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directories");
             Assert.Equal(
@@ -151,11 +150,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var response = this.service.ListUsers(
-                new ListUsersOptions
-                {
-                    Directory = "directory_123",
-                });
+            var response = this.service.ListUsers(this.listUsersOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directory_users");
             Assert.Equal(
@@ -179,11 +174,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var response = await this.service.ListUsersAsync(
-                new ListUsersOptions
-                {
-                    Directory = "directory_123",
-                });
+            var response = await this.service.ListUsersAsync(this.listUsersOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directory_users");
             Assert.Equal(
@@ -245,11 +236,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var response = this.service.ListGroups(
-                new ListGroupsOptions
-                {
-                    Directory = "directory_123",
-                });
+            var response = this.service.ListGroups(this.listGroupsOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directory_groups");
             Assert.Equal(
@@ -273,11 +260,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var response = await this.service.ListGroupsAsync(
-                new ListGroupsOptions
-                {
-                    Directory = "directory_123",
-                });
+            var response = await this.service.ListGroupsAsync(this.listGroupsOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directory_groups");
             Assert.Equal(

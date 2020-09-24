@@ -1,4 +1,4 @@
-﻿namespace WorkOSTests.Services.SSO
+﻿namespace WorkOSTests
 {
     using System;
     using System.Collections.Generic;
