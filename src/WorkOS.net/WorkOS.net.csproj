@@ -10,7 +10,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageId>WorkOS.net</PackageId>
-    <PackageTags>workos;sso;audit;trail</PackageTags>
+    <PackageTags>workos;sso;audit;trail;directory;sync;portal</PackageTags>
     <PackageProjectUrl>https://github.com/workos/workos-dotnet</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -19,8 +19,8 @@
     <SignAssembly>True</SignAssembly>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <VersionPrefix>0.3.0</VersionPrefix>
-    <Version>0.3.0</Version>
+    <VersionPrefix>0.6.0</VersionPrefix>
+    <Version>0.6.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
