@@ -14,6 +14,8 @@
 
         private readonly PortalService service;
 
+        private readonly CreateOrganizationOptions createOrganizationOptions;
+
         private readonly ListOrganizationsOptions listOrganizationsOptions;
 
         private readonly Organization mockOrganization;
@@ -28,6 +30,15 @@
                     HttpClient = this.httpMock.HttpClient,
                 });
             this.service = new PortalService(client);
+
+            this.createOrganizationOptions = new CreateOrganizationOptions
+            {
+                Name = "Foo Corp",
+                Domains = new string[]
+                {
+                    "foo-corp.com",
+                },
+            };
 
             this.listOrganizationsOptions = new ListOrganizationsOptions
             {
@@ -95,6 +106,38 @@
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations");
             Assert.Equal(
                 JsonConvert.SerializeObject(mockResponse),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public void TestCreateOrganization()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/organizations",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockOrganization));
+            var response = this.service.CreateOrganization(this.createOrganizationOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockOrganization),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestCreateOrganizationAsync()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/organizations",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockOrganization));
+            var response = await this.service.CreateOrganizationAsync(this.createOrganizationOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockOrganization),
                 JsonConvert.SerializeObject(response));
         }
     }

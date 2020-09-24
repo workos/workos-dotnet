@@ -64,5 +64,85 @@
 
             return await this.Client.MakeAPIRequestAsync<WorkOSList<Organization>>(request, cancellationToken);
         }
+
+        /// <summary>
+        /// Creates an Organization.
+        /// </summary>
+        /// <param name="options">Parameters to create an Organization.</param>
+        /// <returns>The created Organization.</returns>
+        public Organization CreateOrganization(CreateOrganizationOptions options)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = "/organizations",
+            };
+
+            return this.Client.MakeAPIRequest<Organization>(request);
+        }
+
+        /// <summary>
+        /// Asynchronously creates an Organization.
+        /// </summary>
+        /// <param name="options">Parameters to create an Organization.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Task wrapping the created Organization.</returns>
+        public async Task<Organization> CreateOrganizationAsync(
+            CreateOrganizationOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = "/organizations",
+            };
+
+            return await this.Client.MakeAPIRequestAsync<Organization>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Generates a link to the Admin Portal.
+        /// </summary>
+        /// <param name="options">Parameters to create an Admin Portal link.</param>
+        /// <returns>The Admin Portal URL.</returns>
+        public string GenerateLink(GenerateLinkOptions options)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = "/portal/generate_link",
+            };
+
+            var response = this.Client.MakeAPIRequest<GenerateLinkResponse>(request);
+            return response.Link;
+        }
+
+        /// <summary>
+        /// Asynchronously generates a link to the Admin Portal.
+        /// </summary>
+        /// <param name="options">Parameters to create an Admin Portal link.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Task wrapping the Admin Portal URL.</returns>
+        public async Task<string> GenerateLinkAsync(
+            GenerateLinkOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = "/portal/generate_link",
+            };
+
+            var response = await this.Client.MakeAPIRequestAsync<GenerateLinkResponse>(request, cancellationToken);
+            return response.Link;
+        }
     }
 }
