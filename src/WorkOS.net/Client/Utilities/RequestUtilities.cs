@@ -39,6 +39,11 @@
         public static HttpContent CreateHttpContent(WorkOSRequest request)
         {
             var options = request.Options;
+            if (options == null)
+            {
+                options = new BaseOptions { };
+            }
+
             var jsonOptions = ToJsonString(options);
 
             if (request.IsJsonContentType)
