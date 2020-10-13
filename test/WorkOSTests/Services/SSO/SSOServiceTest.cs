@@ -102,6 +102,7 @@
             {
                 Id = "profile_0",
                 IdpId = "123",
+                ConnectionId = "conn_123",
                 ConnectionType = ConnectionType.OktaSAML,
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
@@ -148,6 +149,7 @@
             {
                 Id = "profile_0",
                 IdpId = "123",
+                ConnectionId = "conn_123",
                 ConnectionType = ConnectionType.OktaSAML,
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
