@@ -21,6 +21,12 @@
         public string IdpId { get; set; }
 
         /// <summary>
+        /// The identifier for the Connection associated with the Profile.
+        /// </summary>
+        [JsonProperty("connection_id")]
+        public string ConnectionId { get; set; }
+
+        /// <summary>
         /// The Connection type associated with the Profile.
         /// </summary>
         [JsonProperty("connection_type")]
