@@ -21,7 +21,7 @@
         public string IdpId { get; set; }
 
         /// <summary>
-        /// The identifier for the Connection associated with the Profile.
+        /// The identifier for the <see cref="Connection"/> associated with the Profile.
         /// </summary>
         [JsonProperty("connection_id")]
         public string ConnectionId { get; set; }
