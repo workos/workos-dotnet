@@ -33,6 +33,7 @@
             {
                 Email = "test@foo-corp.com",
                 Type = PasswordlessSessionType.MagicLink,
+                RedirectURI = "https://example.com/passwordless/callback",
             };
 
             this.mockPasswordlessSession = new PasswordlessSession
