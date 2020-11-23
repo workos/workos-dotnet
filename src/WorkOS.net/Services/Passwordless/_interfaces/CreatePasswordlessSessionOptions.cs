@@ -20,7 +20,8 @@
         public PasswordlessSessionType Type { get; set; }
 
         /// <summary>
-        /// The location that the user will be redirected to after authenticating.
+        /// An optional parameter of the location that the user will be 
+        /// redirected to after authenticating.
         /// </summary>
         [JsonProperty("redirect_uri")]
         public string RedirectURI { get; set; }
