@@ -32,7 +32,7 @@
         {
             var options = new GetAuthorizationURLOptions
             {
-                ClientId = "project_123",
+                ClientId = "client_123",
                 RedirectURI = "https://example.com/sso/callback",
             };
             var exception = Assert.Throws<ArgumentNullException>(() =>
@@ -44,7 +44,7 @@
         {
             var options = new GetAuthorizationURLOptions
             {
-                ClientId = "project_123",
+                ClientId = "client_123",
                 Provider = ConnectionType.GoogleOAuth,
                 RedirectURI = "https://example.com/sso/callback",
             };
@@ -62,7 +62,7 @@
         {
             var options = new GetAuthorizationURLOptions
             {
-                ClientId = "project_123",
+                ClientId = "client_123",
                 Domain = "foo-corp.com",
                 RedirectURI = "https://example.com/sso/callback",
             };
@@ -80,7 +80,7 @@
         {
             var options = new GetAuthorizationURLOptions
             {
-                ClientId = "project_123",
+                ClientId = "client_123",
                 Domain = "foo-corp.com",
                 RedirectURI = "https://example.com/sso/callback",
                 State = "state",
@@ -129,7 +129,7 @@
 
             var options = new GetProfileOptions
             {
-                ClientId = "project_123",
+                ClientId = "client_123",
                 Code = "code",
             };
             var response = this.service.GetProfile(options);
@@ -176,7 +176,7 @@
 
             var options = new GetProfileOptions
             {
-                ClientId = "project_123",
+                ClientId = "client_123",
                 Code = "code",
             };
             var response = await this.service.GetProfileAsync(options);

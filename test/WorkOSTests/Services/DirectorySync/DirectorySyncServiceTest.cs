@@ -59,7 +59,7 @@
                 State = DirectoryState.Linked,
                 Type = DirectoryType.BambooHR,
                 ExternalKey = "external-key",
-                ProjectId = "project_123",
+                EnvironmentId = "environment_123",
             };
 
             this.mockUser = new User

@@ -55,9 +55,9 @@
         public string BearerToken { get; set; }
 
         /// <summary>
-        /// Identifier for the Directory's Project.
+        /// Identifier for the Directory's Environment.
         /// </summary>
-        [JsonProperty("project_id")]
-        public string ProjectId { get; set; }
+        [JsonProperty("environment_id")]
+        public string EnvironmentId { get; set; }
     }
 }

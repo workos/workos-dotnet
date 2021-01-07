@@ -26,9 +26,9 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// The identifier of the Event Action's Project.
+        /// The identifier of the Event Action's Environment.
         /// </summary>
-        [JsonProperty("project_id")]
-        public string ProjectId { get; set; }
+        [JsonProperty("environment_id")]
+        public string EnvironmentId { get; set; }
     }
 }
