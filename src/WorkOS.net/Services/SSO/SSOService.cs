@@ -121,5 +121,44 @@
             };
             return await this.Client.MakeAPIRequestAsync<Connection>(request, cancellationToken);
         }
+
+        /// <summary>
+        /// Fetches a list of Connections.
+        /// </summary>
+        /// <param name="options">Filter options when searching for Connections.</param>
+        /// <returns>A paginated list of Connections.</returns>
+        public WorkOSList<Connection> ListConnections(ListConnectionsOptions options = null)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Get,
+                Path = "/connections",
+            };
+
+            return this.Client.MakeAPIRequest<WorkOSList<Connection>>(request);
+        }
+
+        /// <summary>
+        /// Asynchronously fetches a list of Connections.
+        /// </summary>
+        /// <param name="options">Filter options when searching for Connections.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Task wrapping a paginated list of Connections.</returns>
+        public async Task<WorkOSList<Connection>> ListConnectionsAsync(
+            ListConnectionsOptions options = null,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Get,
+                Path = "/connections",
+            };
+
+            return await this.Client.MakeAPIRequestAsync<WorkOSList<Connection>>(request, cancellationToken);
+        }
     }
 }
