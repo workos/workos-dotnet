@@ -14,6 +14,10 @@
 
         private readonly SSOService service;
 
+        private readonly ListConnectionsOptions listConnectionsOptions;
+
+        private readonly Connection mockConnection;
+
         public SSOServiceTest()
         {
             this.httpMock = new HttpMock();
@@ -25,6 +29,29 @@
                 });
 
             this.service = new SSOService(client);
+
+            this.listConnectionsOptions = new ListConnectionsOptions
+            {
+                Domain = "foo-corp.com",
+            };
+
+            this.mockConnection = new Connection
+            {
+                Id = "connection_id",
+                Name = "Foo Corp",
+                Status = ConnectionStatus.Linked,
+                ConnectionType = ConnectionType.OktaSAML,
+                OAuthUid = "",
+                OAuthSecret = "",
+                OAuthRedirectUri = "",
+                SamlEntityId = "",
+                SamlIdpUrl = "",
+                SamlRelyingPartyTrustCert = "",
+                SamlX509Certs = new string[]
+                {
+                    "-----BEGIN CERTIFICATE----------END CERTIFICATE-----",
+                },
+            };
         }
 
         [Fact]
@@ -267,6 +294,54 @@
             Assert.Equal(
                 JsonConvert.SerializeObject(mockConnection),
                 JsonConvert.SerializeObject(connection));
+        }
+
+        [Fact]
+        public void TestListConnections()
+        {
+            var mockResponse = new WorkOSList<Connection>
+            {
+                Data = new List<Connection>
+                {
+                    this.mockConnection,
+                },
+            };
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                "/connections",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(mockResponse));
+
+            var response = this.service.ListConnections(this.listConnectionsOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/connections");
+            Assert.Equal(
+                JsonConvert.SerializeObject(mockResponse),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestListConnectionsAsync()
+        {
+            var mockResponse = new WorkOSList<Connection>
+            {
+                Data = new List<Connection>
+                {
+                    this.mockConnection,
+                },
+            };
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                "/connections",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(mockResponse));
+
+            var response = await this.service.ListConnectionsAsync(this.listConnectionsOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/connections");
+            Assert.Equal(
+                JsonConvert.SerializeObject(mockResponse),
+                JsonConvert.SerializeObject(response));
         }
     }
 }
