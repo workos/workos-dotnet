@@ -343,5 +343,43 @@
                 JsonConvert.SerializeObject(mockResponse),
                 JsonConvert.SerializeObject(response));
         }
+
+        [Fact]
+        public void TestGetConnection()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                $"/connections/{this.mockConnection.Id}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockConnection));
+
+            var response = this.service.GetConnection(this.mockConnection.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Get,
+                $"/connections/{this.mockConnection.Id}");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockConnection),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestGetConnectionAsync()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                $"/connections/{this.mockConnection.Id}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockConnection));
+
+            var response = await this.service.GetConnectionAsync(this.mockConnection.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Get,
+                $"/connections/{this.mockConnection.Id}");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockConnection),
+                JsonConvert.SerializeObject(response));
+        }
     }
 }
