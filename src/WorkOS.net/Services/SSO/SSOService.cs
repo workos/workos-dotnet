@@ -160,5 +160,40 @@
 
             return await this.Client.MakeAPIRequestAsync<WorkOSList<Connection>>(request, cancellationToken);
         }
+
+        /// <summary>
+        /// Gets a Connection.
+        /// </summary>
+        /// <param name="id">Connection unique identifier.</param>
+        /// <returns>A WorkOS Connection record.</returns>
+        public Connection GetConnection(string id)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"/connections/{id}",
+            };
+
+            return this.Client.MakeAPIRequest<Connection>(request);
+        }
+
+        /// <summary>
+        /// Asynchronously gets a Connection.
+        /// </summary>
+        /// <param name="id">Connection unique identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Task wrapping a WorkOS Connection record.</returns>
+        public async Task<Connection> GetConnectionAsync(string id, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"/connections/{id}",
+            };
+
+            return await this.Client.MakeAPIRequestAsync<Connection>(request, cancellationToken);
+        }
     }
 }
