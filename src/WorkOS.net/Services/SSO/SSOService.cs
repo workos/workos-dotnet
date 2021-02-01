@@ -195,5 +195,40 @@
 
             return await this.Client.MakeAPIRequestAsync<Connection>(request, cancellationToken);
         }
+
+        /// <summary>
+        /// Deletes a Connection.
+        /// </summary>
+        /// <param name="id">Connection unique identifier.</param>
+        /// <returns>A deleted WorkOS Connection record.</returns>
+        public Connection DeleteConnection(string id)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"/connections/{id}",
+            };
+
+            return this.Client.MakeAPIRequest<Connection>(request);
+        }
+
+        /// <summary>
+        /// Asynchronously deletes a Connection.
+        /// </summary>
+        /// <param name="id">Connection unique identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Task wrapping a deleted WorkOS Connection record.</returns>
+        public async Task<Connection> DeleteConnectionAsync(string id, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"/connections/{id}",
+            };
+
+            return await this.Client.MakeAPIRequestAsync<Connection>(request, cancellationToken);
+        }
     }
 }
