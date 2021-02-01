@@ -381,41 +381,5 @@
                 JsonConvert.SerializeObject(this.mockConnection),
                 JsonConvert.SerializeObject(response));
         }
-
-        [Fact]
-        public void TestDeleteConnection()
-        {
-            this.httpMock.MockResponse(
-                HttpMethod.Delete,
-                $"/connections/{this.mockConnection.Id}",
-                HttpStatusCode.OK);
-
-            var response = this.service.DeleteConnection(this.mockConnection.Id);
-
-            this.httpMock.AssertRequestWasMade(
-                HttpMethod.Delete,
-                $"/connections/{this.mockConnection.Id}");
-            Assert.Equal(
-                HttpStatusCode.OK,
-                JsonConvert.SerializeObject(response));
-        }
-
-        [Fact]
-        public async void TestDeleteConnectionAsync()
-        {
-            this.httpMock.MockResponse(
-                HttpMethod.Delete,
-                $"/connections/{this.mockConnection.Id}",
-                HttpStatusCode.OK);
-
-            var response = await this.service.DeleteConnectionAsync(this.mockConnection.Id);
-
-            this.httpMock.AssertRequestWasMade(
-                HttpMethod.Delete,
-                $"/connections/{this.mockConnection.Id}");
-            Assert.Equal(
-                HttpStatusCode.OK,
-                JsonConvert.SerializeObject(response));
-        }
     }
 }
