@@ -49,12 +49,6 @@
         public string ExternalKey { get; set; }
 
         /// <summary>
-        /// Bearer Token used to authenticate requests.
-        /// </summary>
-        [JsonProperty("bearer_token")]
-        public string BearerToken { get; set; }
-
-        /// <summary>
         /// Identifier for the Directory's Environment.
         /// </summary>
         [JsonProperty("environment_id")]
