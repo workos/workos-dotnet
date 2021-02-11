@@ -18,5 +18,11 @@ namespace WorkOS
         /// </summary>
         [JsonProperty("connection_type")]
         public string ConnectionType { get; set; }
+
+        /// <summary>
+        /// Organization ID of the <see cref="Connection"/>(s). Can be empty.
+        /// </summary>
+        [JsonProperty("organization_id")]
+        public string OrganizationId { get; set; }
     }
 }
