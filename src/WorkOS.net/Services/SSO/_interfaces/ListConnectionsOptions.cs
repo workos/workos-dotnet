@@ -20,7 +20,7 @@ namespace WorkOS
         public string ConnectionType { get; set; }
 
         /// <summary>
-        /// // Organization ID of the <see cref="Connection"/>(s). Can be empty.
+        /// Organization ID of the <see cref="Connection"/>(s). Can be empty.
         /// </summary>
         [JsonProperty("organization_id")]
         public string OrganizationId { get; set; }
