@@ -45,6 +45,12 @@
         public Email[] Emails { get; set; }
 
         /// <summary>
+        /// The User's active state.
+        /// </summary>
+        [JsonProperty("state")]
+        public UserState State { get; set; }
+
+        /// <summary>
         /// The User's raw attributes.
         /// </summary>
         [JsonProperty("raw_attributes")]
