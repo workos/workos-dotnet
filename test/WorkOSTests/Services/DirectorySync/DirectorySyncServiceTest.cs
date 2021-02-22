@@ -68,6 +68,7 @@
                 FirstName = "Rick",
                 LastName = "Sanchez",
                 Username = "rick.sanchez",
+                State = UserState.Active,
                 Emails = new User.Email[]
                 {
                     new User.Email
