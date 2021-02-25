@@ -15,5 +15,8 @@
 
         [EnumMember(Value = "unlinked")]
         Unlinked,
+
+        [EnumMember(Value = "invalid_credentials")]
+        InvalidCredentials,
     }
 }
