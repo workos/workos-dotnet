@@ -18,7 +18,9 @@
 
         private readonly ListOrganizationsOptions listOrganizationsOptions;
 
-        private readonly GenerateLinkOptions generateLinkOptions;
+        private readonly GenerateLinkOptionsSSO generateLinkOptions;
+
+        private readonly GenerateLinkOptionsDSync generateLinkOptions;
 
         private readonly GenerateLinkResponse mockGenerateLinkResponse;
 
