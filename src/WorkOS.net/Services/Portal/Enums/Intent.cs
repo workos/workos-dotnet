@@ -12,5 +12,8 @@
     {
         [EnumMember(Value = "sso")]
         SSO,
+
+        [EnumMember(Value = "dsync")]
+        DSync,
     }
 }

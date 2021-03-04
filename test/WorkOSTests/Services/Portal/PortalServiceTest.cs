@@ -18,7 +18,9 @@
 
         private readonly ListOrganizationsOptions listOrganizationsOptions;
 
-        private readonly GenerateLinkOptions generateLinkOptions;
+        private readonly GenerateLinkOptions generateLinkOptionsSSO;
+
+        private readonly GenerateLinkOptions generateLinkOptionsDSync;
 
         private readonly GenerateLinkResponse mockGenerateLinkResponse;
 
@@ -44,9 +46,16 @@
                 },
             };
 
-            this.generateLinkOptions = new GenerateLinkOptions
+            this.generateLinkOptionsSSO = new GenerateLinkOptions
             {
                 Intent = Intent.SSO,
+                Organization = "org_123",
+                ReturnURL = "https://foo-corp.app.com/settings",
+            };
+
+            this.generateLinkOptionsDSync = new GenerateLinkOptions
+            {
+                Intent = Intent.DSync,
                 Organization = "org_123",
                 ReturnURL = "https://foo-corp.app.com/settings",
             };
@@ -158,28 +167,56 @@
         }
 
         [Fact]
-        public void TestGenerateLink()
+        public void TestGenerateLinkSSO()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
                 "/portal/generate_link",
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(this.mockGenerateLinkResponse));
-            var link = this.service.GenerateLink(this.generateLinkOptions);
+            var link = this.service.GenerateLink(this.generateLinkOptionsSSO);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/portal/generate_link");
             Assert.Equal(this.mockGenerateLinkResponse.Link, link);
         }
 
         [Fact]
-        public async void TestGenerateLinkAsync()
+        public void TestGenerateLinkDSync()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
                 "/portal/generate_link",
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(this.mockGenerateLinkResponse));
-            var link = await this.service.GenerateLinkAsync(this.generateLinkOptions);
+            var link = this.service.GenerateLink(this.generateLinkOptionsDSync);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/portal/generate_link");
+            Assert.Equal(this.mockGenerateLinkResponse.Link, link);
+        }
+
+        [Fact]
+        public async void TestGenerateLinkAsyncSSO()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/portal/generate_link",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockGenerateLinkResponse));
+            var link = await this.service.GenerateLinkAsync(this.generateLinkOptionsSSO);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/portal/generate_link");
+            Assert.Equal(this.mockGenerateLinkResponse.Link, link);
+        }
+
+        [Fact]
+        public async void TestGenerateLinkAsyncDSync()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/portal/generate_link",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockGenerateLinkResponse));
+            var link = await this.service.GenerateLinkAsync(this.generateLinkOptionsDSync);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/portal/generate_link");
             Assert.Equal(this.mockGenerateLinkResponse.Link, link);
