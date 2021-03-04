@@ -18,9 +18,9 @@
 
         private readonly ListOrganizationsOptions listOrganizationsOptions;
 
-        private readonly GenerateLinkOptionsSSO generateLinkOptions;
+        private readonly GenerateLinkOptionsSSO generateLinkOptionsSSO;
 
-        private readonly GenerateLinkOptionsDSync generateLinkOptions;
+        private readonly GenerateLinkOptionsDSync generateLinkOptionsDSync;
 
         private readonly GenerateLinkResponse mockGenerateLinkResponse;
 
@@ -46,14 +46,14 @@
                 },
             };
 
-            this.generateLinkOptionsSSO = new GenerateLinkOptions
+            this.generateLinkOptionsSSO = new GenerateLinkOptionsSSO
             {
                 Intent = Intent.SSO,
                 Organization = "org_123",
                 ReturnURL = "https://foo-corp.app.com/settings",
             };
 
-            this.generateLinkOptionsDSync = new GenerateLinkOptions
+            this.generateLinkOptionsDSync = new GenerateLinkOptionsDSync
             {
                 Intent = Intent.DSync,
                 Organization = "org_123",
