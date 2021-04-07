@@ -26,6 +26,12 @@
         public string Domain { get; set; }
 
         /// <summary>
+        /// The unique identifier for a <see cref="Connection"/> record.
+        /// </summary>
+        [JsonProperty("connection")]
+        public string Connection { get; set; }
+
+        /// <summary>
         /// An optional parameter that specifies the type of Connection to
         /// authenticate with. If used, a user of any domain can be
         /// authenticated. Only `GoogleOAuth` is currently supported.

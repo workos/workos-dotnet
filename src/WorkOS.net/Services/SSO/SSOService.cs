@@ -34,9 +34,9 @@
         /// <returns>An Authorization URL.</returns>
         public string GetAuthorizationURL(GetAuthorizationURLOptions options)
         {
-            if (options.Domain == null && options.Provider == null)
+            if (options.Domain == null && options.Provider == null && options.Connection == null)
             {
-                throw new ArgumentNullException("Incomplete arguments. Need to specify either a 'domain' or 'provider'.");
+                throw new ArgumentNullException("Incomplete arguments. Need to specify either a 'connection', 'domain' or 'provider'.");
             }
 
             var query = RequestUtilities.CreateQueryString(options);
