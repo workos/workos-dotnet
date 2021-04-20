@@ -222,6 +222,25 @@
         }
 
         [Fact]
+        public async void TestDeleteUserAsync()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Delete,
+                $"/directory_users/{this.mockUser.Id}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockUser));
+
+            var response = await this.service.DeleteUser(this.mockUser.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Delete,
+                $"/directory_users/{this.mockUser.Id}");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockUser),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
         public void TestListGroups()
         {
             var mockResponse = new WorkOSList<Group>
