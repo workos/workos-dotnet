@@ -140,22 +140,19 @@
         }
 
         /// <summary>
-        /// Asynchronously deletes a provisioned User for a Directory.
+        /// Deletes a Directory.
         /// </summary>
-        /// <param name="id">Directory User unique identifier.</param>
-        /// <param name="cancellationToken">
-        /// An optional token to cancel the request.
-        /// </param>
-        /// <returns>A Task wrapping a WorkOS Directory User record.</returns>
-        public async Task<User> DeleteUser(string id, CancellationToken cancellationToken = default)
+        /// <param name="id">Directory unique identifier.</param>
+        /// <returns>A deleted WorkOS Directory record.</returns>
+        public Directory DeleteDirectory(string id)
         {
             var request = new WorkOSRequest
             {
                 Method = HttpMethod.Delete,
-                Path = $"/directory_users/{id}",
+                Path = $"/directories/{id}",
             };
 
-            return await this.Client.MakeAPIRequestAsync<User>(request, cancellationToken);
+            return this.Client.MakeAPIRequest<Directory>(request);
         }
 
         /// <summary>
