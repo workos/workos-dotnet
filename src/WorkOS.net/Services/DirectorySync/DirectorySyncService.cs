@@ -146,8 +146,8 @@
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
-        /// <returns>A Task wrapping a deleted WorkOS Directory record.</returns>
-        public async Task<Directory> DeleteDirectory(string id, CancellationToken cancellationToken = default)
+        /// <returns>A Task.</returns>
+        public async Task DeleteDirectory(string id, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -155,7 +155,7 @@
                 Path = $"/directories/{id}",
             };
 
-            return await this.Client.MakeAPIRequestAsync<Directory>(request, cancellationToken);
+            await this.Client.MakeAPIRequestAsync<Directory>(request, cancellationToken);
         }
 
         /// <summary>
