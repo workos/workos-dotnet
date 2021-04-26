@@ -21,7 +21,7 @@
         public string Id { get; set; }
 
         /// <summary>
-        /// The User's identity provider's identifier.
+        /// The User's directory provider's identifier.
         /// </summary>
         [JsonProperty("idp_id")]
         public string IdpId { get; set; }
