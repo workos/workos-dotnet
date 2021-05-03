@@ -1,5 +1,7 @@
 # WorkOS .NET Library
 
+[![Build Status](https://workos.semaphoreci.com/badges/workos-dotnet/branches/main.svg?style=shields&key=343c1d18-79da-4ea3-89ce-8a6195a9d3d9)](https://workos.semaphoreci.com/projects/workos-dotnet)
+
 The WorkOS library for .NET provides convenient access to the WorkOS API from applications using .NET.
 Supports .NET Standard 2.0+ and .NET Framework 4.6.1+
 
@@ -47,6 +49,20 @@ var client = new WorkOSClient(
         HttpClient = ...,
     });
 WorkOS.WorkOSClient = client;
+```
+
+## Development and Testing
+
+Run all tests with the following command:
+
+```sh
+dotnet test test/WorkOSTests/WorkOSTests.csproj
+```
+
+Run tests for a specific framework with the following command:
+
+```sh
+dotnet test test/WorkOSTests/WorkOSTests.csproj -f netcoreapp3.1
 ```
 
 ## More Information
