@@ -1,13 +1,13 @@
-# workos-dotnet
+# WorkOS .NET Library
 
 [![Build Status](https://workos.semaphoreci.com/badges/workos-dotnet/branches/main.svg?style=shields&key=343c1d18-79da-4ea3-89ce-8a6195a9d3d9)](https://workos.semaphoreci.com/projects/workos-dotnet)
-[![NuGet version (WorkOS.net)](https://img.shields.io/nuget/v/WorkOS.net.svg?style=flat-square)](https://www.nuget.org/packages/WorkOS.net/)
 
-The official [WorkOS](https://www.workos.com/) .NET SDK supporting .NET Standard 2.0+ and .NET Framework 4.6.1+.
+The WorkOS library for .NET provides convenient access to the WorkOS API from applications using .NET.
+Supports .NET Standard 2.0+ and .NET Framework 4.6.1+
 
 ## Documentation
 
-Complete documentation for the library can be found [here](https://workos.com/docs/).
+See the [API Reference](https://workos.com/docs/reference/client-libraries) for .NET usage examples.
 
 ## Installation
 
@@ -51,26 +51,6 @@ var client = new WorkOSClient(
 WorkOS.WorkOSClient = client;
 ```
 
-## Example Usage
-
-The example below demonstrates exchanging an authorization code for a WorkOS Profile.
-
-```c#
-var ssoService = new SSOService();
-var options = new GetProfileOptions
-{
-    ClientId = "project_123",
-    Code = "code_123",
-};
-var response = ssoService.GetProfile(options);
-```
-
-When applicable, calls can be made asynchronously and return a `Task`.
-
-```c#
-var response = await ssoService.GetProfileAsync(options);
-```
-
 ## Development and Testing
 
 Run all tests with the following command:
@@ -84,3 +64,10 @@ Run tests for a specific framework with the following command:
 ```sh
 dotnet test test/WorkOSTests/WorkOSTests.csproj -f netcoreapp3.1
 ```
+
+## More Information
+
+* [Single Sign-On Guide](https://workos.com/docs/sso/guide)
+* [Directory Sync Guide](https://workos.com/docs/directory-sync/guide)
+* [Admin Portal Guide](https://workos.com/docs/admin-portal/guide)
+* [Magic Link Guide](https://workos.com/docs/magic-link/guide)
