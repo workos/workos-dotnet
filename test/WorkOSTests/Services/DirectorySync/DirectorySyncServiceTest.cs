@@ -136,6 +136,22 @@
         }
 
         [Fact]
+        public void TestDeleteDirectory()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Delete,
+                $"/directories/{this.mockDirectory.Id}",
+                HttpStatusCode.Accepted,
+                RequestUtilities.ToJsonString(this.mockDirectory));
+
+            var response = this.service.DeleteDirectory(this.mockDirectory.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Delete,
+                $"/directories/{this.mockDirectory.Id}");
+        }
+
+        [Fact]
         public void TestListUsers()
         {
             var mockResponse = new WorkOSList<User>

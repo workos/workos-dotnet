@@ -140,6 +140,25 @@
         }
 
         /// <summary>
+        /// Asynchronously deletes a Directory.
+        /// </summary>
+        /// <param name="id">Directory unique identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Task.</returns>
+        public async Task DeleteDirectory(string id, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"/directories/{id}",
+            };
+
+            await this.Client.MakeAPIRequestAsync<Directory>(request, cancellationToken);
+        }
+
+        /// <summary>
         /// Fetches a list of Directory Groups.
         /// </summary>
         /// <param name="options">Filter options when searching for Directory Groups.</param>
