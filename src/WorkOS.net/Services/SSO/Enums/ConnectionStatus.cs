@@ -5,10 +5,10 @@
     using Newtonsoft.Json.Converters;
 
     /// <summary>
-    /// An enum describing the linked status of a <see cref="Connection"/>.
+    /// An enum describing the linked state of a <see cref="Connection"/>.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum ConnectionStatus
+    public enum ConnectionState
     {
         [EnumMember(Value = "linked")]
         Linked,

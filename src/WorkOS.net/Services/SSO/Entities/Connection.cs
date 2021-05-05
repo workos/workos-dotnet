@@ -20,10 +20,10 @@
         public string Id { get; set; }
 
         /// <summary>
-        /// The linked status of the Connection.
+        /// The linked state of the Connection.
         /// </summary>
-        [JsonProperty("status")]
-        public ConnectionStatus Status { get; set; }
+        [JsonProperty("state")]
+        public ConnectionState State { get; set; }
 
         /// <summary>
         /// The name of the Connection.
