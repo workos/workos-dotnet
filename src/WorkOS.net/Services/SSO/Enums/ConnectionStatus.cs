@@ -8,7 +8,7 @@
     /// <summary>
     /// An enum describing the linked status of a <see cref="Connection"/>.
     /// </summary>
-    [ObsoleteAttribute("The status property is obsolete. Please use state instead.", false)]
+    [ObsoleteAttribute("The Status property is obsolete. Please use State instead.", false)]
     [JsonConverter(typeof(StringEnumConverter))]
     public enum ConnectionStatus
     {

@@ -30,8 +30,8 @@
         /// The linked status of the Connection.
         /// </summary>
         [JsonProperty("status")]
-        [ObsoleteAttribute("The status property is obsolete. Please use state instead.", false)]
-        public ConnectionState Status { get; set; }
+        [ObsoleteAttribute("The Status property is obsolete. Please use State instead.", false)]
+        public ConnectionStatus Status { get; set; }
 
         /// <summary>
         /// The name of the Connection.
