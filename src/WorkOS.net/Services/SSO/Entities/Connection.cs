@@ -1,5 +1,6 @@
 ﻿namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -24,6 +25,13 @@
         /// </summary>
         [JsonProperty("state")]
         public ConnectionState State { get; set; }
+
+        /// <summary>
+        /// The linked status of the Connection.
+        /// </summary>
+        [JsonProperty("status")]
+        [ObsoleteAttribute("The status property is obsolete. Please use state instead.", false)]
+        public ConnectionState Status { get; set; }
 
         /// <summary>
         /// The name of the Connection.

@@ -39,7 +39,7 @@
             {
                 Id = "connection_id",
                 Name = "Foo Corp",
-                State = ConnectionState.Linked,
+                State = ConnectionState.Active,
                 ConnectionType = ConnectionType.OktaSAML,
                 OAuthUid = "",
                 OAuthSecret = "",
@@ -241,7 +241,7 @@
             {
                 Id = "connection_id",
                 Name = "Terrace House",
-                State = ConnectionState.Linked,
+                State = ConnectionState.Active,
                 ConnectionType = ConnectionType.OktaSAML,
                 OAuthUid = "",
                 OAuthSecret = "",
@@ -281,7 +281,7 @@
             {
                 Id = "connection_id",
                 Name = "Terrace House",
-                State = ConnectionState.Linked,
+                State = ConnectionState.Active,
                 ConnectionType = ConnectionType.OktaSAML,
                 OAuthUid = "",
                 OAuthSecret = "",
