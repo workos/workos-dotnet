@@ -41,16 +41,6 @@
                 Name = "Foo Corp",
                 State = ConnectionState.Active,
                 ConnectionType = ConnectionType.OktaSAML,
-                OAuthUid = "",
-                OAuthSecret = "",
-                OAuthRedirectUri = "",
-                SamlEntityId = "",
-                SamlIdpUrl = "",
-                SamlRelyingPartyTrustCert = "",
-                SamlX509Certs = new string[]
-                {
-                    "-----BEGIN CERTIFICATE----------END CERTIFICATE-----",
-                },
             };
         }
 
@@ -243,16 +233,6 @@
                 Name = "Terrace House",
                 State = ConnectionState.Active,
                 ConnectionType = ConnectionType.OktaSAML,
-                OAuthUid = "",
-                OAuthSecret = "",
-                OAuthRedirectUri = "",
-                SamlEntityId = "http://www.okta.com/terrace-house",
-                SamlIdpUrl = "https://terrace-house.okta.com/app/terrace/house/saml",
-                SamlRelyingPartyTrustCert = "",
-                SamlX509Certs = new string[]
-                {
-                    "-----BEGIN CERTIFICATE----------END CERTIFICATE-----",
-                },
             };
 
             this.httpMock.MockResponse(
@@ -283,16 +263,6 @@
                 Name = "Terrace House",
                 State = ConnectionState.Active,
                 ConnectionType = ConnectionType.OktaSAML,
-                OAuthUid = "",
-                OAuthSecret = "",
-                OAuthRedirectUri = "",
-                SamlEntityId = "http://www.okta.com/terrace-house",
-                SamlIdpUrl = "https://terrace-house.okta.com/app/terrace/house/saml",
-                SamlRelyingPartyTrustCert = "",
-                SamlX509Certs = new string[]
-                {
-                    "-----BEGIN CERTIFICATE----------END CERTIFICATE-----",
-                },
             };
 
             this.httpMock.MockResponse(
