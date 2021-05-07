@@ -21,17 +21,10 @@
         public string Id { get; set; }
 
         /// <summary>
-        /// The linked state of the Connection.
+        /// The unique identifier for the Organization in which the Connection resides.
         /// </summary>
-        [JsonProperty("state")]
-        public ConnectionState State { get; set; }
-
-        /// <summary>
-        /// The linked status of the Connection.
-        /// </summary>
-        [JsonProperty("status")]
-        [ObsoleteAttribute("The Status property is obsolete. Please use State instead.", false)]
-        public ConnectionStatus Status { get; set; }
+        [JsonProperty("organization_id")]
+        public string OrganizationId { get; set; }
 
         /// <summary>
         /// The name of the Connection.
@@ -46,47 +39,17 @@
         public ConnectionType? ConnectionType { get; set; }
 
         /// <summary>
-        /// OAuth Client identifier.
+        /// The linked state of the Connection.
         /// </summary>
-        [JsonProperty("oauth_uid")]
-        public string OAuthUid { get; set; }
+        [JsonProperty("state")]
+        public ConnectionState State { get; set; }
 
         /// <summary>
-        /// OAuth Client secret.
+        /// The linked status of the Connection.
         /// </summary>
-        [JsonProperty("oauth_secret")]
-        public string OAuthSecret { get; set; }
-
-        /// <summary>
-        /// OAuth Redirect URI.
-        /// </summary>
-        [JsonProperty("oauth_redirect_uri")]
-        public string OAuthRedirectUri { get; set; }
-
-        /// <summary>
-        /// Identity Provider Issuer.
-        /// </summary>
-        [JsonProperty("saml_entity_id")]
-        public string SamlEntityId { get; set; }
-
-        /// <summary>
-        /// Identity Provider SSO URL.
-        /// </summary>
-        [JsonProperty("saml_idp_url")]
-        public string SamlIdpUrl { get; set; }
-
-        /// <summary>
-        /// Certificate that describes where to expect valid SAML claims to
-        /// come from.
-        /// </summary>
-        [JsonProperty("saml_relying_party_trust_cert")]
-        public string SamlRelyingPartyTrustCert { get; set; }
-
-        /// <summary>
-        /// Certificates used to authenticate SAML assertions.
-        /// </summary>
-        [JsonProperty("saml_x509_certs")]
-        public string[] SamlX509Certs { get; set; }
+        [JsonProperty("status")]
+        [ObsoleteAttribute("The Status property is obsolete. Please use State instead.", false)]
+        public ConnectionStatus Status { get; set; }
 
         /// <summary>
         /// Domain records for the Connection.
