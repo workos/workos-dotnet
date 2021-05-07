@@ -27,6 +27,15 @@
         public string RedirectURI { get; set; }
 
         /// <summary>
+        /// An optional parameter of the ID of a specific connection. This can
+        /// be used to create a Passwordless Session for a specific connection
+        /// rather than using the domain from the email to determine the
+        /// Organization and Connection.
+        /// </summary>
+        [JsonProperty("connection")]
+        public string Connection { get; set; }
+
+        /// <summary>
         /// An optional parameter to encode information throughout the
         /// authentication life cycle.
         /// </summary>
