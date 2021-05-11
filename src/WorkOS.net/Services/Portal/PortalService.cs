@@ -105,6 +105,45 @@
         }
 
         /// <summary>
+        /// Updates an Organization.
+        /// </summary>
+        /// <param name="options">Parameters to update an Organization.</param>
+        /// <returns>The updated Organization.</returns>
+        public Organization UpdateOrganization(UpdateOrganizationOptions options)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Put,
+                Path = $"/organizations/{options.Organization}",
+            };
+
+            return this.Client.MakeAPIRequest<Organization>(request);
+        }
+
+        /// <summary>
+        /// Asynchronously updates an Organization.
+        /// </summary>
+        /// <param name="options">Parameters to update an Organization.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Task wrapping the updated Organization.</returns>
+        public async Task<Organization> UpdateOrganizationAsync(
+          UpdateOrganizationOptions options,
+          CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Put,
+                Path = $"/organizations/{options.Organization}",
+            };
+
+            return await this.Client.MakeAPIRequestAsync<Organization>(request, cancellationToken);
+        }
+
+        /// <summary>
         /// Generates a link to the Admin Portal.
         /// </summary>
         /// <param name="options">Parameters to create an Admin Portal link.</param>

@@ -18,6 +18,8 @@
 
         private readonly ListOrganizationsOptions listOrganizationsOptions;
 
+        private readonly UpdateOrganizationOptions updateOrganizationOptions;
+
         private readonly GenerateLinkOptions generateLinkOptionsSSO;
 
         private readonly GenerateLinkOptions generateLinkOptionsDSync;
@@ -44,6 +46,16 @@
                 {
                     "foo-corp.com",
                 },
+            };
+
+            this.updateOrganizationOptions = new UpdateOrganizationOptions
+            {
+                Organization = "org_123",
+                Domains = new string[]
+                {
+                    "foo-corp.com",
+                },
+                Name = "Foo Corp 2",
             };
 
             this.generateLinkOptionsSSO = new GenerateLinkOptions
@@ -161,6 +173,38 @@
             var response = await this.service.CreateOrganizationAsync(this.createOrganizationOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockOrganization),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public void TestUpdateOrganization()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Put,
+                $"/organizations/{this.updateOrganizationOptions.Organization}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockOrganization));
+            var response = this.service.UpdateOrganization(this.updateOrganizationOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Put, $"/organizations/{this.updateOrganizationOptions.Organization}");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockOrganization),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestUpdateOrganizationAsync()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Put,
+                $"/organizations/{this.updateOrganizationOptions.Organization}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockOrganization));
+            var response = await this.service.UpdateOrganizationAsync(this.updateOrganizationOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Put, $"/organizations/{this.updateOrganizationOptions.Organization}");
             Assert.Equal(
                 JsonConvert.SerializeObject(this.mockOrganization),
                 JsonConvert.SerializeObject(response));
