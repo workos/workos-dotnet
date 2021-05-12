@@ -30,28 +30,11 @@
         /// Creates a Passwordless Session for authenticating a user.
         /// </summary>
         /// <param name="options">Parameters to create the Passwordless Session.</param>
-        /// <returns>The created Passwordless Session.</returns>
-        public PasswordlessSession CreateSession(CreatePasswordlessSessionOptions options)
-        {
-            var request = new WorkOSRequest
-            {
-                Options = options,
-                Method = HttpMethod.Post,
-                Path = "/passwordless/sessions",
-            };
-
-            return this.Client.MakeAPIRequest<PasswordlessSession>(request);
-        }
-
-        /// <summary>
-        /// Asynchronously creates a Passwordless Session for authenticating a user.
-        /// </summary>
-        /// <param name="options">Parameters to create the Passwordless Session.</param>
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
-        /// <returns>A Task wrapping the created Passwordless Session.</returns>
-        public async Task<PasswordlessSession> CreateSessionAsync(
+        /// <returns>The created Passwordless Session.</returns>
+        public async Task<PasswordlessSession> CreateSession(
             CreatePasswordlessSessionOptions options,
             CancellationToken cancellationToken = default)
         {
@@ -62,35 +45,18 @@
                 Path = "/passwordless/sessions",
             };
 
-            return await this.Client.MakeAPIRequestAsync<PasswordlessSession>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<PasswordlessSession>(request, cancellationToken);
         }
 
         /// <summary>
         /// Sends the link to confirm a Passwordless Session.
         /// </summary>
         /// <param name="id">Passwordless Session identifier.</param>
-        /// <returns>True if successful.</returns>
-        public bool SendSession(string id)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/passwordless/sessions/{id}/send",
-            };
-
-            this.Client.MakeAPIRequest<object>(request);
-            return true;
-        }
-
-        /// <summary>
-        /// Asynchronously sends the link to confirm a Passwordless Session.
-        /// </summary>
-        /// <param name="id">Passwordless Session identifier.</param>
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
-        /// <returns>A Task wrapping True if successful.</returns>
-        public async Task<bool> SendSessionAsync(string id, CancellationToken cancellationToken = default)
+        /// <returns>True if successful.</returns>
+        public async Task<bool> SendSession(string id, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -98,7 +64,7 @@
                 Path = $"/passwordless/sessions/{id}/send",
             };
 
-            await this.Client.MakeAPIRequestAsync<object>(request, cancellationToken);
+            await this.Client.MakeAPIRequest<object>(request, cancellationToken);
             return true;
         }
     }

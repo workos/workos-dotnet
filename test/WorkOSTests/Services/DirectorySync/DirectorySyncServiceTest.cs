@@ -88,7 +88,7 @@
         }
 
         [Fact]
-        public void TestListDirectories()
+        public async void TestListDirectories()
         {
             var mockResponse = new WorkOSList<Directory>
             {
@@ -103,31 +103,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var response = this.service.ListDirectories(this.listDirectoriesOptions);
-
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directories");
-            Assert.Equal(
-                JsonConvert.SerializeObject(mockResponse),
-                JsonConvert.SerializeObject(response));
-        }
-
-        [Fact]
-        public async void TestListDirectoriesAsync()
-        {
-            var mockResponse = new WorkOSList<Directory>
-            {
-                Data = new List<Directory>
-                {
-                    this.mockDirectory,
-                },
-            };
-            this.httpMock.MockResponse(
-                HttpMethod.Get,
-                "/directories",
-                HttpStatusCode.OK,
-                RequestUtilities.ToJsonString(mockResponse));
-
-            var response = await this.service.ListDirectoriesAsync(this.listDirectoriesOptions);
+            var response = await this.service.ListDirectories(this.listDirectoriesOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directories");
             Assert.Equal(
@@ -152,7 +128,7 @@
         }
 
         [Fact]
-        public void TestListUsers()
+        public async void TestListUsers()
         {
             var mockResponse = new WorkOSList<User>
             {
@@ -167,7 +143,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var response = this.service.ListUsers(this.listUsersOptions);
+            var response = await this.service.ListUsers(this.listUsersOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directory_users");
             Assert.Equal(
@@ -176,31 +152,7 @@
         }
 
         [Fact]
-        public async void TestListUsersAsync()
-        {
-            var mockResponse = new WorkOSList<User>
-            {
-                Data = new List<User>
-                {
-                    this.mockUser,
-                },
-            };
-            this.httpMock.MockResponse(
-                HttpMethod.Get,
-                "/directory_users",
-                HttpStatusCode.OK,
-                RequestUtilities.ToJsonString(mockResponse));
-
-            var response = await this.service.ListUsersAsync(this.listUsersOptions);
-
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directory_users");
-            Assert.Equal(
-                JsonConvert.SerializeObject(mockResponse),
-                JsonConvert.SerializeObject(response));
-        }
-
-        [Fact]
-        public void TestGetUser()
+        public async void TestGetUser()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,
@@ -208,7 +160,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(this.mockUser));
 
-            var response = this.service.GetUser(this.mockUser.Id);
+            var response = await this.service.GetUser(this.mockUser.Id);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Get,
@@ -219,26 +171,7 @@
         }
 
         [Fact]
-        public async void TestGetUserAsync()
-        {
-            this.httpMock.MockResponse(
-                HttpMethod.Get,
-                $"/directory_users/{this.mockUser.Id}",
-                HttpStatusCode.OK,
-                RequestUtilities.ToJsonString(this.mockUser));
-
-            var response = await this.service.GetUserAsync(this.mockUser.Id);
-
-            this.httpMock.AssertRequestWasMade(
-                HttpMethod.Get,
-                $"/directory_users/{this.mockUser.Id}");
-            Assert.Equal(
-                JsonConvert.SerializeObject(this.mockUser),
-                JsonConvert.SerializeObject(response));
-        }
-
-        [Fact]
-        public void TestListGroups()
+        public async void TestListGroups()
         {
             var mockResponse = new WorkOSList<Group>
             {
@@ -253,7 +186,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var response = this.service.ListGroups(this.listGroupsOptions);
+            var response = await this.service.ListGroups(this.listGroupsOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directory_groups");
             Assert.Equal(
@@ -262,31 +195,7 @@
         }
 
         [Fact]
-        public async void TestListGroupsAsync()
-        {
-            var mockResponse = new WorkOSList<Group>
-            {
-                Data = new List<Group>
-                {
-                    this.mockGroup,
-                },
-            };
-            this.httpMock.MockResponse(
-                HttpMethod.Get,
-                "/directory_groups",
-                HttpStatusCode.OK,
-                RequestUtilities.ToJsonString(mockResponse));
-
-            var response = await this.service.ListGroupsAsync(this.listGroupsOptions);
-
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directory_groups");
-            Assert.Equal(
-                JsonConvert.SerializeObject(mockResponse),
-                JsonConvert.SerializeObject(response));
-        }
-
-        [Fact]
-        public void TestGetGroup()
+        public async void TestGetGroup()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,
@@ -294,26 +203,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(this.mockGroup));
 
-            var response = this.service.GetGroup(this.mockGroup.Id);
-
-            this.httpMock.AssertRequestWasMade(
-                HttpMethod.Get,
-                $"/directory_groups/{this.mockGroup.Id}");
-            Assert.Equal(
-                JsonConvert.SerializeObject(this.mockGroup),
-                JsonConvert.SerializeObject(response));
-        }
-
-        [Fact]
-        public async void TestGetGroupAsync()
-        {
-            this.httpMock.MockResponse(
-                HttpMethod.Get,
-                $"/directory_groups/{this.mockGroup.Id}",
-                HttpStatusCode.OK,
-                RequestUtilities.ToJsonString(this.mockGroup));
-
-            var response = await this.service.GetGroupAsync(this.mockGroup.Id);
+            var response = await this.service.GetGroup(this.mockGroup.Id);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Get,

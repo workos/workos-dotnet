@@ -47,30 +47,11 @@
         /// Retrieves a <see cref="Profile"/> for an authenticated User.
         /// </summary>
         /// <param name="options">Options to fetch an authenticated User.</param>
-        /// <returns>A WorkOS Profile record.</returns>
-        public GetProfileResponse GetProfile(GetProfileOptions options)
-        {
-            options.ClientSecret = this.Client.ApiKey;
-            var request = new WorkOSRequest
-            {
-                IsJsonContentType = false,
-                Options = options,
-                Method = HttpMethod.Post,
-                Path = "/sso/token",
-            };
-            return this.Client.MakeAPIRequest<GetProfileResponse>(request);
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves a <see cref="Profile"/> for an
-        /// authenticated User.
-        /// </summary>
-        /// <param name="options">Options to fetch an authenticated User.</param>
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
-        /// <returns>A Task wrapping a WorkOS Profile record.</returns>
-        public async Task<GetProfileResponse> GetProfileAsync(
+        /// <returns>A WorkOS Profile record.</returns>
+        public async Task<GetProfileResponse> GetProfile(
             GetProfileOptions options,
             CancellationToken cancellationToken = default)
         {
@@ -82,34 +63,18 @@
                 Method = HttpMethod.Post,
                 Path = "/sso/token",
             };
-            return await this.Client.MakeAPIRequestAsync<GetProfileResponse>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<GetProfileResponse>(request, cancellationToken);
         }
 
         /// <summary>
         /// Activates a WorkOS Draft Connection.
         /// </summary>
         /// <param name="options">Options to activate a Draft Connection.</param>
-        /// <returns>A WorkOS Connection.</returns>
-        public Connection CreateConnection(CreateConnectionOptions options)
-        {
-            var request = new WorkOSRequest
-            {
-                Options = options,
-                Method = HttpMethod.Post,
-                Path = "/connections",
-            };
-            return this.Client.MakeAPIRequest<Connection>(request);
-        }
-
-        /// <summary>
-        /// Asynchronously activates a WorkOS Draft Connection.
-        /// </summary>
-        /// <param name="options">Options to activate a Draft Connection.</param>
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
-        /// <returns>A Task wrapping a WorkOS Connection record.</returns>
-        public async Task<Connection> CreateConnectionAsync(
+        /// <returns>A WorkOS Connection record.</returns>
+        public async Task<Connection> CreateConnection(
             CreateConnectionOptions options,
             CancellationToken cancellationToken = default)
         {
@@ -119,35 +84,18 @@
                 Method = HttpMethod.Post,
                 Path = "/connections",
             };
-            return await this.Client.MakeAPIRequestAsync<Connection>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<Connection>(request, cancellationToken);
         }
 
         /// <summary>
         /// Fetches a list of Connections.
         /// </summary>
         /// <param name="options">Filter options when searching for Connections.</param>
-        /// <returns>A paginated list of Connections.</returns>
-        public WorkOSList<Connection> ListConnections(ListConnectionsOptions options = null)
-        {
-            var request = new WorkOSRequest
-            {
-                Options = options,
-                Method = HttpMethod.Get,
-                Path = "/connections",
-            };
-
-            return this.Client.MakeAPIRequest<WorkOSList<Connection>>(request);
-        }
-
-        /// <summary>
-        /// Asynchronously fetches a list of Connections.
-        /// </summary>
-        /// <param name="options">Filter options when searching for Connections.</param>
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
-        /// <returns>A Task wrapping a paginated list of Connections.</returns>
-        public async Task<WorkOSList<Connection>> ListConnectionsAsync(
+        /// <returns>A paginated list of Connections.</returns>
+        public async Task<WorkOSList<Connection>> ListConnections(
             ListConnectionsOptions options = null,
             CancellationToken cancellationToken = default)
         {
@@ -158,34 +106,18 @@
                 Path = "/connections",
             };
 
-            return await this.Client.MakeAPIRequestAsync<WorkOSList<Connection>>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<WorkOSList<Connection>>(request, cancellationToken);
         }
 
         /// <summary>
         /// Gets a Connection.
         /// </summary>
         /// <param name="id">Connection unique identifier.</param>
-        /// <returns>A WorkOS Connection record.</returns>
-        public Connection GetConnection(string id)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/connections/{id}",
-            };
-
-            return this.Client.MakeAPIRequest<Connection>(request);
-        }
-
-        /// <summary>
-        /// Asynchronously gets a Connection.
-        /// </summary>
-        /// <param name="id">Connection unique identifier.</param>
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
-        /// <returns>A Task wrapping a WorkOS Connection record.</returns>
-        public async Task<Connection> GetConnectionAsync(string id, CancellationToken cancellationToken = default)
+        /// <returns>A WorkOS Connection record.</returns>
+        public async Task<Connection> GetConnection(string id, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -193,34 +125,18 @@
                 Path = $"/connections/{id}",
             };
 
-            return await this.Client.MakeAPIRequestAsync<Connection>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<Connection>(request, cancellationToken);
         }
 
         /// <summary>
         /// Deletes a Connection.
         /// </summary>
         /// <param name="id">Connection unique identifier.</param>
-        /// <returns>A deleted WorkOS Connection record.</returns>
-        public Connection DeleteConnection(string id)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/connections/{id}",
-            };
-
-            return this.Client.MakeAPIRequest<Connection>(request);
-        }
-
-        /// <summary>
-        /// Asynchronously deletes a Connection.
-        /// </summary>
-        /// <param name="id">Connection unique identifier.</param>
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
-        /// <returns>A Task wrapping a deleted WorkOS Connection record.</returns>
-        public async Task<Connection> DeleteConnectionAsync(string id, CancellationToken cancellationToken = default)
+        /// <returns>A deleted WorkOS Connection record.</returns>
+        public async Task<Connection> DeleteConnection(string id, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -228,7 +144,7 @@
                 Path = $"/connections/{id}",
             };
 
-            return await this.Client.MakeAPIRequestAsync<Connection>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<Connection>(request, cancellationToken);
         }
     }
 }
