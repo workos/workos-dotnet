@@ -27,6 +27,25 @@ namespace WorkOS
         }
 
         /// <summary>
+        /// Gets an Organization.
+        /// </summary>
+        /// <param name="id">Organization unique identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A WorkOS Organization record.</returns>
+        public async Task<Organization> GetOrganization(string id, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"/organizations/{id}",
+            };
+
+            return await this.Client.MakeAPIRequest<Organization>(request, cancellationToken);
+        }
+
+        /// <summary>
         /// Fetches a list of Organizations.
         /// </summary>
         /// <param name="options">Filter options when searching for Organizations.</param>

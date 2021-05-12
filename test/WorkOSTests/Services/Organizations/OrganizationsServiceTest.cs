@@ -115,6 +115,25 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async void TestGetOrganization()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                $"/organizations/{this.mockOrganization.Id}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockOrganization));
+
+            var response = await this.service.GetOrganization(this.mockOrganization.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Get,
+                $"/organizations/{this.mockOrganization.Id}");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockOrganization),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
         public async void TestUpdateOrganization()
         {
             this.httpMock.MockResponse(
