@@ -5,7 +5,7 @@
     /// <summary>
     /// The response from the WorkOS API when fetching a Profile.
     /// </summary>
-    public class GetProfileResponse
+    public class GetProfileAndTokenResponse
     {
         /// <summary>
         /// An access token for the Profile.

@@ -51,8 +51,8 @@
         /// An optional token to cancel the request.
         /// </param>
         /// <returns>A WorkOS Profile record.</returns>
-        public async Task<GetProfileResponse> GetProfile(
-            GetProfileOptions options,
+        public async Task<GetProfileAndTokenResponse> GetProfileAndToken(
+            GetProfileAndTokenOptions options,
             CancellationToken cancellationToken = default)
         {
             options.ClientSecret = this.Client.ApiKey;
@@ -63,7 +63,7 @@
                 Method = HttpMethod.Post,
                 Path = "/sso/token",
             };
-            return await this.Client.MakeAPIRequest<GetProfileResponse>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<GetProfileAndTokenResponse>(request, cancellationToken);
         }
 
         /// <summary>
