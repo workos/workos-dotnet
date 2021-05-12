@@ -76,21 +76,9 @@
         /// </summary>
         /// <typeparam name="T">The return type from the request.</typeparam>
         /// <param name="request">The request to make to the WorkOS API.</param>
-        /// <returns>The response object.</returns>
-        public T MakeAPIRequest<T>(WorkOSRequest request)
-        {
-            return this.MakeAPIRequestAsync<T>(request)
-                .ConfigureAwait(false).GetAwaiter().GetResult();
-        }
-
-        /// <summary>
-        /// Makes a request to the WorkOS API asynchronously.
-        /// </summary>
-        /// <typeparam name="T">The return type from the request.</typeparam>
-        /// <param name="request">The request to make to the WorkOS API.</param>
         /// <param name="cancellationToken">A token used to cancel the request.</param>
-        /// <returns>A Task wrapping the response.</returns>
-        public async Task<T> MakeAPIRequestAsync<T>(
+        /// <returns>The response from the WorkOS API.</returns>
+        public async Task<T> MakeAPIRequest<T>(
             WorkOSRequest request,
             CancellationToken cancellationToken = default)
         {

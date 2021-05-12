@@ -82,7 +82,7 @@
         }
 
         [Fact]
-        public void TestCreateEvent()
+        public async void TestCreateEvent()
         {
             var mockResponse = new Dictionary<string, bool>
             {
@@ -95,32 +95,13 @@
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var success = this.service.CreateEvent(this.createEventOptions);
+            var success = await this.service.CreateEvent(this.createEventOptions);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/events");
             Assert.True(success);
         }
 
         [Fact]
-        public async void TestCreateEventAsync()
-        {
-            var mockResponse = new Dictionary<string, bool>
-            {
-                { "success", true },
-            };
-
-            this.httpMock.MockResponse(
-                HttpMethod.Post,
-                "/events",
-                HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(mockResponse));
-
-            var success = await this.service.CreateEventAsync(this.createEventOptions);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/events");
-            Assert.True(success);
-        }
-
-        [Fact]
-        public void TestListEvents()
+        public async void TestListEvents()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,
@@ -128,24 +109,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(this.mockListEventsResponse));
 
-            var response = this.service.ListEvents(this.listEventsOptions);
-
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/events");
-            Assert.Equal(
-                JsonConvert.SerializeObject(this.mockListEventsResponse),
-                JsonConvert.SerializeObject(response));
-        }
-
-        [Fact]
-        public async void TestListEventsAsync()
-        {
-            this.httpMock.MockResponse(
-                HttpMethod.Get,
-                "/events",
-                HttpStatusCode.OK,
-                RequestUtilities.ToJsonString(this.mockListEventsResponse));
-
-            var response = await this.service.ListEventsAsync(this.listEventsOptions);
+            var response = await this.service.ListEvents(this.listEventsOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/events");
             Assert.Equal(

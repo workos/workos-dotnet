@@ -46,14 +46,14 @@
         }
 
         [Fact]
-        public void TestCreateSession()
+        public async void TestCreateSession()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
                 "/passwordless/sessions",
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(this.mockPasswordlessSession));
-            var response = this.service.CreateSession(this.createPasswordlessSessionOptions);
+            var response = await this.service.CreateSession(this.createPasswordlessSessionOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/passwordless/sessions");
             Assert.Equal(
@@ -62,23 +62,7 @@
         }
 
         [Fact]
-        public async void TestCreateSessionAsync()
-        {
-            this.httpMock.MockResponse(
-                HttpMethod.Post,
-                "/passwordless/sessions",
-                HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(this.mockPasswordlessSession));
-            var response = await this.service.CreateSessionAsync(this.createPasswordlessSessionOptions);
-
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/passwordless/sessions");
-            Assert.Equal(
-                JsonConvert.SerializeObject(this.mockPasswordlessSession),
-                JsonConvert.SerializeObject(response));
-        }
-
-        [Fact]
-        public void TestSendSession()
+        public async void TestSendSession()
         {
             var id = this.mockPasswordlessSession.Id;
 
@@ -91,29 +75,7 @@
                 $"/passwordless/sessions/{id}/send",
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(mockResponse));
-            var success = this.service.SendSession(id);
-
-            this.httpMock.AssertRequestWasMade(
-                HttpMethod.Post,
-                $"/passwordless/sessions/{id}/send");
-            Assert.True(success);
-        }
-
-        [Fact]
-        public async void TestSendSessionAsync()
-        {
-            var id = this.mockPasswordlessSession.Id;
-
-            var mockResponse = new Dictionary<string, bool>
-            {
-                { "success", true },
-            };
-            this.httpMock.MockResponse(
-                HttpMethod.Post,
-                $"/passwordless/sessions/{id}/send",
-                HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(mockResponse));
-            var success = await this.service.SendSessionAsync(id);
+            var success = await this.service.SendSession(id);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
