@@ -5,7 +5,7 @@
     /// <summary>
     /// Describes the options to get a Profile.
     /// </summary>
-    public class GetProfileOptions : BaseOptions
+    public class GetProfileAndTokenOptions : BaseOptions
     {
         /// <summary>
         /// Specifies the grant type. Will always be `authorization_code`.

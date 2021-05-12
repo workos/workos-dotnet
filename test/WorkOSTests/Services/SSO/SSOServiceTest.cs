@@ -131,7 +131,7 @@
         }
 
         [Fact]
-        public async void TestGetProfile()
+        public async void TestGetProfileAndToken()
         {
             var mockProfile = new Profile
             {
@@ -150,7 +150,7 @@
                     { "last_name", "Sanchez" },
                 },
             };
-            var profileResponse = new GetProfileResponse
+            var profileAndTokenResponse = new GetProfileAndTokenResponse
             {
                 AccessToken = "token",
                 Profile = mockProfile,
@@ -160,14 +160,14 @@
                 HttpMethod.Post,
                 "/sso/token",
                 HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(profileResponse));
+                RequestUtilities.ToJsonString(profileAndTokenResponse));
 
-            var options = new GetProfileOptions
+            var options = new GetProfileAndTokenOptions
             {
                 ClientId = "client_123",
                 Code = "code",
             };
-            var response = await this.service.GetProfile(options);
+            var response = await this.service.GetProfileAndToken(options);
             var profile = response.Profile;
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/sso/token");
