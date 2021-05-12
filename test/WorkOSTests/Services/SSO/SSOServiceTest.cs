@@ -178,36 +178,6 @@
         }
 
         [Fact]
-        public async void TestCreateConnection()
-        {
-            var mockConnection = new Connection
-            {
-                Id = "connection_id",
-                Name = "Terrace House",
-                State = ConnectionState.Active,
-                ConnectionType = ConnectionType.OktaSAML,
-            };
-
-            this.httpMock.MockResponse(
-                HttpMethod.Post,
-                "/connections",
-                HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(mockConnection));
-
-            var options = new CreateConnectionOptions
-            {
-                Source = "source",
-            };
-            var connection = await this.service.CreateConnection(options);
-
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/connections");
-            Assert.NotNull(connection);
-            Assert.Equal(
-                JsonConvert.SerializeObject(mockConnection),
-                JsonConvert.SerializeObject(connection));
-        }
-
-        [Fact]
         public async void TestListConnections()
         {
             var mockResponse = new WorkOSList<Connection>
