@@ -67,27 +67,6 @@
         }
 
         /// <summary>
-        /// Activates a WorkOS Draft Connection.
-        /// </summary>
-        /// <param name="options">Options to activate a Draft Connection.</param>
-        /// <param name="cancellationToken">
-        /// An optional token to cancel the request.
-        /// </param>
-        /// <returns>A WorkOS Connection record.</returns>
-        public async Task<Connection> CreateConnection(
-            CreateConnectionOptions options,
-            CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Options = options,
-                Method = HttpMethod.Post,
-                Path = "/connections",
-            };
-            return await this.Client.MakeAPIRequest<Connection>(request, cancellationToken);
-        }
-
-        /// <summary>
         /// Fetches a list of Connections.
         /// </summary>
         /// <param name="options">Filter options when searching for Connections.</param>
