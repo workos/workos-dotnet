@@ -14,19 +14,11 @@
 
         private readonly PortalService service;
 
-        private readonly CreateOrganizationOptions createOrganizationOptions;
-
-        private readonly ListOrganizationsOptions listOrganizationsOptions;
-
-        private readonly UpdateOrganizationOptions updateOrganizationOptions;
-
         private readonly GenerateLinkOptions generateLinkOptionsSSO;
 
         private readonly GenerateLinkOptions generateLinkOptionsDSync;
 
         private readonly GenerateLinkResponse mockGenerateLinkResponse;
-
-        private readonly Organization mockOrganization;
 
         public PortalServiceTest()
         {
@@ -38,25 +30,6 @@
                     HttpClient = this.httpMock.HttpClient,
                 });
             this.service = new PortalService(client);
-
-            this.createOrganizationOptions = new CreateOrganizationOptions
-            {
-                Name = "Foo Corp",
-                Domains = new string[]
-                {
-                    "foo-corp.com",
-                },
-            };
-
-            this.updateOrganizationOptions = new UpdateOrganizationOptions
-            {
-                Organization = "org_123",
-                Domains = new string[]
-                {
-                    "foo-corp.com",
-                },
-                Name = "Foo Corp 2",
-            };
 
             this.generateLinkOptionsSSO = new GenerateLinkOptions
             {
@@ -72,87 +45,10 @@
                 ReturnURL = "https://foo-corp.app.com/settings",
             };
 
-            this.listOrganizationsOptions = new ListOrganizationsOptions
-            {
-                Domains = new string[]
-                {
-                    "foo-corp.com",
-                },
-            };
-
             this.mockGenerateLinkResponse = new GenerateLinkResponse
             {
                 Link = "https://id.workos.test/portal/launch?secret=1234",
             };
-
-            this.mockOrganization = new Organization
-            {
-                Id = "org_123",
-                Name = "Foo Corp",
-                Domains = new OrganizationDomain[]
-                {
-                    new OrganizationDomain
-                    {
-                        Id = "org_domain_123",
-                        Domain = "foo-corp.com",
-                    },
-                },
-            };
-        }
-
-        [Fact]
-        public async void TestListOrganizations()
-        {
-            var mockResponse = new WorkOSList<Organization>
-            {
-                Data = new List<Organization>
-                {
-                    this.mockOrganization,
-                },
-            };
-            this.httpMock.MockResponse(
-                HttpMethod.Get,
-                "/organizations",
-                HttpStatusCode.OK,
-                RequestUtilities.ToJsonString(mockResponse));
-            var response = await this.service.ListOrganizations(this.listOrganizationsOptions);
-
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations");
-            Assert.Equal(
-                JsonConvert.SerializeObject(mockResponse),
-                JsonConvert.SerializeObject(response));
-        }
-
-        [Fact]
-        public async void TestCreateOrganization()
-        {
-            this.httpMock.MockResponse(
-                HttpMethod.Post,
-                "/organizations",
-                HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(this.mockOrganization));
-            var response = await this.service.CreateOrganization(this.createOrganizationOptions);
-
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations");
-            Assert.Equal(
-                JsonConvert.SerializeObject(this.mockOrganization),
-                JsonConvert.SerializeObject(response));
-        }
-
-        [Fact]
-        public async void TestUpdateOrganization()
-        {
-            this.httpMock.MockResponse(
-                HttpMethod.Put,
-                $"/organizations/{this.updateOrganizationOptions.Organization}",
-                HttpStatusCode.OK,
-                RequestUtilities.ToJsonString(this.mockOrganization));
-            var response = await this.service.UpdateOrganization(this.updateOrganizationOptions);
-
-            this.httpMock.AssertRequestWasMade(HttpMethod.Put, $"/organizations/{this.updateOrganizationOptions.Organization}");
-            Assert.Equal(
-                JsonConvert.SerializeObject(this.mockOrganization),
-                JsonConvert.SerializeObject(response));
         }
 
         [Fact]
