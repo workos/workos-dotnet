@@ -107,7 +107,15 @@
             var userAgentString = $"workos-dotnet/{SdkVersion}";
             var requestMessage = new HttpRequestMessage(request.Method, uri);
             requestMessage.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("utf-8"));
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.ApiKey);
+
+            if (!string.IsNullOrWhiteSpace(request.AccessToken))
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", request.AccessToken);
+            }
+            else
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.ApiKey);
+            }
 
             requestMessage.Headers.TryAddWithoutValidation("User-Agent", userAgentString);
             if (request.WorkOSHeaders != null)

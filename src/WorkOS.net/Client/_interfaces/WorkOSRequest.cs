@@ -25,6 +25,11 @@
         public string Path { get; set; }
 
         /// <summary>
+        /// The access token to use for authentication instead of an API key.
+        /// </summary>
+        public string AccessToken { get; set; }
+
+        /// <summary>
         /// Dictionary of custom WorkOS headers.
         /// </summary>
         public IDictionary<string, string> WorkOSHeaders { get; set; }

@@ -67,6 +67,27 @@
         }
 
         /// <summary>
+        /// Retrieves a <see cref="Profile"/> for an authenticated User using an access token.
+        /// </summary>
+        /// <param name="options">Options to fetch an authenticated User.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A WorkOS Profile record.</returns>
+        public async Task<Profile> GetProfile(
+            GetProfileOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                AccessToken = options.AccessToken,
+                Method = HttpMethod.Get,
+                Path = "/sso/profile",
+            };
+            return await this.Client.MakeAPIRequest<Profile>(request, cancellationToken);
+        }
+
+        /// <summary>
         /// Fetches a list of Connections.
         /// </summary>
         /// <param name="options">Filter options when searching for Connections.</param>
