@@ -178,6 +178,44 @@
         }
 
         [Fact]
+        public async void TestGetProfile()
+        {
+            var mockProfile = new Profile
+            {
+                Id = "profile_0",
+                IdpId = "123",
+                ConnectionId = "conn_123",
+                ConnectionType = ConnectionType.OktaSAML,
+                Email = "rick@sanchez.com",
+                FirstName = "Rick",
+                LastName = "Sanchez",
+                RawAttributes = new Dictionary<string, object>()
+                {
+                    { "idp_id", "123" },
+                    { "email", "rick@sanchez.com" },
+                    { "first_name", "Rick" },
+                    { "last_name", "Sanchez" },
+                },
+            };
+
+            this.httpMock.MockResponseWithAuthorizationHeader(
+                HttpMethod.Get,
+                "/sso/profile",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(mockProfile),
+                "access_token");
+
+            var options = new GetProfileOptions
+            {
+                AccessToken = "access_token",
+            };
+            var profile = await this.service.GetProfile(options);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/sso/profile");
+            this.httpMock.AssertAuthorizationBearerHeader("access_token");
+        }
+
+        [Fact]
         public async void TestListConnections()
         {
             var mockResponse = new WorkOSList<Connection>
