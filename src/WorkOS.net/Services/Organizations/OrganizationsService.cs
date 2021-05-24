@@ -96,8 +96,8 @@ namespace WorkOS
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
-        /// <returns>A deleted WorkOS Organization record.</returns>
-        public async Task<Organization> DeleteOrganization(string id, CancellationToken cancellationToken = default)
+        /// <returns>A Task.</returns>
+        public async Task DeleteOrganization(string id, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -105,7 +105,7 @@ namespace WorkOS
                 Path = $"/organizations/{id}",
             };
 
-            return await this.Client.MakeAPIRequest<Organization>(request, cancellationToken);
+            await this.Client.MakeRawAPIRequest(request, cancellationToken);
         }
 
         /// <summary>
