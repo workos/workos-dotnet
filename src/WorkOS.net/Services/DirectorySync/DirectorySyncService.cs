@@ -105,7 +105,7 @@
                 Path = $"/directories/{id}",
             };
 
-            await this.Client.MakeAPIRequest<Directory>(request, cancellationToken);
+            await this.Client.MakeRawAPIRequest(request, cancellationToken);
         }
 
         /// <summary>

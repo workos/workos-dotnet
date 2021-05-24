@@ -112,15 +112,15 @@
         }
 
         [Fact]
-        public void TestDeleteDirectory()
+        public async void TestDeleteDirectory()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Delete,
                 $"/directories/{this.mockDirectory.Id}",
                 HttpStatusCode.Accepted,
-                RequestUtilities.ToJsonString(this.mockDirectory));
+                "Accepted");
 
-            var response = this.service.DeleteDirectory(this.mockDirectory.Id);
+            await this.service.DeleteDirectory(this.mockDirectory.Id);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Delete,
