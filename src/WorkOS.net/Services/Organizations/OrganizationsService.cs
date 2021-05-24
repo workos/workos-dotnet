@@ -90,6 +90,25 @@ namespace WorkOS
         }
 
         /// <summary>
+        /// Deletes an Organization.
+        /// </summary>
+        /// <param name="id">Organization unique identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A deleted WorkOS Organization record.</returns>
+        public async Task<Organization> DeleteOrganization(string id, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"/organizations/{id}",
+            };
+
+            return await this.Client.MakeAPIRequest<Organization>(request, cancellationToken);
+        }
+
+        /// <summary>
         /// Updates an Organization.
         /// </summary>
         /// <param name="options">Parameters to update an Organization.</param>
