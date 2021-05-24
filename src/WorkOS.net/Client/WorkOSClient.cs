@@ -74,6 +74,21 @@
         /// <summary>
         /// Makes a request to the WorkOS API.
         /// </summary>
+        /// <param name="request">The request to make to the WorkOS API.</param>
+        /// <param name="cancellationToken">A token used to cancel the request.</param>
+        /// <returns>The response from the WorkOS API.</returns>
+        public async Task<HttpResponseMessage> MakeRawAPIRequest(
+            WorkOSRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var requestMessage = this.CreateHttpRequestMessage(request);
+
+            return await this.HttpClient.SendAsync(requestMessage, cancellationToken);
+        }
+
+        /// <summary>
+        /// Makes a request to the WorkOS API and parses the JSON response.
+        /// </summary>
         /// <typeparam name="T">The return type from the request.</typeparam>
         /// <param name="request">The request to make to the WorkOS API.</param>
         /// <param name="cancellationToken">A token used to cancel the request.</param>
@@ -82,11 +97,7 @@
             WorkOSRequest request,
             CancellationToken cancellationToken = default)
         {
-            var requestMessage = this.CreateHttpRequestMessage(request);
-
-            HttpResponseMessage response = await this.HttpClient
-                    .SendAsync(requestMessage, cancellationToken)
-                    .ConfigureAwait(false);
+            var response = await this.MakeRawAPIRequest(request, cancellationToken).ConfigureAwait(false);
 
             var reader = new StreamReader(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
