@@ -134,6 +134,22 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public void TestDeleteOrganization()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Delete,
+                $"/organizations/{this.mockOrganization.Id}",
+                HttpStatusCode.Accepted,
+                RequestUtilities.ToJsonString(this.mockOrganization));
+
+            var response = this.service.DeleteOrganization(this.mockOrganization.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Delete,
+                $"/organizations/{this.mockOrganization.Id}");
+        }
+
+        [Fact]
         public async void TestUpdateOrganization()
         {
             this.httpMock.MockResponse(
