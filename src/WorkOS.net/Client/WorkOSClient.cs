@@ -71,6 +71,12 @@
             };
         }
 
+        /// <summary>
+        /// Makes a request to the WorkOS API.
+        /// </summary>
+        /// <param name="request">The request to make to the WorkOS API.</param>
+        /// <param name="cancellationToken">A token used to cancel the request.</param>
+        /// <returns>The response from the WorkOS API.</returns>
         public async Task<HttpResponseMessage> MakeRawAPIRequest(
             WorkOSRequest request,
             CancellationToken cancellationToken = default)
@@ -81,7 +87,7 @@
         }
 
         /// <summary>
-        /// Makes a request to the WorkOS API.
+        /// Makes a request to the WorkOS API and parses the JSON response.
         /// </summary>
         /// <typeparam name="T">The return type from the request.</typeparam>
         /// <param name="request">The request to make to the WorkOS API.</param>
