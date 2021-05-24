@@ -97,7 +97,7 @@
             WorkOSRequest request,
             CancellationToken cancellationToken = default)
         {
-            var response = await this.MakeRawAPIRequest(request).ConfigureAwait(false);
+            var response = await this.MakeRawAPIRequest(request, cancellationToken).ConfigureAwait(false);
 
             var reader = new StreamReader(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
