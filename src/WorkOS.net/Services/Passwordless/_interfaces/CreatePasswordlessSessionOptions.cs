@@ -36,6 +36,15 @@
         public string Connection { get; set; }
 
         /// <summary>
+        /// An optional parameter. The number of seconds the Passwordless
+        /// Session should live before expiring.
+        /// This value must be between 300 (5 minutes) and 1800 (30 minutes),
+        /// inclusive.
+        /// </summary>
+        [JsonProperty("expires_in")]
+        public int ExpiresIn { get; set; }
+
+        /// <summary>
         /// An optional parameter to encode information throughout the
         /// authentication life cycle.
         /// </summary>
