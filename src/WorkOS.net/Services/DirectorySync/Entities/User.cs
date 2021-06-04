@@ -54,7 +54,7 @@
         /// The User's groups.
         /// </summary>
         [JsonProperty("groups")]
-        public Group[] Groups { get; set; }
+        public List<Group> Groups { get; set; }
 
         /// <summary>
         /// The User's active state.

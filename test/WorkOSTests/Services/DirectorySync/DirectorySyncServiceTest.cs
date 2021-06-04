@@ -78,7 +78,7 @@
                         Type = "work",
                     },
                 },
-                Groups = new User.Group[]
+                Groups = new List<User.Group>
                 {
                     new User.Group
                     {
