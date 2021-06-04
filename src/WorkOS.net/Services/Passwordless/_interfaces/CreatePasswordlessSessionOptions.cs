@@ -41,8 +41,8 @@
         /// This value must be between 300 (5 minutes) and 1800 (30 minutes),
         /// inclusive.
         /// </summary>
-        [JsonProperty("expires_in")]
-        public int ExpiresIn { get; set; }
+        [JsonProperty("expires_in", NullValueHandling = NullValueHandling.Ignore)]
+        public int? ExpiresIn { get; set; }
 
         /// <summary>
         /// An optional parameter to encode information throughout the
