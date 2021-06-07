@@ -60,6 +60,7 @@
                 Type = DirectoryType.BambooHR,
                 ExternalKey = "external-key",
                 EnvironmentId = "environment_123",
+                OrganizationId = "organization_123",
             };
 
             this.mockUser = new User

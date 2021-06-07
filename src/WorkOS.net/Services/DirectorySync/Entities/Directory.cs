@@ -49,6 +49,12 @@
         public string ExternalKey { get; set; }
 
         /// <summary>
+        /// Identifier for the Directory's Organization.
+        /// </summary>
+        [JsonProperty("organization_id")]
+        public string OrganizationId { get; set; }
+
+        /// <summary>
         /// Identifier for the Directory's Environment.
         /// </summary>
         [JsonProperty("environment_id")]
