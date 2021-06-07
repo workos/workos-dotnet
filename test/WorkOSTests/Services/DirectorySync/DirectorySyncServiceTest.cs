@@ -78,6 +78,14 @@
                         Type = "work",
                     },
                 },
+                Groups = new List<User.Group>
+                {
+                    new User.Group
+                    {
+                        Id = "directory_group_123",
+                        Name = "Scientists",
+                    },
+                },
             };
 
             this.mockGroup = new Group

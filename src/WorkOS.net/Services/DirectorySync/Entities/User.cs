@@ -51,6 +51,12 @@
         public Email[] Emails { get; set; }
 
         /// <summary>
+        /// The User's groups.
+        /// </summary>
+        [JsonProperty("groups")]
+        public List<Group> Groups { get; set; }
+
+        /// <summary>
         /// The User's active state.
         /// </summary>
         [JsonProperty("state")]
@@ -84,6 +90,30 @@
             /// </summary>
             [JsonProperty("type")]
             public string Type { get; set; }
+        }
+
+        /// <summary>
+        /// Contains data about a User's groups.
+        /// </summary>
+        public class Group
+        {
+            /// <summary>
+            /// Description of the record.
+            /// </summary>
+            [JsonProperty("object")]
+            public const string Object = "directory_group";
+
+            /// <summary>
+            /// The Group's identifier.
+            /// </summary>
+            [JsonProperty("id")]
+            public string Id { get; set; }
+
+            /// <summary>
+            /// The Group's name.
+            /// </summary>
+            [JsonProperty("name")]
+            public string Name { get; set; }
         }
     }
 }
