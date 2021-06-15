@@ -11,7 +11,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageId>WorkOS.net</PackageId>
     <PackageTags>workos;sso;audit;trail;directory;sync;portal;passwordless;magic;link</PackageTags>
-    <PackageProjectUrl>https://github.com/workos/workos-dotnet</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/workos-inc/workos-dotnet</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RootNamespace>WorkOS</RootNamespace>
