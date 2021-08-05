@@ -70,6 +70,10 @@
                 LastName = "Sanchez",
                 Username = "rick.sanchez",
                 State = UserState.Active,
+                CustomAttributes = new Dictionary<string, object>()
+                {
+                    { "manager_id", "123" },
+                },
                 Emails = new User.Email[]
                 {
                     new User.Email

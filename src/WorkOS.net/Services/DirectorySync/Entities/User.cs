@@ -69,6 +69,12 @@
         public Dictionary<string, object> RawAttributes { get; set; }
 
         /// <summary>
+        /// The User's custom attributes.
+        /// </summary>
+        [JsonProperty("custom_attributes")]
+        public Dictionary<string, object> CustomAttributes { get; set; }
+
+        /// <summary>
         /// Contains data about a User's e-mails.
         /// </summary>
         public class Email
