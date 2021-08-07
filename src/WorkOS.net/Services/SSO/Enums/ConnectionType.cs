@@ -13,8 +13,11 @@
         [EnumMember(Value = "ADFSSAML")]
         ADFSSAML,
 
+        [EnumMember(Value = "Auth0SAML")]
+        Auth0SAML,
+
         [EnumMember(Value = "AzureSAML")]
-        AzureSAML,
+        AzureSAML, 
 
         [EnumMember(Value = "GenericOIDC")]
         GenericOIDC,
