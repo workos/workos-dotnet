@@ -17,7 +17,7 @@
         Auth0SAML,
 
         [EnumMember(Value = "AzureSAML")]
-        AzureSAML, 
+        AzureSAML,
 
         [EnumMember(Value = "GenericOIDC")]
         GenericOIDC,
