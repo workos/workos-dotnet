@@ -19,6 +19,9 @@
         [EnumMember(Value = "AzureSAML")]
         AzureSAML,
 
+        [EnumMember(Value = "CyberArkSAML")]
+        CyberArkSAML,
+
         [EnumMember(Value = "GenericOIDC")]
         GenericOIDC,
 
@@ -27,6 +30,12 @@
 
         [EnumMember(Value = "GoogleOAuth")]
         GoogleOAuth,
+
+        [EnumMember(Value = "GoogleSAML")]
+        GoogleSAML,
+
+        [EnumMember(Value = "JumpCloudSAML")]
+        JumpCloudSAML,
 
         [EnumMember(Value = "MagicLink")]
         MagicLink,
@@ -42,6 +51,9 @@
 
         [EnumMember(Value = "PingOneSAML")]
         PingOneSAML,
+
+        [EnumMember(Value = "SalesforceSAML")]
+        SalesforceSAML,
 
         [EnumMember(Value = "VMwareSAML")]
         VMwareSAML,
