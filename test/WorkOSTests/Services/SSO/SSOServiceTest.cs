@@ -41,6 +41,8 @@
                 Name = "Foo Corp",
                 State = ConnectionState.Active,
                 ConnectionType = ConnectionType.OktaSAML,
+                CreatedAt = "2021-07-26T18:55:16.072Z",
+                UpdatedAt = "2021-07-26T18:55:16.072Z",
             };
         }
 

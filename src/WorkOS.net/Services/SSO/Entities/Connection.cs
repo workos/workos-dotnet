@@ -56,5 +56,17 @@
         /// </summary>
         [JsonProperty("domains")]
         public ConnectionDomain[] Domains { get; set; }
+
+        /// <summary>
+        /// The timestamp of when the Connection was created.
+        /// </summary>
+        [JsonProperty("created_at")]
+        public string CreatedAt { get; set; }
+
+        /// <summary>
+        /// The timestamp of when the Connection was updated.
+        /// </summary>
+        [JsonProperty("updated_at")]
+        public string UpdatedAt { get; set; }
     }
 }

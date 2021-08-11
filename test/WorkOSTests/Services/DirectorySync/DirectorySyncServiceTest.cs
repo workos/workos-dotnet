@@ -61,6 +61,8 @@
                 ExternalKey = "external-key",
                 EnvironmentId = "environment_123",
                 OrganizationId = "organization_123",
+                CreatedAt = "2021-07-26T18:55:16.072Z",
+                UpdatedAt = "2021-07-26T18:55:16.072Z",
             };
 
             this.mockUser = new User

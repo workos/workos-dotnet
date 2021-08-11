@@ -59,5 +59,17 @@
         /// </summary>
         [JsonProperty("environment_id")]
         public string EnvironmentId { get; set; }
+
+        /// <summary>
+        /// The timestamp of when the Directory was created.
+        /// </summary>
+        [JsonProperty("created_at")]
+        public string CreatedAt { get; set; }
+
+        /// <summary>
+        /// The timestamp of when the Directory was updated.
+        /// </summary>
+        [JsonProperty("updated_at")]
+        public string UpdatedAt { get; set; }
     }
 }
