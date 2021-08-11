@@ -72,8 +72,8 @@ namespace WorkOSTests
                         Domain = "foo-corp.com",
                     },
                 },
-                CreatedAt = "10-04-19 12:00:17",
-                UpdatedAt = "10-04-19 12:00:17",
+                CreatedAt = "2021-07-26T18:55:16.072Z",
+                UpdatedAt = "2021-07-26T18:55:16.072Z",
             };
         }
 
