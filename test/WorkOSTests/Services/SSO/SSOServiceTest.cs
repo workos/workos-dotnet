@@ -41,6 +41,8 @@
                 Name = "Foo Corp",
                 State = ConnectionState.Active,
                 ConnectionType = ConnectionType.OktaSAML,
+                CreatedAt = "yyyy-MM-dd HH:mm:ss.SSS",
+                UpdatedAt = "yyyy-MM-dd HH:mm:ss.SSS",
             };
         }
 

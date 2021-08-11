@@ -30,5 +30,17 @@
         /// </summary>
         [JsonProperty("domains")]
         public OrganizationDomain[] Domains { get; set; }
+
+        /// <summary>
+        /// The timestamp of when the Organization was created.
+        /// </summary>
+        [JsonProperty("created_at")]
+        public string CreatedAt { get; set; }
+
+        /// <summary>
+        /// The timestamp of when the Organization was updated.
+        /// </summary>
+        [JsonProperty("updated_at")]
+        public string UpdatedAt { get; set; }
     }
 }
