@@ -61,8 +61,8 @@
                 ExternalKey = "external-key",
                 EnvironmentId = "environment_123",
                 OrganizationId = "organization_123",
-                CreatedAt = "yyyy-MM-dd HH:mm:ss.SSS",
-                UpdatedAt = "yyyy-MM-dd HH:mm:ss.SSS",
+                CreatedAt = "10-04-19 12:00:17",
+                UpdatedAt = "10-04-19 12:00:17",
             };
 
             this.mockUser = new User
