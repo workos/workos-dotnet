@@ -139,6 +139,7 @@
             {
                 Id = "profile_0",
                 IdpId = "123",
+                OrganizationId = "org_123",
                 ConnectionId = "conn_123",
                 ConnectionType = ConnectionType.OktaSAML,
                 Email = "rick@sanchez.com",
@@ -186,6 +187,7 @@
             {
                 Id = "profile_0",
                 IdpId = "123",
+                OrganizationId = "org_123",
                 ConnectionId = "conn_123",
                 ConnectionType = ConnectionType.OktaSAML,
                 Email = "rick@sanchez.com",
