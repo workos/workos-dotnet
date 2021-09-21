@@ -21,6 +21,12 @@
         public string IdpId { get; set; }
 
         /// <summary>
+        /// The identifier for the <see cref="Organization"/> associated with the Profile.
+        /// </summary>
+        [JsonProperty("organization_id")]
+        public string OrganizationId { get; set; }
+
+        /// <summary>
         /// The identifier for the <see cref="Connection"/> associated with the Profile.
         /// </summary>
         [JsonProperty("connection_id")]
