@@ -26,6 +26,13 @@
         public string Name { get; set; }
 
         /// <summary>
+        /// Whether Connections within the Organization allow profiles that are
+        /// outside of the Organization's configured User Email Domains.
+        /// </summary>
+        [JsonProperty("allow_profiles_outside_organization")]
+        public bool AllowProfilesOutsideOrganization { get; set; }
+
+        /// <summary>
         /// The Organization's domains.
         /// </summary>
         [JsonProperty("domains")]
