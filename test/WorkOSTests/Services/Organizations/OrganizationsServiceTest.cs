@@ -64,6 +64,7 @@ namespace WorkOSTests
             {
                 Id = "org_123",
                 Name = "Foo Corp",
+                AllowProfilesOutsideOrganization = false,
                 Domains = new OrganizationDomain[]
                 {
                     new OrganizationDomain
