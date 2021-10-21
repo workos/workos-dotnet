@@ -59,7 +59,7 @@ namespace WebhookTests
         [Fact]
         public void Test_JSON_payload()
         {
-            string filePath = System.IO.Path.GetFullPath("webhook_test_payload.json");
+            string filePath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "\\webhook_test.payload.txt");
             string json = this.GetJSONAsString(filePath);
             string json2 = "{\"id\":\"wh_01FJ27WB8SNT7VN72KRMYJYV8P\",\"data\":{\"id\":\"directory_user_01E1X1B89NH8Z3SDFJR4H7RGX7\",\"state\":\"active\",\"emails\":[{\"type\":\"work\",\"value\":\"veda@example.com\",\"primary\":true}],\"username\":\"veda@example.com\",\"last_name\":\"Block\",\"first_name\":\"Lela\",\"directory_id\":\"directory_01E1X194NTJ3PYMAY79DYV0F0P\"},\"event\":\"dsync.user.created\"}";
             Assert.Equal(json, json2);
@@ -69,7 +69,7 @@ namespace WebhookTests
         public void Test_Expected_Signature()
         {
             var test = new WebhookService();
-            string filePath = System.IO.Path.GetFullPath("webhook_test_payload.json");
+            string filePath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "\\webhook_test.payload.txt");
             string payload = this.GetJSONAsString(filePath);
             string secret = "nTqlYkHe6GyqYkmUQWksUWYmQ";
             string timeStamp = "1634310434103";
