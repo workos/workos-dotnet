@@ -57,23 +57,21 @@ namespace WorkOS
             var timeAndSignature = this.Get_Timestamp_and_Signature_Hash(sig_header);
             string timeStamp = timeAndSignature.Item1;
 
-            if (this.UnixTimeToDateTime(long.Parse(timeStamp)) < DateTime.Now.AddSeconds(tolerance * -1))
+            if (!this.Verify_Time_Tolerance(timeStamp, tolerance))
             {
                 throw new Exception("Timestamp outside of the tolerance zone");
             }
 
             string signatureHash = timeAndSignature.Item2;
             string expected_sig = this.Compute_Signature(timeStamp, payload, secret);
-            byte[] a = Encoding.ASCII.GetBytes(expected_sig);
-            byte[] b = Encoding.ASCII.GetBytes(signatureHash);
 
-            if (a == b)
+            if (this.SecureCompare(expected_sig, signatureHash))
             {
                 return true;
             }
             else
             {
-                throw new Exception("expected signature: " + expected_sig + " did not match signature: " + signatureHash);
+                throw new Exception("Signature hash does not match the expected signature hash for payload");
             }
         }
 
@@ -135,6 +133,24 @@ namespace WorkOS
         }
 
         /// <summary>
+        /// Verify if timestamp is within tolerance.
+        /// </summary>
+        /// <param name="timeStamp">Unix timestamp string.</param>
+        /// <param name="tolerance">The time tolerance, in seconds.</param>
+        /// <returns>bool of if time is within tolerance.</returns>
+        public bool Verify_Time_Tolerance(string timeStamp, long tolerance)
+        {
+            if (this.UnixTimeToDateTime(long.Parse(timeStamp)) < DateTime.Now.AddSeconds(tolerance * -1))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Compute expected signature.
         /// </summary>
         /// <param name="timeStamp">
@@ -173,12 +189,14 @@ namespace WorkOS
         /// <summary>
         /// A constant time equals comparison.
         /// </summary>
-        /// <param name="left">first array.</param>
-        /// <param name="right">second array.</param>
+        /// <param name="expected_sig">computed signature.</param>
+        /// <param name="signatureHash">signuatre from header.</param>
         /// <returns>true if arrays equal, false otherwise.</returns>
-        public bool ConstantTimeAreEqual(byte[] left, byte[] right)
+        public bool SecureCompare(string expected_sig, string signatureHash)
         {
-            return System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(left, right);
+            byte[] a = Encoding.ASCII.GetBytes(expected_sig);
+            byte[] b = Encoding.ASCII.GetBytes(signatureHash);
+            return System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(a, b);
         }
     }
 }
