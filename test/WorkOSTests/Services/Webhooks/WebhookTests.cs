@@ -59,7 +59,8 @@ namespace WebhookTests
         [Fact]
         public void Test_JSON_payload()
         {
-            string json = this.GetJSONAsString("/Users/patrick/WorkOS/NET/workos-dotnet/test/WorkOSTests/Services/Webhooks/webhook_test_payload.json");
+            string filePath = System.IO.Path.GetFullPath("webhook_test_payload.json");
+            string json = this.GetJSONAsString(filePath);
             string json2 = "{\"id\":\"wh_01FJ27WB8SNT7VN72KRMYJYV8P\",\"data\":{\"id\":\"directory_user_01E1X1B89NH8Z3SDFJR4H7RGX7\",\"state\":\"active\",\"emails\":[{\"type\":\"work\",\"value\":\"veda@example.com\",\"primary\":true}],\"username\":\"veda@example.com\",\"last_name\":\"Block\",\"first_name\":\"Lela\",\"directory_id\":\"directory_01E1X194NTJ3PYMAY79DYV0F0P\"},\"event\":\"dsync.user.created\"}";
             Assert.Equal(json, json2);
         }
