@@ -68,7 +68,8 @@ namespace WebhookTests
         public void Test_Expected_Signature()
         {
             var test = new WebhookService();
-            string payload = this.GetJSONAsString("/Users/patrick/WorkOS/NET/workos-dotnet/test/WorkOSTests/Services/Webhooks/webhook_test_payload.json");
+            string filePath = System.IO.Path.GetFullPath("webhook_test_payload.json");
+            string payload = this.GetJSONAsString(filePath);
             string secret = "nTqlYkHe6GyqYkmUQWksUWYmQ";
             string timeStamp = "1634310434103";
             string signature = "0de6f84a9c3dd217973c44dffbcb3fd1225a4ab453e08b608491479ebab382e8";
