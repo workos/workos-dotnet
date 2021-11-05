@@ -27,6 +27,25 @@
         }
 
         /// <summary>
+        /// Gets a Directory.
+        /// </summary>
+        /// <param name="id">Directory unique identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A WorkOS Directory record.</returns>
+        public async Task<Directory> GetDirectory(string id, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"/directories/{id}",
+            };
+
+            return await this.Client.MakeAPIRequest<Directory>(request, cancellationToken);
+        }
+
+        /// <summary>
         /// Fetches a list of Directories.
         /// </summary>
         /// <param name="options">Filter options when searching for Directories.</param>

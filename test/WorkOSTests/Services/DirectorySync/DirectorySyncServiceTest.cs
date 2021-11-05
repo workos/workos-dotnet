@@ -103,6 +103,25 @@
         }
 
         [Fact]
+        public async void TestGetDirectory()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                $"/directories/{this.mockDirectory.Id}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockDirectory));
+
+            var response = await this.service.GetDirectory(this.mockDirectory.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Get,
+                $"/directories/{this.mockDirectory.Id}");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockDirectory),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
         public async void TestListDirectories()
         {
             var mockResponse = new WorkOSList<Directory>
