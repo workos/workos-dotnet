@@ -55,7 +55,7 @@ namespace WorkOS
         public bool Verify_header(string payload, string sig_header, string secret, long tolerance)
         {
             var timeAndSignature = this.Get_Timestamp_and_Signature_Hash(sig_header);
-            string timeStamp = timeAndSignature.Item1;
+            var timeStamp = timeAndSignature.Item1;
 
             if (!this.Verify_Time_Tolerance(timeStamp, tolerance))
             {
@@ -84,16 +84,16 @@ namespace WorkOS
         /// <returns> Tuple of [DateTime timestamp, string signaturehash].</returns>
         public (string Timestamp, string SignatureHash) Get_Timestamp_and_Signature_Hash(string signature_header)
         {
-            string[] timeAndSig = signature_header.Split(',');
-            string timeStamp = timeAndSig[0];
-            string signatureHash = timeAndSig[1];
+            var timeAndSig = signature_header.Split(',');
+            var timeStamp = timeAndSig[0];
+            var signatureHash = timeAndSig[1];
             if (string.IsNullOrEmpty(timeStamp) || string.IsNullOrEmpty(signatureHash))
             {
                 Console.WriteLine("Unable to extract timestamp and signature hash from header");
             }
 
-            string removeT = "t=";
-            int t = timeStamp.IndexOf(removeT);
+            var removeT = "t=";
+            var t = timeStamp.IndexOf(removeT);
             if (t != -1)
             {
                 timeStamp = timeStamp.Substring(t + removeT.Length);
@@ -104,8 +104,8 @@ namespace WorkOS
                 throw new Exception("Unable to extract timestamp");
             }
 
-            string removeV = "v1=";
-            int v = signatureHash.IndexOf(removeV);
+            var removeV = "v1=";
+            var v = signatureHash.IndexOf(removeV);
             if (v != -1)
             {
                 signatureHash = signatureHash.Substring(v + removeV.Length, 64);
@@ -164,7 +164,7 @@ namespace WorkOS
         /// <returns>string of expected signature.</returns>
         public string Compute_Signature(string timeStamp, string payload, string secret)
         {
-            string unhashed_string = $"{timeStamp}.{payload}";
+            var unhashed_string = $"{timeStamp}.{payload}";
             var secretBytes = Encoding.UTF8.GetBytes(secret);
             var payloadBytes = Encoding.UTF8.GetBytes(unhashed_string);
             using (var hmSha256 = new HMACSHA256(secretBytes))
@@ -176,7 +176,7 @@ namespace WorkOS
 
         public string ToHexString(byte[] array)
         {
-            StringBuilder hex = new StringBuilder(array.Length * 2);
+            var hex = new StringBuilder(array.Length * 2);
             foreach (byte b in array)
             {
                 hex.AppendFormat("{0:x2}", b);
@@ -193,8 +193,8 @@ namespace WorkOS
         /// <returns>true if arrays equal, false otherwise.</returns>
         public bool SecureCompare(string expected_sig, string signatureHash)
         {
-            byte[] a = Encoding.ASCII.GetBytes(expected_sig);
-            byte[] b = Encoding.ASCII.GetBytes(signatureHash);
+            var a = Encoding.ASCII.GetBytes(expected_sig);
+            var b = Encoding.ASCII.GetBytes(signatureHash);
             return System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(a, b);
         }
     }
