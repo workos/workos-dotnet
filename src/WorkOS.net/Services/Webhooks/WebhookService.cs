@@ -82,7 +82,7 @@ namespace WorkOS
         /// Signatures header.
         /// </param>
         /// <returns> Tuple of [DateTime timestamp, string signaturehash].</returns>
-        public Tuple<string, string> Get_Timestamp_and_Signature_Hash(string signature_header)
+        public (DateTime Timestamp, string SignatureHash) Get_Timestamp_and_Signature_Hash(string signature_header)
         {
             string[] timeAndSig = signature_header.Split(',');
             string timeStamp = timeAndSig[0];
