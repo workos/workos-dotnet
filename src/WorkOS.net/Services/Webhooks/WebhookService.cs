@@ -25,7 +25,7 @@ namespace WorkOS
             string secret,
             long tolerance)
         {
-            if (this.Verify_header(json, signatureHeader, secret, tolerance))
+            if (this.VerifyHeader(json, signatureHeader, secret, tolerance))
             {
                 Webhook webhookVerified = JsonConvert.DeserializeObject<Webhook>(json);
                 return webhookVerified;
@@ -52,9 +52,9 @@ namespace WorkOS
         /// time tolerance for timing attacks.
         /// </param>
         /// <returns>Boolean True or False of verification.</returns>
-        public bool Verify_header(string payload, string sigHeader, string secret, long tolerance)
+        public bool VerifyHeader(string payload, string sigHeader, string secret, long tolerance)
         {
-            var timeAndSignature = this.Get_Timestamp_and_Signature_Hash(sigHeader);
+            var timeAndSignature = this.GetTimestampAndSignature(sigHeader);
             var timeStamp = timeAndSignature.Item1;
 
             if (!this.Verify_Time_Tolerance(timeStamp, tolerance))
@@ -63,9 +63,9 @@ namespace WorkOS
             }
 
             string signatureHash = timeAndSignature.Item2;
-            string expected_sig = this.Compute_Signature(timeStamp, payload, secret);
+            string expectedSig = this.ComputeSignature(timeStamp, payload, secret);
 
-            if (this.SecureCompare(expected_sig, signatureHash))
+            if (this.SecureCompare(expectedSig, signatureHash))
             {
                 return true;
             }
@@ -82,7 +82,7 @@ namespace WorkOS
         /// Signatures header.
         /// </param>
         /// <returns> Tuple of [DateTime timestamp, string signaturehash].</returns>
-        public (string Timestamp, string SignatureHash) Get_Timestamp_and_Signature_Hash(string signatureHeader)
+        public (string Timestamp, string SignatureHash) GetTimestampAndSignature(string signatureHeader)
         {
             var timeAndSig = signatureHeader.Split(',');
             var timeStamp = timeAndSig[0];
@@ -162,11 +162,11 @@ namespace WorkOS
         /// secret used for encoding.
         /// </param>
         /// <returns>string of expected signature.</returns>
-        public string Compute_Signature(string timeStamp, string payload, string secret)
+        public string ComputeSignature(string timeStamp, string payload, string secret)
         {
-            var unhashed_string = $"{timeStamp}.{payload}";
+            var unhashedString = $"{timeStamp}.{payload}";
             var secretBytes = Encoding.UTF8.GetBytes(secret);
-            var payloadBytes = Encoding.UTF8.GetBytes(unhashed_string);
+            var payloadBytes = Encoding.UTF8.GetBytes(unhashedString);
             using (var hmSha256 = new HMACSHA256(secretBytes))
             {
                 var hash = hmSha256.ComputeHash(payloadBytes);

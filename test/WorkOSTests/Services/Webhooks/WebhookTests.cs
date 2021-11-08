@@ -30,7 +30,7 @@ namespace WebhookTests
             var test = new WebhookService();
             string timeStamp = "1634310434103";
             string sigHeader = "sig_header: 't=1634310434103, v1=a8cab83e055b343942570916202b2162eadb387f66f369938636d70cc7f540c0";
-            var returnTuple = test.Get_Timestamp_and_Signature_Hash(sigHeader);
+            var returnTuple = test.GetTimestampAndSignature(sigHeader);
 
             Assert.Equal(timeStamp, returnTuple.Item1, true);
         }
@@ -41,7 +41,7 @@ namespace WebhookTests
             var test = new WebhookService();
             string signature = "a8cab83e055b343942570916202b2162eadb387f66f369938636d70cc7f540c0";
             string sigHeader = "sig_header: 't=1634310434103, v1=a8cab83e055b343942570916202b2162eadb387f66f369938636d70cc7f540c0";
-            var returnTuple = test.Get_Timestamp_and_Signature_Hash(sigHeader);
+            var returnTuple = test.GetTimestampAndSignature(sigHeader);
 
             Assert.Equal(signature, returnTuple.Item2, true);
         }
@@ -64,7 +64,7 @@ namespace WebhookTests
             string secret = "nTqlYkHe6GyqYkmUQWksUWYmQ";
             string timeStamp = "1634310434103";
             string signature = "0de6f84a9c3dd217973c44dffbcb3fd1225a4ab453e08b608491479ebab382e8";
-            string expected_sig = test.Compute_Signature(timeStamp, payload, secret);
+            string expected_sig = test.ComputeSignature(timeStamp, payload, secret);
             this.output.WriteLine("expected sig:" + expected_sig);
             Assert.True(test.SecureCompare(expected_sig, signature));
         }
