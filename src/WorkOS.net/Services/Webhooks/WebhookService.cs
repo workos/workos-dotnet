@@ -13,7 +13,7 @@ namespace WorkOS
         /// Parses a JSON string from a webhook, verifies and deseralizes into a Webhook Object.
         /// </summary>
         /// <param name="json">The JSON string to parse.</param>
-        /// <param name="stripeSignatureHeader">
+        /// <param name="signatureHeader">
         /// The value of the header from the webhook request.
         /// </param>
         /// <param name="secret">The webhook endpoint's signing secret.</param>
@@ -21,11 +21,11 @@ namespace WorkOS
         /// <returns>The deserialized JSON.</returns>
         public Webhook ConstructEvent(
             string json,
-            string stripeSignatureHeader,
+            string signatureHeader,
             string secret,
             long tolerance)
         {
-            if (this.Verify_header(json, stripeSignatureHeader, secret, tolerance))
+            if (this.Verify_header(json, signatureHeader, secret, tolerance))
             {
                 Webhook webhookVerified = JsonConvert.DeserializeObject<Webhook>(json);
                 return webhookVerified;
@@ -42,7 +42,7 @@ namespace WorkOS
         /// <param name="payload">
         /// json payload.
         /// </param>
-        /// <param name="sig_header">
+        /// <param name="sigHeader">
         /// signature header of webhook.
         /// </param>
         /// <param name="secret">
@@ -52,9 +52,9 @@ namespace WorkOS
         /// time tolerance for timing attacks.
         /// </param>
         /// <returns>Boolean True or False of verification.</returns>
-        public bool Verify_header(string payload, string sig_header, string secret, long tolerance)
+        public bool Verify_header(string payload, string sigHeader, string secret, long tolerance)
         {
-            var timeAndSignature = this.Get_Timestamp_and_Signature_Hash(sig_header);
+            var timeAndSignature = this.Get_Timestamp_and_Signature_Hash(sigHeader);
             var timeStamp = timeAndSignature.Item1;
 
             if (!this.Verify_Time_Tolerance(timeStamp, tolerance))
@@ -78,13 +78,13 @@ namespace WorkOS
         /// <summary>
         /// Get timestamp and signature hash.
         /// </summary>
-        /// <param name="signature_header">
+        /// <param name="signatureHeader">
         /// Signatures header.
         /// </param>
         /// <returns> Tuple of [DateTime timestamp, string signaturehash].</returns>
-        public (string Timestamp, string SignatureHash) Get_Timestamp_and_Signature_Hash(string signature_header)
+        public (string Timestamp, string SignatureHash) Get_Timestamp_and_Signature_Hash(string signatureHeader)
         {
-            var timeAndSig = signature_header.Split(',');
+            var timeAndSig = signatureHeader.Split(',');
             var timeStamp = timeAndSig[0];
             var signatureHash = timeAndSig[1];
             if (string.IsNullOrEmpty(timeStamp) || string.IsNullOrEmpty(signatureHash))
@@ -188,12 +188,12 @@ namespace WorkOS
         /// <summary>
         /// A constant time equals comparison.
         /// </summary>
-        /// <param name="expected_sig">computed signature.</param>
+        /// <param name="expectedSig">computed signature.</param>
         /// <param name="signatureHash">signuatre from header.</param>
         /// <returns>true if arrays equal, false otherwise.</returns>
-        public bool SecureCompare(string expected_sig, string signatureHash)
+        public bool SecureCompare(string expectedSig, string signatureHash)
         {
-            var a = Encoding.ASCII.GetBytes(expected_sig);
+            var a = Encoding.ASCII.GetBytes(expectedSig);
             var b = Encoding.ASCII.GetBytes(signatureHash);
             return System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(a, b);
         }
