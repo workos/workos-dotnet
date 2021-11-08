@@ -82,7 +82,7 @@ namespace WorkOS
         /// Signatures header.
         /// </param>
         /// <returns> Tuple of [DateTime timestamp, string signaturehash].</returns>
-        public (DateTime Timestamp, string SignatureHash) Get_Timestamp_and_Signature_Hash(string signature_header)
+        public (string Timestamp, string SignatureHash) Get_Timestamp_and_Signature_Hash(string signature_header)
         {
             string[] timeAndSig = signature_header.Split(',');
             string timeStamp = timeAndSig[0];
@@ -116,8 +116,7 @@ namespace WorkOS
                 throw new Exception("Unable to extract signatureHash");
             }
 
-            var returnTuple = Tuple.Create(timeStamp, signatureHash);
-            return returnTuple;
+            return (Timestamp: timeStamp, SignatureHash: signatureHash);
         }
 
         /// <summary>
