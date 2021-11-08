@@ -23,6 +23,6 @@ namespace WorkOS
         /// The event of webhook.
         /// </summary>
         [JsonProperty("data")]
-        public string Data { get; set; }
+        public object Data { get; set; }
     }
 }
