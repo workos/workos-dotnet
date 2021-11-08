@@ -14,13 +14,13 @@ namespace WorkOS
         public string Id { get; set; }
 
         /// <summary>
-        /// The raw data webhook.
+        /// The event of webhook.
         /// </summary>
         [JsonProperty("event")]
         public string Event { get; set; }
 
         /// <summary>
-        /// The event of webhook.
+        /// The raw data webhook.
         /// </summary>
         [JsonProperty("data")]
         public object Data { get; set; }
