@@ -89,7 +89,7 @@ namespace WorkOS
             var signatureHash = timeAndSig[1];
             if (string.IsNullOrEmpty(timeStamp) || string.IsNullOrEmpty(signatureHash))
             {
-                Console.WriteLine("Unable to extract timestamp and signature hash from header");
+                throw new ArgumentException("Unable to extract timestamp and signature hash from header");
             }
 
             var removeT = "t=";
