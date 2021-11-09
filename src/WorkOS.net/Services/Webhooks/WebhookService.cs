@@ -9,6 +9,24 @@ namespace WorkOS
     {
         private const int DefaultTimeTolerance = 300;
 
+        public static bool ConstantTimeAreEqual(byte[] a, byte[] b)
+        {
+            int i = a.Length;
+            if (i != b.Length)
+            {
+                return false;
+            }
+
+            int cmp = 0;
+            while (i != 0)
+            {
+                --i;
+                cmp |= a[i] ^ b[i];
+            }
+
+            return cmp == 0;
+        }
+
         /// <summary>
         /// Parses a JSON string from a webhook, verifies and deseralizes into a Webhook Object.
         /// </summary>
@@ -195,7 +213,7 @@ namespace WorkOS
         {
             var a = Encoding.ASCII.GetBytes(expectedSig);
             var b = Encoding.ASCII.GetBytes(signatureHash);
-            return System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(a, b);
+            return ConstantTimeAreEqual(a, b);
         }
     }
 }
