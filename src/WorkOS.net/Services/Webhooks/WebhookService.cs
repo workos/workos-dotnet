@@ -80,8 +80,8 @@ namespace WorkOS
                 throw new Exception("Timestamp outside of the tolerance zone");
             }
 
-            string signatureHash = timeAndSignature.Item2;
-            string expectedSig = this.ComputeSignature(timeStamp, payload, secret);
+            var signatureHash = timeAndSignature.Item2;
+            var expectedSig = this.ComputeSignature(timeStamp, payload, secret);
 
             if (this.SecureCompare(expectedSig, signatureHash))
             {
