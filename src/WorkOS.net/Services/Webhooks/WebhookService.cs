@@ -48,7 +48,6 @@ namespace WorkOS
         /// <param name="sigHeader">signature header of webhook.</param>
         /// <param name="secret">secret.</param>
         /// <param name="tolerance">time tolerance for timing attacks.</param>
-        /// <returns>Boolean True or False of verification.</returns>
         public void VerifyHeader(string payload, string sigHeader, string secret, long tolerance)
         {
             var timeAndSignature = this.GetTimestampAndSignature(sigHeader);
@@ -78,48 +77,16 @@ namespace WorkOS
             var timeAndSig = signatureHeader.Split(',');
             var timeStamp = timeAndSig[0];
             var signatureHash = timeAndSig[1];
-            if (string.IsNullOrEmpty(timeStamp) || string.IsNullOrEmpty(signatureHash))
+            if (!signatureHeader.Contains("t=") || !signatureHeader.Contains("v1="))
             {
                 throw new ArgumentException("Unable to extract timestamp and signature hash from header");
             }
 
-            const string TimestampPrefix = "t=";
+            timeStamp = timeStamp.Substring(timeStamp.IndexOf("t=") + 2);
 
-            if (timeStamp.StartsWith(TimestampPrefix))
-            {
-                timeStamp = timeStamp.Substring(TimestampPrefix.Length);
-            }
-
-            if (string.IsNullOrEmpty(timeStamp))
-            {
-                throw new Exception("Unable to extract timestamp");
-            }
-
-            const string SignaturePrefix = "v1=";
-
-            if (signatureHash.StartsWith(SignaturePrefix))
-            {
-                signatureHash = signatureHash.Substring(SignaturePrefix.Length);
-            }
-
-            if (string.IsNullOrEmpty(signatureHash))
-            {
-                throw new Exception("Unable to extract signature");
-            }
+            signatureHash = signatureHash.Substring(signatureHash.IndexOf("v1=") + 3);
 
             return (TimeStamp: timeStamp, SignatureHash: signatureHash);
-        }
-
-        /// <summary>
-        /// Convert Unix time value to a DateTime object.
-        /// </summary>
-        /// <param name="unixtime">The Unix time stamp you want to convert to DateTime.</param>
-        /// <returns>Returns a DateTime object that represents value of the Unix time.</returns>
-        public DateTime UnixTimeToDateTime(long unixtime)
-        {
-            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            dtDateTime = dtDateTime.AddMilliseconds(unixtime).ToLocalTime();
-            return dtDateTime;
         }
 
         /// <summary>
@@ -181,6 +148,18 @@ namespace WorkOS
             var a = Encoding.ASCII.GetBytes(expectedSig);
             var b = Encoding.ASCII.GetBytes(signatureHash);
             return ConstantTimeAreEqual(a, b);
+        }
+
+        /// <summary>
+        /// Convert Unix time value to a DateTime object.
+        /// </summary>
+        /// <param name="unixtime">The Unix time stamp you want to convert to DateTime.</param>
+        /// <returns>Returns a DateTime object that represents value of the Unix time.</returns>
+        private DateTime UnixTimeToDateTime(long unixtime)
+        {
+            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddMilliseconds(unixtime).ToLocalTime();
+            return dtDateTime;
         }
     }
 }
