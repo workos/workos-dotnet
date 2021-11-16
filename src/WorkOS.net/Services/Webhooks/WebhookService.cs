@@ -31,51 +31,30 @@ namespace WorkOS
         /// Parses a JSON string from a webhook, verifies and deseralizes into a Webhook Object.
         /// </summary>
         /// <param name="json">The JSON string to parse.</param>
-        /// <param name="signatureHeader">
-        /// The value of the header from the webhook request.
-        /// </param>
+        /// <param name="signatureHeader">The value of the header from the webhook request.</param>
         /// <param name="secret">The webhook endpoint's signing secret.</param>
         /// <param name="tolerance">The time tolerance, in seconds.</param>
         /// <returns>The deserialized JSON.</returns>
-        public Webhook ConstructEvent(
-            string json,
-            string signatureHeader,
-            string secret,
-            long tolerance)
+        public Webhook ConstructEvent(string json, string signatureHeader, string secret, long tolerance)
         {
-            if (this.VerifyHeader(json, signatureHeader, secret, tolerance))
-            {
-                Webhook webhookVerified = JsonConvert.DeserializeObject<Webhook>(json);
-                return webhookVerified;
-            }
-            else
-            {
-                throw new Exception("Unable to verify Webhook");
-            }
+            this.VerifyHeader(json, signatureHeader, secret, tolerance);
+            return JsonConvert.DeserializeObject<Webhook>(json);
         }
 
         /// <summary>
         /// Verify Header.
         /// </summary>
-        /// <param name="payload">
-        /// json payload.
-        /// </param>
-        /// <param name="sigHeader">
-        /// signature header of webhook.
-        /// </param>
-        /// <param name="secret">
-        /// secret.
-        /// </param>
-        /// <param name="tolerance">
-        /// time tolerance for timing attacks.
-        /// </param>
+        /// <param name="payload">json payload.</param>
+        /// <param name="sigHeader">signature header of webhook.</param>
+        /// <param name="secret">secret.</param>
+        /// <param name="tolerance">time tolerance for timing attacks.</param>
         /// <returns>Boolean True or False of verification.</returns>
-        public bool VerifyHeader(string payload, string sigHeader, string secret, long tolerance)
+        public void VerifyHeader(string payload, string sigHeader, string secret, long tolerance)
         {
             var timeAndSignature = this.GetTimestampAndSignature(sigHeader);
             var timeStamp = timeAndSignature.Item1;
 
-            if (!this.Verify_Time_Tolerance(timeStamp, tolerance))
+            if (!this.VerifyTimeTolerance(timeStamp, tolerance))
             {
                 throw new Exception("Timestamp outside of the tolerance zone");
             }
@@ -83,11 +62,7 @@ namespace WorkOS
             var signatureHash = timeAndSignature.Item2;
             var expectedSig = this.ComputeSignature(timeStamp, payload, secret);
 
-            if (this.SecureCompare(expectedSig, signatureHash))
-            {
-                return true;
-            }
-            else
+            if (!this.SecureCompare(expectedSig, signatureHash))
             {
                 throw new Exception("Signature hash does not match the expected signature hash for payload");
             }
@@ -96,11 +71,9 @@ namespace WorkOS
         /// <summary>
         /// Get timestamp and signature hash.
         /// </summary>
-        /// <param name="signatureHeader">
-        /// Signatures header.
-        /// </param>
+        /// <param name="signatureHeader">Signatures header.</param>
         /// <returns> Tuple of [DateTime timestamp, string signaturehash].</returns>
-        public (string Timestamp, string SignatureHash) GetTimestampAndSignature(string signatureHeader)
+        public (string TimeStamp, string SignatureHash) GetTimestampAndSignature(string signatureHeader)
         {
             var timeAndSig = signatureHeader.Split(',');
             var timeStamp = timeAndSig[0];
@@ -110,11 +83,11 @@ namespace WorkOS
                 throw new ArgumentException("Unable to extract timestamp and signature hash from header");
             }
 
-            var removeT = "t=";
-            var t = timeStamp.IndexOf(removeT);
-            if (t != -1)
+            const string TimestampPrefix = "t=";
+
+            if (timeStamp.StartsWith(TimestampPrefix))
             {
-                timeStamp = timeStamp.Substring(t + removeT.Length);
+                timeStamp = timeStamp.Substring(TimestampPrefix.Length);
             }
 
             if (string.IsNullOrEmpty(timeStamp))
@@ -122,19 +95,19 @@ namespace WorkOS
                 throw new Exception("Unable to extract timestamp");
             }
 
-            var removeV = "v1=";
-            var v = signatureHash.IndexOf(removeV);
-            if (v != -1)
+            const string SignaturePrefix = "v1=";
+
+            if (signatureHash.StartsWith(SignaturePrefix))
             {
-                signatureHash = signatureHash.Substring(v + removeV.Length, 64);
+                signatureHash = signatureHash.Substring(SignaturePrefix.Length);
             }
 
             if (string.IsNullOrEmpty(signatureHash))
             {
-                throw new Exception("Unable to extract signatureHash");
+                throw new Exception("Unable to extract signature");
             }
 
-            return (Timestamp: timeStamp, SignatureHash: signatureHash);
+            return (TimeStamp: timeStamp, SignatureHash: signatureHash);
         }
 
         /// <summary>
@@ -155,7 +128,7 @@ namespace WorkOS
         /// <param name="timeStamp">Unix timestamp string.</param>
         /// <param name="tolerance">The time tolerance, in seconds.</param>
         /// <returns>bool of if time is within tolerance.</returns>
-        public bool Verify_Time_Tolerance(string timeStamp, long tolerance)
+        public bool VerifyTimeTolerance(string timeStamp, long tolerance)
         {
             if (this.UnixTimeToDateTime(long.Parse(timeStamp)) < DateTime.Now.AddSeconds(tolerance * -1))
             {
@@ -170,15 +143,9 @@ namespace WorkOS
         /// <summary>
         /// Compute expected signature.
         /// </summary>
-        /// <param name="timeStamp">
-        /// string time stamp from header.
-        /// </param>
-        /// <param name="payload">
-        /// json payload of webhook.
-        /// </param>
-        /// <param name="secret">
-        /// secret used for encoding.
-        /// </param>
+        /// <param name="timeStamp">string time stamp from header.</param>
+        /// <param name="payload"> payload of webhook.</param>
+        /// <param name="secret">secret used for encoding.</param>
         /// <returns>string of expected signature.</returns>
         public string ComputeSignature(string timeStamp, string payload, string secret)
         {
@@ -208,7 +175,7 @@ namespace WorkOS
         /// </summary>
         /// <param name="expectedSig">computed signature.</param>
         /// <param name="signatureHash">signuatre from header.</param>
-        /// <returns>true if arrays equal, false otherwise.</returns>
+        /// <returns>true if arrays are equal, false otherwise.</returns>
         public bool SecureCompare(string expectedSig, string signatureHash)
         {
             var a = Encoding.ASCII.GetBytes(expectedSig);
