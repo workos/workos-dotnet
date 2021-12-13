@@ -34,9 +34,11 @@
         /// <returns>An Authorization URL.</returns>
         public string GetAuthorizationURL(GetAuthorizationURLOptions options)
         {
-            if (options.Domain == null && options.Provider == null && options.Connection == null)
+#pragma warning disable CS0618 // GetAuthorizationURLOptions.Domain' is obsolete: 'The Domain property is deprecated. Please use Organization instead.
+            if (options.Domain == null && options.Provider == null && options.Connection == null && options.Organization == null)
+#pragma warning restore CS0618 // GetAuthorizationURLOptions.Domain' is obsolete: 'The Domain property is deprecated. Please use Organization instead.
             {
-                throw new ArgumentNullException("Incomplete arguments. Need to specify either a 'connection', 'domain' or 'provider'.");
+                throw new ArgumentNullException("Incomplete arguments. Need to specify either a 'connection', 'organization', 'domain', or 'provider'.");
             }
 
             var query = RequestUtilities.CreateQueryString(options);
