@@ -1,5 +1,6 @@
 ﻿namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -22,6 +23,7 @@
         /// <summary>
         /// The Enterprise's domain.
         /// </summary>
+        [Obsolete("The Domain property is deprecated. Please use Organization instead.", error: false)]
         [JsonProperty("domain")]
         public string Domain { get; set; }
 
@@ -30,6 +32,12 @@
         /// </summary>
         [JsonProperty("connection")]
         public string Connection { get; set; }
+
+        /// <summary>
+        /// The unique identifier for an <see cref="Organization"/> record.
+        /// </summary>
+        [JsonProperty("organization")]
+        public string Organization { get; set; }
 
         /// <summary>
         /// An optional parameter that specifies the type of Connection to

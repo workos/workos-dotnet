@@ -82,14 +82,18 @@
             var options = new GetAuthorizationURLOptions
             {
                 ClientId = "client_123",
+#pragma warning disable CS0618 // GetAuthorizationURLOptions.Domain' is obsolete: 'The Domain property is deprecated. Please use Organization instead.
                 Domain = "foo-corp.com",
+#pragma warning restore CS0618 // GetAuthorizationURLOptions.Domain' is obsolete: 'The Domain property is deprecated. Please use Organization instead.
                 RedirectURI = "https://example.com/sso/callback",
             };
             string url = this.service.GetAuthorizationURL(options);
 
             Dictionary<string, string> parameters = RequestUtilities.ParseURLParameters(url);
             Assert.Equal(options.ClientId, parameters["client_id"]);
+#pragma warning disable CS0618 // GetAuthorizationURLOptions.Domain' is obsolete: 'The Domain property is deprecated. Please use Organization instead.
             Assert.Equal(options.Domain, parameters["domain"]);
+#pragma warning restore CS0618 // GetAuthorizationURLOptions.Domain' is obsolete: 'The Domain property is deprecated. Please use Organization instead.
             Assert.Equal(options.RedirectURI, parameters["redirect_uri"]);
             Assert.Equal("code", parameters["response_type"]);
         }
@@ -113,12 +117,30 @@
         }
 
         [Fact]
+        public void TestGetAuthorizationURLWithOrganization()
+        {
+            var options = new GetAuthorizationURLOptions
+            {
+                ClientId = "client_123",
+                Organization = "organization_123",
+                RedirectURI = "https://example.com/sso/callback",
+            };
+            string url = this.service.GetAuthorizationURL(options);
+
+            Dictionary<string, string> parameters = RequestUtilities.ParseURLParameters(url);
+            Assert.Equal(options.ClientId, parameters["client_id"]);
+            Assert.Equal(options.Organization, parameters["organization"]);
+            Assert.Equal(options.RedirectURI, parameters["redirect_uri"]);
+            Assert.Equal("code", parameters["response_type"]);
+        }
+
+        [Fact]
         public void TestGetAuthorizationURLWithState()
         {
             var options = new GetAuthorizationURLOptions
             {
                 ClientId = "client_123",
-                Domain = "foo-corp.com",
+                Organization = "organization_123",
                 RedirectURI = "https://example.com/sso/callback",
                 State = "state",
             };
@@ -126,7 +148,7 @@
 
             Dictionary<string, string> parameters = RequestUtilities.ParseURLParameters(url);
             Assert.Equal(options.ClientId, parameters["client_id"]);
-            Assert.Equal(options.Domain, parameters["domain"]);
+            Assert.Equal(options.Organization, parameters["organization"]);
             Assert.Equal(options.RedirectURI, parameters["redirect_uri"]);
             Assert.Equal(options.State, parameters["state"]);
             Assert.Equal("code", parameters["response_type"]);
