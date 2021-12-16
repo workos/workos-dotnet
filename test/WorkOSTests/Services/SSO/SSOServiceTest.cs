@@ -99,6 +99,44 @@
         }
 
         [Fact]
+        public void TestGetAuthorizationURLWithDomainHint()
+        {
+            var options = new GetAuthorizationURLOptions
+            {
+                ClientId = "client_123",
+                DomainHint = "foo-corp.com",
+                Provider = ConnectionType.GoogleOAuth,
+                RedirectURI = "https://example.com/sso/callback",
+            };
+            string url = this.service.GetAuthorizationURL(options);
+
+            Dictionary<string, string> parameters = RequestUtilities.ParseURLParameters(url);
+            Assert.Equal(options.ClientId, parameters["client_id"]);
+            Assert.Equal(options.DomainHint, parameters["domain_hint"]);
+            Assert.Equal(options.RedirectURI, parameters["redirect_uri"]);
+            Assert.Equal("code", parameters["response_type"]);
+        }
+
+        [Fact]
+        public void TestGetAuthorizationURLWithLoginHint()
+        {
+            var options = new GetAuthorizationURLOptions
+            {
+                ClientId = "client_123",
+                LoginHint = "foo@workos.com",
+                Provider = ConnectionType.GoogleOAuth,
+                RedirectURI = "https://example.com/sso/callback",
+            };
+            string url = this.service.GetAuthorizationURL(options);
+
+            Dictionary<string, string> parameters = RequestUtilities.ParseURLParameters(url);
+            Assert.Equal(options.ClientId, parameters["client_id"]);
+            Assert.Equal(options.LoginHint, parameters["login_hint"]);
+            Assert.Equal(options.RedirectURI, parameters["redirect_uri"]);
+            Assert.Equal("code", parameters["response_type"]);
+        }
+
+        [Fact]
         public void TestGetAuthorizationURLWithConnection()
         {
             var options = new GetAuthorizationURLOptions

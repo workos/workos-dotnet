@@ -28,6 +28,18 @@
         public string Domain { get; set; }
 
         /// <summary>
+        /// Domain hint that will be passed as a parameter to the IdP login page.
+        /// </summary>
+        [JsonProperty("domain_hint")]
+        public string DomainHint { get; set; }
+
+        /// <summary>
+        /// Username/email hint that will be passed as a parameter to the to IdP login page.
+        /// </summary>
+        [JsonProperty("login_hint")]
+        public string LoginHint { get; set; }
+
+        /// <summary>
         /// The unique identifier for a <see cref="Connection"/> record.
         /// </summary>
         [JsonProperty("connection")]
