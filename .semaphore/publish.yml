@@ -1,0 +1,27 @@
+version: v1.0
+
+name: Nuget Publishing
+
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: Publish
+    task:
+      secrets:
+        - name: dotnet-nuget
+      prologue:
+        commands:
+          - checkout
+          - wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+          - sudo dpkg -i packages-microsoft-prod.deb
+          - sudo apt-get install -y apt-transport-https
+          - sudo apt-get update
+          - sudo apt-get install -y dotnet-sdk-3.1
+      jobs:
+        - name: nuget publish
+          commands:
+            - dotnet pack -c Release src/WorkOS.net/WorkOS.net.csproj
+            - dotnet nuget push src/WorkOS.net/bin/Release/WorkOS.net.*.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate -k $DOTNET_NUGET_API_KEY
