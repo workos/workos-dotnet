@@ -5,7 +5,7 @@
     /// <summary>
     /// Contains pagination options for WorkOS records.
     /// </summary>
-    public class list_metadata
+    public class List_Metadata
     {
         /// <summary>
         /// Cursor to receive records before a provided identifier.

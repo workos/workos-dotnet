@@ -19,7 +19,7 @@
         /// <summary>
         /// Pagination cursor options.
         /// </summary>
-        [JsonProperty("list_metadata")]
-        public list_metadata listMetadata { get; set; }
+        [JsonProperty("List_Metadata")]
+        public List_Metadata List_Metadata { get; set; }
     }
 }
