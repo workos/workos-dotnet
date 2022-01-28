@@ -20,6 +20,6 @@
         /// Pagination cursor options.
         /// </summary>
         [JsonProperty("List_Metadata")]
-        public List_Metadata List_Metadata { get; set; }
+        public ListMetadata ListMetadata { get; set; }
     }
 }
