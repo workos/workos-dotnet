@@ -3,7 +3,6 @@ namespace WorkOS
     using System;
     using System.Security.Cryptography;
     using System.Text;
-    
     using Newtonsoft.Json;
 
     public class WebhookService : Service
@@ -20,7 +19,7 @@ namespace WorkOS
         /// Initializes a new instance of the <see cref="WebhookService"/> class.
         /// </summary>
         /// <param name="client">A client used to make requests to WorkOS.</param>
-        /// public WebhookService(WorkOSClient client)
+        public WebhookService(WorkOSClient client)
             : base(client)
         {
         }
