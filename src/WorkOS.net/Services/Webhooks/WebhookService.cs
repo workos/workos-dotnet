@@ -5,8 +5,24 @@ namespace WorkOS
     using System.Text;
     using Newtonsoft.Json;
 
-    public class WebhookService
+    public class WebhookService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PasswordlessService"/> class.
+        /// </summary>
+        public WebhookService()
+            : base(null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PasswordlessService"/> class.
+        /// </summary>
+        /// <param name="client">A client used to make requests to WorkOS.</param>
+        public WebhookService(WorkOSClient client)
+            : base(client)
+        {
+        }
         private const int DefaultTimeTolerance = 300;
 
         public static bool ConstantTimeAreEqual(byte[] a, byte[] b)
