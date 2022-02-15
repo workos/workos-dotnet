@@ -7,22 +7,6 @@ namespace WorkOS
 
     public class WebhookService : Service
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebhookService"/> class.
-        /// </summary>
-        public WebhookService()
-            : base(null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebhookService"/> class.
-        /// </summary>
-        /// <param name="client">A client used to make requests to WorkOS.</param>
-        public WebhookService(WorkOSClient client)
-            : base(client)
-        {
-        }
         private const int DefaultTimeTolerance = 300;
 
         public static bool ConstantTimeAreEqual(byte[] a, byte[] b)
