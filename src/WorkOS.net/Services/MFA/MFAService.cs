@@ -4,8 +4,7 @@ namespace WorkOS
     using System.Threading.Tasks;
     public class MFAService : Service
     {
-        public async Task<EnrollFactorResponse> EnrollFactor(
-                    EnrollFactorOptions options)
+        public async Task<EnrollFactorResponse> EnrollFactor(EnrollFactorOptions options)
                 {
                     var request = new WorkOSRequest
                     {

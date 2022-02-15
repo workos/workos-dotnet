@@ -1,7 +1,7 @@
 namespace WorkOS
 {
     using Newtonsoft.Json;
-    public class IEnrollFactorOptions : BaseOptions
+    public class EnrollFactorOptions : BaseOptions
     {
         /// <summary>
         /// Describes which type to use.
