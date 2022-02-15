@@ -1,7 +1,7 @@
 namespace WorkOS
 {
     using Newtonsoft.Json;
-    sealed class EnrollTotpFactorOptions : IEnrollFactorOptions
+    sealed class EnrollTotpFactorOptions : EnrollFactorOptions
     {
         /// <summary>
         /// Totp Issuer

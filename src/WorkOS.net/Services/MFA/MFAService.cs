@@ -5,7 +5,7 @@ namespace WorkOS
     public class MFAService : Service
     {
         public async Task<EnrollFactorResponse> EnrollFactor(
-                    IEnrollFactorOptions options)
+                    EnrollFactorOptions options)
                 {
                     var request = new WorkOSRequest
                     {

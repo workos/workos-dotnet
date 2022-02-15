@@ -1,7 +1,7 @@
 namespace WorkOS
 {
     using Newtonsoft.Json;
-    sealed class EnrollSmsFactorOptions : IEnrollFactorOptions
+    sealed class EnrollSmsFactorOptions : EnrollFactorOptions
     {
         /// <summary>
         /// Phone number for SMS type.
