@@ -1,17 +1,18 @@
 namespace WorkOS
 {
     using Newtonsoft.Json;
-    sealed class ChallengeSmsFactorOptions : ChallengeFactorOptions
+
+    public sealed class ChallengeSmsFactorOptions : ChallengeFactorOptions
     {
+        public ChallengeSmsFactorOptions(string smsTemplate)
+        {
+            this.SmsTemplate = smsTemplate;
+        }
+
         /// <summary>
         /// Phone number for SMS type.
         /// </summary>
         [JsonProperty("sms_template")]
-        string SmsTemplate { get; }
-
-        public ChallengeSmsFactorOptions(string smsTemplate)
-        {
-            SmsTemplate = smsTemplate;
-        }
+        public string SmsTemplate { get; }
     }
 }

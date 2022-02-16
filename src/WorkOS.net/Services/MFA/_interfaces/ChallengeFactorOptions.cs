@@ -1,12 +1,13 @@
  namespace WorkOS
 {
     using Newtonsoft.Json;
+
     public class ChallengeFactorOptions : BaseOptions
     {
         /// <summary>
-        /// Authentication Factor ID
+        /// Authentication Factor ID.
         /// </summary>
         [JsonProperty("authentication_factor_id")]
-        string type {get; set; }
+        public string Type { get; set; }
     }
 }

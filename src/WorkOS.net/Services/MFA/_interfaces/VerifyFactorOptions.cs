@@ -1,18 +1,19 @@
  namespace WorkOS
 {
     using Newtonsoft.Json;
-    public class IVerifyFactorOptions : BaseOptions
+
+    public class VerifyFactorOptions : BaseOptions
     {
         /// <summary>
         /// Describes which type to use.
         /// </summary>
         [JsonProperty("authentication_challenge_id")]
-        string id {get; set;}
+        public string Id { get; set; }
 
         /// <summary>
         /// Describes which type to use.
         /// </summary>
         [JsonProperty("code")]
-        string code {get; set;}
+        public string Code { get; set; }
     }
 }

@@ -38,7 +38,6 @@ namespace WorkOS
         [JsonProperty("type")]
         public string Type { get; set; }
 
-
         /// <summary>
         /// The unique identifier for the Organization in which the Connection resides.
         /// </summary>

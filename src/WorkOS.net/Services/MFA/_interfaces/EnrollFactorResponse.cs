@@ -8,25 +8,25 @@ namespace WorkOS
     public class EnrollFactorResponse
     {
         /// <summary>
-        /// object type
+        /// Object type.
         /// </summary>
         [JsonProperty("object")]
         public string Object { get; set; }
 
         /// <summary>
-        /// unique factor identifier
+        /// Unique factor identifier.
         /// </summary>
         [JsonProperty("id")]
         public string Id { get; set; }
 
         /// <summary>
-        /// created_at date
+        /// Created_at date.
         /// </summary>
         [JsonProperty("created_at")]
         public string CreatedAt { get; set; }
 
         /// <summary>
-        /// updated_at date
+        /// Updated_at date.
         /// </summary>
         [JsonProperty("updated_at")]
         public string UpdatedAt { get; set; }

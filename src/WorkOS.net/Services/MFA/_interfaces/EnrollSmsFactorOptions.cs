@@ -1,17 +1,18 @@
 namespace WorkOS
 {
     using Newtonsoft.Json;
-    sealed class EnrollSmsFactorOptions : EnrollFactorOptions
+
+    public sealed class EnrollSmsFactorOptions : EnrollFactorOptions
     {
+        public EnrollSmsFactorOptions(string phoneNumber)
+        {
+            this.PhoneNumber = phoneNumber;
+        }
+
         /// <summary>
         /// Phone number for SMS type.
         /// </summary>
         [JsonProperty("phone_number")]
-        string PhoneNumber { get; }
-
-        public EnrollSmsFactorOptions(string phoneNumber)
-        {
-            PhoneNumber = phoneNumber;
-        }
+        public string PhoneNumber { get; }
     }
 }
