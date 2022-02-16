@@ -4,7 +4,7 @@ namespace WorkOS
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Contains information about a MFA Factor record.
+    /// Contains information about an MFA Factor record.
     /// </summary>
     public class Factor
     {
