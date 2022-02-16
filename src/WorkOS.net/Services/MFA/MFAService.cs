@@ -56,6 +56,11 @@ namespace WorkOS
             return await this.Client.MakeAPIRequest<ChallengeFactorResponse>(request);
         }
 
+        /// <summary>
+        /// Verify MFA Challenge.
+        /// </summary>
+        /// <param name="options">Parameters used to verify the challenge.</param>
+        /// <returns>Verified Challenge response.</returns>
         public async Task<VerifyFactorResponse> VerifyFactor(VerifyFactorOptions options)
         {
             var request = new WorkOSRequest
