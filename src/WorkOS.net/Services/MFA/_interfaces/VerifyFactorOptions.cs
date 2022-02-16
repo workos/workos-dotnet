@@ -5,10 +5,10 @@
     public class VerifyFactorOptions : BaseOptions
     {
         /// <summary>
-        /// Describes which type to use.
+        /// Auth ID of the Challenge.
         /// </summary>
         [JsonProperty("authentication_challenge_id")]
-        public string Id { get; set; }
+        public string ChallengeId { get; set; }
 
         /// <summary>
         /// Describes which type to use.

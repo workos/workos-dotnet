@@ -1,13 +1,20 @@
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("WorkOSTests")]
+
 namespace WorkOS
 {
     using Newtonsoft.Json;
 
     public class EnrollFactorOptions : BaseOptions
     {
+        internal EnrollFactorOptions(string type)
+        {
+            this.Type = type;
+        }
+
         /// <summary>
-        /// Describes which type to use.
+        /// The type of factor to enroll.
         /// </summary>
         [JsonProperty("type")]
-        public string Type { get; set; }
+        public string Type { get; }
     }
 }

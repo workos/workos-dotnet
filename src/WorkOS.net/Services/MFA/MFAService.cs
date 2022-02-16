@@ -3,21 +3,21 @@ namespace WorkOS
     using System.Net.Http;
     using System.Threading.Tasks;
 
-    public class MFAService : Service
+    public class MfaService : Service
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MFAService"/> class.
+        /// Initializes a new instance of the <see cref="MfaService"/> class.
         /// </summary>
-        public MFAService()
+        public MfaService()
             : base(null)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MFAService"/> class.
+        /// Initializes a new instance of the <see cref="MfaService"/> class.
         /// </summary>
         /// <param name="client">A client used to make requests to WorkOS.</param>
-        public MFAService(WorkOSClient client)
+        public MfaService(WorkOSClient client)
             : base(client)
         {
         }

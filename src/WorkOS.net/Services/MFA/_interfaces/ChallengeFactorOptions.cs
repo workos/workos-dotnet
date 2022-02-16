@@ -8,6 +8,6 @@
         /// Authentication Factor ID.
         /// </summary>
         [JsonProperty("authentication_factor_id")]
-        public string Type { get; set; }
+        public string FactorId { get; set; }
     }
 }

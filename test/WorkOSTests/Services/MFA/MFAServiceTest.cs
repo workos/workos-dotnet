@@ -8,13 +8,13 @@ namespace WorkOSTests
     using WorkOS;
     using Xunit;
 
-    public class MFAServiceTest
+    public class MfaServiceTest
     {
         private readonly HttpMock httpMock;
-        private readonly MFAService service;
+        private readonly MfaService service;
 
         // private readonly Factor mockFactor;
-        public MFAServiceTest()
+        public MfaServiceTest()
         {
             this.httpMock = new HttpMock();
             var client = new WorkOSClient(
@@ -23,16 +23,13 @@ namespace WorkOSTests
                     ApiKey = "test",
                     HttpClient = this.httpMock.HttpClient,
                 });
-            this.service = new MFAService(client);
+            this.service = new MfaService(client);
         }
 
         [Fact]
         public void TestGetAuthorizationURLWithNoConnectionDomainOrProvider()
         {
-            var options = new EnrollFactorOptions()
-            {
-                Type = "generic_oidc",
-            };
+            var options = new EnrollFactorOptions("generic_oidc");
             var exception = Assert.ThrowsAsync<ArgumentNullException>(() =>
                 this.service.EnrollFactor(options));
         }

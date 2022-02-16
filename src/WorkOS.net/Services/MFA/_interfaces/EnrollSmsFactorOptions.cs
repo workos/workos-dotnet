@@ -5,6 +5,7 @@ namespace WorkOS
     public sealed class EnrollSmsFactorOptions : EnrollFactorOptions
     {
         public EnrollSmsFactorOptions(string phoneNumber)
+        : base("sms")
         {
             this.PhoneNumber = phoneNumber;
         }
