@@ -27,9 +27,17 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public void TestGetAuthorizationURLWithNoConnectionDomainOrProvider()
+        public void TestGenericEnroll()
         {
             var options = new EnrollFactorOptions("generic_oidc");
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(() =>
+                this.service.EnrollFactor(options));
+        }
+
+        [Fact]
+        public void TestSmsEnroll()
+        {
+            var options = new EnrollSmsFactorOptions("+15555555555");
             var exception = Assert.ThrowsAsync<ArgumentNullException>(() =>
                 this.service.EnrollFactor(options));
         }
