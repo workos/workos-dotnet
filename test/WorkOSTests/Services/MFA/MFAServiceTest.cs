@@ -41,5 +41,13 @@ namespace WorkOSTests
             var exception = Assert.ThrowsAsync<ArgumentNullException>(() =>
                 this.service.EnrollFactor(options));
         }
+
+        [Fact]
+        public void TestTotpEnroll()
+        {
+            var options = new EnrollTotpFactorOptions("WorkOS", "some_user");
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(() =>
+                this.service.EnrollFactor(options));
+        }
     }
 }
