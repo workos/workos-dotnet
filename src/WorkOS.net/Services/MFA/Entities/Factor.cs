@@ -39,7 +39,7 @@ namespace WorkOS
         public string Type { get; set; }
 
         /// <summary>
-        /// The unique identifier for the Organization in which the Connection resides.
+        /// The unique identifier for the Organization in which the MFA Factor resides.
         /// </summary>
         [JsonProperty("environment_id")]
         public string EnvironmentId { get; set; }
