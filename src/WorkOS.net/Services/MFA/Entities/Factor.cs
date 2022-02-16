@@ -21,13 +21,13 @@ namespace WorkOS
         public string Id { get; set; }
 
         /// <summary>
-        /// The timestamp of when the Connection was created.
+        /// The timestamp of when the Factor was created.
         /// </summary>
         [JsonProperty("created_at")]
         public string CreatedAt { get; set; }
 
         /// <summary>
-        /// The timestamp of when the Connection was updated.
+        /// The timestamp of when the Factor was updated.
         /// </summary>
         [JsonProperty("updated_at")]
         public string UpdatedAt { get; set; }

@@ -6,6 +6,23 @@ namespace WorkOS
     public class MFAService : Service
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="MFAService"/> class.
+        /// </summary>
+        public MFAService()
+            : base(null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MFAService"/> class.
+        /// </summary>
+        /// <param name="client">A client used to make requests to WorkOS.</param>
+        public MFAService(WorkOSClient client)
+            : base(client)
+        {
+        }
+
+        /// <summary>
         /// Enrolls user in MFA.
         /// </summary>
         /// <param name="options">Parameters used to enroll the MFA.</param>

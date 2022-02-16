@@ -50,4 +50,3 @@ namespace WorkOS
         public string AuthenticationId { get; set; }
     }
 }
-
