@@ -1,52 +1,53 @@
 namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
 
     /// <summary>
-    /// The response from the WorkOS API when enrolling a Factor.
+    /// Challenge record.
     /// </summary>
-    public class ChallengeFactorResponse
+    public class Challenge
     {
         /// <summary>
-        /// Object type.
+        /// Description of the record.
         /// </summary>
         [JsonProperty("object")]
-        public string Object { get; set; }
+        public const string Object = "authentication_factor";
 
         /// <summary>
-        /// Unique factor identifier.
+        /// The Authentication Factor's identifier.
         /// </summary>
         [JsonProperty("id")]
         public string Id { get; set; }
 
         /// <summary>
-        /// Created_at date.
+        /// The timestamp of when the Factor was created.
         /// </summary>
         [JsonProperty("created_at")]
         public string CreatedAt { get; set; }
 
         /// <summary>
-        /// Updated_at date.
+        /// The timestamp of when the Factor was updated.
         /// </summary>
         [JsonProperty("updated_at")]
         public string UpdatedAt { get; set; }
 
         /// <summary>
-        /// Type of MFA.
+        /// The timestamp of when the Factor was updated.
         /// </summary>
         [JsonProperty("expires_at")]
         public string ExpiresAt { get; set; }
 
         /// <summary>
-        /// Environment ID.
+        /// The timestamp of when the Factor was updated.
         /// </summary>
         [JsonProperty("code")]
         public string Code { get; set; }
 
         /// <summary>
-        /// Environment ID.
+        /// The timestamp of when the Factor was updated.
         /// </summary>
-        [JsonProperty("authentication_id")]
-        public string AuthenticationId { get; set; }
+        [JsonProperty("authentication_factor_id")]
+        public string FactorId { get; set; }
     }
 }

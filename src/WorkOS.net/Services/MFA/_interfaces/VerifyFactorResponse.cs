@@ -11,12 +11,12 @@ namespace WorkOS
         /// Challenge Factor body response.
         /// </summary>
         [JsonProperty("challenge")]
-        public string Challenge { get; set; }
+        public Challenge Challenge { get; set; }
 
         /// <summary>
         /// Validity of code of challenge.
         /// </summary>
         [JsonProperty("valid")]
-        public string Valid { get; set; }
+        public bool Valid { get; set; }
     }
 }

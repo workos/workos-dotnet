@@ -12,7 +12,7 @@ namespace WorkOS
         /// Description of the record.
         /// </summary>
         [JsonProperty("object")]
-        public const string Object = "authentication_factor";
+        public string Object { get; set; }
 
         /// <summary>
         /// The Authentication Factor's identifier.
@@ -43,5 +43,11 @@ namespace WorkOS
         /// </summary>
         [JsonProperty("environment_id")]
         public string EnvironmentId { get; set; }
+
+        /// <summary>
+        /// Totp details when enroll response is Totp.
+        /// </summary>
+        [JsonProperty("totp")]
+        public Totp Totp { get; set; }
     }
 }

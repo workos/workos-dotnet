@@ -27,11 +27,13 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public void TestGenericEnroll()
+        public async void TestGenericEnroll()
         {
             var options = new EnrollFactorOptions("generic_oidc");
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(() =>
-                this.service.EnrollFactor(options));
+            var response = await this.service.EnrollFactor(options);
+            var responseObject = response.Object;
+            Assert.NotNull(response);
+            Assert.Equal("authentication_factor", responseObject);
         }
 
         [Fact]

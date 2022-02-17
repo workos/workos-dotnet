@@ -28,8 +28,11 @@ namespace WorkOS
         /// Enrolls user in MFA.
         /// </summary>
         /// <param name="options">Parameters used to enroll the MFA.</param>
+        /// <param name="cancellationToken"> An optional token to cancel the request.</param>
         /// <returns>Enroll response.</returns>
-        public async Task<EnrollFactorResponse> EnrollFactor(EnrollFactorOptions options)
+        public async Task<Factor> EnrollFactor(
+            EnrollFactorOptions options,
+            CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -37,15 +40,18 @@ namespace WorkOS
                 Method = HttpMethod.Post,
                 Path = "/auth/factors/enroll",
             };
-            return await this.Client.MakeAPIRequest<EnrollFactorResponse>(request);
+            return await this.Client.MakeAPIRequest<Factor>(request, cancellationToken);
         }
 
         /// <summary>
         /// Create MFA Challenge.
         /// </summary>
         /// <param name="options">Parameters used to create the challenge.</param>
+        /// <param name="cancellationToken"> An optional token to cancel the request.</param>
         /// <returns>Challenge response.</returns>
-        public async Task<ChallengeFactorResponse> ChallengeFactor(ChallengeFactorOptions options)
+        public async Task<Challenge> ChallengeFactor(
+            ChallengeFactorOptions options,
+            CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -53,15 +59,18 @@ namespace WorkOS
                 Method = HttpMethod.Post,
                 Path = "/auth/factors/enroll",
             };
-            return await this.Client.MakeAPIRequest<ChallengeFactorResponse>(request);
+            return await this.Client.MakeAPIRequest<Challenge>(request, cancellationToken);
         }
 
         /// <summary>
         /// Verify MFA Challenge.
         /// </summary>
         /// <param name="options">Parameters used to verify the challenge.</param>
+        /// <param name="cancellationToken"> An optional token to cancel the request.</param>
         /// <returns>Verified Challenge response.</returns>
-        public async Task<VerifyFactorResponse> VerifyFactor(VerifyFactorOptions options)
+        public async Task<VerifyFactorResponse> VerifyFactor(
+            VerifyFactorOptions options,
+            CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -69,7 +78,7 @@ namespace WorkOS
                 Method = HttpMethod.Post,
                 Path = "/auth/factors/verify",
             };
-            return await this.Client.MakeAPIRequest<VerifyFactorResponse>(request);
+            return await this.Client.MakeAPIRequest<VerifyFactorResponse>(request, cancellationToken);
         }
 
         /// <summary>
