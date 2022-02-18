@@ -33,19 +33,19 @@ namespace WorkOS
         public string UpdatedAt { get; set; }
 
         /// <summary>
-        /// The timestamp of when the Factor was updated.
+        /// The timestamp of when the Factor will expire.
         /// </summary>
         [JsonProperty("expires_at")]
         public string ExpiresAt { get; set; }
 
         /// <summary>
-        /// The timestamp of when the Factor was updated.
+        /// The verification code.
         /// </summary>
         [JsonProperty("code")]
         public string Code { get; set; }
 
         /// <summary>
-        /// The timestamp of when the Factor was updated.
+        /// The factor id.
         /// </summary>
         [JsonProperty("authentication_factor_id")]
         public string FactorId { get; set; }

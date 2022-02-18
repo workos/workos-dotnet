@@ -4,7 +4,7 @@ namespace WorkOS
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Totp properties in Enroll Responses with Totp type.
+    /// Totp properties in Enroll Responses with Sms type.
     /// </summary>
     public class Sms
     {
