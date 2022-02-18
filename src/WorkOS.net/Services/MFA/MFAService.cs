@@ -108,7 +108,7 @@ namespace WorkOS
         /// An optional token to cancel the request.
         /// </param>
         /// <returns>A deleted Factor record.</returns>
-        public async Task<Factor> DeleteFactor(string id, CancellationToken cancellationToken = default)
+        public async Task DeleteFactor(string id, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -116,7 +116,7 @@ namespace WorkOS
                 Path = $"/auth/factors/{id}",
             };
 
-            return await this.Client.MakeAPIRequest<Factor>(request, cancellationToken);
+            await this.Client.MakeRawAPIRequest(request, cancellationToken);
         }
     }
 }

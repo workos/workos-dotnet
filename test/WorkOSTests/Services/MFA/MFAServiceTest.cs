@@ -2,6 +2,7 @@ namespace WorkOSTests
 {
     using System.Net;
     using System.Net.Http;
+    using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
 
@@ -44,10 +45,9 @@ namespace WorkOSTests
 
             var options = new EnrollFactorOptions("generic_oidc");
             var response = await this.service.EnrollFactor(options);
-            var responseObject = response.Object;
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
             Assert.NotNull(response);
-            Assert.Equal("authentication_factor", responseObject);
+            Assert.Equal("authentication_factor", response.Object);
         }
 
         [Fact]
@@ -77,10 +77,9 @@ namespace WorkOSTests
 
             var options = new EnrollSmsFactorOptions("+15555555555");
             var response = await this.service.EnrollFactor(options);
-            var responseNumber = response.Sms.PhoneNumber;
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
             Assert.NotNull(response);
-            Assert.Equal("+15555555555", responseNumber);
+            Assert.Equal("+15555555555", response.Sms.PhoneNumber);
         }
 
         [Fact]
@@ -112,7 +111,6 @@ namespace WorkOSTests
 
             var options = new EnrollTotpFactorOptions("Issuer", "some_user");
             var response = await this.service.EnrollFactor(options);
-            var responseTotp = response.Totp;
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
             Assert.NotNull(response);
             Assert.NotNull(response.Totp);
@@ -121,7 +119,7 @@ namespace WorkOSTests
         [Fact]
         public async void TestChallengeWithCode()
         {
-            var enrollChallengeResponse = new Challenge
+            var challengeResponse = new Challenge
             {
                 Object = "authentication_factor",
                 Id = "auth_challenge_test123",
@@ -136,14 +134,13 @@ namespace WorkOSTests
                 HttpMethod.Post,
                 "/auth/factors/enroll",
                 HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(enrollChallengeResponse));
+                RequestUtilities.ToJsonString(challengeResponse));
 
             var options = new ChallengeFactorOptions
             {
                 FactorId = "auth_factor_test123",
             };
             var response = await this.service.ChallengeFactor(options);
-            var responseCode = response.Code;
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
             Assert.NotNull(response);
             Assert.NotNull(response.Code);
@@ -152,7 +149,7 @@ namespace WorkOSTests
         [Fact]
         public async void TestChallengeWithoutCode()
         {
-            var enrollChallengeResponse = new Challenge
+            var challengeResponse = new Challenge
             {
                 Object = "authentication_factor",
                 Id = "auth_challenge_test123",
@@ -165,17 +162,108 @@ namespace WorkOSTests
                 HttpMethod.Post,
                 "/auth/factors/enroll",
                 HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(enrollChallengeResponse));
+                RequestUtilities.ToJsonString(challengeResponse));
 
             var options = new ChallengeFactorOptions
             {
                 FactorId = "auth_factor_test123",
             };
             var response = await this.service.ChallengeFactor(options);
-            var responseCode = response.Code;
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
             Assert.NotNull(response);
             Assert.NotNull(response.Id);
+        }
+
+        [Fact]
+        public async void TestVerify()
+        {
+            var verifyChallenge = new Challenge
+            {
+                Object = "authentication_factor",
+                Id = "auth_challenge_test123",
+                CreatedAt = "2022-02-17T22:39:26.616Z",
+                UpdatedAt = "2022-02-17T22:39:26.616Z",
+                ExpiresAt = "2022-02-18T16:08:03.205Z",
+                Code = "12345",
+                FactorId = "auth_factor_test123",
+            };
+
+            var verifyResponse = new VerifyFactorResponse
+            {
+                Challenge = verifyChallenge,
+                Valid = true,
+            };
+
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/auth/factors/verify",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(verifyResponse));
+
+            var options = new VerifyFactorOptions
+            {
+                ChallengeId = "auth_challenge_test123",
+                Code = "12345",
+            };
+            var response = await this.service.VerifyFactor(options);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/verify");
+            Assert.NotNull(response);
+            Assert.True(response.Valid);
+        }
+
+        [Fact]
+        public async void TestGetFactor()
+        {
+            var mockFactor = new Factor
+            {
+                Object = "authentication_factor",
+                Id = "auth_factor_test123",
+                CreatedAt = "2022-02-17T22:39:26.616Z",
+                UpdatedAt = "2022-02-17T22:39:26.616Z",
+                Type = "generic_otp",
+                EnvironmentId = "environment_test123",
+            };
+
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                $"/auth/factors/{mockFactor.Id}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(mockFactor));
+
+            var response = await this.service.GetFactor(mockFactor.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Get,
+                $"/auth/factors/{mockFactor.Id}");
+            Assert.Equal(
+                JsonConvert.SerializeObject(mockFactor),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestDeleteFactor()
+        {
+            var mockFactor = new Factor
+            {
+                Object = "authentication_factor",
+                Id = "auth_factor_test123",
+                CreatedAt = "2022-02-17T22:39:26.616Z",
+                UpdatedAt = "2022-02-17T22:39:26.616Z",
+                Type = "generic_otp",
+                EnvironmentId = "environment_test123",
+            };
+
+            this.httpMock.MockResponse(
+                HttpMethod.Delete,
+                $"/auth/factors/{mockFactor.Id}",
+                HttpStatusCode.Accepted,
+                "Accepted");
+
+            await this.service.DeleteFactor(mockFactor.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Delete,
+                $"/auth/factors/{mockFactor.Id}");
         }
     }
 }
