@@ -1,10 +1,7 @@
 namespace WorkOSTests
 {
-    using System;
-    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
-    using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
 
@@ -119,6 +116,66 @@ namespace WorkOSTests
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
             Assert.NotNull(response);
             Assert.NotNull(response.Totp);
+        }
+
+        [Fact]
+        public async void TestChallengeWithCode()
+        {
+            var enrollChallengeResponse = new Challenge
+            {
+                Object = "authentication_factor",
+                Id = "auth_challenge_test123",
+                CreatedAt = "2022-02-17T22:39:26.616Z",
+                UpdatedAt = "2022-02-17T22:39:26.616Z",
+                ExpiresAt = "2022-02-18T16:08:03.205Z",
+                Code = "12345",
+                FactorId = "auth_factor_test123",
+            };
+
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/auth/factors/enroll",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(enrollChallengeResponse));
+
+            var options = new ChallengeFactorOptions
+            {
+                FactorId = "auth_factor_test123",
+            };
+            var response = await this.service.ChallengeFactor(options);
+            var responseCode = response.Code;
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
+            Assert.NotNull(response);
+            Assert.NotNull(response.Code);
+        }
+
+        [Fact]
+        public async void TestChallengeWithoutCode()
+        {
+            var enrollChallengeResponse = new Challenge
+            {
+                Object = "authentication_factor",
+                Id = "auth_challenge_test123",
+                CreatedAt = "2022-02-17T22:39:26.616Z",
+                UpdatedAt = "2022-02-17T22:39:26.616Z",
+                FactorId = "auth_factor_test123",
+            };
+
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/auth/factors/enroll",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(enrollChallengeResponse));
+
+            var options = new ChallengeFactorOptions
+            {
+                FactorId = "auth_factor_test123",
+            };
+            var response = await this.service.ChallengeFactor(options);
+            var responseCode = response.Code;
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
+            Assert.NotNull(response);
+            Assert.NotNull(response.Id);
         }
     }
 }
