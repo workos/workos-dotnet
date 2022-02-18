@@ -32,11 +32,11 @@ namespace WorkOSTests
             var enrollFactorResponse = new Factor
             {
                 Object = "authentication_factor",
-                Id = "auth_factor_01FW4XE6WTNHABQD6TGP6125AV",
+                Id = "auth_factor_test123",
                 CreatedAt = "2022-02-17T22:39:26.616Z",
                 UpdatedAt = "2022-02-17T22:39:26.616Z",
                 Type = "generic_otp",
-                EnvironmentId = "environment_01EPZWK497BAJ96SW5Q99RWH3C",
+                EnvironmentId = "environment_test123",
             };
 
             this.httpMock.MockResponse(
@@ -54,19 +54,71 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public void TestSmsEnroll()
+        public async void TestSmsEnroll()
         {
+            var phoneDetails = new Sms
+            {
+                PhoneNumber = "+15555555555",
+            };
+
+            var enrollFactorResponse = new Factor
+            {
+                Object = "authentication_factor",
+                Id = "auth_factor_test123",
+                CreatedAt = "2022-02-17T22:39:26.616Z",
+                UpdatedAt = "2022-02-17T22:39:26.616Z",
+                Type = "sms",
+                EnvironmentId = "environment_test123",
+                Sms = phoneDetails,
+            };
+
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/auth/factors/enroll",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(enrollFactorResponse));
+
             var options = new EnrollSmsFactorOptions("+15555555555");
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(() =>
-                this.service.EnrollFactor(options));
+            var response = await this.service.EnrollFactor(options);
+            var responseNumber = response.Sms.PhoneNumber;
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
+            Assert.NotNull(response);
+            Assert.Equal("+15555555555", responseNumber);
         }
 
         [Fact]
-        public void TestTotpEnroll()
+        public async void TestTotpEnroll()
         {
-            var options = new EnrollTotpFactorOptions("WorkOS", "some_user");
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(() =>
-                this.service.EnrollFactor(options));
+            var totpDetails = new Totp
+            {
+                QrCode = "data:image/png;base64,some long text",
+                Secret = "secret",
+                Uri = "otpauth://totp/Issuer:some_user?secret=secret",
+            };
+
+            var enrollFactorResponse = new Factor
+            {
+                Object = "authentication_factor",
+                Id = "auth_factor_test123",
+                CreatedAt = "2022-02-17T22:39:26.616Z",
+                UpdatedAt = "2022-02-17T22:39:26.616Z",
+                Type = "sms",
+                EnvironmentId = "environment_test123",
+                Totp = totpDetails,
+            };
+
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/auth/factors/enroll",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(enrollFactorResponse));
+
+            var options = new EnrollTotpFactorOptions("Issuer", "some_user");
+            var response = await this.service.EnrollFactor(options);
+            var responseTotp = response.Totp;
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
+            Assert.NotNull(response);
+            Assert.NotNull(response.Totp);
         }
     }
 }
