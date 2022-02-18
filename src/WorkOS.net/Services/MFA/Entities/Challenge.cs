@@ -12,7 +12,7 @@ namespace WorkOS
         /// Description of the record.
         /// </summary>
         [JsonProperty("object")]
-        public string Object { get; set; }
+        public const string Object = "authentication_challenge";
 
         /// <summary>
         /// The Authentication Factor's identifier.

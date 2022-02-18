@@ -29,7 +29,6 @@ namespace WorkOSTests
         {
             var enrollFactorResponse = new Factor
             {
-                Object = "authentication_factor",
                 Id = "auth_factor_test123",
                 CreatedAt = "2022-02-17T22:39:26.616Z",
                 UpdatedAt = "2022-02-17T22:39:26.616Z",
@@ -47,7 +46,6 @@ namespace WorkOSTests
             var response = await this.service.EnrollFactor(options);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
             Assert.NotNull(response);
-            Assert.Equal("authentication_factor", response.Object);
         }
 
         [Fact]
@@ -60,7 +58,6 @@ namespace WorkOSTests
 
             var enrollFactorResponse = new Factor
             {
-                Object = "authentication_factor",
                 Id = "auth_factor_test123",
                 CreatedAt = "2022-02-17T22:39:26.616Z",
                 UpdatedAt = "2022-02-17T22:39:26.616Z",
@@ -94,7 +91,6 @@ namespace WorkOSTests
 
             var enrollFactorResponse = new Factor
             {
-                Object = "authentication_factor",
                 Id = "auth_factor_test123",
                 CreatedAt = "2022-02-17T22:39:26.616Z",
                 UpdatedAt = "2022-02-17T22:39:26.616Z",
@@ -121,7 +117,6 @@ namespace WorkOSTests
         {
             var challengeResponse = new Challenge
             {
-                Object = "authentication_factor",
                 Id = "auth_challenge_test123",
                 CreatedAt = "2022-02-17T22:39:26.616Z",
                 UpdatedAt = "2022-02-17T22:39:26.616Z",
@@ -151,7 +146,6 @@ namespace WorkOSTests
         {
             var challengeResponse = new Challenge
             {
-                Object = "authentication_factor",
                 Id = "auth_challenge_test123",
                 CreatedAt = "2022-02-17T22:39:26.616Z",
                 UpdatedAt = "2022-02-17T22:39:26.616Z",
@@ -179,7 +173,6 @@ namespace WorkOSTests
         {
             var verifyChallenge = new Challenge
             {
-                Object = "authentication_factor",
                 Id = "auth_challenge_test123",
                 CreatedAt = "2022-02-17T22:39:26.616Z",
                 UpdatedAt = "2022-02-17T22:39:26.616Z",
@@ -216,7 +209,6 @@ namespace WorkOSTests
         {
             var mockFactor = new Factor
             {
-                Object = "authentication_factor",
                 Id = "auth_factor_test123",
                 CreatedAt = "2022-02-17T22:39:26.616Z",
                 UpdatedAt = "2022-02-17T22:39:26.616Z",
@@ -245,7 +237,6 @@ namespace WorkOSTests
         {
             var mockFactor = new Factor
             {
-                Object = "authentication_factor",
                 Id = "auth_factor_test123",
                 CreatedAt = "2022-02-17T22:39:26.616Z",
                 UpdatedAt = "2022-02-17T22:39:26.616Z",
