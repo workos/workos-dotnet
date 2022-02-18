@@ -29,9 +29,26 @@ namespace WorkOSTests
         [Fact]
         public async void TestGenericEnroll()
         {
+            var enrollFactorResponse = new Factor
+            {
+                Object = "authentication_factor",
+                Id = "auth_factor_01FW4XE6WTNHABQD6TGP6125AV",
+                CreatedAt = "2022-02-17T22:39:26.616Z",
+                UpdatedAt = "2022-02-17T22:39:26.616Z",
+                Type = "generic_otp",
+                EnvironmentId = "environment_01EPZWK497BAJ96SW5Q99RWH3C",
+            };
+
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/auth/factors/enroll",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(enrollFactorResponse));
+
             var options = new EnrollFactorOptions("generic_oidc");
             var response = await this.service.EnrollFactor(options);
             var responseObject = response.Object;
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
             Assert.NotNull(response);
             Assert.Equal("authentication_factor", responseObject);
         }

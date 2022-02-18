@@ -49,5 +49,11 @@ namespace WorkOS
         /// </summary>
         [JsonProperty("totp")]
         public Totp Totp { get; set; }
+
+        /// <summary>
+        /// Sms details when enroll response is Sms.
+        /// </summary>
+        [JsonProperty("sms")]
+        public Sms Sms { get; set; }
     }
 }

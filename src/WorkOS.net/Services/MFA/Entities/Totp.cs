@@ -12,7 +12,7 @@ namespace WorkOS
         /// QR code value.
         /// </summary>
         [JsonProperty("qr_code")]
-        public const string QrCode = "authentication_factor";
+        public string QrCode { get; set; }
 
         /// <summary>
         /// Totp secret.
