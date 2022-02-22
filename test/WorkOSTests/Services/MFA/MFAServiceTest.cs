@@ -127,7 +127,7 @@ namespace WorkOSTests
 
             this.httpMock.MockResponse(
                 HttpMethod.Post,
-                "/auth/factors/enroll",
+                "/auth/factors/challenge",
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(challengeResponse));
 
@@ -136,7 +136,7 @@ namespace WorkOSTests
                 FactorId = "auth_factor_test123",
             };
             var response = await this.service.ChallengeFactor(options);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/challenge");
             Assert.NotNull(response);
             Assert.NotNull(response.Code);
         }
@@ -154,7 +154,7 @@ namespace WorkOSTests
 
             this.httpMock.MockResponse(
                 HttpMethod.Post,
-                "/auth/factors/enroll",
+                "/auth/factors/challenge",
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(challengeResponse));
 
@@ -163,7 +163,7 @@ namespace WorkOSTests
                 FactorId = "auth_factor_test123",
             };
             var response = await this.service.ChallengeFactor(options);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/challenge");
             Assert.NotNull(response);
             Assert.NotNull(response.Id);
         }

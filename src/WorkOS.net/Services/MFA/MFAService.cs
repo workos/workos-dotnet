@@ -57,7 +57,7 @@ namespace WorkOS
             {
                 Options = options,
                 Method = HttpMethod.Post,
-                Path = "/auth/factors/enroll",
+                Path = "/auth/factors/challenge",
             };
             return await this.Client.MakeAPIRequest<Challenge>(request, cancellationToken);
         }
