@@ -20,7 +20,7 @@
         public string Search { get; set; }
 
         /// <summary>
-        /// Organization Id of a <see cref="Directory"/>. Can be empty.
+        /// Organization ID of a <see cref="Directory"/>. Can be empty.
         /// </summary>
         [JsonProperty("organization_id")]
         public string OrganizationId { get; set; }
