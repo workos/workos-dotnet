@@ -18,5 +18,11 @@
         /// </summary>
         [JsonProperty("search")]
         public string Search { get; set; }
+
+        /// <summary>
+        /// Domain of a <see cref="Directory"/>. Can be empty.
+        /// </summary>
+        [JsonProperty("organization_id")]
+        public string OrganizationId { get; set; }
     }
 }
