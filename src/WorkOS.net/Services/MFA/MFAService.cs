@@ -78,7 +78,23 @@ namespace WorkOS
                 Method = HttpMethod.Post,
                 Path = "/auth/factors/verify",
             };
-            return await this.Client.MakeAPIRequest<VerifyFactorResponse>(request, cancellationToken);
+            var response = await this.Client.MakeAPIRequest<VerifyFactorResponse>(request, cancellationToken);
+
+            if (response.Challenge is null && response.IsValid is false && response.ErrorCode.Equals("authentication_challenge_previously_verified"))
+            {
+                throw new Exception($"The authentication challenge {options.ChallengeId} has already been verified.");
+            }
+
+            else if (response.Challenge is null && response.IsValid is false && response.ErrorCode.Equals("authentication_challenge_expired"))
+            {
+                throw new Exception($"The authentication challenge {options.ChallengeId} has expired.");
+            }
+
+            else if (response.Challenge is null && response.ErrorCode is null){
+                throw new Exception("The application has encountered an unknown error. Please reach out to support@Workos.com");
+            }
+
+            return response;
         }
 
         /// <summary>
