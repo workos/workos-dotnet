@@ -181,7 +181,7 @@ namespace WorkOSTests
                 FactorId = "auth_factor_test123",
             };
 
-            var verifyResponse = new VerifyFactorResponse
+            var verifyResponse = new VerifyFactorResponseSuccess
             {
                 Challenge = verifyChallenge,
                 IsValid = true,
@@ -199,9 +199,12 @@ namespace WorkOSTests
                 Code = "12345",
             };
             var response = await this.service.VerifyFactor(options);
+            if (response is VerifyFactorResponseSuccess successResponse)
+            {
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/verify");
-            Assert.NotNull(response);
-            Assert.True(response.IsValid);
+            Assert.NotNull(successResponse);
+            Assert.True(successResponse.IsValid);
+            }
         }
 
         [Fact]

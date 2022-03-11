@@ -1,6 +1,7 @@
 namespace WorkOS
 {
     using System;
+    using System.IO;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
@@ -67,7 +68,7 @@ namespace WorkOS
         /// </summary>
         /// <param name="options">Parameters used to verify the challenge.</param>
         /// <param name="cancellationToken"> An optional token to cancel the request.</param>
-        /// <returns>Verified Challenge response.</returns>
+        /// <returns>Successful verified response or an error response.</returns>
         public async Task<VerifyFactorResponse> VerifyFactor(
             VerifyFactorOptions options,
             CancellationToken cancellationToken = default)
@@ -78,23 +79,18 @@ namespace WorkOS
                 Method = HttpMethod.Post,
                 Path = "/auth/factors/verify",
             };
-            var response = await this.Client.MakeAPIRequest<VerifyFactorResponse>(request, cancellationToken);
-
-            if (response.Challenge is null && response.IsValid is false && response.ErrorCode.Equals("authentication_challenge_previously_verified"))
+            var response = await this.Client.MakeRawAPIRequest(request, cancellationToken).ConfigureAwait(false);
+            var reader = new StreamReader(
+                await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
+            var data = await reader.ReadToEndAsync().ConfigureAwait(false);
+            if (response.IsSuccessStatusCode)
             {
-                throw new Exception($"The authentication challenge {options.ChallengeId} has already been verified.");
+                return RequestUtilities.FromJson<VerifyFactorResponseSuccess>(data);
             }
-
-            else if (response.Challenge is null && response.IsValid is false && response.ErrorCode.Equals("authentication_challenge_expired"))
+            else
             {
-                throw new Exception($"The authentication challenge {options.ChallengeId} has expired.");
+                return RequestUtilities.FromJson<VerifyFactorResponseError>(data);
             }
-
-            else if (response.Challenge is null && response.ErrorCode is null){
-                throw new Exception("The application has encountered an unknown error. Please reach out to support@Workos.com");
-            }
-
-            return response;
         }
 
         /// <summary>
