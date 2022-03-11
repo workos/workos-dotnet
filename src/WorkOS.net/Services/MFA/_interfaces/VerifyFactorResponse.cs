@@ -17,6 +17,18 @@ namespace WorkOS
         /// Validity of code of challenge.
         /// </summary>
         [JsonProperty("valid")]
-        public bool Valid { get; set; }
+        public bool IsValid { get; set; }
+
+        /// <summary>
+        /// Describe error code
+        /// </summary>
+        [JsonProperty("code")]
+        public string ErrorCode { get; set; }
+
+        /// <summary>
+        /// Description of error
+        /// </summary>
+        [JsonProperty("message")]
+        public string ErrorMessage { get; set; }
     }
 }
