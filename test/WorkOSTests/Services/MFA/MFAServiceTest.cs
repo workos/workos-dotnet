@@ -184,7 +184,7 @@ namespace WorkOSTests
             var verifyResponse = new VerifyFactorResponse
             {
                 Challenge = verifyChallenge,
-                Valid = true,
+                IsValid = true,
             };
 
             this.httpMock.MockResponse(
@@ -201,7 +201,7 @@ namespace WorkOSTests
             var response = await this.service.VerifyFactor(options);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/verify");
             Assert.NotNull(response);
-            Assert.True(response.Valid);
+            Assert.True(response.IsValid);
         }
 
         [Fact]
