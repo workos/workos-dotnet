@@ -5,7 +5,7 @@ namespace WorkOS
     /// <summary>
     /// The response from the WorkOS API when enrolling a Factor.
     /// </summary>
-    public class VerifyFactorSuccess : VerifyFactorResponse
+    public class VerifyFactorResponseSuccess : VerifyFactorResponse
     {
         /// <summary>
         /// Challenge Factor body response.
