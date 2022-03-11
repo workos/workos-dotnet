@@ -5,7 +5,7 @@ namespace WorkOS
     /// <summary>
     /// The response from the WorkOS API when enrolling a Factor.
     /// </summary>
-    public class VerifyFactorError : VerifyFactorResponse
+    public class VerifyFactorResponseError : VerifyFactorResponse
     {
         /// <summary>
         /// Describe error code.
