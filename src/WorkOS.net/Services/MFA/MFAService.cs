@@ -69,7 +69,7 @@ namespace WorkOS
         /// <param name="options">Parameters used to verify the challenge.</param>
         /// <param name="cancellationToken"> An optional token to cancel the request.</param>
         /// <returns>Successful verified response or an error response.</returns>
-        public async Task<Object> VerifyFactor(
+        public async Task<VerifyFactorResponse> VerifyFactor(
             VerifyFactorOptions options,
             CancellationToken cancellationToken = default)
         {
