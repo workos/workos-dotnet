@@ -19,8 +19,8 @@
     <SignAssembly>True</SignAssembly>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <VersionPrefix>1.7.0</VersionPrefix>
-    <Version>1.7.0</Version>
+    <VersionPrefix>1.8.0</VersionPrefix>
+    <Version>1.8.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
