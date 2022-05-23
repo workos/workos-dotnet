@@ -42,7 +42,7 @@
         /// <summary>
         /// Default base URL for the WorkOS API.
         /// </summary>
-        public static string DefaultApiBaseURL => "https://api.workos-test.com";
+        public static string DefaultApiBaseURL => "https://api.workos.com";
 
         /// <summary>
         /// The base URL for the WorkOS API.
@@ -101,7 +101,6 @@
             var reader = new StreamReader(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
             var data = await reader.ReadToEndAsync().ConfigureAwait(false);
-            Console.WriteLine("response: " + data);
             return RequestUtilities.FromJson<T>(data);
         }
 
