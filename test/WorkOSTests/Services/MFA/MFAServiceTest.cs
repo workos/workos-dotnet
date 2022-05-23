@@ -33,7 +33,6 @@ namespace WorkOSTests
                 CreatedAt = "2022-02-17T22:39:26.616Z",
                 UpdatedAt = "2022-02-17T22:39:26.616Z",
                 Type = "generic_otp",
-                EnvironmentId = "environment_test123",
             };
 
             this.httpMock.MockResponse(
@@ -62,7 +61,6 @@ namespace WorkOSTests
                 CreatedAt = "2022-02-17T22:39:26.616Z",
                 UpdatedAt = "2022-02-17T22:39:26.616Z",
                 Type = "sms",
-                EnvironmentId = "environment_test123",
                 Sms = phoneDetails,
             };
 
@@ -95,7 +93,6 @@ namespace WorkOSTests
                 CreatedAt = "2022-02-17T22:39:26.616Z",
                 UpdatedAt = "2022-02-17T22:39:26.616Z",
                 Type = "sms",
-                EnvironmentId = "environment_test123",
                 Totp = totpDetails,
             };
 
@@ -216,7 +213,6 @@ namespace WorkOSTests
                 CreatedAt = "2022-02-17T22:39:26.616Z",
                 UpdatedAt = "2022-02-17T22:39:26.616Z",
                 Type = "generic_otp",
-                EnvironmentId = "environment_test123",
             };
 
             this.httpMock.MockResponse(
@@ -244,7 +240,6 @@ namespace WorkOSTests
                 CreatedAt = "2022-02-17T22:39:26.616Z",
                 UpdatedAt = "2022-02-17T22:39:26.616Z",
                 Type = "generic_otp",
-                EnvironmentId = "environment_test123",
             };
 
             this.httpMock.MockResponse(
