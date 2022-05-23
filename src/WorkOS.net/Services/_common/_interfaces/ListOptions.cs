@@ -29,6 +29,6 @@
         /// Order of records returned by ascending or descending order.
         /// </summary>
         [JsonProperty("order")]
-        public string Order { get; set; }
+        public PaginationOrder? Order { get; set; }
     }
 }

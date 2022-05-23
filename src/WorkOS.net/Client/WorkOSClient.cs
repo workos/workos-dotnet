@@ -42,7 +42,7 @@
         /// <summary>
         /// Default base URL for the WorkOS API.
         /// </summary>
-        public static string DefaultApiBaseURL => "https://api.workos.com";
+        public static string DefaultApiBaseURL => "https://api.workos-test.com";
 
         /// <summary>
         /// The base URL for the WorkOS API.
@@ -98,10 +98,10 @@
             CancellationToken cancellationToken = default)
         {
             var response = await this.MakeRawAPIRequest(request, cancellationToken).ConfigureAwait(false);
-
             var reader = new StreamReader(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
             var data = await reader.ReadToEndAsync().ConfigureAwait(false);
+            Console.WriteLine("response: " + data);
             return RequestUtilities.FromJson<T>(data);
         }
 
