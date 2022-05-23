@@ -24,5 +24,11 @@
         /// </summary>
         [JsonProperty("limit")]
         public long? Limit { get; set; }
+
+        /// <summary>
+        /// Maximum number of records to return.
+        /// </summary>
+        [JsonProperty("order")]
+        public string Order { get; set; }
     }
 }
