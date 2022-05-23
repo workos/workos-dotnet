@@ -11,7 +11,6 @@ namespace WorkOS
         Asc,
 
         [EnumMember(Value = "desc")]
-        Desc
+        Desc,
     }
-
 }
