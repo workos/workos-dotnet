@@ -26,7 +26,7 @@
         public long? Limit { get; set; }
 
         /// <summary>
-        /// Order of records returned by ascending or descending order.
+        /// The order in which to paginate records.
         /// </summary>
         [JsonProperty("order")]
         public PaginationOrder? Order { get; set; }
