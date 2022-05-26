@@ -98,7 +98,6 @@
             CancellationToken cancellationToken = default)
         {
             var response = await this.MakeRawAPIRequest(request, cancellationToken).ConfigureAwait(false);
-
             var reader = new StreamReader(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
             var data = await reader.ReadToEndAsync().ConfigureAwait(false);
