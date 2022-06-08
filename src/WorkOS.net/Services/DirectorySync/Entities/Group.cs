@@ -40,7 +40,7 @@
         /// <summary>
         /// The timestamp of when the Factor will expire.
         /// </summary>
-        [JsonProperty("expires_at")]
-        public string ExpiresAt { get; set; }
+        [JsonProperty("updated_at")]
+        public string UpdatedAt { get; set; }
     }
 }
