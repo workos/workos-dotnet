@@ -62,7 +62,6 @@
                         {
                             Id = "event_action_id",
                             Name = "user.updated_directory",
-                            EnvironmentId = "environment_id",
                         },
                         ActorId = "user_id",
                         ActorName = "demo@foo-corp.com",

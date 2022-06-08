@@ -55,12 +55,6 @@
         public string OrganizationId { get; set; }
 
         /// <summary>
-        /// Identifier for the Directory's Environment.
-        /// </summary>
-        [JsonProperty("environment_id")]
-        public string EnvironmentId { get; set; }
-
-        /// <summary>
         /// The timestamp of when the Directory was created.
         /// </summary>
         [JsonProperty("created_at")]

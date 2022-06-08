@@ -24,11 +24,5 @@
         /// </summary>
         [JsonProperty("name")]
         public string Name { get; set; }
-
-        /// <summary>
-        /// The identifier of the Event Action's Environment.
-        /// </summary>
-        [JsonProperty("environment_id")]
-        public string EnvironmentId { get; set; }
     }
 }
