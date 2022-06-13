@@ -98,6 +98,9 @@
             {
                 Id = "directory_group_123",
                 Name = "Scientists",
+                IdpId = "123",
+                CreatedAt = "2021-07-26T18:55:16.072Z",
+                UpdatedAt = "2021-07-26T18:55:16.072Z",
             };
         }
 
