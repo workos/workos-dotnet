@@ -28,7 +28,6 @@
         [EnumMember(Value = "CloudflareSAML")]
         CloudflareSAML,
 
-
         [EnumMember(Value = "ClasslinkSAML")]
         ClassLinkSAML,
 
