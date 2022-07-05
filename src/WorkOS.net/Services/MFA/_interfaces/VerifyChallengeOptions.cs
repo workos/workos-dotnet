@@ -1,19 +1,17 @@
  namespace WorkOS
 {
-    using System;
     using Newtonsoft.Json;
 
-    [Obsolete("Please use VerifyChallengeOptions instead.")]
-    public class VerifyFactorOptions : BaseOptions
+    public class VerifyChallengeOptions : BaseOptions
     {
         /// <summary>
-        /// Auth ID of the Challenge.
+        /// The ID of the authentication challenge to verify.
         /// </summary>
-        [JsonProperty("authentication_challenge_id")]
+        [JsonIgnore]
         public string ChallengeId { get; set; }
 
         /// <summary>
-        /// Describes which type to use.
+        /// The MFA code to verify.
         /// </summary>
         [JsonProperty("code")]
         public string Code { get; set; }
