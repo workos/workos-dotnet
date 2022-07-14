@@ -58,7 +58,7 @@ namespace WorkOS
             {
                 Options = options,
                 Method = HttpMethod.Post,
-                Path = "/auth/factors/challenge",
+                Path = $"/auth/factors/{options.FactorId}/challenge",
             };
             return await this.Client.MakeAPIRequest<Challenge>(request, cancellationToken);
         }
@@ -69,6 +69,7 @@ namespace WorkOS
         /// <param name="options">Parameters used to verify the challenge.</param>
         /// <param name="cancellationToken"> An optional token to cancel the request.</param>
         /// <returns>Successful verified response or an error response.</returns>
+        [Obsolete("Please use VerifyChallenge instead.")]
         public async Task<VerifyFactorResponse> VerifyFactor(
             VerifyFactorOptions options,
             CancellationToken cancellationToken = default)
@@ -90,6 +91,36 @@ namespace WorkOS
             else
             {
                 return RequestUtilities.FromJson<VerifyFactorResponseError>(data);
+            }
+        }
+
+        /// <summary>
+        /// Verify MFA Challenge.
+        /// </summary>
+        /// <param name="options">Parameters used to verify the challenge.</param>
+        /// <param name="cancellationToken"> An optional token to cancel the request.</param>
+        /// <returns>Successful verified response or an error response.</returns>
+        public async Task<VerifyChallengeResponse> VerifyChallenge(
+            VerifyChallengeOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = $"/auth/challenges/{options.ChallengeId}/verify",
+            };
+            var response = await this.Client.MakeRawAPIRequest(request, cancellationToken).ConfigureAwait(false);
+            var reader = new StreamReader(
+                await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
+            var data = await reader.ReadToEndAsync().ConfigureAwait(false);
+            if (response.IsSuccessStatusCode)
+            {
+                return RequestUtilities.FromJson<VerifyChallengeResponseSuccess>(data);
+            }
+            else
+            {
+                return RequestUtilities.FromJson<VerifyChallengeResponseError>(data);
             }
         }
 

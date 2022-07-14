@@ -124,7 +124,7 @@ namespace WorkOSTests
 
             this.httpMock.MockResponse(
                 HttpMethod.Post,
-                "/auth/factors/challenge",
+                "/auth/factors/auth_factor_test123/challenge",
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(challengeResponse));
 
@@ -133,7 +133,7 @@ namespace WorkOSTests
                 FactorId = "auth_factor_test123",
             };
             var response = await this.service.ChallengeFactor(options);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/challenge");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/auth_factor_test123/challenge");
             Assert.NotNull(response);
             Assert.NotNull(response.Code);
         }
@@ -151,7 +151,7 @@ namespace WorkOSTests
 
             this.httpMock.MockResponse(
                 HttpMethod.Post,
-                "/auth/factors/challenge",
+                "/auth/factors/auth_factor_test123/challenge",
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(challengeResponse));
 
@@ -160,11 +160,12 @@ namespace WorkOSTests
                 FactorId = "auth_factor_test123",
             };
             var response = await this.service.ChallengeFactor(options);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/challenge");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/auth_factor_test123/challenge");
             Assert.NotNull(response);
             Assert.NotNull(response.Id);
         }
 
+#pragma warning disable CS0618 // 'VerifyFactorResponseSuccess' is obsolete: 'Please use VerifyChallengeResponseSuccess instead.
         [Fact]
         public async void TestVerify()
         {
@@ -198,9 +199,49 @@ namespace WorkOSTests
             var response = await this.service.VerifyFactor(options);
             if (response is VerifyFactorResponseSuccess successResponse)
             {
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/verify");
-            Assert.NotNull(successResponse);
-            Assert.True(successResponse.Valid);
+                this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/verify");
+                Assert.NotNull(successResponse);
+                Assert.True(successResponse.Valid);
+            }
+        }
+#pragma warning restore CS0618 // 'VerifyFactorResponseSuccess' is obsolete: 'Please use VerifyChallengeResponseSuccess instead.
+
+        [Fact]
+        public async void TestVerifyChallenge()
+        {
+            var verifyChallenge = new Challenge
+            {
+                Id = "auth_challenge_test123",
+                CreatedAt = "2022-02-17T22:39:26.616Z",
+                UpdatedAt = "2022-02-17T22:39:26.616Z",
+                ExpiresAt = "2022-02-18T16:08:03.205Z",
+                Code = "12345",
+                FactorId = "auth_factor_test123",
+            };
+
+            var verifyResponse = new VerifyChallengeResponseSuccess
+            {
+                Challenge = verifyChallenge,
+                Valid = true,
+            };
+
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/auth/challenges/auth_challenge_test123/verify",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(verifyResponse));
+
+            var options = new VerifyChallengeOptions
+            {
+                ChallengeId = "auth_challenge_test123",
+                Code = "12345",
+            };
+            var response = await this.service.VerifyChallenge(options);
+            if (response is VerifyChallengeResponseSuccess successResponse)
+            {
+                this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/challenges/auth_challenge_test123/verify");
+                Assert.NotNull(successResponse);
+                Assert.True(successResponse.Valid);
             }
         }
 

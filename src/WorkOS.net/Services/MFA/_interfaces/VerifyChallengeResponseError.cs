@@ -1,22 +1,20 @@
 namespace WorkOS
 {
-    using System;
     using Newtonsoft.Json;
 
     /// <summary>
-    /// The response from the WorkOS API when enrolling a Factor.
+    /// The response from the WorkOS API when verifying an authentication challenge.
     /// </summary>
-    [Obsolete("Please use VerifyChallengeResponseError instead.")]
-    public class VerifyFactorResponseError : VerifyFactorResponse
+    public class VerifyChallengeResponseError : VerifyChallengeResponse
     {
         /// <summary>
-        /// Describe error code.
+        /// The error code.
         /// </summary>
         [JsonProperty("code")]
         public string ErrorCode { get; set; }
 
         /// <summary>
-        /// Description of error.
+        /// The description of error.
         /// </summary>
         [JsonProperty("message")]
         public string ErrorMessage { get; set; }
