@@ -67,6 +67,8 @@
             this.mockUser = new User
             {
                 Id = "directory_user_123",
+                DirectoryId = "dir_123",
+                OrganizationId = "org_123",
                 FirstName = "Rick",
                 LastName = "Sanchez",
                 Username = "rick.sanchez",
@@ -97,6 +99,8 @@
             this.mockGroup = new Group
             {
                 Id = "directory_group_123",
+                DirectoryId = "dir_123",
+                OrganizationId = "org_123",
                 Name = "Scientists",
                 IdpId = "123",
                 CreatedAt = "2021-07-26T18:55:16.072Z",

@@ -20,6 +20,18 @@
         public string Id { get; set; }
 
         /// <summary>
+        /// The identifier of the Directory the Directory Group belongs to.
+        /// </summary>
+        [JsonProperty("directory_id")]
+        public string DirectoryId { get; set; }
+
+        /// <summary>
+        /// The identifier for the Organization in which the Directory resides.
+        /// </summary>
+        [JsonProperty("organization_id")]
+        public string OrganizationId { get; set; }
+
+        /// <summary>
         /// The Identity Provider identifier.
         /// </summary>
         [JsonProperty("idp_id")]

@@ -21,6 +21,18 @@
         public string Id { get; set; }
 
         /// <summary>
+        /// The identifier of the Directory the Directory User belongs to.
+        /// </summary>
+        [JsonProperty("directory_id")]
+        public string DirectoryId { get; set; }
+
+        /// <summary>
+        /// The identifier for the Organization in which the Directory resides.
+        /// </summary>
+        [JsonProperty("organization_id")]
+        public string OrganizationId { get; set; }
+
+        /// <summary>
         /// The User's directory provider's identifier.
         /// </summary>
         [JsonProperty("idp_id")]
