@@ -68,7 +68,7 @@
         }
 
         [Fact]
-        public async void TestCreateEvent()
+        public void TestCreateEvent()
         {
             var mockResponse = new Dictionary<string, bool>
             {
@@ -81,9 +81,73 @@
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var success = await this.service.CreateEvent("org_123", this.auditLogEventPayload);
+            this.service.CreateEvent("org_123", this.auditLogEventPayload);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/audit_logs/events");
-            Assert.True(success);
+        }
+
+        [Fact]
+        public async void TestCreateExport()
+        {
+            var mockResponse = new Dictionary<string, string>
+            {
+                { "object", "audit_log_export" },
+                { "id", "audit_log_export_123" },
+                { "state", "ready" },
+                { "url", "https://audit-logs.com/download.csv" },
+                { "created_at", "2022-08-18T18:07:10.822Z" },
+                { "updated_at", "2022-08-18T18:07:10.822Z" },
+            };
+
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/audit_logs/exports",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(mockResponse));
+
+            var options = new CreateAuditLogExportOptions()
+            {
+              OrganizationId = "org_123",
+              RangeStart = DateTime.Now,
+              RangeEnd = DateTime.Now,
+              Actions = new List<string>()
+              { "user.signed_in" },
+              Actors = new List<string>()
+              { "Actor" },
+              Targets = new List<string>()
+              { "user" },
+            };
+
+            var response = await this.service.CreateExport(options);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/audit_logs/exports");
+            Assert.Equal(
+                JsonConvert.SerializeObject(mockResponse),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestGetExport()
+        {
+            var mockResponse = new Dictionary<string, string>
+            {
+                { "object", "audit_log_export" },
+                { "id", "audit_log_export_123" },
+                { "state", "ready" },
+                { "url", "https://audit-logs.com/download.csv" },
+                { "created_at", "2022-08-18T18:07:10.822Z" },
+                { "updated_at", "2022-08-18T18:07:10.822Z" },
+            };
+
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                "/audit_logs/exports/audit_log_export_123",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(mockResponse));
+
+            var response = await this.service.GetExport("audit_log_export_123");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/audit_logs/exports/audit_log_export_123");
+            Assert.Equal(
+                JsonConvert.SerializeObject(mockResponse),
+                JsonConvert.SerializeObject(response));
         }
     }
 }

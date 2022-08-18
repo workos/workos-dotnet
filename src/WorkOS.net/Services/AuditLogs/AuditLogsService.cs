@@ -28,7 +28,7 @@
         }
 
         /// <summary>
-        /// Creates an Audit Trail event.
+        /// Creates an Audit Log Event.
         /// </summary>
         /// <param name="organizationId">Organization the Event belongs to.</param>
         /// <param name="auditLogEvent">The Audit Log Event payload.</param>
@@ -36,8 +36,7 @@
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
-        /// <returns>True if successful.</returns>
-        public async Task<bool> CreateEvent(
+        public async void CreateEvent(
             string organizationId,
             AuditLogEvent auditLogEvent,
             string idempotencyKey = null,
@@ -64,7 +63,49 @@
             }
 
             await this.Client.MakeAPIRequest<object>(request, cancellationToken);
-            return true;
+        }
+
+        /// <summary>
+        /// Creates an Audit Log Export.
+        /// </summary>
+        /// <param name="options">Date range and query options for creating an export.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>AuditLogExport entity.</returns>
+        public Task<AuditLogExport> CreateExport(
+            CreateAuditLogExportOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = "/audit_logs/exports",
+            };
+
+            return this.Client.MakeAPIRequest<AuditLogExport>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Retrieves an Audit Log Export.
+        /// </summary>
+        /// <param name="auditLogExportId">Unique identifier of the Audit Log Export.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>AuditLogExport entity.</returns>
+        public Task<AuditLogExport> GetExport(
+            string auditLogExportId,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"/audit_logs/exports/{auditLogExportId}",
+            };
+
+            return this.Client.MakeAPIRequest<AuditLogExport>(request, cancellationToken);
         }
     }
 }
