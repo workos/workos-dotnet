@@ -17,14 +17,14 @@ namespace WorkOS
         public string OrganizationId { get; set; }
 
         /// <summary>
-        /// The start of Export's the date range.
+        /// Start of the Export's date range.
         /// </summary>
         [JsonProperty("range_start")]
         [JsonConverter(typeof(IsoDateTimeConverter))]
         public DateTime RangeStart { get; set; }
 
         /// <summary>
-        /// The end of Export's the date range.
+        /// End of the Export's date range.
         /// </summary>
         [JsonProperty("range_end")]
         [JsonConverter(typeof(IsoDateTimeConverter))]
