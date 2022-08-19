@@ -34,31 +34,31 @@
                 Version = 1,
                 Actor = new AuditLogEventActor
                 {
-                  Id = "user_123",
-                  Type = "user",
-                  Name = "User",
-                  Metadata = new Dictionary<string, string>
-                  {
-                      { "key", "value" },
-                  },
-                },
-                Targets = new List<AuditLogEventTarget>()
-                {
-                  new AuditLogEventTarget
-                  {
-                    Id = "team_123",
-                    Type = "team",
-                    Name = "Team",
+                    Id = "user_123",
+                    Type = "user",
+                    Name = "User",
                     Metadata = new Dictionary<string, string>
                     {
                         { "key", "value" },
                     },
-                  },
+                },
+                Targets = new List<AuditLogEventTarget>()
+                {
+                    new AuditLogEventTarget
+                    {
+                        Id = "team_123",
+                        Type = "team",
+                        Name = "Team",
+                        Metadata = new Dictionary<string, string>
+                        {
+                            { "key", "value" },
+                        },
+                    },
                 },
                 Context = new AuditLogEventContext
                 {
-                  Location = "0.0.0.0",
-                  UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36",
+                    Location = "0.0.0.0",
+                    UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36",
                 },
                 Metadata = new Dictionary<string, string>
                 {
@@ -106,15 +106,15 @@
 
             var options = new CreateAuditLogExportOptions()
             {
-              OrganizationId = "org_123",
-              RangeStart = DateTime.Now,
-              RangeEnd = DateTime.Now,
-              Actions = new List<string>()
-              { "user.signed_in" },
-              Actors = new List<string>()
-              { "Actor" },
-              Targets = new List<string>()
-              { "user" },
+                OrganizationId = "org_123",
+                RangeStart = DateTime.Now,
+                RangeEnd = DateTime.Now,
+                Actions = new List<string>()
+                { "user.signed_in" },
+                Actors = new List<string>()
+                { "Actor" },
+                Targets = new List<string>()
+                { "user" },
             };
 
             var response = await this.service.CreateExport(options);
