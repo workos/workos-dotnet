@@ -33,5 +33,32 @@
 
         [EnumMember(Value = "workday")]
         Workday,
+
+        [EnumMember(Value = "hibob")]
+        HiBob,
+
+        [EnumMember(Value = "jumpcloud scim v2.0")]
+        JumpCloud,
+
+        [EnumMember(Value = "cyberark scim v2.0")]
+        CyberArk,
+
+        [EnumMember(Value = "breathehr")]
+        BreatheHR,
+
+        [EnumMember(Value = "bamboohr")]
+        BambooHr,
+
+        [EnumMember(Value = "fourth hr")]
+        FourthHr,
+
+        [EnumMember(Value = "rippling")]
+        Rippling,
+
+        [EnumMember(Value = "pingfederate scim v2.0")]
+        PingFederateSCIMV2_0,
+
+        [EnumMember(Value = "people hr")]
+        PeopleHR,
     }
 }
