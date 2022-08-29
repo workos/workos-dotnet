@@ -46,9 +46,6 @@
         [EnumMember(Value = "breathehr")]
         BreatheHR,
 
-        [EnumMember(Value = "bamboohr")]
-        BambooHr,
-
         [EnumMember(Value = "fourth hr")]
         FourthHr,
 
