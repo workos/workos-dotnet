@@ -37,7 +37,7 @@
         [EnumMember(Value = "hibob")]
         HiBob,
 
-        [EnumMember(Value = "jumpcloud scim v2.0")]
+        [EnumMember(Value = "jump cloud scim v2.0")]
         JumpCloud,
 
         [EnumMember(Value = "cyberark scim v2.0")]
@@ -52,13 +52,16 @@
         [EnumMember(Value = "fourth hr")]
         FourthHr,
 
-        [EnumMember(Value = "rippling")]
-        Rippling,
+        [EnumMember(Value = "rippling scim v2.0")]
+        RipplingSCIMV2_0,
 
         [EnumMember(Value = "pingfederate scim v2.0")]
         PingFederateSCIMV2_0,
 
         [EnumMember(Value = "people hr")]
         PeopleHR,
+
+        [EnumMember(Value = "onelogin scim v2.0")]
+        OneLoginSCIMV2_0,
     }
 }
