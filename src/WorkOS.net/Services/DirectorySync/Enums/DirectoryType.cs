@@ -44,7 +44,7 @@
         CyberArk,
 
         [EnumMember(Value = "breathehr")]
-        BreatheHR,
+        BreatheHr,
 
         [EnumMember(Value = "fourth hr")]
         FourthHr,
