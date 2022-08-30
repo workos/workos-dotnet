@@ -50,7 +50,7 @@
         FourthHr,
 
         [EnumMember(Value = "rippling scim v2.0")]
-        RipplingSCIMV2_0,
+        RipplingScimV2_0,
 
         [EnumMember(Value = "pingfederate scim v2.0")]
         PingFederateSCIMV2_0,
