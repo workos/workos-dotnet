@@ -56,7 +56,7 @@
         PingFederateSCIMV2_0,
 
         [EnumMember(Value = "people hr")]
-        PeopleHR,
+        PeopleHr,
 
         [EnumMember(Value = "onelogin scim v2.0")]
         OneLoginSCIMV2_0,
