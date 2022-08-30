@@ -53,7 +53,7 @@
         RipplingScimV2_0,
 
         [EnumMember(Value = "pingfederate scim v2.0")]
-        PingFederateSCIMV2_0,
+        PingFederateScimV2_0,
 
         [EnumMember(Value = "people hr")]
         PeopleHr,
