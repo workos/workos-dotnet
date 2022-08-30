@@ -35,7 +35,7 @@
         Workday,
 
         [EnumMember(Value = "hibob")]
-        HiBob,
+        Hibob,
 
         [EnumMember(Value = "jump cloud scim v2.0")]
         JumpCloud,
