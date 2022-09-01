@@ -32,7 +32,7 @@
         /// <summary>
         /// Describes the .NET SDK version.
         /// </summary>
-        public static string SdkVersion => "1.10.0";
+        public static string SdkVersion => "1.11.0";
 
         /// <summary>
         /// Default timeout for HTTP requests.
