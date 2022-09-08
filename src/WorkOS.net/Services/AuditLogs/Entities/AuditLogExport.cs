@@ -38,14 +38,12 @@ namespace WorkOS
         /// The timestamp of when the Audit Log Export was created.
         /// </summary>
         [JsonProperty("created_at")]
-        [JsonConverter(typeof(IsoDateTimeConverter))]
-        public DateTime CreatedAt { get; set; }
+        public string CreatedAt { get; set; }
 
         /// <summary>
         /// The timestamp of when the Audit Log Export was updated.
         /// </summary>
         [JsonProperty("updated_at")]
-        [JsonConverter(typeof(IsoDateTimeConverter))]
-        public DateTime UpdatedAt { get; set; }
+        public string UpdatedAt { get; set; }
     }
 }
