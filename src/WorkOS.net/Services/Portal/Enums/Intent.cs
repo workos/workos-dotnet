@@ -15,5 +15,8 @@
 
         [EnumMember(Value = "dsync")]
         DSync,
+
+        [EnumMember(Value = "audit_logs")]
+        AuditLogs,
     }
 }
