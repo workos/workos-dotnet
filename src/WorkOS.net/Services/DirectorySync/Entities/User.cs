@@ -1,6 +1,7 @@
 ﻿namespace WorkOS
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -85,6 +86,15 @@
         /// </summary>
         [JsonProperty("custom_attributes")]
         public Dictionary<string, object> CustomAttributes { get; set; }
+
+        /// <summary>
+        /// Grab User's primary email.
+        /// </summary>
+        /// <returns>The primary email of user.</returns>
+        public Email GetPrimaryEmail()
+        {
+            return this.Emails.First(email => email.Primary == true);
+        }
 
         /// <summary>
         /// Contains data about a User's e-mails.

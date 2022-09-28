@@ -252,5 +252,25 @@
                 JsonConvert.SerializeObject(this.mockGroup),
                 JsonConvert.SerializeObject(response));
         }
+
+        [Fact]
+        public async void TestGetPrimaryEmail()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                $"/directory_users/{this.mockUser.Id}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockUser));
+
+            var response = await this.service.GetUser(this.mockUser.Id);
+            var primaryEmail = response.GetPrimaryEmail();
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Get,
+                $"/directory_users/{this.mockUser.Id}");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockUser.Emails[0]),
+                JsonConvert.SerializeObject(primaryEmail));
+        }
     }
 }
