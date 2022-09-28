@@ -90,7 +90,7 @@
         /// <summary>
         /// Grab User's primary email.
         /// </summary>
-        public Email GetPrimaryEmail
+        public Email PrimaryEmail
         {
             get { return this.Emails.First(email => email.Primary == true); }
         }

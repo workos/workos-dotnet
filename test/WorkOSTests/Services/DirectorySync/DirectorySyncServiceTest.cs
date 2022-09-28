@@ -263,7 +263,7 @@
                 RequestUtilities.ToJsonString(this.mockUser));
 
             var response = await this.service.GetUser(this.mockUser.Id);
-            var primaryEmail = response.GetPrimaryEmail;
+            var primaryEmail = response.PrimaryEmail;
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Get,
