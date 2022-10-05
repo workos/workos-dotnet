@@ -25,5 +25,11 @@
         /// </summary>
         [JsonProperty("domains")]
         public string[] Domains { get; set; }
+
+        /// <summary>
+        /// An idempotency key.
+        /// </summary>
+        [JsonProperty("idempotency_key")]
+        public string IdempotencyKey { get; set; }
     }
 }
