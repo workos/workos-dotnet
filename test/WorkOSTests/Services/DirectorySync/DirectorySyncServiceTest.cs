@@ -71,6 +71,7 @@
                 OrganizationId = "org_123",
                 FirstName = "Rick",
                 LastName = "Sanchez",
+                JobTitle = "Software Engineer",
                 Username = "rick.sanchez",
                 State = UserState.Active,
                 CustomAttributes = new Dictionary<string, object>()

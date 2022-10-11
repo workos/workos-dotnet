@@ -57,6 +57,12 @@
         public string LastName { get; set; }
 
         /// <summary>
+        /// The User's job title.
+        /// </summary>
+        [JsonProperty("job_title")]
+        public string JobTitle { get; set; }
+
+        /// <summary>
         /// The User's e-mails.
         /// </summary>
         [JsonProperty("emails")]
