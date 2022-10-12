@@ -254,7 +254,7 @@
         }
 
         [Fact]
-        public async void TestGetPrimaryEmail()
+        public async void TestPrimaryEmail()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,
@@ -262,8 +262,8 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(this.mockUser));
 
-            var response = await this.service.GetUser(this.mockUser.Id);
-            var primaryEmail = response.PrimaryEmail;
+            var user = await this.service.GetUser(this.mockUser.Id);
+            var primaryEmail = user.PrimaryEmail;
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Get,

@@ -88,7 +88,7 @@
         public Dictionary<string, object> CustomAttributes { get; set; }
 
         /// <summary>
-        /// Grab User's primary email.
+        /// The user's primary email.
         /// </summary>
         public Email PrimaryEmail
         {
