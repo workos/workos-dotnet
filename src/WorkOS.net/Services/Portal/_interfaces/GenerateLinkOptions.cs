@@ -20,9 +20,15 @@
         public string Organization { get; set; }
 
         /// <summary>
-        /// The URL users will return to when finished with the Admin Portal.
+        /// The URL to which WorkOS should send users when they click on the link to return to your website.
         /// </summary>
         [JsonProperty("return_url")]
         public string ReturnURL { get; set; }
+
+        /// <summary>
+        /// The URL to which WorkOS will redirect users to upon successfully setting up Single Sign On or Directory Sync.
+        /// </summary>
+        [JsonProperty("success_url")]
+        public string SuccessURL { get; set; }
     }
 }
