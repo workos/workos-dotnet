@@ -150,6 +150,7 @@ namespace WorkOS
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
+        /// <returns>A deleted Factor record.</returns>
         public async Task DeleteFactor(string id, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
