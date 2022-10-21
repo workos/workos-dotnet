@@ -30,24 +30,16 @@
         /// <summary>
         /// Creates an Audit Log Event.
         /// </summary>
-        /// <param name="organizationId">Organization the Event belongs to.</param>
-        /// <param name="auditLogEvent">The Audit Log Event payload.</param>
+        /// <param name="options">Parameters for creating an AuditLog event.</param>
         /// <param name="idempotencyKey">An optional idempotency key.</param>
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
         public async void CreateEvent(
-            string organizationId,
-            AuditLogEvent auditLogEvent,
+            CreateAuditLogEventOptions options,
             string idempotencyKey = null,
             CancellationToken cancellationToken = default)
         {
-            var options = new CreateAuditLogEventOptions
-            {
-                OrganizationId = organizationId,
-                Event = auditLogEvent,
-            };
-
             var request = new WorkOSRequest
             {
                 Options = options,
