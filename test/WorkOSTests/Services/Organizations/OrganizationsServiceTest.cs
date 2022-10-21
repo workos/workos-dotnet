@@ -16,8 +16,6 @@ namespace WorkOSTests
 
         private readonly CreateOrganizationOptions createOrganizationOptions;
 
-        private readonly CreateOrganizationOptions createOrganizationOptionsWithIdempotency;
-
         private readonly ListOrganizationsOptions listOrganizationsOptions;
 
         private readonly UpdateOrganizationOptions updateOrganizationOptions;
@@ -42,16 +40,6 @@ namespace WorkOSTests
                 {
                     "foo-corp.com",
                 },
-            };
-
-            this.createOrganizationOptionsWithIdempotency = new CreateOrganizationOptions
-            {
-                Name = "Foo Corp",
-                Domains = new string[]
-                {
-                    "foo-corp.com",
-                },
-                IdempotencyKey = "test_123456789",
             };
 
             this.updateOrganizationOptions = new UpdateOrganizationOptions
@@ -137,7 +125,7 @@ namespace WorkOSTests
                 "/organizations",
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(this.mockOrganization));
-            var response = await this.service.CreateOrganization(this.createOrganizationOptionsWithIdempotency);
+            var response = await this.service.CreateOrganization(this.createOrganizationOptions, "idemKey123456");
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations");
             Assert.Equal(
