@@ -81,13 +81,7 @@
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var options = new CreateAuditLogEventOptions()
-            {
-                OrganizationId = "org_123",
-                Event = this.auditLogEventPayload,
-            };
-
-            this.service.CreateEvent(options);
+            this.service.CreateEvent("org_123", this.auditLogEventPayload);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/audit_logs/events");
         }
 
