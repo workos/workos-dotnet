@@ -1,5 +1,6 @@
 namespace WorkOS
 {
+    using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
@@ -71,12 +72,14 @@ namespace WorkOS
         /// Creates an Organization.
         /// </summary>
         /// <param name="options">Parameters to create an Organization.</param>
+        /// <param name="idempotencyKey">An optional idempotency key.</param>
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
         /// <returns>The created Organization.</returns>
         public async Task<Organization> CreateOrganization(
             CreateOrganizationOptions options,
+            string idempotencyKey = null,
             CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
@@ -85,6 +88,13 @@ namespace WorkOS
                 Method = HttpMethod.Post,
                 Path = "/organizations",
             };
+            if (idempotencyKey != null)
+            {
+                request.WorkOSHeaders = new Dictionary<string, string>
+                {
+                    { "Idempotency-Key", idempotencyKey },
+                };
+            }
 
             return await this.Client.MakeAPIRequest<Organization>(request, cancellationToken);
         }

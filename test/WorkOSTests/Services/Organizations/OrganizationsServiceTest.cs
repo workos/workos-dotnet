@@ -118,6 +118,22 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async void TestCreateOrganizationWithIdempotency()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/organizations",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockOrganization));
+            var response = await this.service.CreateOrganization(this.createOrganizationOptions, "idemKey123456");
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockOrganization),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
         public async void TestGetOrganization()
         {
             this.httpMock.MockResponse(
