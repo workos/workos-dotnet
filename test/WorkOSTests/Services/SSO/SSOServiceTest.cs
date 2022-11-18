@@ -328,8 +328,8 @@
             this.httpMock.MockResponse(
                 HttpMethod.Delete,
                 $"/connections/{this.mockConnection.Id}",
-                HttpStatusCode.OK,
-                RequestUtilities.ToJsonString(this.mockConnection));
+                HttpStatusCode.NoContent,
+                "Resource deleted successfully");
 
             await this.service.DeleteConnection(this.mockConnection.Id);
 
