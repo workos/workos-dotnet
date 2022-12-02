@@ -137,8 +137,8 @@
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
-        /// <returns>A deleted WorkOS Connection record.</returns>
-        public async Task<Connection> DeleteConnection(string id, CancellationToken cancellationToken = default)
+        /// <returns>A Task.</returns>
+        public async Task DeleteConnection(string id, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -146,7 +146,7 @@
                 Path = $"/connections/{id}",
             };
 
-            return await this.Client.MakeAPIRequest<Connection>(request, cancellationToken);
+            await this.Client.MakeRawAPIRequest(request, cancellationToken);
         }
     }
 }

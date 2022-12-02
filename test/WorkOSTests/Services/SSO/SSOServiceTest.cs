@@ -321,5 +321,21 @@
                 JsonConvert.SerializeObject(this.mockConnection),
                 JsonConvert.SerializeObject(response));
         }
+
+        [Fact]
+        public async void TestDeleteConnection()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Delete,
+                $"/connections/{this.mockConnection.Id}",
+                HttpStatusCode.NoContent,
+                "Resource deleted successfully");
+
+            await this.service.DeleteConnection(this.mockConnection.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Delete,
+                $"/connections/{this.mockConnection.Id}");
+        }
     }
 }
