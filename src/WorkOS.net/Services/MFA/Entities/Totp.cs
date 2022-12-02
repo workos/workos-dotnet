@@ -8,6 +8,18 @@ namespace WorkOS
     /// </summary>
     public class Totp
     {
+         /// <summary>
+        /// Issuer of the factor.
+        /// </summary>
+        [JsonProperty("issuer")]
+        public string Issuer { get; set; }
+
+        /// <summary>
+        /// Name of the user enrolling.
+        /// </summary>
+        [JsonProperty("user")]
+        public string User { get; set; }
+
         /// <summary>
         /// QR code value.
         /// </summary>

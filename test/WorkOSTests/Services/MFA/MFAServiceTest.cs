@@ -82,6 +82,8 @@ namespace WorkOSTests
         {
             var totpDetails = new Totp
             {
+                Issuer = "WorkOS",
+                User = "some_user",
                 QrCode = "data:image/png;base64,some long text",
                 Secret = "secret",
                 Uri = "otpauth://totp/Issuer:some_user?secret=secret",
