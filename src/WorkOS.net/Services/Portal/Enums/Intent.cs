@@ -18,5 +18,8 @@
 
         [EnumMember(Value = "audit_logs")]
         AuditLogs,
+
+        [EnumMember(Value = "log_streams")]
+        LogStreams,
     }
 }

@@ -20,6 +20,8 @@
 
         private readonly GenerateLinkOptions generateLinkOptionsAuditLogs;
 
+        private readonly GenerateLinkOptions generateLinkOptionsLogStreams;
+
         private readonly GenerateLinkResponse mockGenerateLinkResponse;
 
         public PortalServiceTest()
@@ -50,6 +52,13 @@
             this.generateLinkOptionsAuditLogs = new GenerateLinkOptions
             {
                 Intent = Intent.AuditLogs,
+                Organization = "org_123",
+                ReturnURL = "https://foo-corp.app.com/settings",
+            };
+
+            this.generateLinkOptionsLogStreams = new GenerateLinkOptions
+            {
+                Intent = Intent.LogStreams,
                 Organization = "org_123",
                 ReturnURL = "https://foo-corp.app.com/settings",
             };
@@ -97,6 +106,20 @@
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(this.mockGenerateLinkResponse));
             var link = await this.service.GenerateLink(this.generateLinkOptionsAuditLogs);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/portal/generate_link");
+            Assert.Equal(this.mockGenerateLinkResponse.Link, link);
+        }
+
+        [Fact]
+        public async void TestGenerateLinkLogStreams()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/portal/generate_link",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockGenerateLinkResponse));
+            var link = await this.service.GenerateLink(this.generateLinkOptionsLogStreams);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/portal/generate_link");
             Assert.Equal(this.mockGenerateLinkResponse.Link, link);
