@@ -205,6 +205,11 @@
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
                 LastName = "Sanchez",
+                Groups = new string[]
+                {
+                    "Admins",
+                    "Developers",
+                },
                 RawAttributes = new Dictionary<string, object>()
                 {
                     { "idp_id", "123" },
@@ -253,6 +258,11 @@
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
                 LastName = "Sanchez",
+                Groups = new string[]
+                {
+                    "Admins",
+                    "Developers",
+                },
                 RawAttributes = new Dictionary<string, object>()
                 {
                     { "idp_id", "123" },
