@@ -205,7 +205,7 @@
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
                 LastName = "Sanchez",
-                Groups = new string[]
+                Groups = new List<string>()
                 {
                     "Admins",
                     "Developers",
@@ -258,7 +258,7 @@
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
                 LastName = "Sanchez",
-                Groups = new string[]
+                Groups = new List<string>()
                 {
                     "Admins",
                     "Developers",

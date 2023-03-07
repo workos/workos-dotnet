@@ -60,7 +60,7 @@
         /// The user's groups.
         /// </summary>
         [JsonProperty("groups")]
-        public string[] Groups { get; set; }
+        public List<string> Groups { get; set; }
 
         /// <summary>
         /// The raw response of Profile attributes from the identity provider.
