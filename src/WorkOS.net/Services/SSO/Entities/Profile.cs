@@ -57,6 +57,12 @@
         public string LastName { get; set; }
 
         /// <summary>
+        /// The user's groups.
+        /// </summary>
+        [JsonProperty("groups")]
+        public List<string> Groups { get; set; }
+
+        /// <summary>
         /// The raw response of Profile attributes from the identity provider.
         /// </summary>
         [JsonProperty("raw_attributes")]
