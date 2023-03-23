@@ -142,6 +142,14 @@
                         result.Add(new KeyValuePair<string, string>(key, e.ToString()));
                         break;
 
+                    case long l:
+                        result.Add(new KeyValuePair<string, string>(key, l.ToString()));
+                        break;
+
+                    case int i:
+                        result.Add(new KeyValuePair<string, string>(key, i.ToString()));
+                        break;
+
                     default:
                         break;
                 }
