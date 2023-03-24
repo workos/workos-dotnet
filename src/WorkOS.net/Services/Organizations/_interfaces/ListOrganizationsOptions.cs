@@ -5,7 +5,7 @@
     /// <summary>
     /// The parameters to fetch Organizations.
     /// </summary>
-    public class ListOrganizationsOptions : BaseOptions
+    public class ListOrganizationsOptions : ListOptions
     {
         /// <summary>
         /// Domains of an <see cref="Organization"/>. Can be empty.
