@@ -13,7 +13,7 @@
         [EnumMember(Value = "active")]
         Active,
         
-         [EnumMember(Value = "inactive")]
+        [EnumMember(Value = "inactive")]
         Inactive,
         
         [EnumMember(Value = "suspended")]
