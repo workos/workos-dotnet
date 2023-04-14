@@ -24,5 +24,11 @@ namespace WorkOS
         /// </summary>
         [JsonProperty("data")]
         public object Data { get; set; }
+
+        /// <summary>
+        /// The timestamp of when the event was created.
+        /// </summary>
+        [JsonProperty("created_at")]
+        public string CreatedAt { get; set; }
     }
 }
