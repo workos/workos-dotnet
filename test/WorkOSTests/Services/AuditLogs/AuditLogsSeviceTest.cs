@@ -119,6 +119,10 @@
                 { "user.signed_in" },
                 Actors = new List<string>()
                 { "Actor" },
+                ActorNames = new List<string>()
+                { "Actor" },
+                ActorIds = new List<string>()
+                { "user_foo" },
                 Targets = new List<string>()
                 { "user" },
             };

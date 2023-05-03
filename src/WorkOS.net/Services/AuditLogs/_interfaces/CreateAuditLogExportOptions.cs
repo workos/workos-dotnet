@@ -40,7 +40,20 @@ namespace WorkOS
         /// Actor names that Audit Log Events will be filtered by.
         /// </summary>
         [JsonProperty("actors")]
+        [Obsolete("Please use ActorNames instead.")]
         public List<string> Actors { get; set; }
+
+        /// <summary>
+        /// Actor names that Audit Log Events will be filtered by.
+        /// </summary>
+        [JsonProperty("actor_names")]
+        public List<string> ActorNames { get; set; }
+
+        /// <summary>
+        /// Actor IDs that Audit Log Events will be filtered by.
+        /// </summary>
+        [JsonProperty("actor_ids")]
+        public List<string> ActorIds { get; set; }
 
         /// <summary>
         /// Target types that Audit Log Events will be filtered by.
