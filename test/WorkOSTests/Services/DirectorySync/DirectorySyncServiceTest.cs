@@ -73,6 +73,8 @@
                 LastName = "Sanchez",
                 JobTitle = "Software Engineer",
                 Username = "rick.sanchez",
+                CreatedAt = "2021-07-26T18:55:16.072Z",
+                UpdatedAt = "2021-07-26T18:55:16.072Z",
                 State = UserState.Active,
                 CustomAttributes = new Dictionary<string, object>()
                 {
