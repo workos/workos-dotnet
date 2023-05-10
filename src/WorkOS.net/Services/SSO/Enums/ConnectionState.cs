@@ -19,5 +19,8 @@ namespace WorkOS
 
         [EnumMember(Value = "inactive")]
         Inactive,
+
+        [EnumMember(Value = "validating")]
+        Validating,
     }
 }
