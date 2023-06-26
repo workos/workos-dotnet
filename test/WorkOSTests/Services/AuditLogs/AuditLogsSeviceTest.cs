@@ -117,8 +117,14 @@
                 RangeEnd = DateTime.Now,
                 Actions = new List<string>()
                 { "user.signed_in" },
+#pragma warning disable CS0618 // CreateAuditLogExportOptions.Actors' is obsolete: 'Please use ActorNames instead.
                 Actors = new List<string>()
+#pragma warning restore CS0618 // CreateAuditLogExportOptions.Actors' is obsolete: 'Please use ActorNames instead.
                 { "Actor" },
+                ActorNames = new List<string>()
+                { "Actor" },
+                ActorIds = new List<string>()
+                { "user_foo" },
                 Targets = new List<string>()
                 { "user" },
             };
