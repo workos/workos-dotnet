@@ -1,15 +1,15 @@
 {
   "packages": [
-    "dotnet-sdk_3@3.1.426"
+    "dotnet-sdk_3@3.1.426",
+    "dotnetPackages.Nuget@6.3.1.1"
   ],
   "shell": {
     "init_hook": [
       "echo 'Welcome to devbox!' > /dev/null"
     ],
     "scripts": {
-      "test": [
-        "echo \"Error: no test specified\" && exit 1"
-      ]
+      "build": "dotnet build -c Debug src/WorkOS.net/WorkOS.net.csproj",
+      "test": "dotnet test -c Debug -f netcoreapp3.1 test/WorkOSTests/WorkOSTests.csproj"
     }
   }
 }

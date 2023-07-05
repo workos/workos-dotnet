@@ -5,6 +5,11 @@
       "last_modified": "2023-02-28T22:11:13Z",
       "resolved": "github:NixOS/nixpkgs/995edc972ad3a1e291ac22d74b9610821357175f#dotnet-sdk_3",
       "version": "3.1.426"
+    },
+    "dotnetPackages.Nuget@6.3.1.1": {
+      "last_modified": "2023-05-25T03:54:59Z",
+      "resolved": "github:NixOS/nixpkgs/8d4d822bc0efa9de6eddc79cb0d82897a9baa750#dotnetPackages.Nuget",
+      "version": "6.3.1.1"
     }
   }
 }
