@@ -1,7 +1,6 @@
 {
   "packages": [
-    "dotnet-sdk_3@3.1.426",
-    "dotnetPackages.Nuget@6.3.1.1"
+    "dotnet-sdk_3@3.1.426"
   ],
   "shell": {
     "init_hook": [
