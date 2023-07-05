@@ -1,0 +1,10 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "dotnet-sdk_3@3.1.426": {
+      "last_modified": "2023-02-28T22:11:13Z",
+      "resolved": "github:NixOS/nixpkgs/995edc972ad3a1e291ac22d74b9610821357175f#dotnet-sdk_3",
+      "version": "3.1.426"
+    }
+  }
+}

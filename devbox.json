@@ -1,0 +1,12 @@
+{
+  "packages": [
+    "dotnet-sdk_3@3.1.426"
+  ],
+  "shell": {
+    "init_hook": [],
+    "scripts": {
+      "build": "dotnet build -c Debug src/WorkOS.net/WorkOS.net.csproj",
+      "test": "dotnet test -c Debug -f netcoreapp3.1 test/WorkOSTests/WorkOSTests.csproj"
+    }
+  }
+}
