@@ -15,13 +15,13 @@
 
         private readonly ListDirectoriesOptions listDirectoriesOptions;
 
-        private readonly ListUsersOptions listUsersOptions;
+        private readonly ListDirectoryUsersOptions listUsersOptions;
 
         private readonly ListGroupsOptions listGroupsOptions;
 
         private readonly Directory mockDirectory;
 
-        private readonly User mockUser;
+        private readonly DirectoryUser mockUser;
 
         private readonly Group mockGroup;
 
@@ -41,7 +41,7 @@
                 Domain = "foo-corp.com",
             };
 
-            this.listUsersOptions = new ListUsersOptions
+            this.listUsersOptions = new ListDirectoryUsersOptions
             {
                 Directory = "directory_123",
             };
@@ -64,7 +64,7 @@
                 UpdatedAt = "2021-07-26T18:55:16.072Z",
             };
 
-            this.mockUser = new User
+            this.mockUser = new DirectoryUser
             {
                 Id = "directory_user_123",
                 DirectoryId = "dir_123",
@@ -80,18 +80,18 @@
                 {
                     { "manager_id", "123" },
                 },
-                Emails = new User.Email[]
+                Emails = new DirectoryUser.Email[]
                 {
-                    new User.Email
+                    new DirectoryUser.Email
                     {
                         Primary = true,
                         Value = "rick.sanchez@foo-corp.com",
                         Type = "work",
                     },
                 },
-                Groups = new List<User.Group>
+                Groups = new List<DirectoryUser.Group>
                 {
-                    new User.Group
+                    new DirectoryUser.Group
                     {
                         Id = "directory_group_123",
                         Name = "Scientists",
@@ -173,9 +173,9 @@
         [Fact]
         public async void TestListUsers()
         {
-            var mockResponse = new WorkOSList<User>
+            var mockResponse = new WorkOSList<DirectoryUser>
             {
-                Data = new List<User>
+                Data = new List<DirectoryUser>
                 {
                     this.mockUser,
                 },
@@ -186,7 +186,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var response = await this.service.ListUsers(this.listUsersOptions);
+            var response = await this.service.ListDirectoryUsers(this.listUsersOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directory_users");
             Assert.Equal(
@@ -203,7 +203,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(this.mockUser));
 
-            var response = await this.service.GetUser(this.mockUser.Id);
+            var response = await this.service.GetDirectoryUser(this.mockUser.Id);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Get,
@@ -265,7 +265,7 @@
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(this.mockUser));
 
-            var user = await this.service.GetUser(this.mockUser.Id);
+            var user = await this.service.GetDirectoryUser(this.mockUser.Id);
             var primaryEmail = user.PrimaryEmail;
 
             this.httpMock.AssertRequestWasMade(
