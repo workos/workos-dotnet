@@ -7,7 +7,7 @@
     /// <summary>
     /// Contains information about a WorkOS Directory User record.
     /// </summary>
-    public class User
+    public class DirectoryUser
     {
         /// <summary>
         /// Description of the record.
@@ -79,7 +79,7 @@
         /// The User's active state.
         /// </summary>
         [JsonProperty("state")]
-        public UserState State { get; set; }
+        public DirectoryUserState State { get; set; }
 
         /// <summary>
         /// The timestamp of when the Directory User was created.

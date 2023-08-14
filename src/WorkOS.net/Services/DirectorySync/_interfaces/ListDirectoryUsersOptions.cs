@@ -5,7 +5,7 @@
     /// <summary>
     /// The parameters to fetch Directory Users.
     /// </summary>
-    public class ListUsersOptions : ListOptions
+    public class ListDirectoryUsersOptions : ListOptions
     {
         /// <summary>
         /// Unique identifier of a <see cref="Directory"/>.
