@@ -75,8 +75,8 @@
         /// An optional token to cancel the request.
         /// </param>
         /// <returns>A paginated list of Directory Users.</returns>
-        public async Task<WorkOSList<User>> ListUsers(
-            ListUsersOptions options,
+        public async Task<WorkOSList<DirectoryUser>> ListDirectoryUsers(
+            ListDirectoryUsersOptions options,
             CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
@@ -86,18 +86,18 @@
                 Path = "/directory_users",
             };
 
-            return await this.Client.MakeAPIRequest<WorkOSList<User>>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<WorkOSList<DirectoryUser>>(request, cancellationToken);
         }
 
         /// <summary>
-        /// Gets a provisioned User for a Directory.
+        /// Gets a provisioned Directory User.
         /// </summary>
         /// <param name="id">Directory User unique identifier.</param>
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.
         /// </param>
         /// <returns>A WorkOS Directory User record.</returns>
-        public async Task<User> GetUser(string id, CancellationToken cancellationToken = default)
+        public async Task<DirectoryUser> GetDirectoryUser(string id, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -105,7 +105,7 @@
                 Path = $"/directory_users/{id}",
             };
 
-            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<DirectoryUser>(request, cancellationToken);
         }
 
         /// <summary>

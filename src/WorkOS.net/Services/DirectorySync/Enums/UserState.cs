@@ -5,7 +5,7 @@
     using Newtonsoft.Json.Converters;
 
     /// <summary>
-    /// An enum describing the state of a <see cref="User"/>.
+    /// An enum describing the state of a <see cref="DirectoryUser"/>.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum UserState
