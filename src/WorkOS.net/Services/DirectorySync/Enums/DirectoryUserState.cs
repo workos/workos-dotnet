@@ -8,7 +8,7 @@
     /// An enum describing the state of a <see cref="DirectoryUser"/>.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum UserState
+    public enum DirectoryUserState
     {
         [EnumMember(Value = "active")]
         Active,

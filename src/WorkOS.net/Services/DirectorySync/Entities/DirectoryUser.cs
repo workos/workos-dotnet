@@ -79,7 +79,7 @@
         /// The User's active state.
         /// </summary>
         [JsonProperty("state")]
-        public UserState State { get; set; }
+        public DirectoryUserState State { get; set; }
 
         /// <summary>
         /// The timestamp of when the Directory User was created.
