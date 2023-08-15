@@ -5,7 +5,7 @@ namespace WorkOS
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Contains information about a WorkOS Directory User record.
+    /// Contains information about a User record.
     /// </summary>
     public class User
     {

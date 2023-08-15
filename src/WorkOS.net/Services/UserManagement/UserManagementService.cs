@@ -6,7 +6,7 @@ namespace WorkOS
     using System.Threading.Tasks;
 
     /// <summary>
-    /// A service that offers methods to interact with WorkOS Audit Logs API.
+    /// A service that offers methods to interact with WorkOS UserManagment API.
     /// </summary>
     public class UserManagementService : Service
     {
@@ -32,7 +32,7 @@ namespace WorkOS
         /// </summary>
         /// <param name="id">The unique ID of the User.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> A WorkOS User record.</returns>
+        /// <returns> A User record.</returns>
         public async Task<User> GetUser(
             string id,
             CancellationToken cancellationToken = default)
