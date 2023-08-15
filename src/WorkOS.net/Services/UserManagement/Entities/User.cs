@@ -55,13 +55,13 @@ namespace WorkOS
         /// The ID of the Google OAuth Profile. Only unmanaged users who sign in with Google OAuth have Google OAuth Profiles.
         /// </summary>
         [JsonProperty("google_oauth_profile_id")]
-        public List<Group> GoogleOAuthProfileId { get; set; }
+        public string GoogleOAuthProfileId { get; set; }
 
         /// <summary>
         /// The ID of the SSO Profile. Only managed users have SSO Profiles.
         /// </summary>
         [JsonProperty("sso_profile_id")]
-        public DirectoryUserState SSOProfileId { get; set; }
+        public string SSOProfileId { get; set; }
 
         /// <summary>
         /// The timestamp of when the User was created.
