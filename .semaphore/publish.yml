@@ -1,9 +1,12 @@
 version: v1.0
+
 name: Nuget Publishing
+
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
+
 blocks:
   - name: Publish
     task:
@@ -12,7 +15,7 @@ blocks:
       prologue:
         commands:
           - checkout
-          - 'wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb'
+          - wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
           - sudo dpkg -i packages-microsoft-prod.deb
           - sudo apt-get install -y apt-transport-https
           - sudo apt-get update
