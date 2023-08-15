@@ -24,4 +24,4 @@ blocks:
         - name: nuget publish
           commands:
             - dotnet pack -c Release src/WorkOS.net/WorkOS.net.csproj
-            - 'dotnet nuget push src/WorkOS.net/bin/Release/WorkOS.net.*.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate -k $DOTNET_NUGET_API_KEY'
+            - dotnet nuget push src/WorkOS.net/bin/Release/WorkOS.net.*.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate -k $DOTNET_NUGET_API_KEY
