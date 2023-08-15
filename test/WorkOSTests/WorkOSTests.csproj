@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;netcoreapp2.0;net461</TargetFrameworks>
+    <TargetFrameworks>net5.0;net6.0;net7.0;netcoreapp3.1;netcoreapp2.0;net461</TargetFrameworks>
     <AssemblyName>WorkOSTests</AssemblyName>
     <PackageId>WorkOSTests</PackageId>
     <LangVersion>8</LangVersion>
