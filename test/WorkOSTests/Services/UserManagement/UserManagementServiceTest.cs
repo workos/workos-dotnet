@@ -15,6 +15,8 @@ namespace WorkOSTests
 
         private readonly User mockUser;
 
+        private readonly CreateUserOptions mockCreateUserOptions;
+
         public UserManagementServiceTest()
         {
             this.httpMock = new HttpMock();
@@ -37,6 +39,15 @@ namespace WorkOSTests
                 CreatedAt = "2021-06-25T19:07:33.155Z",
                 UpdatedAt = "2021-08-27T19:07:33.155Z",
             };
+
+            this.mockCreateUserOptions = new CreateUserOptions
+            {
+                Email = "marcelina.davis@gmail.com",
+                Password = "pass_123",
+                FirstName = "Marcelina",
+                LastName = "Davis",
+                IsEmailVerified = true,
+            };
         }
 
         [Fact]
@@ -58,6 +69,26 @@ namespace WorkOSTests
             Assert.Equal(
                 JsonConvert.SerializeObject(this.mockUser.UserType),
                 JsonConvert.SerializeObject(type));
+        }
+
+        [Fact]
+        public async void TestCreateUser()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockUser));
+
+            var user = await this.service.CreateUser(this.mockCreateUserOptions);
+            var email = user.Email;
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockCreateUserOptions.Email),
+                JsonConvert.SerializeObject(email));
         }
     }
 }
