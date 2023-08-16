@@ -35,6 +35,6 @@ namespace WorkOS
         /// Whether the user's email address was previously verified.
         /// </summary>
         [JsonProperty("email_verified")]
-        public bool EmailVerified { get; set; }
+        public bool IsEmailVerified { get; set; }
     }
 }
