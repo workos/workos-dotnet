@@ -46,7 +46,7 @@ namespace WorkOSTests
                 Password = "pass_123",
                 FirstName = "Marcelina",
                 LastName = "Davis",
-                EmailVerified = true,
+                IsEmailVerified = true,
             };
         }
 
