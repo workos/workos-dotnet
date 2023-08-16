@@ -45,13 +45,6 @@
         public ConnectionState State { get; set; }
 
         /// <summary>
-        /// The linked status of the Connection.
-        /// </summary>
-        [JsonProperty("status")]
-        [ObsoleteAttribute("The Status property is obsolete. Please use State instead.", false)]
-        public ConnectionStatus Status { get; set; }
-
-        /// <summary>
         /// Domain records for the Connection.
         /// </summary>
         [JsonProperty("domains")]
