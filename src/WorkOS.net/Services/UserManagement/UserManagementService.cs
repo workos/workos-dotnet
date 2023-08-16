@@ -63,5 +63,24 @@ namespace WorkOS
             };
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
         }
+
+        /// <summary>
+        /// List Users.
+        /// </summary>
+        /// <param name="options"> Parameters to filter list of users.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> A list of Users.</returns>
+        public async Task<WorkOSList<User>> ListUsers(
+            ListUsersOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Get,
+                Path = $"/users",
+            };
+            return await this.Client.MakeAPIRequest<WorkOSList<User>>(request, cancellationToken);
+        }
     }
 }
