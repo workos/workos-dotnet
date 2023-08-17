@@ -8,7 +8,7 @@
     /// Constants that enumerate available <see cref="Connection"/> types.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum ConnectionType
+    public enum Type
     {
         [EnumMember(Value = "ADFSSAML")]
         ADFSSAML,
