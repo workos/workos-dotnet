@@ -17,7 +17,7 @@ namespace WorkOS
         /// Searchable text for a <see cref="Connection"/>. Can be empty.
         /// </summary>
         [JsonProperty("connection_type")]
-        public string ConnectionType { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// Organization ID of the <see cref="Connection"/>(s). Can be empty.
