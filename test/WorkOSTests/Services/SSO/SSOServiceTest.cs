@@ -7,7 +7,6 @@
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
-    using Type = WorkOS.Type;
 
     public class SSOServiceTest
     {
@@ -41,7 +40,7 @@
                 Id = "connection_id",
                 Name = "Foo Corp",
                 State = ConnectionState.Active,
-                Type = Type.OktaSAML,
+                Type = ConnectionType.OktaSAML,
                 CreatedAt = "2021-07-26T18:55:16.072Z",
                 UpdatedAt = "2021-07-26T18:55:16.072Z",
             };
@@ -65,7 +64,7 @@
             var options = new GetAuthorizationURLOptions
             {
                 ClientId = "client_123",
-                Provider = Type.GoogleOAuth,
+                Provider = ConnectionType.GoogleOAuth,
                 RedirectURI = "https://example.com/sso/callback",
             };
             string url = this.service.GetAuthorizationURL(options);
@@ -106,7 +105,7 @@
             {
                 ClientId = "client_123",
                 DomainHint = "foo-corp.com",
-                Provider = Type.GoogleOAuth,
+                Provider = ConnectionType.GoogleOAuth,
                 RedirectURI = "https://example.com/sso/callback",
             };
             string url = this.service.GetAuthorizationURL(options);
@@ -125,7 +124,7 @@
             {
                 ClientId = "client_123",
                 LoginHint = "foo@workos.com",
-                Provider = Type.GoogleOAuth,
+                Provider = ConnectionType.GoogleOAuth,
                 RedirectURI = "https://example.com/sso/callback",
             };
             string url = this.service.GetAuthorizationURL(options);
@@ -202,7 +201,7 @@
                 IdpId = "123",
                 OrganizationId = "org_123",
                 ConnectionId = "conn_123",
-                Type = Type.OktaSAML,
+                Type = ConnectionType.OktaSAML,
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
                 LastName = "Sanchez",
@@ -255,7 +254,7 @@
                 IdpId = "123",
                 OrganizationId = "org_123",
                 ConnectionId = "conn_123",
-                Type = Type.OktaSAML,
+                Type = ConnectionType.OktaSAML,
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
                 LastName = "Sanchez",

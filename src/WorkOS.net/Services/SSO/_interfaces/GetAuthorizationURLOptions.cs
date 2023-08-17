@@ -57,7 +57,7 @@
         /// authenticated. Only `GoogleOAuth` is currently supported.
         /// </summary>
         [JsonProperty("provider")]
-        public Type? Provider { get; set; }
+        public ConnectionType? Provider { get; set; }
 
         /// <summary>
         /// A callback URL where the application redirects the user-agent after

@@ -36,7 +36,7 @@
         /// The type of the Connection.
         /// </summary>
         [JsonProperty("connection_type")]
-        public Type? Type { get; set; }
+        public ConnectionType? Type { get; set; }
 
         /// <summary>
         /// The linked state of the Connection.
