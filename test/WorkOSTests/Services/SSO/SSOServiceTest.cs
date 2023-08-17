@@ -6,8 +6,8 @@
     using System.Net.Http;
     using Newtonsoft.Json;
     using WorkOS;
-    using Type = WorkOS.Type;
     using Xunit;
+    using Type = WorkOS.Type;
 
     public class SSOServiceTest
     {
