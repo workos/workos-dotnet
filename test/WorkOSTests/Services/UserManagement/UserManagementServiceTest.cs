@@ -90,7 +90,7 @@ namespace WorkOSTests
 
             this.mockReasons = new Reasons
             {
-                AllowedAuthenticationMethods = new AuthenticationMethods[]
+                AllowedAuthenticationMethods = new List<AuthenticationMethods>
                 {
                     AuthenticationMethods.AuthenticationMethodRequired,
                     AuthenticationMethods.Password,

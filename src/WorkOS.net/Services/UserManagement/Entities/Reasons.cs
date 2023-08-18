@@ -13,12 +13,12 @@ namespace WorkOS
         /// The type of reason for unauthorized access to an organization.
         /// </summary>
         [JsonProperty("type")]
-        public Type Type { get; set; }
+        public SessionUnauthorizedOrganizationReason Type { get; set; }
 
         /// <summary>
         /// Array of allowed authentication methods allowed by the organziation.
         /// </summary>
         [JsonProperty("allowed_authentication_methods")]
-        public AuthenticationMethods[] AllowedAuthenticationMethods { get; set; }
+        public List<AuthenticationMethods> AllowedAuthenticationMethods { get; set; }
     }
 }
