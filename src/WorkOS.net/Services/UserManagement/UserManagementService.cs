@@ -63,5 +63,24 @@ namespace WorkOS
             };
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
         }
+
+        /// <summary>
+        /// Authenticate user session with a password.
+        /// </summary>
+        /// <param name="options"> Parameters used to create the user.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> A User and Session record.</returns>
+        public async Task<(User, Session)> AuthenticateUserWithPassword(
+            AuthenticateUserWithPasswordOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = $"/users/sessions/token",
+            };
+            return await this.Client.MakeAPIRequest<(User, Session)>(request, cancellationToken);
+        }
     }
 }
