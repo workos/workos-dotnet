@@ -13,7 +13,7 @@
         [EnumMember(Value = "linked")]
         Active,
 
-        [EnumMember(Value = "unliked")]
+        [EnumMember(Value = "unlinked")]
         Inactive,
 
         [EnumMember(Value = "invalid_credentials")]
