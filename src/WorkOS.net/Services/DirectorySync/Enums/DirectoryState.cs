@@ -10,11 +10,11 @@
     [JsonConverter(typeof(StringEnumConverter))]
     public enum DirectoryState
     {
-        [EnumMember(Value = "linked")]
-        Linked,
+        [EnumMember(Value = "active")]
+        Active,
 
-        [EnumMember(Value = "unlinked")]
-        Unlinked,
+        [EnumMember(Value = "inactive")]
+        Inactive,
 
         [EnumMember(Value = "invalid_credentials")]
         InvalidCredentials,
