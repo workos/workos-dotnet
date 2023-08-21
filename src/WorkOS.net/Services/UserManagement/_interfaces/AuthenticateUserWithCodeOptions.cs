@@ -26,7 +26,7 @@ namespace WorkOS
         public string ClientSecret { get; set; }
 
         /// <summary>
-        /// The authorization value which was passed back as a query parameter in the callback to the Redirect URI.
+        /// The authorization code which was passed back as a query parameter in the callback to the Redirect URI.
         /// </summary>
         [JsonProperty("code")]
         public string Code { get; set; }
