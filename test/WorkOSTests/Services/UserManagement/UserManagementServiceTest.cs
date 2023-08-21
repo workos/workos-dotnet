@@ -21,11 +21,11 @@ namespace WorkOSTests
 
         private readonly Organization mockOrganization2;
 
-        private readonly UnauthorizedOrganizations mockUnauthorizedOrganization;
+        private readonly UnauthorizedOrganization mockUnauthorizedOrganization;
 
-        private readonly AuthorizedOrganizations mockAuthorizedOrganization;
+        private readonly AuthorizedOrganization mockAuthorizedOrganization;
 
-        private readonly Reasons mockReasons;
+        private readonly Reason mockReasons;
 
         private readonly CreateUserOptions mockCreateUserOptions;
 
@@ -88,7 +88,7 @@ namespace WorkOSTests
                 },
             };
 
-            this.mockReasons = new Reasons
+            this.mockReasons = new Reason
             {
                 AllowedAuthenticationMethods = new List<AuthenticationMethod>
                 {
@@ -99,15 +99,15 @@ namespace WorkOSTests
                 },
             };
 
-            this.mockAuthorizedOrganization = new AuthorizedOrganizations
+            this.mockAuthorizedOrganization = new AuthorizedOrganization
             {
                 Organization = this.mockOrganization,
             };
 
-            this.mockUnauthorizedOrganization = new UnauthorizedOrganizations
+            this.mockUnauthorizedOrganization = new UnauthorizedOrganization
             {
                 Organization = this.mockOrganization2,
-                Reasons = new Reasons[]
+                Reasons = new List<Reason>
                 {
                     this.mockReasons,
                 },
@@ -119,11 +119,11 @@ namespace WorkOSTests
                 CreatedAt = "2021-06-25T19:07:33.155Z",
                 ExpiresAt = "2022-06-25T19:07:33.155Z",
                 Token = "session_token_123abc",
-                AuthorizedOrganizations = new List<AuthorizedOrganizations>
+                AuthorizedOrganizations = new List<AuthorizedOrganization>
                     {
                         this.mockAuthorizedOrganization,
                     },
-                UnauthorizedOrganizations = new List<UnauthorizedOrganizations>
+                UnauthorizedOrganizations = new List<UnauthorizedOrganization>
                     {
                         this.mockUnauthorizedOrganization,
                     },

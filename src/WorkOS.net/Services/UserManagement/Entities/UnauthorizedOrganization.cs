@@ -7,10 +7,10 @@ namespace WorkOS
     /// <summary>
     /// Reasons for unauthorized access to an organization the user is a member of.
     /// </summary>
-    public class UnauthorizedOrganizations
+    public class UnauthorizedOrganization
     {
         /// <summary>
-        /// Organization user does not have authorization to.
+        /// Organization the user does not have authorization to.
         /// </summary>
         [JsonProperty("organization")]
         public Organization Organization { get; set; }
@@ -19,6 +19,6 @@ namespace WorkOS
         /// Reason user does not have authorization to organization.
         /// </summary>
         [JsonProperty("reasons")]
-        public Reasons[] Reasons { get; set; }
+        public List<Reason> Reasons { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace WorkOS
     /// <summary>
     /// Reasons for unauthorized access to an organization the user is a member of.
     /// </summary>
-    public class Reasons
+    public class Reason
     {
         /// <summary>
         /// The type of reason for unauthorized access to an organization.

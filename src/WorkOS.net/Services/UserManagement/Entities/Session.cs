@@ -37,12 +37,12 @@ namespace WorkOS
         /// List of organizations with authorized access that the user is a member of.
         /// </summary>
         [JsonProperty("authorized_organizaitons")]
-        public List<AuthorizedOrganizations> AuthorizedOrganizations { get; set; }
+        public List<AuthorizedOrganization> AuthorizedOrganizations { get; set; }
 
         /// <summary>
         /// List of organizations with unauthorized access that the user is a member of.
         /// </summary>
         [JsonProperty("unauthorized_organizations")]
-        public List<UnauthorizedOrganizations> UnauthorizedOrganizations { get; set; }
+        public List<UnauthorizedOrganization> UnauthorizedOrganizations { get; set; }
     }
 }
