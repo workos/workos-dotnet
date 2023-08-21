@@ -33,6 +33,8 @@ namespace WorkOSTests
 
         private readonly AuthenticateUserWithTokenOptions mockAuthenticateUserWithTokenOptions;
 
+        private readonly AuthenticateUserWithMagicAuthOptions mockAuthenticateUserWithMagicAuthOptions;
+
         public UserManagementServiceTest()
         {
             this.httpMock = new HttpMock();
@@ -154,6 +156,14 @@ namespace WorkOSTests
                 ClientSecret = "client_secret_123",
                 Code = "code_123",
             };
+
+            this.mockAuthenticateUserWithMagicAuthOptions = new AuthenticateUserWithMagicAuthOptions
+            {
+                ClientId = "client_123",
+                ClientSecret = "client_secret_123",
+                Code = "code_123",
+                MagicAuthChallengeId = "auth_challenge_123",
+            };
         }
 
         [Fact]
@@ -226,6 +236,25 @@ namespace WorkOSTests
                 RequestUtilities.ToJsonString((this.mockUser, this.mockSession)));
 
             var (user, session) = await this.service.AuthenticateUserWithToken(this.mockAuthenticateUserWithTokenOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/sessions/token");
+            Assert.Equal(
+                JsonConvert.SerializeObject(session),
+                JsonConvert.SerializeObject(this.mockSession));
+        }
+
+        [Fact]
+        public async void TestAuthenticateUserWithMagicAuth()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/sessions/token",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString((this.mockUser, this.mockSession)));
+
+            var (user, session) = await this.service.AuthenticateUserWithMagicAuth(this.mockAuthenticateUserWithMagicAuthOptions);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
