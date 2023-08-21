@@ -56,7 +56,7 @@
                 Id = "directory_123",
                 Name = "Foo Corp - BambooHR",
                 Domain = "foo-corp.com",
-                State = DirectoryState.Linked,
+                State = DirectoryState.Active,
                 Type = DirectoryType.BambooHR,
                 ExternalKey = "external-key",
                 OrganizationId = "organization_123",
