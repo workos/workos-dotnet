@@ -3,9 +3,9 @@ namespace WorkOS
     using Newtonsoft.Json;
 
     /// <summary>
-    /// The parameters to authenticate a user with a token.
+    /// The parameters to authenticate a user with a code.
     /// </summary>
-    public class AuthenticateUserWithTokenOptions : BaseOptions
+    public class AuthenticateUserWithCodeOptions : BaseOptions
     {
         /// <summary>
         /// Specifies the grant type. Will always be `authorization_code`.
