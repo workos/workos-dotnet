@@ -90,12 +90,12 @@ namespace WorkOSTests
 
             this.mockReasons = new Reasons
             {
-                AllowedAuthenticationMethods = new List<AuthenticationMethods>
+                AllowedAuthenticationMethods = new List<AuthenticationMethod>
                 {
-                    AuthenticationMethods.AuthenticationMethodRequired,
-                    AuthenticationMethods.Password,
-                    AuthenticationMethods.MagicAuth,
-                    AuthenticationMethods.MicrosoftOauth,
+                    AuthenticationMethod.AuthenticationMethodRequired,
+                    AuthenticationMethod.Password,
+                    AuthenticationMethod.MagicAuth,
+                    AuthenticationMethod.MicrosoftOauth,
                 },
             };
 
@@ -119,11 +119,11 @@ namespace WorkOSTests
                 CreatedAt = "2021-06-25T19:07:33.155Z",
                 ExpiresAt = "2022-06-25T19:07:33.155Z",
                 Token = "session_token_123abc",
-                AuthorizedOrganizations = new AuthorizedOrganizations[]
+                AuthorizedOrganizations = new List<AuthorizedOrganizations>
                     {
                         this.mockAuthorizedOrganization,
                     },
-                UnauthorizedOrganizations = new UnauthorizedOrganizations[]
+                UnauthorizedOrganizations = new List<UnauthorizedOrganizations>
                     {
                         this.mockUnauthorizedOrganization,
                     },
