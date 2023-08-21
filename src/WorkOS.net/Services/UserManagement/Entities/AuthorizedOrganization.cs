@@ -3,12 +3,12 @@ namespace WorkOS
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Organizations user has authorized access to.
+    /// An organization user has authorized access to.
     /// </summary>
-    public class AuthorizedOrganizations
+    public class AuthorizedOrganization
     {
         /// <summary>
-        /// Organization user does have authorization to.
+        /// Organization the user does have authorization to.
         /// </summary>
         [JsonProperty("organization")]
         public Organization Organization { get; set; }

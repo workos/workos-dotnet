@@ -21,11 +21,11 @@ namespace WorkOSTests
 
         private readonly Organization mockOrganization2;
 
-        private readonly UnauthorizedOrganizations mockUnauthorizedOrganization;
+        private readonly UnauthorizedOrganization mockUnauthorizedOrganization;
 
-        private readonly AuthorizedOrganizations mockAuthorizedOrganization;
+        private readonly AuthorizedOrganization mockAuthorizedOrganization;
 
-        private readonly Reasons mockReasons;
+        private readonly Reason mockReasons;
 
         private readonly CreateUserOptions mockCreateUserOptions;
 
@@ -92,26 +92,26 @@ namespace WorkOSTests
                 },
             };
 
-            this.mockReasons = new Reasons
+            this.mockReasons = new Reason
             {
-                AllowedAuthenticationMethods = new List<AuthenticationMethods>
+                AllowedAuthenticationMethods = new List<AuthenticationMethod>
                 {
-                    AuthenticationMethods.AuthenticationMethodRequired,
-                    AuthenticationMethods.Password,
-                    AuthenticationMethods.MagicAuth,
-                    AuthenticationMethods.MicrosoftOauth,
+                    AuthenticationMethod.AuthenticationMethodRequired,
+                    AuthenticationMethod.Password,
+                    AuthenticationMethod.MagicAuth,
+                    AuthenticationMethod.MicrosoftOauth,
                 },
             };
 
-            this.mockAuthorizedOrganization = new AuthorizedOrganizations
+            this.mockAuthorizedOrganization = new AuthorizedOrganization
             {
                 Organization = this.mockOrganization,
             };
 
-            this.mockUnauthorizedOrganization = new UnauthorizedOrganizations
+            this.mockUnauthorizedOrganization = new UnauthorizedOrganization
             {
                 Organization = this.mockOrganization2,
-                Reasons = new Reasons[]
+                Reasons = new List<Reason>
                 {
                     this.mockReasons,
                 },
@@ -123,11 +123,11 @@ namespace WorkOSTests
                 CreatedAt = "2021-06-25T19:07:33.155Z",
                 ExpiresAt = "2022-06-25T19:07:33.155Z",
                 Token = "session_token_123abc",
-                AuthorizedOrganizations = new AuthorizedOrganizations[]
+                AuthorizedOrganizations = new List<AuthorizedOrganization>
                     {
                         this.mockAuthorizedOrganization,
                     },
-                UnauthorizedOrganizations = new UnauthorizedOrganizations[]
+                UnauthorizedOrganizations = new List<UnauthorizedOrganization>
                     {
                         this.mockUnauthorizedOrganization,
                     },

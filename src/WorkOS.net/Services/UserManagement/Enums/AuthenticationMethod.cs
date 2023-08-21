@@ -5,10 +5,10 @@ namespace WorkOS
     using Newtonsoft.Json.Converters;
 
     /// <summary>
-    /// An enum describing the state of a <see cref="User"/>.
+    /// An enum describing the allowed authentication method.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum AuthenticationMethods
+    public enum AuthenticationMethod
     {
         [EnumMember(Value = "GoogleOauth")]
         AuthenticationMethodRequired,

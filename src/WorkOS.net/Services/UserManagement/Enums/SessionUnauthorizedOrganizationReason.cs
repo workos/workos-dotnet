@@ -5,7 +5,7 @@ namespace WorkOS
     using Newtonsoft.Json.Converters;
 
     /// <summary>
-    /// An enum describing the type of reason for unauthorized access to an organization. <see cref="User"/>.
+    /// An enum describing the type of reason for unauthorized access to an organization.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum SessionUnauthorizedOrganizationReason

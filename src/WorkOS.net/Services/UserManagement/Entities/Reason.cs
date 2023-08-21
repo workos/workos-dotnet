@@ -7,7 +7,7 @@ namespace WorkOS
     /// <summary>
     /// Reasons for unauthorized access to an organization the user is a member of.
     /// </summary>
-    public class Reasons
+    public class Reason
     {
         /// <summary>
         /// The type of reason for unauthorized access to an organization.
@@ -19,6 +19,6 @@ namespace WorkOS
         /// Array of allowed authentication methods allowed by the organziation.
         /// </summary>
         [JsonProperty("allowed_authentication_methods")]
-        public List<AuthenticationMethods> AllowedAuthenticationMethods { get; set; }
+        public List<AuthenticationMethod> AllowedAuthenticationMethods { get; set; }
     }
 }
