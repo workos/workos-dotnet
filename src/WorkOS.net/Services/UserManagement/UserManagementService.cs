@@ -101,5 +101,24 @@ namespace WorkOS
             };
             return await this.Client.MakeAPIRequest<(User, Session)>(request, cancellationToken);
         }
+
+        /// <summary>
+        /// Creates a one-time Magic Auth code and emails it to the user.
+        /// </summary>
+        /// <param name="options"> Parameters used to send magic auth code.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> A Magic Auth Challenge.</returns>
+        public async Task<MagicAuthChallenge> SendMagicAuthCode(
+            SendMagicAuthCodeOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = $"/users/magic_auth/send",
+            };
+            return await this.Client.MakeAPIRequest<MagicAuthChallenge>(request, cancellationToken);
+        }
     }
 }
