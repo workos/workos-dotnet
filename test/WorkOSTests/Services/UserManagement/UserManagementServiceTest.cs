@@ -18,7 +18,7 @@ namespace WorkOSTests
         private readonly User mockUser;
 
         private readonly User mockUser2;
-      
+
         private readonly Session mockSession;
 
         private readonly Organization mockOrganization;
@@ -61,7 +61,7 @@ namespace WorkOSTests
                 CreatedAt = "2021-06-25T19:07:33.155Z",
                 UpdatedAt = "2021-08-27T19:07:33.155Z",
             };
-          
+
             this.mockUser2 = new User
             {
                 Id = "user_4DK2CR3C56J083X43JQXF3JK5",
