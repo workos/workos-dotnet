@@ -8,7 +8,7 @@ namespace WorkOS
     public class AuthenticateUserWithMagicAuthOptions : BaseOptions
     {
         /// <summary>
-        /// Specifies the grant type. Will always be `authorization_code`.
+        /// Specifies the grant type. Will always be `urn:workos:oauth:grant-type:magic-auth:code`.
         /// </summary>
         [JsonProperty("grant_type")]
         public const string GrantType = "urn:workos:oauth:grant-type:magic-auth:code";
