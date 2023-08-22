@@ -120,6 +120,7 @@ namespace WorkOS
             };
             return await this.Client.MakeAPIRequest<(User, Session)>(request, cancellationToken);
         }
+
         /// <summary>
         /// Creates a one-time Magic Auth code and emails it to the user.
         /// </summary>

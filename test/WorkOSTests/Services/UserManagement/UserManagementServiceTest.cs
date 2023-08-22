@@ -27,6 +27,8 @@ namespace WorkOSTests
 
         private readonly Reason mockReasons;
 
+        private readonly MagicAuthChallenge mockMagicAuthChallenge;
+
         private readonly CreateUserOptions mockCreateUserOptions;
 
         private readonly AuthenticateUserWithPasswordOptions mockAuthenticateUserWithPasswordOptions;
@@ -34,6 +36,8 @@ namespace WorkOSTests
         private readonly AuthenticateUserWithCodeOptions mockAuthenticateUserWithCodeOptions;
 
         private readonly AuthenticateUserWithMagicAuthOptions mockAuthenticateUserWithMagicAuthOptions;
+
+        private readonly SendMagicAuthCodeOptions mockSendMagicAuthCodeOptions;
 
         public UserManagementServiceTest()
         {
@@ -133,6 +137,11 @@ namespace WorkOSTests
                     },
             };
 
+            this.mockMagicAuthChallenge = new MagicAuthChallenge
+            {
+                Id = "auth_challenge_123",
+            };
+
             this.mockCreateUserOptions = new CreateUserOptions
             {
                 Email = "marcelina.davis@gmail.com",
@@ -163,6 +172,11 @@ namespace WorkOSTests
                 ClientSecret = "client_secret_123",
                 Code = "code_123",
                 MagicAuthChallengeId = "auth_challenge_123",
+            };
+
+            this.mockSendMagicAuthCodeOptions = new SendMagicAuthCodeOptions
+            {
+                Email = "marcelina.davis@gmail.com",
             };
         }
 
@@ -262,6 +276,25 @@ namespace WorkOSTests
             Assert.Equal(
                 JsonConvert.SerializeObject(session),
                 JsonConvert.SerializeObject(this.mockSession));
+        }
+
+        [Fact]
+        public async void TestSendMagicAuthCode()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/magic_auth/send",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockMagicAuthChallenge));
+
+            var challenge = await this.service.SendMagicAuthCode(this.mockSendMagicAuthCodeOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/magic_auth/send");
+            Assert.Equal(
+                JsonConvert.SerializeObject(challenge),
+                JsonConvert.SerializeObject(this.mockMagicAuthChallenge));
         }
     }
 }
