@@ -31,6 +31,8 @@ namespace WorkOSTests
 
         private readonly AuthenticateUserWithPasswordOptions mockAuthenticateUserWithPasswordOptions;
 
+        private readonly AuthenticateUserWithCodeOptions mockAuthenticateUserWithCodeOptions;
+
         public UserManagementServiceTest()
         {
             this.httpMock = new HttpMock();
@@ -145,6 +147,13 @@ namespace WorkOSTests
                 Email = "marcelina.davis@gmail.com",
                 Password = "password_123",
             };
+
+            this.mockAuthenticateUserWithCodeOptions = new AuthenticateUserWithCodeOptions
+            {
+                ClientId = "client_123",
+                ClientSecret = "client_secret_123",
+                Code = "code_123",
+            };
         }
 
         [Fact]
@@ -198,6 +207,25 @@ namespace WorkOSTests
                 RequestUtilities.ToJsonString((this.mockUser, this.mockSession)));
 
             var (user, session) = await this.service.AuthenticateUserWithPassword(this.mockAuthenticateUserWithPasswordOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/sessions/token");
+            Assert.Equal(
+                JsonConvert.SerializeObject(session),
+                JsonConvert.SerializeObject(this.mockSession));
+        }
+
+        [Fact]
+        public async void TestAuthenticateUserWithToken()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/sessions/token",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString((this.mockUser, this.mockSession)));
+
+            var (user, session) = await this.service.AuthenticateUserWithCode(this.mockAuthenticateUserWithCodeOptions);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
