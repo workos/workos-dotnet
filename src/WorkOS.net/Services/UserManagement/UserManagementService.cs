@@ -82,7 +82,8 @@ namespace WorkOS
             };
             return await this.Client.MakeAPIRequest<WorkOSList<User>>(request, cancellationToken);
         }
-        
+
+        /// <summary>
         /// Authenticate user session with a password.
         /// </summary>
         /// <param name="options"> Parameters used to authenticate user with password.</param>

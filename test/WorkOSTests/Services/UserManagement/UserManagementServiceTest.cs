@@ -255,6 +255,7 @@ namespace WorkOSTests
             Assert.Equal(
                 JsonConvert.SerializeObject(mockResponse),
                 JsonConvert.SerializeObject(response));
+        }
 
         [Fact]
         public async void TestAuthenticateUserWithPassword()
