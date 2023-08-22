@@ -11,10 +11,10 @@
     public enum DirectoryState
     {
         [EnumMember(Value = "linked")]
-        Linked,
+        Active,
 
         [EnumMember(Value = "unlinked")]
-        Unlinked,
+        Inactive,
 
         [EnumMember(Value = "invalid_credentials")]
         InvalidCredentials,

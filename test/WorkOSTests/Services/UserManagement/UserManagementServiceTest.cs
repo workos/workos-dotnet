@@ -31,7 +31,7 @@ namespace WorkOSTests
 
         private readonly AuthenticateUserWithPasswordOptions mockAuthenticateUserWithPasswordOptions;
 
-        private readonly AuthenticateUserWithTokenOptions mockAuthenticateUserWithTokenOptions;
+        private readonly AuthenticateUserWithCodeOptions mockAuthenticateUserWithCodeOptions;
 
         private readonly AuthenticateUserWithMagicAuthOptions mockAuthenticateUserWithMagicAuthOptions;
 
@@ -150,7 +150,7 @@ namespace WorkOSTests
                 Password = "password_123",
             };
 
-            this.mockAuthenticateUserWithTokenOptions = new AuthenticateUserWithTokenOptions
+            this.mockAuthenticateUserWithCodeOptions = new AuthenticateUserWithCodeOptions
             {
                 ClientId = "client_123",
                 ClientSecret = "client_secret_123",
@@ -227,7 +227,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestAuthenticateUserWithToken()
+        public async void TestAuthenticateUserWithCode()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
@@ -235,7 +235,7 @@ namespace WorkOSTests
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString((this.mockUser, this.mockSession)));
 
-            var (user, session) = await this.service.AuthenticateUserWithToken(this.mockAuthenticateUserWithTokenOptions);
+            var (user, session) = await this.service.AuthenticateUserWithCode(this.mockAuthenticateUserWithCodeOptions);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,

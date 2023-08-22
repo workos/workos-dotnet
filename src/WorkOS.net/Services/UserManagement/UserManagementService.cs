@@ -84,13 +84,13 @@ namespace WorkOS
         }
 
         /// <summary>
-        /// Authenticate user session with a token.
+        /// Authenticate user session with a code.
         /// </summary>
         /// <param name="options"> Parameters used to authenticate user with token.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
         /// <returns> A User and Session record.</returns>
-        public async Task<(User, Session)> AuthenticateUserWithToken(
-            AuthenticateUserWithTokenOptions options,
+        public async Task<(User, Session)> AuthenticateUserWithCode(
+            AuthenticateUserWithCodeOptions options,
             CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
