@@ -206,5 +206,40 @@ namespace WorkOSTests
                 JsonConvert.SerializeObject(session),
                 JsonConvert.SerializeObject(this.mockSession));
         }
+
+        [Fact]
+        public async void TestAddUserToOrganization()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/sessions/token",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString((this.mockUser, this.mockSession)));
+
+            var (user, session) = await this.service.AuthenticateUserWithPassword(this.mockAuthenticateUserWithPasswordOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/sessions/token");
+            Assert.Equal(
+                JsonConvert.SerializeObject(session),
+                JsonConvert.SerializeObject(this.mockSession));
+        }
+
+        [Fact]
+        public async void TestRemoveUserFromOrganization()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Delete,
+                $"/users/{this.mockUser.Id}/{this.mockOrganization2.Id}",
+                HttpStatusCode.Accepted,
+                "Accepted");
+
+            await this.service.RemoveUserFromOrganziation(this.mockUser.Id, this.mockOrganization2.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Delete,
+                $"/users/{this.mockUser.Id}/{this.mockOrganization2.Id}");
+        }
     }
 }
