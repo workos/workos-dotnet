@@ -225,5 +225,21 @@ namespace WorkOSTests
                 JsonConvert.SerializeObject(session),
                 JsonConvert.SerializeObject(this.mockSession));
         }
+
+        [Fact]
+        public async void TestRemoveUserFromOrganization()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Delete,
+                $"/users/{this.mockUser.Id}/{this.mockOrganization2.Id}",
+                HttpStatusCode.Accepted,
+                "Accepted");
+
+            await this.service.RemoveUserFromOrganziation(this.mockUser.Id, this.mockOrganization2.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Delete,
+                $"/users/{this.mockUser.Id}/{this.mockOrganization2.Id}");
+        }
     }
 }
