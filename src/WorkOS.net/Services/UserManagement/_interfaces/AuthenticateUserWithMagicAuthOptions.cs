@@ -3,7 +3,7 @@ namespace WorkOS
     using Newtonsoft.Json;
 
     /// <summary>
-    /// The parameters to authenticate a user with a token.
+    /// The parameters to authenticate a user with MagicAuth.
     /// </summary>
     public class AuthenticateUserWithMagicAuthOptions : BaseOptions
     {

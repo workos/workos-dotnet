@@ -31,15 +31,9 @@ namespace WorkOSTests
 
         private readonly AuthenticateUserWithPasswordOptions mockAuthenticateUserWithPasswordOptions;
 
-<<<<<<< HEAD
         private readonly AuthenticateUserWithCodeOptions mockAuthenticateUserWithCodeOptions;
 
         private readonly AuthenticateUserWithMagicAuthOptions mockAuthenticateUserWithMagicAuthOptions;
-=======
-        private readonly AuthenticateUserWithMagicAuthOptions mockAuthenticateUserWithMagicAuthOptions;
-
-        private readonly AuthenticateUserWithCodeOptions mockAuthenticateUserWithCodeOptions;
->>>>>>> cd076e2c1c669939f1db6d139c6d4c70ccf2e1b0
 
         public UserManagementServiceTest()
         {
