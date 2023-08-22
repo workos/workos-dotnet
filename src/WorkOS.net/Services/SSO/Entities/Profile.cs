@@ -36,7 +36,7 @@
         /// The Connection type associated with the Profile.
         /// </summary>
         [JsonProperty("connection_type")]
-        public ConnectionType? ConnectionType { get; set; }
+        public ConnectionType? Type { get; set; }
 
         /// <summary>
         /// The User's e-mail.
