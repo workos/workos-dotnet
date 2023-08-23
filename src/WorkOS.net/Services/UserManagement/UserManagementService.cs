@@ -141,7 +141,7 @@ namespace WorkOS
         }
 
         /// <summary>
-        /// Adds an unmanaged User as a member of the given Organization.
+        /// Adds an User as a member of the given Organization.
         /// </summary>
         /// <param name="id">The unique ID of the User.</param>
         /// <param name="options"> Parameters used to add the user to an organization.</param>
