@@ -199,7 +199,7 @@ namespace WorkOSTests
             {
                 Organization = "org_1234",
             };
-            
+
             this.mockCreatePasswordResetChallengeOptions = new CreatePasswordResetChallengeOptions
             {
                 Email = "marcelina.davis@gmail.com",
