@@ -4,7 +4,7 @@ namespace WorkOS
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Reasons for unauthorized access to an organization the user is a member of.
+    /// Represents a request for a Magic Auth code.
     /// </summary>
     public class MagicAuthChallenge
     {
