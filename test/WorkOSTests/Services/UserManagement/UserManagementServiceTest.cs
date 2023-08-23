@@ -31,6 +31,8 @@ namespace WorkOSTests
 
         private readonly Reason mockReasons;
 
+        private readonly string mockToken;
+
         private readonly CreateUserOptions mockCreateUserOptions;
 
         private readonly AuthenticateUserWithPasswordOptions mockAuthenticateUserWithPasswordOptions;
@@ -40,6 +42,9 @@ namespace WorkOSTests
         private readonly AuthenticateUserWithMagicAuthOptions mockAuthenticateUserWithMagicAuthOptions;
 
         private readonly AddUserToOrganizationOptions mockAddUserToOrganizationOptions;
+        private readonly CreatePasswordResetChallengeOptions mockCreatePasswordResetChallengeOptions;
+
+        private readonly CompletePasswordResetOptions mockCompletePasswordResetOptions;
 
         public UserManagementServiceTest()
         {
@@ -156,6 +161,8 @@ namespace WorkOSTests
                     },
             };
 
+            this.mockToken = "token_1234";
+
             this.mockCreateUserOptions = new CreateUserOptions
             {
                 Email = "marcelina.davis@gmail.com",
@@ -191,6 +198,18 @@ namespace WorkOSTests
             this.mockAddUserToOrganizationOptions = new AddUserToOrganizationOptions
             {
                 Organization = "org_1234",
+            };
+            
+            this.mockCreatePasswordResetChallengeOptions = new CreatePasswordResetChallengeOptions
+            {
+                Email = "marcelina.davis@gmail.com",
+                PasswordResetUrl = "password_1234",
+            };
+
+            this.mockCompletePasswordResetOptions = new CompletePasswordResetOptions
+            {
+                Token = "token_1234",
+                NewPassword = "new_password_1234",
             };
         }
 
@@ -317,6 +336,44 @@ namespace WorkOSTests
             Assert.Equal(
                 JsonConvert.SerializeObject(session),
                 JsonConvert.SerializeObject(this.mockSession));
+        }
+
+        [Fact]
+        public async void TestCreatePasswordResetChallenge()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/password_reset_challenge",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString((this.mockToken, this.mockUser)));
+
+            var (token, user) = await this.service.CreatePasswordResetChallenge(this.mockCreatePasswordResetChallengeOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/password_reset_challenge");
+            Assert.Equal(
+                JsonConvert.SerializeObject(token),
+                JsonConvert.SerializeObject(this.mockToken));
+        }
+
+        [Fact]
+        public async void TestCompletePasswordReset()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/password_reset",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockUser));
+
+            var user = await this.service.CompletePasswordReset(this.mockCompletePasswordResetOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/password_reset");
+            Assert.Equal(
+                JsonConvert.SerializeObject(user),
+                JsonConvert.SerializeObject(this.mockUser));
         }
 
         [Fact]
