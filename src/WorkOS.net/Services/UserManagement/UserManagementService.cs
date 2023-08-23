@@ -65,6 +65,25 @@ namespace WorkOS
         }
 
         /// <summary>
+        /// List Users.
+        /// </summary>
+        /// <param name="options"> Parameters to filter list of users.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> A list of Users.</returns>
+        public async Task<WorkOSList<User>> ListUsers(
+            ListUsersOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Get,
+                Path = $"/users",
+            };
+            return await this.Client.MakeAPIRequest<WorkOSList<User>>(request, cancellationToken);
+        }
+
+        /// <summary>
         /// Authenticate user session with a password.
         /// </summary>
         /// <param name="options"> Parameters used to authenticate user with password.</param>
@@ -157,6 +176,86 @@ namespace WorkOS
                 Options = options,
                 Method = HttpMethod.Post,
                 Path = $"/users/email_verification",
+            };
+            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Adds an User as a member of the given Organization.
+        /// </summary>
+        /// <param name="id">The unique ID of the User.</param>
+        /// <param name="options"> Parameters used to add the user to an organization.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> A User and Session record.</returns>
+        public async Task<User> AddUserToOrganziation(
+            string id,
+            AddUserToOrganizationOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = $"/users/{id}/organizations",
+            };
+
+            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Remove an unmanaged User as a member of the given Organization.
+        /// </summary>
+        /// <param name="id">The unique ID of the User.</param>
+        /// <param name="organizationId"> Unique identifier of the Organization.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> A Task.</returns>
+        public async Task RemoveUserFromOrganziation(
+            string id,
+            string organizationId,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"/users/{id}/{organizationId}",
+            };
+            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Create a Password Reset challenge.
+        /// </summary>
+        /// <param name="options"> Parameters used to create a password reset challenge.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> The token string and corresponding User object.</returns>
+        public async Task<(string, User)> CreatePasswordResetChallenge(
+            CreatePasswordResetChallengeOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = $"/users/password_reset_challenge",
+            };
+            return await this.Client.MakeAPIRequest<(string, User)>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Complete a Password Reset.
+        /// </summary>
+        /// <param name="options"> Parameters used to complete a password reset.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> The corresponding User object.</returns>
+        public async Task<User> CompletePasswordReset(
+            CompletePasswordResetOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = $"/users/password_reset",
             };
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
         }
