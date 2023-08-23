@@ -41,6 +41,7 @@ namespace WorkOSTests
 
         private readonly AuthenticateUserWithMagicAuthOptions mockAuthenticateUserWithMagicAuthOptions;
 
+        private readonly AddUserToOrganizationOptions mockAddUserToOrganizationOptions;
         private readonly CreatePasswordResetChallengeOptions mockCreatePasswordResetChallengeOptions;
 
         private readonly CompletePasswordResetOptions mockCompletePasswordResetOptions;
@@ -194,6 +195,11 @@ namespace WorkOSTests
                 MagicAuthChallengeId = "auth_challenge_123",
             };
 
+            this.mockAddUserToOrganizationOptions = new AddUserToOrganizationOptions
+            {
+                Organization = "org_1234",
+            };
+
             this.mockCreatePasswordResetChallengeOptions = new CreatePasswordResetChallengeOptions
             {
                 Email = "marcelina.davis@gmail.com",
@@ -304,9 +310,7 @@ namespace WorkOSTests
                 $"/users/sessions/token",
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString((this.mockUser, this.mockSession)));
-
             var (user, session) = await this.service.AuthenticateUserWithCode(this.mockAuthenticateUserWithCodeOptions);
-
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
                 $"/users/sessions/token");
@@ -370,6 +374,40 @@ namespace WorkOSTests
             Assert.Equal(
                 JsonConvert.SerializeObject(user),
                 JsonConvert.SerializeObject(this.mockUser));
+        }
+
+        [Fact]
+        public async void TestAddUserToOrganization()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/{this.mockUser.Id}/organizations",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockUser));
+
+            var user = await this.service.AddUserToOrganziation(this.mockUser.Id, this.mockAddUserToOrganizationOptions);
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/{this.mockUser.Id}/organizations");
+            Assert.Equal(
+                JsonConvert.SerializeObject(user),
+                JsonConvert.SerializeObject(this.mockUser));
+        }
+
+        [Fact]
+        public async void TestRemoveUserFromOrganization()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Delete,
+                $"/users/{this.mockUser.Id}/{this.mockOrganization2.Id}",
+                HttpStatusCode.Accepted,
+                "Accepted");
+
+            await this.service.RemoveUserFromOrganziation(this.mockUser.Id, this.mockOrganization2.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Delete,
+                $"/users/{this.mockUser.Id}/{this.mockOrganization2.Id}");
         }
     }
 }

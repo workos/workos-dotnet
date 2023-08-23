@@ -141,6 +141,48 @@ namespace WorkOS
         }
 
         /// <summary>
+        /// Adds an User as a member of the given Organization.
+        /// </summary>
+        /// <param name="id">The unique ID of the User.</param>
+        /// <param name="options"> Parameters used to add the user to an organization.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> A User and Session record.</returns>
+        public async Task<User> AddUserToOrganziation(
+            string id,
+            AddUserToOrganizationOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = $"/users/{id}/organizations",
+            };
+
+            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Remove an unmanaged User as a member of the given Organization.
+        /// </summary>
+        /// <param name="id">The unique ID of the User.</param>
+        /// <param name="organizationId"> Unique identifier of the Organization.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> A Task.</returns>
+        public async Task RemoveUserFromOrganziation(
+            string id,
+            string organizationId,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"/users/{id}/{organizationId}",
+            };
+            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+        }
+
+        /// <summary>
         /// Create a Password Reset challenge.
         /// </summary>
         /// <param name="options"> Parameters used to create a password reset challenge.</param>
