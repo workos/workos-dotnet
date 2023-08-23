@@ -39,6 +39,8 @@ namespace WorkOSTests
 
         private readonly CreateEmailVerificationChallengeOptions mockCreateEmailVerificationChallengeOptions;
 
+        private readonly CompleteEmailVerificationOptions mockCompleteEmailVerificationOptions;
+
         public UserManagementServiceTest()
         {
             this.httpMock = new HttpMock();
@@ -175,6 +177,11 @@ namespace WorkOSTests
             {
                 VerificationUrl = "verify_url_1234",
             };
+
+            this.mockCompleteEmailVerificationOptions = new CompleteEmailVerificationOptions
+            {
+                Token = "token_1234",
+            };
         }
 
         [Fact]
@@ -292,6 +299,25 @@ namespace WorkOSTests
             Assert.Equal(
                 JsonConvert.SerializeObject(token),
                 JsonConvert.SerializeObject(this.mockToken));
+        }
+
+        [Fact]
+        public async void TestCompleteEmailVerification()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/email_verification",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockUser));
+
+            var user = await this.service.CompleteEmailVerification(this.mockCompleteEmailVerificationOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/email_verification");
+            Assert.Equal(
+                JsonConvert.SerializeObject(user),
+                JsonConvert.SerializeObject(this.mockUser));
         }
     }
 }
