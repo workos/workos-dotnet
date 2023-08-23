@@ -23,6 +23,6 @@ namespace WorkOS
         /// Filter Users by the organization they are members of.
         /// </summary>
         [JsonProperty("organization")]
-        public string Organziation { get; set; }
+        public string Organization { get; set; }
     }
 }
