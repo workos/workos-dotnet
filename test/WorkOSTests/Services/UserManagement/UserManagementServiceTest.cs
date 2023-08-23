@@ -13,7 +13,11 @@ namespace WorkOSTests
 
         private readonly UserManagementService service;
 
+        private readonly ListUsersOptions listUsersOptions;
+
         private readonly User mockUser;
+
+        private readonly User mockUser2;
 
         private readonly Session mockSession;
 
@@ -30,6 +34,12 @@ namespace WorkOSTests
         private readonly CreateUserOptions mockCreateUserOptions;
 
         private readonly AuthenticateUserWithPasswordOptions mockAuthenticateUserWithPasswordOptions;
+
+        private readonly AuthenticateUserWithCodeOptions mockAuthenticateUserWithCodeOptions;
+
+        private readonly AuthenticateUserWithMagicAuthOptions mockAuthenticateUserWithMagicAuthOptions;
+
+        private readonly AddUserToOrganizationOptions mockAddUserToOrganizationOptions;
 
         public UserManagementServiceTest()
         {
@@ -52,6 +62,23 @@ namespace WorkOSTests
                 EmailVerifiedAt = "2021-07-25T19:07:33.155Z",
                 CreatedAt = "2021-06-25T19:07:33.155Z",
                 UpdatedAt = "2021-08-27T19:07:33.155Z",
+            };
+
+            this.mockUser2 = new User
+            {
+                Id = "user_4DK2CR3C56J083X43JQXF3JK5",
+                UserType = UserType.Unmanaged,
+                Email = "baron.bavis@gmail.com",
+                FirstName = "Baron",
+                LastName = "Bavis",
+                EmailVerifiedAt = "2022-07-25T19:07:33.155Z",
+                CreatedAt = "2022-06-25T19:07:33.155Z",
+                UpdatedAt = "2022-08-27T19:07:33.155Z",
+            };
+
+            this.listUsersOptions = new ListUsersOptions
+            {
+                Type = UserType.Unmanaged,
             };
 
             this.mockOrganization = new Organization
@@ -145,6 +172,26 @@ namespace WorkOSTests
                 Email = "marcelina.davis@gmail.com",
                 Password = "password_123",
             };
+
+            this.mockAuthenticateUserWithCodeOptions = new AuthenticateUserWithCodeOptions
+            {
+                ClientId = "client_123",
+                ClientSecret = "client_secret_123",
+                Code = "code_123",
+            };
+
+            this.mockAuthenticateUserWithMagicAuthOptions = new AuthenticateUserWithMagicAuthOptions
+            {
+                ClientId = "client_123",
+                ClientSecret = "client_secret_123",
+                Code = "code_123",
+                MagicAuthChallengeId = "auth_challenge_123",
+            };
+
+            this.mockAddUserToOrganizationOptions = new AddUserToOrganizationOptions
+            {
+                Organization = "org_1234",
+            };
         }
 
         [Fact]
@@ -189,6 +236,35 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async void TestListUsers()
+        {
+            var mockResponse = new WorkOSList<User>
+            {
+                Data = new List<User>
+                {
+                    this.mockUser,
+                    this.mockUser2,
+                },
+            };
+
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                $"/users",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(mockResponse));
+
+            var response = await this.service.ListUsers(this.listUsersOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Get,
+                $"/users");
+
+            Assert.Equal(
+                JsonConvert.SerializeObject(mockResponse),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
         public async void TestAuthenticateUserWithPassword()
         {
             this.httpMock.MockResponse(
@@ -208,7 +284,24 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestAddUserToOrganization()
+        public async void TestAuthenticateUserWithCode()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/sessions/token",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString((this.mockUser, this.mockSession)));
+            var (user, session) = await this.service.AuthenticateUserWithCode(this.mockAuthenticateUserWithCodeOptions);
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/sessions/token");
+            Assert.Equal(
+                JsonConvert.SerializeObject(session),
+                JsonConvert.SerializeObject(this.mockSession));
+        }
+
+        [Fact]
+        public async void TestAuthenticateUserWithMagicAuth()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
@@ -216,7 +309,7 @@ namespace WorkOSTests
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString((this.mockUser, this.mockSession)));
 
-            var (user, session) = await this.service.AuthenticateUserWithPassword(this.mockAuthenticateUserWithPasswordOptions);
+            var (user, session) = await this.service.AuthenticateUserWithMagicAuth(this.mockAuthenticateUserWithMagicAuthOptions);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
@@ -224,6 +317,24 @@ namespace WorkOSTests
             Assert.Equal(
                 JsonConvert.SerializeObject(session),
                 JsonConvert.SerializeObject(this.mockSession));
+        }
+
+        [Fact]
+        public async void TestAddUserToOrganization()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/{this.mockUser.Id}/organizations",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockUser));
+
+            var user = await this.service.AddUserToOrganziation(this.mockUser.Id, this.mockAddUserToOrganizationOptions);
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/{this.mockUser.Id}/organizations");
+            Assert.Equal(
+                JsonConvert.SerializeObject(user),
+                JsonConvert.SerializeObject(this.mockUser));
         }
 
         [Fact]
