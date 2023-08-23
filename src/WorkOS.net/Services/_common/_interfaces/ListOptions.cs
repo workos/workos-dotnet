@@ -29,6 +29,6 @@
         /// The order in which to paginate records.
         /// </summary>
         [JsonProperty("order")]
-        public PaginationOrder? Order { get; set; }
+        public PaginationOrder Order { get; set; } = PaginationOrder.Desc;
     }
 }

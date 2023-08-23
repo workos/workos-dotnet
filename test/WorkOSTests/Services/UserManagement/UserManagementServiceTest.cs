@@ -13,7 +13,11 @@ namespace WorkOSTests
 
         private readonly UserManagementService service;
 
+        private readonly ListUsersOptions listUsersOptions;
+
         private readonly User mockUser;
+
+        private readonly User mockUser2;
 
         private readonly Session mockSession;
 
@@ -56,6 +60,23 @@ namespace WorkOSTests
                 EmailVerifiedAt = "2021-07-25T19:07:33.155Z",
                 CreatedAt = "2021-06-25T19:07:33.155Z",
                 UpdatedAt = "2021-08-27T19:07:33.155Z",
+            };
+
+            this.mockUser2 = new User
+            {
+                Id = "user_4DK2CR3C56J083X43JQXF3JK5",
+                UserType = UserType.Unmanaged,
+                Email = "baron.bavis@gmail.com",
+                FirstName = "Baron",
+                LastName = "Bavis",
+                EmailVerifiedAt = "2022-07-25T19:07:33.155Z",
+                CreatedAt = "2022-06-25T19:07:33.155Z",
+                UpdatedAt = "2022-08-27T19:07:33.155Z",
+            };
+
+            this.listUsersOptions = new ListUsersOptions
+            {
+                Type = UserType.Unmanaged,
             };
 
             this.mockOrganization = new Organization
@@ -205,6 +226,35 @@ namespace WorkOSTests
             Assert.Equal(
                 JsonConvert.SerializeObject(this.mockCreateUserOptions.Email),
                 JsonConvert.SerializeObject(email));
+        }
+
+        [Fact]
+        public async void TestListUsers()
+        {
+            var mockResponse = new WorkOSList<User>
+            {
+                Data = new List<User>
+                {
+                    this.mockUser,
+                    this.mockUser2,
+                },
+            };
+
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                $"/users",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(mockResponse));
+
+            var response = await this.service.ListUsers(this.listUsersOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Get,
+                $"/users");
+
+            Assert.Equal(
+                JsonConvert.SerializeObject(mockResponse),
+                JsonConvert.SerializeObject(response));
         }
 
         [Fact]
