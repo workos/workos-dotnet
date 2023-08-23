@@ -120,5 +120,26 @@ namespace WorkOS
             };
             return await this.Client.MakeAPIRequest<(User, Session)>(request, cancellationToken);
         }
+
+        /// <summary>
+        /// Creates an email verification challenge and emails verification token to user.
+        /// </summary>
+        /// <param name="id">The unique ID of the User.</param>
+        /// <param name="options"> Parameters used to authenticate user with Magic Auth.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> A token and the corresponding User object.</returns>
+        public async Task<(string, User)> CreateEmailVerificationChallenge(
+            string id,
+            CreateEmailVerificationChallengeOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = $"/users/{id}/email_verification_challenge",
+            };
+            return await this.Client.MakeAPIRequest<(string, User)>(request, cancellationToken);
+        }
     }
 }

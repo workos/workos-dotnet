@@ -27,6 +27,8 @@ namespace WorkOSTests
 
         private readonly Reason mockReasons;
 
+        private readonly string mockToken;
+
         private readonly CreateUserOptions mockCreateUserOptions;
 
         private readonly AuthenticateUserWithPasswordOptions mockAuthenticateUserWithPasswordOptions;
@@ -34,6 +36,8 @@ namespace WorkOSTests
         private readonly AuthenticateUserWithCodeOptions mockAuthenticateUserWithCodeOptions;
 
         private readonly AuthenticateUserWithMagicAuthOptions mockAuthenticateUserWithMagicAuthOptions;
+
+        private readonly CreateEmailVerificationChallengeOptions mockCreateEmailVerificationChallengeOptions;
 
         public UserManagementServiceTest()
         {
@@ -133,6 +137,8 @@ namespace WorkOSTests
                     },
             };
 
+            this.mockToken = "token_1234";
+
             this.mockCreateUserOptions = new CreateUserOptions
             {
                 Email = "marcelina.davis@gmail.com",
@@ -163,6 +169,11 @@ namespace WorkOSTests
                 ClientSecret = "client_secret_123",
                 Code = "code_123",
                 MagicAuthChallengeId = "auth_challenge_123",
+            };
+
+            this.mockCreateEmailVerificationChallengeOptions = new CreateEmailVerificationChallengeOptions
+            {
+                VerificationUrl = "verify_url_1234",
             };
         }
 
@@ -262,6 +273,25 @@ namespace WorkOSTests
             Assert.Equal(
                 JsonConvert.SerializeObject(session),
                 JsonConvert.SerializeObject(this.mockSession));
+        }
+
+        [Fact]
+        public async void TestCreateEmailVerificationChallenge()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/{this.mockUser.Id}/email_verification_challenge",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString((this.mockToken, this.mockUser)));
+
+            var (token, user) = await this.service.CreateEmailVerificationChallenge(this.mockUser.Id, this.mockCreateEmailVerificationChallengeOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/{this.mockUser.Id}/email_verification_challenge");
+            Assert.Equal(
+                JsonConvert.SerializeObject(token),
+                JsonConvert.SerializeObject(this.mockToken));
         }
     }
 }
