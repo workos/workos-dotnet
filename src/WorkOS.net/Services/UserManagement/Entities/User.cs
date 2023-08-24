@@ -22,12 +22,6 @@ namespace WorkOS
         public string Id { get; set; }
 
         /// <summary>
-        /// The type of the User, which can be "unmanaged" or "managed".
-        /// </summary>
-        [JsonProperty("user_type")]
-        public UserType UserType { get; set; }
-
-        /// <summary>
         /// The email of the user. For unmanaged users, their email is unique per authentication type in each WorkOS Environment. For managed users, emails are not unique.
         /// </summary>
         [JsonProperty("email")]
@@ -48,20 +42,8 @@ namespace WorkOS
         /// <summary>
         /// The timestamp when the user's email was verified. Email verification is only applicable to unmanaged users.
         /// </summary>
-        [JsonProperty("email_verified_at")]
-        public string EmailVerifiedAt { get; set; }
-
-        /// <summary>
-        /// The ID of the Google OAuth Profile. Only unmanaged users who sign in with Google OAuth have Google OAuth Profiles.
-        /// </summary>
-        [JsonProperty("google_oauth_profile_id")]
-        public string GoogleOauthProfileId { get; set; }
-
-        /// <summary>
-        /// The ID of the SSO Profile. Only managed users have SSO Profiles.
-        /// </summary>
-        [JsonProperty("sso_profile_id")]
-        public string SsoProfileId { get; set; }
+        [JsonProperty("email_verified")]
+        public bool EmailVerified { get; set; }
 
         /// <summary>
         /// The timestamp of when the User was created.
