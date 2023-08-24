@@ -13,7 +13,11 @@ namespace WorkOSTests
 
         private readonly UserManagementService service;
 
+        private readonly ListUsersOptions listUsersOptions;
+
         private readonly User mockUser;
+
+        private readonly User mockUser2;
 
         private readonly Session mockSession;
 
@@ -28,6 +32,7 @@ namespace WorkOSTests
         private readonly Reason mockReasons;
 
         private readonly MagicAuthChallenge mockMagicAuthChallenge;
+        private readonly string mockToken;
 
         private readonly CreateUserOptions mockCreateUserOptions;
 
@@ -38,6 +43,16 @@ namespace WorkOSTests
         private readonly AuthenticateUserWithMagicAuthOptions mockAuthenticateUserWithMagicAuthOptions;
 
         private readonly SendMagicAuthCodeOptions mockSendMagicAuthCodeOptions;
+
+        private readonly CreateEmailVerificationChallengeOptions mockCreateEmailVerificationChallengeOptions;
+
+        private readonly CompleteEmailVerificationOptions mockCompleteEmailVerificationOptions;
+
+        private readonly AddUserToOrganizationOptions mockAddUserToOrganizationOptions;
+
+        private readonly CreatePasswordResetChallengeOptions mockCreatePasswordResetChallengeOptions;
+
+        private readonly CompletePasswordResetOptions mockCompletePasswordResetOptions;
 
         public UserManagementServiceTest()
         {
@@ -60,6 +75,23 @@ namespace WorkOSTests
                 EmailVerifiedAt = "2021-07-25T19:07:33.155Z",
                 CreatedAt = "2021-06-25T19:07:33.155Z",
                 UpdatedAt = "2021-08-27T19:07:33.155Z",
+            };
+
+            this.mockUser2 = new User
+            {
+                Id = "user_4DK2CR3C56J083X43JQXF3JK5",
+                UserType = UserType.Unmanaged,
+                Email = "baron.bavis@gmail.com",
+                FirstName = "Baron",
+                LastName = "Bavis",
+                EmailVerifiedAt = "2022-07-25T19:07:33.155Z",
+                CreatedAt = "2022-06-25T19:07:33.155Z",
+                UpdatedAt = "2022-08-27T19:07:33.155Z",
+            };
+
+            this.listUsersOptions = new ListUsersOptions
+            {
+                Type = UserType.Unmanaged,
             };
 
             this.mockOrganization = new Organization
@@ -142,6 +174,8 @@ namespace WorkOSTests
                 Id = "auth_challenge_123",
             };
 
+            this.mockToken = "token_1234";
+
             this.mockCreateUserOptions = new CreateUserOptions
             {
                 Email = "marcelina.davis@gmail.com",
@@ -177,6 +211,32 @@ namespace WorkOSTests
             this.mockSendMagicAuthCodeOptions = new SendMagicAuthCodeOptions
             {
                 Email = "marcelina.davis@gmail.com",
+            };
+
+            this.mockCreateEmailVerificationChallengeOptions = new CreateEmailVerificationChallengeOptions
+            {
+                VerificationUrl = "verify_url_1234",
+            };
+
+            this.mockCompleteEmailVerificationOptions = new CompleteEmailVerificationOptions
+            {
+                Token = "token_1234",
+            };
+            this.mockAddUserToOrganizationOptions = new AddUserToOrganizationOptions
+            {
+                Organization = "org_1234",
+            };
+
+            this.mockCreatePasswordResetChallengeOptions = new CreatePasswordResetChallengeOptions
+            {
+                Email = "marcelina.davis@gmail.com",
+                PasswordResetUrl = "password_1234",
+            };
+
+            this.mockCompletePasswordResetOptions = new CompletePasswordResetOptions
+            {
+                Token = "token_1234",
+                NewPassword = "new_password_1234",
             };
         }
 
@@ -222,6 +282,35 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async void TestListUsers()
+        {
+            var mockResponse = new WorkOSList<User>
+            {
+                Data = new List<User>
+                {
+                    this.mockUser,
+                    this.mockUser2,
+                },
+            };
+
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                $"/users",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(mockResponse));
+
+            var response = await this.service.ListUsers(this.listUsersOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Get,
+                $"/users");
+
+            Assert.Equal(
+                JsonConvert.SerializeObject(mockResponse),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
         public async void TestAuthenticateUserWithPassword()
         {
             this.httpMock.MockResponse(
@@ -248,9 +337,7 @@ namespace WorkOSTests
                 $"/users/sessions/token",
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString((this.mockUser, this.mockSession)));
-
             var (user, session) = await this.service.AuthenticateUserWithCode(this.mockAuthenticateUserWithCodeOptions);
-
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
                 $"/users/sessions/token");
@@ -295,6 +382,116 @@ namespace WorkOSTests
             Assert.Equal(
                 JsonConvert.SerializeObject(challenge),
                 JsonConvert.SerializeObject(this.mockMagicAuthChallenge));
+        }
+
+        [Fact]
+        public async void TestCreateEmailVerificationChallenge()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/{this.mockUser.Id}/email_verification_challenge",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString((this.mockToken, this.mockUser)));
+
+            var (token, user) = await this.service.CreateEmailVerificationChallenge(this.mockUser.Id, this.mockCreateEmailVerificationChallengeOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/{this.mockUser.Id}/email_verification_challenge");
+            Assert.Equal(
+                JsonConvert.SerializeObject(token),
+                JsonConvert.SerializeObject(this.mockToken));
+        }
+
+        [Fact]
+        public async void TestCompleteEmailVerification()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/email_verification",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockUser));
+
+            var user = await this.service.CompleteEmailVerification(this.mockCompleteEmailVerificationOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/email_verification");
+            Assert.Equal(
+                JsonConvert.SerializeObject(user),
+                JsonConvert.SerializeObject(this.mockUser));
+        }
+
+        [Fact]
+        public async void TestCreatePasswordResetChallenge()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/password_reset_challenge",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString((this.mockToken, this.mockUser)));
+
+            var (token, user) = await this.service.CreatePasswordResetChallenge(this.mockCreatePasswordResetChallengeOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/password_reset_challenge");
+            Assert.Equal(
+                JsonConvert.SerializeObject(token),
+                JsonConvert.SerializeObject(this.mockToken));
+        }
+
+        [Fact]
+        public async void TestCompletePasswordReset()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/password_reset",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockUser));
+
+            var user = await this.service.CompletePasswordReset(this.mockCompletePasswordResetOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/password_reset");
+            Assert.Equal(
+                JsonConvert.SerializeObject(user),
+                JsonConvert.SerializeObject(this.mockUser));
+        }
+
+        [Fact]
+        public async void TestAddUserToOrganization()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/{this.mockUser.Id}/organizations",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockUser));
+
+            var user = await this.service.AddUserToOrganziation(this.mockUser.Id, this.mockAddUserToOrganizationOptions);
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/{this.mockUser.Id}/organizations");
+            Assert.Equal(
+                JsonConvert.SerializeObject(user),
+                JsonConvert.SerializeObject(this.mockUser));
+        }
+
+        [Fact]
+        public async void TestRemoveUserFromOrganization()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Delete,
+                $"/users/{this.mockUser.Id}/{this.mockOrganization2.Id}",
+                HttpStatusCode.Accepted,
+                "Accepted");
+
+            await this.service.RemoveUserFromOrganziation(this.mockUser.Id, this.mockOrganization2.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Delete,
+                $"/users/{this.mockUser.Id}/{this.mockOrganization2.Id}");
         }
     }
 }
