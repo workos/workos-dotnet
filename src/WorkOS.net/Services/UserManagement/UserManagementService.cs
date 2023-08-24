@@ -158,6 +158,7 @@ namespace WorkOS
             };
             return await this.Client.MakeAPIRequest<MagicAuthChallenge>(request, cancellationToken);
         }
+
         /// <summary>
         /// Creates an email verification challenge and emails verification token to user.
         /// </summary>
