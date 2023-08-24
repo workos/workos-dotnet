@@ -3,7 +3,7 @@ namespace WorkOS
     using Newtonsoft.Json;
 
     /// <summary>
-    /// The parameters to create a User.
+    /// The parameters to send Magic Auth code.
     /// </summary>
     public class SendMagicAuthCodeOptions : BaseOptions
     {
