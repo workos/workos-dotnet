@@ -41,7 +41,7 @@ namespace WorkOSTests
 
         private readonly AuthenticateUserWithMagicAuthOptions mockAuthenticateUserWithMagicAuthOptions;
 
-        private readonly VerifyEmailOptions mockVerifyEmailOptions;
+        private readonly VerifyEmailCodeOptions mockVerifyEmailCodeOptions;
 
         private readonly AddUserToOrganizationOptions mockAddUserToOrganizationOptions;
 
@@ -194,9 +194,8 @@ namespace WorkOSTests
                 MagicAuthChallengeId = "auth_challenge_123",
             };
 
-            this.mockVerifyEmailOptions = new VerifyEmailOptions
+            this.mockVerifyEmailCodeOptions = new VerifyEmailCodeOptions
             {
-                MagicAuthChallengeId = "magic_auth_id_1234",
                 Code = "code_1234",
             };
             this.mockAddUserToOrganizationOptions = new AddUserToOrganizationOptions
@@ -361,19 +360,19 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestCompleteEmailVerification()
+        public async void TestVerifyEmailCode()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
-                $"/users/email_verification",
+                $"/users/{this.mockUser.Id}/verify_email_code",
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(this.mockUser));
 
-            var user = await this.service.CompleteEmailVerification(this.mockVerifyEmailOptions);
+            var user = await this.service.VerifyEmailCode(this.mockUser.Id, this.mockVerifyEmailCodeOptions);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
-                $"/users/email_verification");
+                $"/users/{this.mockUser.Id}/verify_email_code");
             Assert.Equal(
                 JsonConvert.SerializeObject(user),
                 JsonConvert.SerializeObject(this.mockUser));

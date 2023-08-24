@@ -5,14 +5,8 @@ namespace WorkOS
     /// <summary>
     /// The parameters to verify user email using a verification token.
     /// </summary>
-    public class VerifyEmailOptions : BaseOptions
+    public class VerifyEmailCodeOptions : BaseOptions
     {
-        /// <summary>
-        /// The challenge ID returned from the send verification email endpoint.
-        /// </summary>
-        [JsonProperty("magic_auth_challenge_id")]
-        public string MagicAuthChallengeId { get; set; }
-
         /// <summary>
         /// The verification code emailed to the user.
         /// </summary>
