@@ -41,10 +41,10 @@ namespace WorkOSTests
 
         private readonly AuthenticateUserWithMagicAuthOptions mockAuthenticateUserWithMagicAuthOptions;
 
-        private readonly CreateEmailVerificationChallengeOptions mockCreateEmailVerificationChallengeOptions;
+        private readonly VerifyEmailOptions mockVerifyEmailOptions;
 
-        private readonly CompleteEmailVerificationOptions mockCompleteEmailVerificationOptions;
         private readonly AddUserToOrganizationOptions mockAddUserToOrganizationOptions;
+
         private readonly CreatePasswordResetChallengeOptions mockCreatePasswordResetChallengeOptions;
 
         private readonly CompletePasswordResetOptions mockCompletePasswordResetOptions;
@@ -194,14 +194,10 @@ namespace WorkOSTests
                 MagicAuthChallengeId = "auth_challenge_123",
             };
 
-            this.mockCreateEmailVerificationChallengeOptions = new CreateEmailVerificationChallengeOptions
+            this.mockVerifyEmailOptions = new VerifyEmailOptions
             {
-                VerificationUrl = "verify_url_1234",
-            };
-
-            this.mockCompleteEmailVerificationOptions = new CompleteEmailVerificationOptions
-            {
-                Token = "token_1234",
+                MagicAuthChallengeId = "magic_auth_id_1234",
+                Code = "code_1234",
             };
             this.mockAddUserToOrganizationOptions = new AddUserToOrganizationOptions
             {
@@ -346,22 +342,22 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestCreateEmailVerificationChallenge()
+        public async void TestSendEmailVerificationEmail()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
-                $"/users/{this.mockUser.Id}/email_verification_challenge",
+                $"/users/{this.mockUser.Id}/send_verification_email",
                 HttpStatusCode.Created,
-                RequestUtilities.ToJsonString((this.mockToken, this.mockUser)));
+                RequestUtilities.ToJsonString(this.mockUser));
 
-            var (token, user) = await this.service.CreateEmailVerificationChallenge(this.mockUser.Id, this.mockCreateEmailVerificationChallengeOptions);
+            var user = await this.service.SendEmailVerificationEmail(this.mockUser.Id);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
-                $"/users/{this.mockUser.Id}/email_verification_challenge");
+                $"/users/{this.mockUser.Id}/send_verification_email");
             Assert.Equal(
-                JsonConvert.SerializeObject(token),
-                JsonConvert.SerializeObject(this.mockToken));
+                JsonConvert.SerializeObject(user),
+                JsonConvert.SerializeObject(this.mockUser));
         }
 
         [Fact]
@@ -373,7 +369,7 @@ namespace WorkOSTests
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(this.mockUser));
 
-            var user = await this.service.CompleteEmailVerification(this.mockCompleteEmailVerificationOptions);
+            var user = await this.service.CompleteEmailVerification(this.mockVerifyEmailOptions);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
