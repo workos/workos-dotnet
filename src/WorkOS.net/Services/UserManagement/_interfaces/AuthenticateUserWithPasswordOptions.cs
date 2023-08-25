@@ -48,11 +48,5 @@ namespace WorkOS
         /// </summary>
         [JsonProperty("user_agent")]
         public string UserAgent { get; set; }
-
-        /// <summary>
-        /// The length of the session in minutes. Defaults to 1 day, 1440.
-        /// </summary>
-        [JsonProperty("expires_in")]
-        public int ExpiresIn { get; set; }
     }
 }
