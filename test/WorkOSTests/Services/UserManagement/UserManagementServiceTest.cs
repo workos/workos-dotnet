@@ -515,5 +515,21 @@ namespace WorkOSTests
                 JsonConvert.SerializeObject(user),
                 JsonConvert.SerializeObject(this.mockUser));
         }
+
+        [Fact]
+        public async void TestDeleteUser()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Delete,
+                $"/users/{this.mockUser.Id}",
+                HttpStatusCode.Accepted,
+                "Accepted");
+
+            await this.service.DeleteUser(this.mockUser.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Delete,
+                $"/users/{this.mockUser.Id}");
+        }
     }
 }

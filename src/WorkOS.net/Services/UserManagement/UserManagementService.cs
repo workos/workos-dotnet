@@ -297,5 +297,23 @@ namespace WorkOS
             };
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
         }
+
+        /// <summary>
+        /// Delete a User.
+        /// </summary>
+        /// <param name="id">The unique ID of the User.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> A Task.</returns>
+        public async Task DeleteUser(
+            string id,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"/users/{id}",
+            };
+            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+        }
     }
 }
