@@ -259,5 +259,43 @@ namespace WorkOS
             };
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
         }
+
+        /// <summary>
+        /// Update the user's information.
+        /// </summary>
+        /// <param name="options"> Parameters used to update a user.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> The corresponding User object.</returns>
+        public async Task<User> UpdateUser(
+            UpdateUserOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Put,
+                Path = $"/users/{options.Id}",
+            };
+            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Update the user's information.
+        /// </summary>
+        /// <param name="options"> Parameters used to update a user.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> The corresponding User object.</returns>
+        public async Task<User> UpdateUserPassword(
+            UpdateUserPasswordOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Put,
+                Path = $"/users/{options.Id}/password",
+            };
+            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+        }
     }
 }
