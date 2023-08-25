@@ -8,8 +8,9 @@ namespace WorkOS
     public class UpdateUserOptions : BaseOptions
     {
         /// <summary>
-        /// The id of the user.
+        /// The ID of the user.
         /// </summary>
+        [JsonIgnore]
         public string Id { get; set; }
 
         /// <summary>

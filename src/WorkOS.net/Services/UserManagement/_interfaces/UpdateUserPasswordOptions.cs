@@ -8,12 +8,13 @@ namespace WorkOS
     public class UpdateUserPasswordOptions : BaseOptions
     {
         /// <summary>
-        /// The id of the user.
+        /// The ID of the user.
         /// </summary>
+        [JsonIgnore]
         public string Id { get; set; }
 
         /// <summary>
-        /// The email address of the user.
+        /// The new password for the user.
         /// </summary>
         [JsonProperty("password")]
         public string Password { get; set; }
