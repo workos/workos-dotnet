@@ -40,7 +40,7 @@ namespace WorkOS
         public string LastName { get; set; }
 
         /// <summary>
-        /// The timestamp when the user's email was verified. Email verification is only applicable to unmanaged users.
+        /// The boolean of whether the user's email has been verified.
         /// </summary>
         [JsonProperty("email_verified")]
         public bool EmailVerified { get; set; }
