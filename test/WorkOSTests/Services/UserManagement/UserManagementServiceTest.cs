@@ -31,7 +31,6 @@ namespace WorkOSTests
 
         private readonly Reason mockReasons;
 
-        private readonly MagicAuthChallenge mockMagicAuthChallenge;
         private readonly string mockToken;
 
         private readonly CreateUserOptions mockCreateUserOptions;
@@ -167,11 +166,6 @@ namespace WorkOSTests
                     {
                         this.mockUnauthorizedOrganization,
                     },
-            };
-
-            this.mockMagicAuthChallenge = new MagicAuthChallenge
-            {
-                Id = "auth_challenge_123",
             };
 
             this.mockToken = "token_1234";
@@ -372,16 +366,16 @@ namespace WorkOSTests
                 HttpMethod.Post,
                 $"/users/magic_auth/send",
                 HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(this.mockMagicAuthChallenge));
+                RequestUtilities.ToJsonString(this.mockUser));
 
-            var challenge = await this.service.SendMagicAuthCode(this.mockSendMagicAuthCodeOptions);
+            var user = await this.service.SendMagicAuthCode(this.mockSendMagicAuthCodeOptions);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
                 $"/users/magic_auth/send");
             Assert.Equal(
-                JsonConvert.SerializeObject(challenge),
-                JsonConvert.SerializeObject(this.mockMagicAuthChallenge));
+                JsonConvert.SerializeObject(user),
+                JsonConvert.SerializeObject(this.mockUser));
         }
 
         [Fact]
