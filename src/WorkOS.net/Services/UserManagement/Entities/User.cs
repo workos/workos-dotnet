@@ -22,12 +22,6 @@ namespace WorkOS
         public string Id { get; set; }
 
         /// <summary>
-        /// The type of the User, which can be "unmanaged" or "managed".
-        /// </summary>
-        [JsonProperty("user_type")]
-        public UserType UserType { get; set; }
-
-        /// <summary>
         /// The email of the user. For unmanaged users, their email is unique per authentication type in each WorkOS Environment. For managed users, emails are not unique.
         /// </summary>
         [JsonProperty("email")]

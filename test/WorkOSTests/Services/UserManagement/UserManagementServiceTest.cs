@@ -67,7 +67,6 @@ namespace WorkOSTests
             this.mockUser = new User
             {
                 Id = "user_01E4ZCR3C56J083X43JQXF3JK5",
-                UserType = UserType.Unmanaged,
                 Email = "marcelina.davis@gmail.com",
                 FirstName = "Marcelina",
                 LastName = "Davis",
@@ -79,18 +78,12 @@ namespace WorkOSTests
             this.mockUser2 = new User
             {
                 Id = "user_4DK2CR3C56J083X43JQXF3JK5",
-                UserType = UserType.Unmanaged,
                 Email = "baron.bavis@gmail.com",
                 FirstName = "Baron",
                 LastName = "Bavis",
                 EmailVerifiedAt = "2022-07-25T19:07:33.155Z",
                 CreatedAt = "2022-06-25T19:07:33.155Z",
                 UpdatedAt = "2022-08-27T19:07:33.155Z",
-            };
-
-            this.listUsersOptions = new ListUsersOptions
-            {
-                Type = UserType.Unmanaged,
             };
 
             this.mockOrganization = new Organization
@@ -244,15 +237,14 @@ namespace WorkOSTests
                 RequestUtilities.ToJsonString(this.mockUser));
 
             var user = await this.service.GetUser(this.mockUser.Id);
-            var type = user.UserType;
             var email = user.Email;
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Get,
                 $"/users/{this.mockUser.Id}");
             Assert.Equal(
-                JsonConvert.SerializeObject(this.mockUser.UserType),
-                JsonConvert.SerializeObject(type));
+                JsonConvert.SerializeObject(this.mockUser),
+                JsonConvert.SerializeObject(user));
         }
 
         [Fact]
