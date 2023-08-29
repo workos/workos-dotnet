@@ -33,6 +33,8 @@ namespace WorkOSTests
 
         private readonly string mockToken;
 
+        private readonly AuthenticateUserResponse mockAuthenticateUserResponse;
+
         private readonly CreateUserOptions mockCreateUserOptions;
 
         private readonly AuthenticateUserWithPasswordOptions mockAuthenticateUserWithPasswordOptions;
@@ -165,6 +167,11 @@ namespace WorkOSTests
             };
 
             this.mockToken = "token_1234";
+
+            this.mockAuthenticateUserResponse = new AuthenticateUserResponse
+            {
+                User = this.mockUser,
+            };
 
             this.mockCreateUserOptions = new CreateUserOptions
             {
@@ -301,16 +308,16 @@ namespace WorkOSTests
                 HttpMethod.Post,
                 $"/users/authenticate",
                 HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(this.mockUser));
+                RequestUtilities.ToJsonString(this.mockAuthenticateUserResponse));
 
-            var user = await this.service.AuthenticateUserWithPassword(this.mockAuthenticateUserWithPasswordOptions);
+            var response = await this.service.AuthenticateUserWithPassword(this.mockAuthenticateUserWithPasswordOptions);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
                 $"/users/authenticate");
             Assert.Equal(
-                JsonConvert.SerializeObject(user),
-                JsonConvert.SerializeObject(this.mockUser));
+                JsonConvert.SerializeObject(response),
+                JsonConvert.SerializeObject(this.mockAuthenticateUserResponse));
         }
 
         [Fact]
@@ -320,14 +327,14 @@ namespace WorkOSTests
                 HttpMethod.Post,
                 $"/users/authenticate",
                 HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(this.mockUser));
-            var user = await this.service.AuthenticateUserWithCode(this.mockAuthenticateUserWithCodeOptions);
+                RequestUtilities.ToJsonString(this.mockAuthenticateUserResponse));
+            var response = await this.service.AuthenticateUserWithCode(this.mockAuthenticateUserWithCodeOptions);
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
                 $"/users/authenticate");
             Assert.Equal(
-                JsonConvert.SerializeObject(user),
-                JsonConvert.SerializeObject(this.mockUser));
+                JsonConvert.SerializeObject(response),
+                JsonConvert.SerializeObject(this.mockAuthenticateUserResponse));
         }
 
         [Fact]
@@ -337,16 +344,16 @@ namespace WorkOSTests
                 HttpMethod.Post,
                 $"/users/authenticate",
                 HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(this.mockUser));
+                RequestUtilities.ToJsonString(this.mockAuthenticateUserResponse));
 
-            var user = await this.service.AuthenticateUserWithMagicAuth(this.mockAuthenticateUserWithMagicAuthOptions);
+            var response = await this.service.AuthenticateUserWithMagicAuth(this.mockAuthenticateUserWithMagicAuthOptions);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
                 $"/users/authenticate");
             Assert.Equal(
-                JsonConvert.SerializeObject(user),
-                JsonConvert.SerializeObject(this.mockUser));
+                JsonConvert.SerializeObject(response),
+                JsonConvert.SerializeObject(this.mockAuthenticateUserResponse));
         }
 
         [Fact]

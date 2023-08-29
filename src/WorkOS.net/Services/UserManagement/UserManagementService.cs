@@ -88,8 +88,8 @@ namespace WorkOS
         /// </summary>
         /// <param name="options"> Parameters used to authenticate user with password.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> A User and Session record.</returns>
-        public async Task<User> AuthenticateUserWithPassword(
+        /// <returns> A AuthenticateUserWithPasswordResponse record.</returns>
+        public async Task<AuthenticateUserResponse> AuthenticateUserWithPassword(
             AuthenticateUserWithPasswordOptions options,
             CancellationToken cancellationToken = default)
         {
@@ -99,7 +99,7 @@ namespace WorkOS
                 Method = HttpMethod.Post,
                 Path = $"/users/authenticate",
             };
-            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<AuthenticateUserResponse>(request, cancellationToken);
         }
 
         /// <summary>
@@ -107,8 +107,8 @@ namespace WorkOS
         /// </summary>
         /// <param name="options"> Parameters used to authenticate user with a code.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> A User and Session record.</returns>
-        public async Task<User> AuthenticateUserWithCode(
+        /// <returns> A AuthenticateUserWithCodeResponse record.</returns>
+        public async Task<AuthenticateUserResponse> AuthenticateUserWithCode(
             AuthenticateUserWithCodeOptions options,
             CancellationToken cancellationToken = default)
         {
@@ -118,7 +118,7 @@ namespace WorkOS
                 Method = HttpMethod.Post,
                 Path = $"/users/authenticate",
             };
-            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<AuthenticateUserResponse>(request, cancellationToken);
         }
 
         /// <summary>
@@ -126,8 +126,8 @@ namespace WorkOS
         /// </summary>
         /// <param name="options"> Parameters used to authenticate user with Magic Auth.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> A User and Session record.</returns>
-        public async Task<User> AuthenticateUserWithMagicAuth(
+        /// <returns> A AuthenticateUserWithMagicAuthResponse record.</returns>
+        public async Task<AuthenticateUserResponse> AuthenticateUserWithMagicAuth(
             AuthenticateUserWithMagicAuthOptions options,
             CancellationToken cancellationToken = default)
         {
@@ -137,7 +137,7 @@ namespace WorkOS
                 Method = HttpMethod.Post,
                 Path = $"/users/authenticate",
             };
-            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<AuthenticateUserResponse>(request, cancellationToken);
         }
 
         /// <summary>
