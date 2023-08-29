@@ -5,7 +5,7 @@ namespace WorkOS
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Response object to SendMagicAuthCode method.
+    /// Represents a response for a Magic Auth code.
     /// </summary>
     public class SendMagicAuthCodeResponse
     {
