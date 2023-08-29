@@ -11,7 +11,6 @@ namespace WorkOS
         /// Represents the corresponding User object.
         /// </summary>
         [JsonProperty("user")]
-        public User User { get; set;}
-
+        public User User { get; set; }
     }
 }
