@@ -13,11 +13,13 @@ namespace WorkOSTests
 
         private readonly UserManagementService service;
 
-        private readonly ListUsersOptions listUsersOptions;
+        private readonly ListUsersOptions mockListUsersOptions;
 
         private readonly User mockUser;
 
         private readonly User mockUser2;
+
+        private readonly SendMagicAuthCodeResponse mockSendMagicAuthCodeResponse;
 
         private readonly Session mockSession;
 
@@ -84,6 +86,11 @@ namespace WorkOSTests
                 EmailVerifiedAt = "2022-07-25T19:07:33.155Z",
                 CreatedAt = "2022-06-25T19:07:33.155Z",
                 UpdatedAt = "2022-08-27T19:07:33.155Z",
+            };
+
+            this.mockSendMagicAuthCodeResponse = new SendMagicAuthCodeResponse
+            {
+                User = this.mockUser,
             };
 
             this.mockOrganization = new Organization
@@ -162,6 +169,11 @@ namespace WorkOSTests
             };
 
             this.mockToken = "token_1234";
+
+            this.mockListUsersOptions = new ListUsersOptions
+            {
+                Email = "marcelina.davis@gmail.com",
+            };
 
             this.mockCreateUserOptions = new CreateUserOptions
             {
@@ -285,7 +297,7 @@ namespace WorkOSTests
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var response = await this.service.ListUsers(this.listUsersOptions);
+            var response = await this.service.ListUsers(this.mockListUsersOptions);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Get,
@@ -358,7 +370,7 @@ namespace WorkOSTests
                 HttpMethod.Post,
                 $"/users/magic_auth/send",
                 HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(this.mockUser));
+                RequestUtilities.ToJsonString(this.mockSendMagicAuthCodeResponse));
 
             var user = await this.service.SendMagicAuthCode(this.mockSendMagicAuthCodeOptions);
 
@@ -367,7 +379,7 @@ namespace WorkOSTests
                 $"/users/magic_auth/send");
             Assert.Equal(
                 JsonConvert.SerializeObject(user),
-                JsonConvert.SerializeObject(this.mockUser));
+                JsonConvert.SerializeObject(this.mockSendMagicAuthCodeResponse));
         }
 
         [Fact]

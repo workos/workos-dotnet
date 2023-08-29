@@ -146,7 +146,7 @@ namespace WorkOS
         /// <param name="options"> Parameters used to send magic auth code.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
         /// <returns> A Magic Auth Challenge.</returns>
-        public async Task<User> SendMagicAuthCode(
+        public async Task<SendMagicAuthCodeResponse> SendMagicAuthCode(
             SendMagicAuthCodeOptions options,
             CancellationToken cancellationToken = default)
         {
@@ -156,7 +156,7 @@ namespace WorkOS
                 Method = HttpMethod.Post,
                 Path = $"/users/magic_auth/send",
             };
-            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<SendMagicAuthCodeResponse>(request, cancellationToken);
         }
 
         /// <summary>
