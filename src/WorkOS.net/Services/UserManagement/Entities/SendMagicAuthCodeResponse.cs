@@ -5,7 +5,7 @@ namespace WorkOS
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Object containing a user.
+    /// Response object to SendMagicAuthCode method.
     /// </summary>
     public class SendMagicAuthCodeResponse
     {
