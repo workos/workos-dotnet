@@ -72,7 +72,6 @@ namespace WorkOSTests
                 Email = "marcelina.davis@gmail.com",
                 FirstName = "Marcelina",
                 LastName = "Davis",
-                EmailVerifiedAt = "2021-07-25T19:07:33.155Z",
                 CreatedAt = "2021-06-25T19:07:33.155Z",
                 UpdatedAt = "2021-08-27T19:07:33.155Z",
             };
@@ -83,7 +82,6 @@ namespace WorkOSTests
                 Email = "baron.bavis@gmail.com",
                 FirstName = "Baron",
                 LastName = "Bavis",
-                EmailVerifiedAt = "2022-07-25T19:07:33.155Z",
                 CreatedAt = "2022-06-25T19:07:33.155Z",
                 UpdatedAt = "2022-08-27T19:07:33.155Z",
             };

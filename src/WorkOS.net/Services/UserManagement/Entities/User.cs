@@ -40,22 +40,10 @@ namespace WorkOS
         public string LastName { get; set; }
 
         /// <summary>
-        /// The timestamp when the user's email was verified. Email verification is only applicable to unmanaged users.
+        /// The boolean of whether the user's email has been verified.
         /// </summary>
-        [JsonProperty("email_verified_at")]
-        public string EmailVerifiedAt { get; set; }
-
-        /// <summary>
-        /// The ID of the Google OAuth Profile. Only unmanaged users who sign in with Google OAuth have Google OAuth Profiles.
-        /// </summary>
-        [JsonProperty("google_oauth_profile_id")]
-        public string GoogleOauthProfileId { get; set; }
-
-        /// <summary>
-        /// The ID of the SSO Profile. Only managed users have SSO Profiles.
-        /// </summary>
-        [JsonProperty("sso_profile_id")]
-        public string SsoProfileId { get; set; }
+        [JsonProperty("email_verified")]
+        public bool EmailVerified { get; set; }
 
         /// <summary>
         /// The timestamp of when the User was created.
