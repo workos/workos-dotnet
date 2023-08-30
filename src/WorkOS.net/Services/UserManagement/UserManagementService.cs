@@ -146,7 +146,7 @@ namespace WorkOS
         /// <param name="id">The unique ID of the User.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
         /// <returns> A token and the corresponding User object.</returns>
-        public async Task<User> SendEmailVerificationEmail(
+        public async Task<SendVerificationEmailResponse> SendVerificationEmail(
             string id,
             CancellationToken cancellationToken = default)
         {
@@ -155,7 +155,7 @@ namespace WorkOS
                 Method = HttpMethod.Post,
                 Path = $"/users/{id}/send_verification_email",
             };
-            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<SendVerificationEmailResponse>(request, cancellationToken);
         }
 
         /// <summary>
@@ -165,16 +165,16 @@ namespace WorkOS
         /// <param name="options"> Parameters used to complete email verification.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
         /// <returns> The corresponding User object.</returns>
-        public async Task<User> VerifyEmailCode(
+        public async Task<User> VerifyEmail(
             string id,
-            VerifyEmailCodeOptions options,
+            VerifyEmailOptions options,
             CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
                 Options = options,
                 Method = HttpMethod.Post,
-                Path = $"/users/{id}/verify_email_code",
+                Path = $"/users/{id}/verify_email",
             };
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
         }

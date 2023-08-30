@@ -5,8 +5,14 @@ namespace WorkOS
     /// <summary>
     /// The parameters to verify user email using a verification token.
     /// </summary>
-    public class VerifyEmailCodeOptions : BaseOptions
+    public class VerifyEmailOptions : BaseOptions
     {
+        /// <summary>
+        /// The verification code emailed to the user.
+        /// </summary>
+        [JsonProperty("user_id")]
+        public string UserId { get; set; }
+
         /// <summary>
         /// The verification code emailed to the user.
         /// </summary>
