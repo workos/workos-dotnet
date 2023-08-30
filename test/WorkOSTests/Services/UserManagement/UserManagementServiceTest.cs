@@ -13,11 +13,13 @@ namespace WorkOSTests
 
         private readonly UserManagementService service;
 
-        private readonly ListUsersOptions listUsersOptions;
+        private readonly ListUsersOptions mockListUsersOptions;
 
         private readonly User mockUser;
 
         private readonly User mockUser2;
+
+        private readonly SendMagicAuthCodeResponse mockSendMagicAuthCodeResponse;
 
         private readonly Session mockSession;
 
@@ -43,10 +45,14 @@ namespace WorkOSTests
 
         private readonly AuthenticateUserWithMagicAuthOptions mockAuthenticateUserWithMagicAuthOptions;
 
+        private readonly SendMagicAuthCodeOptions mockSendMagicAuthCodeOptions;
+
         private readonly CreateEmailVerificationChallengeOptions mockCreateEmailVerificationChallengeOptions;
 
         private readonly CompleteEmailVerificationOptions mockCompleteEmailVerificationOptions;
+
         private readonly AddUserToOrganizationOptions mockAddUserToOrganizationOptions;
+
         private readonly CreatePasswordResetChallengeOptions mockCreatePasswordResetChallengeOptions;
 
         private readonly CompletePasswordResetOptions mockCompletePasswordResetOptions;
@@ -65,11 +71,9 @@ namespace WorkOSTests
             this.mockUser = new User
             {
                 Id = "user_01E4ZCR3C56J083X43JQXF3JK5",
-                UserType = UserType.Unmanaged,
                 Email = "marcelina.davis@gmail.com",
                 FirstName = "Marcelina",
                 LastName = "Davis",
-                EmailVerifiedAt = "2021-07-25T19:07:33.155Z",
                 CreatedAt = "2021-06-25T19:07:33.155Z",
                 UpdatedAt = "2021-08-27T19:07:33.155Z",
             };
@@ -77,18 +81,16 @@ namespace WorkOSTests
             this.mockUser2 = new User
             {
                 Id = "user_4DK2CR3C56J083X43JQXF3JK5",
-                UserType = UserType.Unmanaged,
                 Email = "baron.bavis@gmail.com",
                 FirstName = "Baron",
                 LastName = "Bavis",
-                EmailVerifiedAt = "2022-07-25T19:07:33.155Z",
                 CreatedAt = "2022-06-25T19:07:33.155Z",
                 UpdatedAt = "2022-08-27T19:07:33.155Z",
             };
 
-            this.listUsersOptions = new ListUsersOptions
+            this.mockSendMagicAuthCodeResponse = new SendMagicAuthCodeResponse
             {
-                Type = UserType.Unmanaged,
+                User = this.mockUser,
             };
 
             this.mockOrganization = new Organization
@@ -172,6 +174,11 @@ namespace WorkOSTests
             {
                 User = this.mockUser,
             };
+            
+            this.mockListUsersOptions = new ListUsersOptions
+            {
+                Email = "marcelina.davis@gmail.com",
+            };
 
             this.mockCreateUserOptions = new CreateUserOptions
             {
@@ -202,6 +209,11 @@ namespace WorkOSTests
                 ClientId = "client_123",
                 ClientSecret = "client_secret_123",
                 Code = "code_123",
+            };
+
+            this.mockSendMagicAuthCodeOptions = new SendMagicAuthCodeOptions
+            {
+                Email = "marcelina.davis@gmail.com",
             };
 
             this.mockCreateEmailVerificationChallengeOptions = new CreateEmailVerificationChallengeOptions
@@ -241,15 +253,14 @@ namespace WorkOSTests
                 RequestUtilities.ToJsonString(this.mockUser));
 
             var user = await this.service.GetUser(this.mockUser.Id);
-            var type = user.UserType;
             var email = user.Email;
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Get,
                 $"/users/{this.mockUser.Id}");
             Assert.Equal(
-                JsonConvert.SerializeObject(this.mockUser.UserType),
-                JsonConvert.SerializeObject(type));
+                JsonConvert.SerializeObject(this.mockUser),
+                JsonConvert.SerializeObject(user));
         }
 
         [Fact]
@@ -290,7 +301,7 @@ namespace WorkOSTests
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(mockResponse));
 
-            var response = await this.service.ListUsers(this.listUsersOptions);
+            var response = await this.service.ListUsers(this.mockListUsersOptions);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Get,
@@ -354,6 +365,25 @@ namespace WorkOSTests
             Assert.Equal(
                 JsonConvert.SerializeObject(response),
                 JsonConvert.SerializeObject(this.mockAuthenticateUserResponse));
+        }
+
+        [Fact]
+        public async void TestSendMagicAuthCode()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                $"/users/magic_auth/send",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockSendMagicAuthCodeResponse));
+
+            var user = await this.service.SendMagicAuthCode(this.mockSendMagicAuthCodeOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Post,
+                $"/users/magic_auth/send");
+            Assert.Equal(
+                JsonConvert.SerializeObject(user),
+                JsonConvert.SerializeObject(this.mockSendMagicAuthCodeResponse));
         }
 
         [Fact]
