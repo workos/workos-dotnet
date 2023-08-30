@@ -10,7 +10,7 @@ namespace WorkOS
         /// <summary>
         /// The verification code emailed to the user.
         /// </summary>
-        [JsonProperty("user_id")]
+        [JsonIgnore]
         public string UserId { get; set; }
 
         /// <summary>

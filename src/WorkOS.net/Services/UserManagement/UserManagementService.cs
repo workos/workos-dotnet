@@ -161,12 +161,10 @@ namespace WorkOS
         /// <summary>
         /// Verifies email challenge.
         /// </summary>
-        /// <param name="id">The unique ID of the User.</param>
         /// <param name="options"> Parameters used to complete email verification.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
         /// <returns> The corresponding User object.</returns>
         public async Task<User> VerifyEmail(
-            string id,
             VerifyEmailOptions options,
             CancellationToken cancellationToken = default)
         {
@@ -174,7 +172,7 @@ namespace WorkOS
             {
                 Options = options,
                 Method = HttpMethod.Post,
-                Path = $"/users/{id}/verify_email",
+                Path = $"/users/{options.UserId}/verify_email",
             };
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
         }

@@ -203,6 +203,7 @@ namespace WorkOSTests
 
             this.mockVerifyEmailOptions = new VerifyEmailOptions
             {
+                UserId = this.mockUser.Id,
                 Code = "code_1234",
             };
             this.mockAddUserToOrganizationOptions = new AddUserToOrganizationOptions
@@ -375,7 +376,7 @@ namespace WorkOSTests
                 HttpStatusCode.Created,
                 RequestUtilities.ToJsonString(this.mockUser));
 
-            var user = await this.service.VerifyEmail(this.mockUser.Id, this.mockVerifyEmailOptions);
+            var user = await this.service.VerifyEmail(this.mockVerifyEmailOptions);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
