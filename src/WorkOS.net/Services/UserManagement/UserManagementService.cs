@@ -88,8 +88,8 @@ namespace WorkOS
         /// </summary>
         /// <param name="options"> Parameters used to authenticate user with password.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> A User and Session record.</returns>
-        public async Task<(User, Session)> AuthenticateUserWithPassword(
+        /// <returns> A AuthenticateUserWithPasswordResponse record.</returns>
+        public async Task<AuthenticateUserResponse> AuthenticateUserWithPassword(
             AuthenticateUserWithPasswordOptions options,
             CancellationToken cancellationToken = default)
         {
@@ -97,9 +97,9 @@ namespace WorkOS
             {
                 Options = options,
                 Method = HttpMethod.Post,
-                Path = $"/users/sessions/token",
+                Path = $"/users/authenticate",
             };
-            return await this.Client.MakeAPIRequest<(User, Session)>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<AuthenticateUserResponse>(request, cancellationToken);
         }
 
         /// <summary>
@@ -107,8 +107,8 @@ namespace WorkOS
         /// </summary>
         /// <param name="options"> Parameters used to authenticate user with a code.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> A User and Session record.</returns>
-        public async Task<(User, Session)> AuthenticateUserWithCode(
+        /// <returns> A AuthenticateUserWithCodeResponse record.</returns>
+        public async Task<AuthenticateUserResponse> AuthenticateUserWithCode(
             AuthenticateUserWithCodeOptions options,
             CancellationToken cancellationToken = default)
         {
@@ -116,9 +116,9 @@ namespace WorkOS
             {
                 Options = options,
                 Method = HttpMethod.Post,
-                Path = $"/users/sessions/token",
+                Path = $"/users/authenticate",
             };
-            return await this.Client.MakeAPIRequest<(User, Session)>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<AuthenticateUserResponse>(request, cancellationToken);
         }
 
         /// <summary>
@@ -126,8 +126,8 @@ namespace WorkOS
         /// </summary>
         /// <param name="options"> Parameters used to authenticate user with Magic Auth.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> A User and Session record.</returns>
-        public async Task<(User, Session)> AuthenticateUserWithMagicAuth(
+        /// <returns> A AuthenticateUserWithMagicAuthResponse record.</returns>
+        public async Task<AuthenticateUserResponse> AuthenticateUserWithMagicAuth(
             AuthenticateUserWithMagicAuthOptions options,
             CancellationToken cancellationToken = default)
         {
@@ -135,9 +135,28 @@ namespace WorkOS
             {
                 Options = options,
                 Method = HttpMethod.Post,
-                Path = $"/users/sessions/token",
+                Path = $"/users/authenticate",
             };
-            return await this.Client.MakeAPIRequest<(User, Session)>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<AuthenticateUserResponse>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Creates a one-time Magic Auth code and emails it to the user.
+        /// </summary>
+        /// <param name="options"> Parameters used to send magic auth code.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> A Magic Auth Challenge.</returns>
+        public async Task<SendMagicAuthCodeResponse> SendMagicAuthCode(
+            SendMagicAuthCodeOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = $"/users/magic_auth/send",
+            };
+            return await this.Client.MakeAPIRequest<SendMagicAuthCodeResponse>(request, cancellationToken);
         }
 
         /// <summary>
