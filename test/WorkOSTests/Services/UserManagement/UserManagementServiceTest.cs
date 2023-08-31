@@ -56,6 +56,10 @@ namespace WorkOSTests
 
         private readonly CompletePasswordResetOptions mockCompletePasswordResetOptions;
 
+        private readonly UpdateUserOptions mockUpdateUserOptions;
+
+        private readonly UpdateUserPasswordOptions mockUpdateUserPasswordOptions;
+
         public UserManagementServiceTest()
         {
             this.httpMock = new HttpMock();
@@ -240,6 +244,21 @@ namespace WorkOSTests
             {
                 Token = "token_1234",
                 NewPassword = "new_password_1234",
+            };
+
+            this.mockUpdateUserOptions = new UpdateUserOptions
+            {
+                Id = "user_1234",
+                FirstName = "Marcelina",
+                LastName = "Davis",
+                Email = "marcelina.davis@gmail.com",
+                IsEmailVerified = true,
+            };
+
+            this.mockUpdateUserPasswordOptions = new UpdateUserPasswordOptions
+            {
+                Id = "user_1234",
+                Password = "password_1234",
             };
         }
 
@@ -494,6 +513,60 @@ namespace WorkOSTests
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Delete,
                 $"/users/{this.mockUser.Id}/{this.mockOrganization2.Id}");
+        }
+
+        [Fact]
+        public async void TestUpdateUser()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Put,
+                $"/users/{this.mockUpdateUserOptions.Id}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockUser));
+
+            var user = await this.service.UpdateUser(this.mockUpdateUserOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Put,
+                $"/users/{this.mockUpdateUserOptions.Id}");
+            Assert.Equal(
+                JsonConvert.SerializeObject(user),
+                JsonConvert.SerializeObject(this.mockUser));
+        }
+
+        [Fact]
+        public async void TestUpdateUserPassword()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Put,
+                $"/users/{this.mockUpdateUserPasswordOptions.Id}/password",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockUser));
+
+            var user = await this.service.UpdateUserPassword(this.mockUpdateUserPasswordOptions);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Put,
+                $"/users/{this.mockUpdateUserPasswordOptions.Id}/password");
+            Assert.Equal(
+                JsonConvert.SerializeObject(user),
+                JsonConvert.SerializeObject(this.mockUser));
+        }
+
+        [Fact]
+        public async void TestDeleteUser()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Delete,
+                $"/users/{this.mockUser.Id}",
+                HttpStatusCode.Accepted,
+                "Accepted");
+
+            await this.service.DeleteUser(this.mockUser.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Delete,
+                $"/users/{this.mockUser.Id}");
         }
     }
 }
