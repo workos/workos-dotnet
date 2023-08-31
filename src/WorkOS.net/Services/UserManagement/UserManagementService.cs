@@ -277,7 +277,7 @@ namespace WorkOS
         }
 
         /// <summary>
-        /// Update the user's information.
+        /// Update the User's information.
         /// </summary>
         /// <param name="options"> Parameters used to update a user.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
@@ -296,7 +296,7 @@ namespace WorkOS
         }
 
         /// <summary>
-        /// Update the user's information.
+        /// Update the User's password.
         /// </summary>
         /// <param name="options"> Parameters used to update a user.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
