@@ -438,7 +438,7 @@ namespace WorkOSTests
                 HttpMethod.Post,
                 $"/users/{this.mockUser.Id}/verify_email",
                 HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(this.mockUser));
+                RequestUtilities.ToJsonString(this.mockVerifyEmailResponse));
 
             var response = await this.service.VerifyEmail(this.mockVerifyEmailOptions);
 
