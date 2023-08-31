@@ -32,7 +32,11 @@ namespace WorkOS
         public string Code { get; set; }
 
         /// <summary>
+<<<<<<< HEAD
         /// The Id of User authenticating.
+=======
+        /// The ID of the User authenticating.
+>>>>>>> main
         /// </summary>
         [JsonProperty("user_id")]
         public string UserId { get; set; }
