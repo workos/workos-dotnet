@@ -1,4 +1,4 @@
-﻿namespace WorkOSTests
+namespace WorkOSTests
 {
     using System;
     using System.Collections.Generic;
