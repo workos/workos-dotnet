@@ -1,4 +1,4 @@
-﻿namespace WorkOSTests
+namespace WorkOSTests
 {
     using System;
     using System.Collections.Generic;
@@ -201,7 +201,7 @@
                 IdpId = "123",
                 OrganizationId = "org_123",
                 ConnectionId = "conn_123",
-                Type = ConnectionType.OktaSAML,
+                Type = "OktaSAML",
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
                 LastName = "Sanchez",
@@ -254,7 +254,7 @@
                 IdpId = "123",
                 OrganizationId = "org_123",
                 ConnectionId = "conn_123",
-                Type = ConnectionType.OktaSAML,
+                Type = "OktaSAML",
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
                 LastName = "Sanchez",
