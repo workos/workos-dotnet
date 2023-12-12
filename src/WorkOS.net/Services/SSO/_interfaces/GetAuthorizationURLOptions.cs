@@ -52,12 +52,10 @@
         public string Organization { get; set; }
 
         /// <summary>
-        /// An optional parameter that specifies the type of Connection to
-        /// authenticate with. If used, a user of any domain can be
-        /// authenticated. Only `GoogleOAuth` is currently supported.
+        /// Used to initiate authentication with OAuth.
         /// </summary>
         [JsonProperty("provider")]
-        public ConnectionType? Provider { get; set; }
+        public ProviderType? Provider { get; set; }
 
         /// <summary>
         /// A callback URL where the application redirects the user-agent after

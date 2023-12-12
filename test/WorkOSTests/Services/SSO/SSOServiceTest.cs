@@ -1,4 +1,4 @@
-namespace WorkOSTests
+﻿namespace WorkOSTests
 {
     using System;
     using System.Collections.Generic;
@@ -64,7 +64,7 @@ namespace WorkOSTests
             var options = new GetAuthorizationURLOptions
             {
                 ClientId = "client_123",
-                Provider = ConnectionType.GoogleOAuth,
+                Provider = ProviderType.GoogleOAuth,
                 RedirectURI = "https://example.com/sso/callback",
             };
             string url = this.service.GetAuthorizationURL(options);
@@ -105,7 +105,7 @@ namespace WorkOSTests
             {
                 ClientId = "client_123",
                 DomainHint = "foo-corp.com",
-                Provider = ConnectionType.GoogleOAuth,
+                Provider = ProviderType.GoogleOAuth,
                 RedirectURI = "https://example.com/sso/callback",
             };
             string url = this.service.GetAuthorizationURL(options);
@@ -124,7 +124,7 @@ namespace WorkOSTests
             {
                 ClientId = "client_123",
                 LoginHint = "foo@workos.com",
-                Provider = ConnectionType.GoogleOAuth,
+                Provider = ProviderType.GoogleOAuth,
                 RedirectURI = "https://example.com/sso/callback",
             };
             string url = this.service.GetAuthorizationURL(options);
