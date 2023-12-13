@@ -182,8 +182,8 @@ namespace WorkOS
         /// </summary>
         /// <param name="options"> Parameters used to complete email verification.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> The corresponding VerifyEmailResponse object.</returns>
-        public async Task<VerifyEmailResponse> VerifyEmail(
+        /// <returns> The corresponding User object.</returns>
+        public async Task<User> VerifyEmail(
             VerifyEmailOptions options,
             CancellationToken cancellationToken = default)
         {
@@ -193,7 +193,7 @@ namespace WorkOS
                 Method = HttpMethod.Post,
                 Path = $"/users/{options.UserId}/verify_email",
             };
-            return await this.Client.MakeAPIRequest<VerifyEmailResponse>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
         }
 
         /// <summary>

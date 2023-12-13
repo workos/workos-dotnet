@@ -38,8 +38,6 @@ namespace WorkOSTests
         private readonly SendVerificationEmailResponse mockSendVerificationEmailResponse;
         private readonly AuthenticateUserResponse mockAuthenticateUserResponse;
 
-        private readonly VerifyEmailResponse mockVerifyEmailResponse;
-
         private readonly CreateUserOptions mockCreateUserOptions;
 
         private readonly AuthenticateUserWithPasswordOptions mockAuthenticateUserWithPasswordOptions;
@@ -181,11 +179,6 @@ namespace WorkOSTests
             };
 
             this.mockAuthenticateUserResponse = new AuthenticateUserResponse
-            {
-                User = this.mockUser,
-            };
-
-            this.mockVerifyEmailResponse = new VerifyEmailResponse
             {
                 User = this.mockUser,
             };
@@ -438,16 +431,16 @@ namespace WorkOSTests
                 HttpMethod.Post,
                 $"/users/{this.mockUser.Id}/verify_email",
                 HttpStatusCode.Created,
-                RequestUtilities.ToJsonString(this.mockVerifyEmailResponse));
+                RequestUtilities.ToJsonString(this.mockUser));
 
-            var response = await this.service.VerifyEmail(this.mockVerifyEmailOptions);
+            var user = await this.service.VerifyEmail(this.mockVerifyEmailOptions);
 
             this.httpMock.AssertRequestWasMade(
                 HttpMethod.Post,
                 $"/users/{this.mockUser.Id}/verify_email");
             Assert.Equal(
-                JsonConvert.SerializeObject(response),
-                JsonConvert.SerializeObject(this.mockVerifyEmailResponse));
+                JsonConvert.SerializeObject(user),
+                JsonConvert.SerializeObject(this.mockUser));
         }
 
         [Fact]
