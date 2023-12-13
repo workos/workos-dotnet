@@ -32,10 +32,10 @@ namespace WorkOS
         public string Code { get; set; }
 
         /// <summary>
-        /// The ID of the User authenticating.
+        /// The challenge ID returned from when the one-time code was sent to the user.
         /// </summary>
-        [JsonProperty("user_id")]
-        public string UserId { get; set; }
+        [JsonProperty("magic_auth_challenge_id")]
+        public string MagicAuthChallengeId { get; set; }
 
         /// <summary>
         /// The IP address of the request from the user who is attempting to authenticate.
@@ -48,5 +48,11 @@ namespace WorkOS
         /// </summary>
         [JsonProperty("user_agent")]
         public string UserAgent { get; set; }
+
+        /// <summary>
+        /// The length of the session in minutes. Defaults to 1 day, 1440.
+        /// </summary>
+        [JsonProperty("expires_in")]
+        public int ExpiresIn { get; set; }
     }
 }
