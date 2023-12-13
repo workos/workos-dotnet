@@ -139,43 +139,5 @@ namespace WorkOS
             };
             return await this.Client.MakeAPIRequest<(User, Session)>(request, cancellationToken);
         }
-
-        /// <summary>
-        /// Create a Password Reset challenge.
-        /// </summary>
-        /// <param name="options"> Parameters used to create a password reset challenge.</param>
-        /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> The token string and corresponding User object.</returns>
-        public async Task<(string, User)> CreatePasswordResetChallenge(
-            CreatePasswordResetChallengeOptions options,
-            CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Options = options,
-                Method = HttpMethod.Post,
-                Path = $"/users/password_reset_challenge",
-            };
-            return await this.Client.MakeAPIRequest<(string, User)>(request, cancellationToken);
-        }
-
-        /// <summary>
-        /// Complete a Password Reset.
-        /// </summary>
-        /// <param name="options"> Parameters used to complete a password reset.</param>
-        /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> The corresponding User object.</returns>
-        public async Task<User> CompletePasswordReset(
-            CompletePasswordResetOptions options,
-            CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Options = options,
-                Method = HttpMethod.Post,
-                Path = $"/users/password_reset",
-            };
-            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
-        }
     }
 }
