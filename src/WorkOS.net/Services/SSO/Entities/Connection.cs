@@ -34,9 +34,42 @@
 
         /// <summary>
         /// The type of the Connection.
+        /// One of:
+        /// <c>ADFSSAML</c>
+        /// <c>AdpOidc</c>
+        /// <c>Auth0SAML</c>
+        /// <c>AzureSAML</c>
+        /// <c>CasSAML</c>
+        /// <c>CloudflareSAML</c>
+        /// <c>ClasslinkSAML</c>
+        /// <c>CyberArkSAML</c>
+        /// <c>DuoSAML</c>
+        /// <c>GenericOIDC</c>
+        /// <c>GenericSAML</c>
+        /// <c>GitHubOAuth</c>
+        /// <c>GoogleOAuth</c>
+        /// <c>GoogleSAML</c>
+        /// <c>JumpCloudSAML</c>
+        /// <c>KeycloakSAML</c>
+        /// <c>LastPassSAML</c>
+        /// <c>MagicLink</c>
+        /// <c>MicrosoftOAuth</c>
+        /// <c>MiniOrangeSAML</c>
+        /// <c>NetIqSAML</c>
+        /// <c>OktaSAML</c>
+        /// <c>OneLoginSAML</c>
+        /// <c>OracleSAML</c>
+        /// <c>PingFederateSAML</c>
+        /// <c>PingOneSAML</c>
+        /// <c>RipplingSAML</c>
+        /// <c>SalesforceSAML</c>
+        /// <c>ShibbolethGenericSAML</c>
+        /// <c>ShibbolethSAML</c>
+        /// <c>SimpleSamlPhpSAML</c>
+        /// <c>VMwareSAML</c>.
         /// </summary>
         [JsonProperty("connection_type")]
-        public ConnectionType? Type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// The linked state of the Connection.
