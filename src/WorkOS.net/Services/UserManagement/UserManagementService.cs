@@ -101,24 +101,5 @@ namespace WorkOS
             };
             return await this.Client.MakeAPIRequest<(User, Session)>(request, cancellationToken);
         }
-
-        /// <summary>
-        /// Authenticate user session with Magic Auth.
-        /// </summary>
-        /// <param name="options"> Parameters used to authenticate user with Magic Auth.</param>
-        /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> A User and Session record.</returns>
-        public async Task<(User, Session)> AuthenticateUserWithMagicAuth(
-            AuthenticateUserWithMagicAuthOptions options,
-            CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Options = options,
-                Method = HttpMethod.Post,
-                Path = $"/users/sessions/token",
-            };
-            return await this.Client.MakeAPIRequest<(User, Session)>(request, cancellationToken);
-        }
     }
 }
