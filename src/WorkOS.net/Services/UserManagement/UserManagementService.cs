@@ -141,46 +141,6 @@ namespace WorkOS
         }
 
         /// <summary>
-        /// Creates an email verification challenge and emails verification token to user.
-        /// </summary>
-        /// <param name="id">The unique ID of the User.</param>
-        /// <param name="options"> Parameters used to create email verification challenge.</param>
-        /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> A token and the corresponding User object.</returns>
-        public async Task<(string, User)> CreateEmailVerificationChallenge(
-            string id,
-            CreateEmailVerificationChallengeOptions options,
-            CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Options = options,
-                Method = HttpMethod.Post,
-                Path = $"/users/{id}/email_verification_challenge",
-            };
-            return await this.Client.MakeAPIRequest<(string, User)>(request, cancellationToken);
-        }
-
-        /// <summary>
-        /// Creates an email verification challenge and emails verification token to user.
-        /// </summary>
-        /// <param name="options"> Parameters used to complete email verification.</param>
-        /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> The corresponding User object.</returns>
-        public async Task<User> CompleteEmailVerification(
-            CompleteEmailVerificationOptions options,
-            CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Options = options,
-                Method = HttpMethod.Post,
-                Path = $"/users/email_verification",
-            };
-            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
-        }
-
-        /// <summary>
         /// Adds an User as a member of the given Organization.
         /// </summary>
         /// <param name="id">The unique ID of the User.</param>
