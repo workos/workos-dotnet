@@ -44,24 +44,5 @@ namespace WorkOS
             };
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
         }
-
-        /// <summary>
-        /// Create a new User.
-        /// </summary>
-        /// <param name="options"> Parameters used to create the user.</param>
-        /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> A User record.</returns>
-        public async Task<User> CreateUser(
-            CreateUserOptions options,
-            CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Options = options,
-                Method = HttpMethod.Post,
-                Path = $"/users",
-            };
-            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
-        }
     }
 }
