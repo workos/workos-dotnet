@@ -163,35 +163,38 @@ namespace WorkOS
         /// Creates an email verification challenge and emails verification token to user.
         /// </summary>
         /// <param name="id">The unique ID of the User.</param>
+        /// <param name="options"> Parameters used to create email verification challenge.</param>
         /// <param name="cancellationToken">An optional token to cancel the request.</param>
         /// <returns> A token and the corresponding User object.</returns>
-        public async Task<SendVerificationEmailResponse> SendVerificationEmail(
+        public async Task<(string, User)> CreateEmailVerificationChallenge(
             string id,
-            CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/users/{id}/send_verification_email",
-            };
-            return await this.Client.MakeAPIRequest<SendVerificationEmailResponse>(request, cancellationToken);
-        }
-
-        /// <summary>
-        /// Verifies email challenge.
-        /// </summary>
-        /// <param name="options"> Parameters used to complete email verification.</param>
-        /// <param name="cancellationToken">An optional token to cancel the request.</param>
-        /// <returns> The corresponding User object.</returns>
-        public async Task<User> VerifyEmail(
-            VerifyEmailOptions options,
+            CreateEmailVerificationChallengeOptions options,
             CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
                 Options = options,
                 Method = HttpMethod.Post,
-                Path = $"/users/{options.UserId}/verify_email",
+                Path = $"/users/{id}/email_verification_challenge",
+            };
+            return await this.Client.MakeAPIRequest<(string, User)>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Creates an email verification challenge and emails verification token to user.
+        /// </summary>
+        /// <param name="options"> Parameters used to complete email verification.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request.</param>
+        /// <returns> The corresponding User object.</returns>
+        public async Task<User> CompleteEmailVerification(
+            CompleteEmailVerificationOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = $"/users/email_verification",
             };
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
         }
