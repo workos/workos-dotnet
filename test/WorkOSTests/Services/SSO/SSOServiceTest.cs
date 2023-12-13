@@ -201,7 +201,6 @@
                 IdpId = "123",
                 OrganizationId = "org_123",
                 ConnectionId = "conn_123",
-                ConnectionType = ConnectionType.OktaSAML,
                 Type = "OktaSAML",
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
