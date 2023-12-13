@@ -8,6 +8,12 @@ namespace WorkOS
     public class ListUsersOptions : ListOptions
     {
         /// <summary>
+        /// Filter Users by their type.
+        /// </summary>
+        [JsonProperty("type")]
+        public UserType Type { get; set; }
+
+        /// <summary>
         /// Filter Users by their email.
         /// </summary>
         [JsonProperty("email")]
