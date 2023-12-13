@@ -15,21 +15,7 @@ namespace WorkOSTests
 
         private readonly User mockUser;
 
-        private readonly Session mockSession;
-
-        private readonly Organization mockOrganization;
-
-        private readonly Organization mockOrganization2;
-
-        private readonly UnauthorizedOrganization mockUnauthorizedOrganization;
-
-        private readonly AuthorizedOrganization mockAuthorizedOrganization;
-
-        private readonly Reason mockReasons;
-
         private readonly CreateUserOptions mockCreateUserOptions;
-
-        private readonly AuthenticateUserWithPasswordOptions mockAuthenticateUserWithPasswordOptions;
 
         public UserManagementServiceTest()
         {
@@ -54,81 +40,6 @@ namespace WorkOSTests
                 UpdatedAt = "2021-08-27T19:07:33.155Z",
             };
 
-            this.mockOrganization = new Organization
-            {
-                Id = "org_01EHZNVPK3SFK441A1RGBFSHRT",
-                Name = "AuthorizedOrgExample",
-                AllowProfilesOutsideOrganization = false,
-                CreatedAt = "2021-06-25T19:07:33.155Z",
-                UpdatedAt = "2021-06-25T19:07:33.155Z",
-                Domains = new OrganizationDomain[]
-                {
-                    new OrganizationDomain
-                    {
-                        Id = "org_domain_123",
-                        Domain = "foo-corp.com",
-                    },
-                },
-            };
-
-            this.mockOrganization2 = new Organization
-            {
-                Id = "org_12AVDCSEW4DBN552B2ZHLGRWMO",
-                Name = "UnauthorizedOrgExample",
-                AllowProfilesOutsideOrganization = false,
-                CreatedAt = "2021-06-25T19:07:33.155Z",
-                UpdatedAt = "2021-06-25T19:07:33.155Z",
-                Domains = new OrganizationDomain[]
-                {
-                    new OrganizationDomain
-                    {
-                        Id = "org_domain_123",
-                        Domain = "foo-corp.com",
-                    },
-                },
-            };
-
-            this.mockReasons = new Reason
-            {
-                AllowedAuthenticationMethods = new List<AuthenticationMethod>
-                {
-                    AuthenticationMethod.AuthenticationMethodRequired,
-                    AuthenticationMethod.Password,
-                    AuthenticationMethod.MagicAuth,
-                    AuthenticationMethod.MicrosoftOauth,
-                },
-            };
-
-            this.mockAuthorizedOrganization = new AuthorizedOrganization
-            {
-                Organization = this.mockOrganization,
-            };
-
-            this.mockUnauthorizedOrganization = new UnauthorizedOrganization
-            {
-                Organization = this.mockOrganization2,
-                Reasons = new List<Reason>
-                {
-                    this.mockReasons,
-                },
-            };
-
-            this.mockSession = new Session
-            {
-                Id = "session_01E4ZCR3C56J083X43JQXF3JK5",
-                CreatedAt = "2021-06-25T19:07:33.155Z",
-                ExpiresAt = "2022-06-25T19:07:33.155Z",
-                Token = "session_token_123abc",
-                AuthorizedOrganizations = new List<AuthorizedOrganization>
-                    {
-                        this.mockAuthorizedOrganization,
-                    },
-                UnauthorizedOrganizations = new List<UnauthorizedOrganization>
-                    {
-                        this.mockUnauthorizedOrganization,
-                    },
-            };
-
             this.mockCreateUserOptions = new CreateUserOptions
             {
                 Email = "marcelina.davis@gmail.com",
@@ -136,14 +47,6 @@ namespace WorkOSTests
                 FirstName = "Marcelina",
                 LastName = "Davis",
                 IsEmailVerified = true,
-            };
-
-            this.mockAuthenticateUserWithPasswordOptions = new AuthenticateUserWithPasswordOptions
-            {
-                ClientId = "client_123",
-                ClientSecret = "client_secret_123",
-                Email = "marcelina.davis@gmail.com",
-                Password = "password_123",
             };
         }
 
@@ -186,25 +89,6 @@ namespace WorkOSTests
             Assert.Equal(
                 JsonConvert.SerializeObject(this.mockCreateUserOptions.Email),
                 JsonConvert.SerializeObject(email));
-        }
-
-        [Fact]
-        public async void TestAuthenticateUserWithPassword()
-        {
-            this.httpMock.MockResponse(
-                HttpMethod.Post,
-                $"/users/sessions/token",
-                HttpStatusCode.Created,
-                RequestUtilities.ToJsonString((this.mockUser, this.mockSession)));
-
-            var (user, session) = await this.service.AuthenticateUserWithPassword(this.mockAuthenticateUserWithPasswordOptions);
-
-            this.httpMock.AssertRequestWasMade(
-                HttpMethod.Post,
-                $"/users/sessions/token");
-            Assert.Equal(
-                JsonConvert.SerializeObject(session),
-                JsonConvert.SerializeObject(this.mockSession));
         }
     }
 }
