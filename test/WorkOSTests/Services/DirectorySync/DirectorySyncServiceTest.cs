@@ -38,7 +38,7 @@
 
             this.listDirectoriesOptions = new ListDirectoriesOptions
             {
-                OrganizationId = "organization_123"
+                OrganizationId = "organization_123",
             };
 
             this.listUsersOptions = new ListDirectoryUsersOptions
