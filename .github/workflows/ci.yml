@@ -15,14 +15,17 @@ jobs:
     name: Test C# ${{ matrix.dotnet }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        dotnet: [ '3.x', '6.x', '7.x', '8.x' ]
+        dotnet: [ '6.x', '7.x', '8.x' ]
     steps:
       - uses: actions/checkout@v4
       - name: Setup dotNet
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ matrix.dotnet }}
+          dotnet-version: |
+            3.1.x
+            ${{ matrix.dotnet }}
       - name: Test
         run: |
           dotnet build -c Debug src/WorkOS.net/WorkOS.net.csproj
