@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  # Support manually pushing a new release
+  workflow_dispatch: {}
+  # Trigger when a release is published
+  release:
+    types: [released]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    name: Publish to NuGet
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup dotNet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            3.1.x
+
+      - name: Publish
+        env:
+          DOTNET_NUGET_API_KEY: ${{ secrets.DOTNET_NUGET_API_KEY }}
+        run: |
+          dotnet pack -c Release src/WorkOS.net/WorkOS.net.csproj
+          dotnet nuget push src/WorkOS.net/bin/Release/WorkOS.net.*.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate -k $DOTNET_NUGET_API_KEY
