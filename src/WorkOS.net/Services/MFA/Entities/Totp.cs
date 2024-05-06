@@ -8,7 +8,7 @@ namespace WorkOS
     /// </summary>
     public class Totp
     {
-         /// <summary>
+        /// <summary>
         /// Issuer of the factor.
         /// </summary>
         [JsonProperty("issuer")]

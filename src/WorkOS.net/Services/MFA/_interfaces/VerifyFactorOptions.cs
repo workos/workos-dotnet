@@ -1,4 +1,4 @@
- namespace WorkOS
+namespace WorkOS
 {
     using System;
     using Newtonsoft.Json;
