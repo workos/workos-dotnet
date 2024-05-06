@@ -36,28 +36,34 @@ namespace WorkOSTests
             this.createOrganizationOptions = new CreateOrganizationOptions
             {
                 Name = "Foo Corp",
+#pragma warning disable 618
                 Domains = new string[]
                 {
                     "foo-corp.com",
                 },
+#pragma warning restore 618
             };
 
             this.updateOrganizationOptions = new UpdateOrganizationOptions
             {
                 Organization = "org_123",
+#pragma warning disable 618
                 Domains = new string[]
                 {
                     "foo-corp.com",
                 },
+#pragma warning restore 618
                 Name = "Foo Corp 2",
             };
 
             this.listOrganizationsOptions = new ListOrganizationsOptions
             {
+#pragma warning disable 618
                 Domains = new string[]
                 {
                     "foo-corp.com",
                 },
+#pragma warning restore 618
             };
 
             this.mockOrganization = new Organization
