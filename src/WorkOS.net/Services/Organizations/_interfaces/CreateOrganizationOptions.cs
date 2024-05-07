@@ -1,5 +1,6 @@
 ﻿namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -21,8 +22,15 @@
         public bool? AllowProfilesOutsideOrganization { get; set; }
 
         /// <summary>
+        /// Data for setting the domains of the <see cref="Organization"/>.
+        /// </summary>
+        [JsonProperty("domain_data")]
+        public OrganizationDomainDataOptions[] DomainData { get; set; }
+
+        /// <summary>
         /// Domains of the <see cref="Organization"/>.
         /// </summary>
+        [ObsoleteAttribute("Use DomainData instead.", false)]
         [JsonProperty("domains")]
         public string[] Domains { get; set; }
     }

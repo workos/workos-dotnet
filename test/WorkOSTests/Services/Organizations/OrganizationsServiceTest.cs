@@ -36,18 +36,26 @@ namespace WorkOSTests
             this.createOrganizationOptions = new CreateOrganizationOptions
             {
                 Name = "Foo Corp",
-                Domains = new string[]
+                DomainData = new OrganizationDomainDataOptions[]
                 {
-                    "foo-corp.com",
+                    new OrganizationDomainDataOptions
+                    {
+                        Domain = "foo-corp.com",
+                        State = OrganizationDomainDataState.Pending,
+                    },
                 },
             };
 
             this.updateOrganizationOptions = new UpdateOrganizationOptions
             {
                 Organization = "org_123",
-                Domains = new string[]
+                DomainData = new OrganizationDomainDataOptions[]
                 {
-                    "foo-corp.com",
+                    new OrganizationDomainDataOptions
+                    {
+                        Domain = "foo-corp.com",
+                        State = OrganizationDomainDataState.Verified,
+                    },
                 },
                 Name = "Foo Corp 2",
             };
@@ -118,6 +126,33 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async void TestCreateOrganizationWithObsoleteDomains()
+        {
+            var createOrganizationOptions = new CreateOrganizationOptions
+            {
+                Name = "Foo Corp",
+#pragma warning disable CS0618 // `Domains` is obsolete
+                Domains = new string[]
+                {
+                    "foo-corp.com",
+                },
+            };
+#pragma warning restore CS0618
+
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/organizations",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockOrganization));
+            var response = await this.service.CreateOrganization(createOrganizationOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockOrganization),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
         public async void TestCreateOrganizationWithIdempotency()
         {
             this.httpMock.MockResponse(
@@ -179,6 +214,34 @@ namespace WorkOSTests
             var response = await this.service.UpdateOrganization(this.updateOrganizationOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, $"/organizations/{this.updateOrganizationOptions.Organization}");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockOrganization),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestUpdateOrganizationWithObsoleteDomains()
+        {
+            var updateOrganizationOptions = new UpdateOrganizationOptions
+            {
+                Organization = "org_123",
+                Name = "Foo Corp",
+#pragma warning disable CS0618 // `Domains` is obsolete
+                Domains = new string[]
+                {
+                    "foo-corp.com",
+                },
+            };
+#pragma warning restore CS0618
+
+            this.httpMock.MockResponse(
+                HttpMethod.Put,
+                $"/organizations/{this.updateOrganizationOptions.Organization}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockOrganization));
+            var response = await this.service.UpdateOrganization(updateOrganizationOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Put, $"/organizations/{updateOrganizationOptions.Organization}");
             Assert.Equal(
                 JsonConvert.SerializeObject(this.mockOrganization),
                 JsonConvert.SerializeObject(response));
