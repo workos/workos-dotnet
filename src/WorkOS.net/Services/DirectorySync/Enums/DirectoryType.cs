@@ -13,14 +13,8 @@
         [EnumMember(Value = "azure scim v2.0")]
         AzureSCIMV2_0,
 
-        [EnumMember(Value = "generic scim v1.1")]
-        GenericSCIMV1_1,
-
         [EnumMember(Value = "generic scim v2.0")]
         GenericSCIMV2_0,
-
-        [EnumMember(Value = "okta scim v1.1")]
-        OktaSCIMV1_1,
 
         [EnumMember(Value = "okta scim v2.0")]
         OktaSCIMV2_0,
@@ -60,5 +54,17 @@
 
         [EnumMember(Value = "onelogin scim v2.0")]
         OneLoginScimV2_0,
+
+        [EnumMember(Value = "personio")]
+        Personio,
+
+        [EnumMember(Value = "cezanne hr")]
+        CezanneHr,
+
+        [EnumMember(Value = "sftp")]
+        SFTP,
+
+        [EnumMember(Value = "sftp workday")]
+        SFTPWorkday,
     }
 }
