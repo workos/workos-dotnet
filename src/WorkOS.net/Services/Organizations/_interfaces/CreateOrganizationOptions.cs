@@ -18,6 +18,7 @@
         /// Whether Connections within the Organization allow profiles that are
         /// outside of the Organization's configured User Email Domains.
         /// </summary>
+        [ObsoleteAttribute("If you need to allow sign-ins from any email domain, contact support@workos.com.", false)]
         [JsonProperty("allow_profiles_outside_organization")]
         public bool? AllowProfilesOutsideOrganization { get; set; }
 
