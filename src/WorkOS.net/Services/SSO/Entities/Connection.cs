@@ -37,6 +37,7 @@
         /// One of:
         /// <c>ADFSSAML</c>
         /// <c>AdpOidc</c>
+        /// <c>AppleOAuth</c>
         /// <c>Auth0SAML</c>
         /// <c>AzureSAML</c>
         /// <c>CasSAML</c>

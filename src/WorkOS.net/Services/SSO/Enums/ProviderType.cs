@@ -10,6 +10,9 @@
     [JsonConverter(typeof(StringEnumConverter))]
     public enum ProviderType
     {
+        [EnumMember(Value = "AppleOAuth")]
+        AppleOAuth,
+
         [EnumMember(Value = "GitHubOAuth")]
         GitHubOAuth,
 
