@@ -1,6 +1,7 @@
 # WorkOS .NET Library
 
-[![Build Status](https://workos.semaphoreci.com/badges/workos-dotnet/branches/main.svg?style=shields&key=343c1d18-79da-4ea3-89ce-8a6195a9d3d9)](https://workos.semaphoreci.com/projects/workos-dotnet)
+[![Packagist Version](https://img.shields.io/nuget/v/WorkOS.net)](https://www.nuget.org/packages/WorkOS.net)
+[![CI](https://github.com/workos/workos-dotnet/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/workos/workos-dotnet/actions/workflows/ci.yml)
 
 The WorkOS library for .NET provides convenient access to the WorkOS API from applications using .NET.
 Supports .NET Standard 2.0+ and .NET Framework 4.6.1+
@@ -84,7 +85,7 @@ can move to using the stable version.
 
 ## More Information
 
-* [Single Sign-On Guide](https://workos.com/docs/sso/guide)
-* [Directory Sync Guide](https://workos.com/docs/directory-sync/guide)
-* [Admin Portal Guide](https://workos.com/docs/admin-portal/guide)
-* [Magic Link Guide](https://workos.com/docs/magic-link/guide)
+- [Single Sign-On Guide](https://workos.com/docs/sso/guide)
+- [Directory Sync Guide](https://workos.com/docs/directory-sync/guide)
+- [Admin Portal Guide](https://workos.com/docs/admin-portal/guide)
+- [Magic Link Guide](https://workos.com/docs/magic-link/guide)
