@@ -13,10 +13,16 @@
         [EnumMember(Value = "linked")]
         Active,
 
+        [EnumMember(Value = "deleting")]
+        Deleting,
+
         [EnumMember(Value = "unlinked")]
         Inactive,
 
         [EnumMember(Value = "invalid_credentials")]
         InvalidCredentials,
+
+        [EnumMember(Value = "validating")]
+        Validating,
     }
 }
