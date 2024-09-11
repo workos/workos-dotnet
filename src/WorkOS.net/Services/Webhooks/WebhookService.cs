@@ -55,7 +55,7 @@ namespace WorkOS
 
             if (!this.VerifyTimeTolerance(timeStamp, tolerance))
             {
-                throw new Exception("Timestamp outside of the tolerance zone");
+                throw new WorkOSWebhookException("Timestamp outside of the tolerance zone");
             }
 
             var signatureHash = timeAndSignature.Item2;
@@ -63,7 +63,7 @@ namespace WorkOS
 
             if (!this.SecureCompare(expectedSig, signatureHash))
             {
-                throw new Exception("Signature hash does not match the expected signature hash for payload");
+                throw new WorkOSWebhookException("Signature hash does not match the expected signature hash for payload");
             }
         }
 
