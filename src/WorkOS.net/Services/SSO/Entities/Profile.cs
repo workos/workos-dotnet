@@ -60,7 +60,7 @@
         /// The User's role.
         /// </summary>
         [JsonProperty("role")]
-        public RoleResponse? Role { get; set; }
+        public RoleResponse Role { get; set; }
 
         /// <summary>
         /// The user's groups.
