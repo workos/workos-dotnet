@@ -205,6 +205,7 @@
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
                 LastName = "Sanchez",
+                Role = new RoleResponse { Slug = "admin" },
                 Groups = new List<string>()
                 {
                     "Admins",
@@ -243,6 +244,8 @@
             Assert.Equal(
                 JsonConvert.SerializeObject(mockProfile),
                 JsonConvert.SerializeObject(profile));
+            Assert.NotNull(profile.Role);
+            Assert.Equal("admin", profile.Role.Slug);
         }
 
         [Fact]
@@ -258,6 +261,7 @@
                 Email = "rick@sanchez.com",
                 FirstName = "Rick",
                 LastName = "Sanchez",
+                Role = new RoleResponse { Slug = "admin" },
                 Groups = new List<string>()
                 {
                     "Admins",
@@ -287,6 +291,8 @@
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/sso/profile");
             this.httpMock.AssertAuthorizationBearerHeader("access_token");
+            Assert.NotNull(profile.Role);
+            Assert.Equal("admin", profile.Role.Slug);
         }
 
         [Fact]
