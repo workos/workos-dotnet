@@ -44,13 +44,13 @@
         public RoleType Type { get; set; }
 
         /// <summary>
-        /// The timestamp of when the Organization was created.
+        /// The timestamp of when the Role was created.
         /// </summary>
         [JsonProperty("created_at")]
         public string CreatedAt { get; set; }
 
         /// <summary>
-        /// The timestamp of when the Organization was updated.
+        /// The timestamp of when the Role was updated.
         /// </summary>
         [JsonProperty("updated_at")]
         public string UpdatedAt { get; set; }
