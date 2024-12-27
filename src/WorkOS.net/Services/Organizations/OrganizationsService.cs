@@ -139,5 +139,22 @@ namespace WorkOS
 
             return await this.Client.MakeAPIRequest<Organization>(request, cancellationToken);
         }
+
+        /// <summary>
+        /// Fetches a list of Roles for the Organization.
+        /// </summary>
+        /// <param name="organizationId">Organization to fetch Roles for.</param>
+        /// <returns>A list of Roles.</returns>
+        public async Task<WorkOSList<Role>> ListOrganizationRoles(
+            string organizationId)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"/organizations/{organizationId}/roles",
+            };
+
+            return await this.Client.MakeAPIRequest<WorkOSList<Role>>(request);
+        }
     }
 }

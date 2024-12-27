@@ -22,6 +22,8 @@ namespace WorkOSTests
 
         private readonly Organization mockOrganization;
 
+        private readonly Role mockRole;
+
         public OrganizationsServiceTest()
         {
             this.httpMock = new HttpMock();
@@ -81,6 +83,17 @@ namespace WorkOSTests
                         Domain = "foo-corp.com",
                     },
                 },
+                CreatedAt = "2021-07-26T18:55:16.072Z",
+                UpdatedAt = "2021-07-26T18:55:16.072Z",
+            };
+
+            this.mockRole = new Role
+            {
+                Id = "role_123",
+                Name = "Admin",
+                Slug = "admin",
+                Description = "Admin role",
+                Type = RoleType.Organization,
                 CreatedAt = "2021-07-26T18:55:16.072Z",
                 UpdatedAt = "2021-07-26T18:55:16.072Z",
             };
@@ -244,6 +257,29 @@ namespace WorkOSTests
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, $"/organizations/{updateOrganizationOptions.Organization}");
             Assert.Equal(
                 JsonConvert.SerializeObject(this.mockOrganization),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestListOrganizationRoles()
+        {
+            var mockResponse = new WorkOSList<Role>
+            {
+                Data = new List<Role>
+                {
+                    this.mockRole,
+                },
+            };
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                $"/organizations/{this.mockOrganization.Id}/roles",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(mockResponse));
+            var response = await this.service.ListOrganizationRoles(this.mockOrganization.Id);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, $"/organizations/{this.mockOrganization.Id}/roles");
+            Assert.Equal(
+                JsonConvert.SerializeObject(mockResponse),
                 JsonConvert.SerializeObject(response));
         }
     }
