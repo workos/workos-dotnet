@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - 'main'
+      - "main"
   pull_request: {}
 
 defaults:
@@ -13,11 +13,11 @@ defaults:
 jobs:
   test:
     name: Test C# ${{ matrix.dotnet }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
-        dotnet: [ '6.x', '7.x', '8.x' ]
+        dotnet: ["6.x", "7.x", "8.x"]
     steps:
       - uses: actions/checkout@v4
       - name: Setup dotNet

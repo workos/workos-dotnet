@@ -24,5 +24,23 @@
         /// </summary>
         [JsonProperty("domain")]
         public string Domain { get; set; }
+
+        /// <summary>
+        /// The verification state of the domain.
+        /// </summary>
+        [JsonProperty("state")]
+        public OrganizationDomainState? State { get; set; }
+
+        /// <summary>
+        /// How the domain needs to be verified.
+        /// </summary>
+        [JsonProperty("verification_strategy")]
+        public OrganizationDomainVerificationStrategy? VerificationStrategy { get; set; }
+
+        /// <summary>
+        /// When the verification strategy is DNS, what the DNS record should be.
+        /// </summary>
+        [JsonProperty("verification_token")]
+        public string VerificationToken { get; set; }
     }
 }

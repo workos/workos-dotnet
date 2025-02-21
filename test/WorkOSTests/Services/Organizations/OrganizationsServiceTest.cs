@@ -81,6 +81,9 @@ namespace WorkOSTests
                     {
                         Id = "org_domain_123",
                         Domain = "foo-corp.com",
+                        State = OrganizationDomainState.Verified,
+                        VerificationStrategy = OrganizationDomainVerificationStrategy.Dns,
+                        VerificationToken = "oJWKWhfwITy3hAQwWNCcGJGMk",
                     },
                 },
                 CreatedAt = "2021-07-26T18:55:16.072Z",
