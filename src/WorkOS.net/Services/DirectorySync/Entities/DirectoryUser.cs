@@ -43,10 +43,7 @@
         /// <summary>
         /// The User's username.
         /// </summary>
-        [ObsoleteAttribute(
-            "Will be removed in a future major version. Enable the `username` custom attribute in dashboard and pull from customAttributes instead. See https://workos.com/docs/directory-sync/attributes/custom-attributes/auto-mapped-attributes for details.",
-            true
-        )]
+        [ObsoleteAttribute("Will be removed in a future major version. Enable the `username` custom attribute in dashboard and pull from customAttributes instead. See https://workos.com/docs/directory-sync/attributes/custom-attributes/auto-mapped-attributes for details.", true)]
         [JsonProperty("username")]
         public string Username { get; set; }
 
@@ -65,10 +62,7 @@
         /// <summary>
         /// The User's job title.
         /// </summary>
-        [ObsoleteAttribute(
-            "Will be removed in a future major version. Enable the `job_title` custom attribute in dashboard and pull from customAttributes instead. See https://workos.com/docs/directory-sync/attributes/custom-attributes/auto-mapped-attributes for details.",
-            true
-        )]
+        [ObsoleteAttribute("Will be removed in a future major version. Enable the `job_title` custom attribute in dashboard and pull from customAttributes instead. See https://workos.com/docs/directory-sync/attributes/custom-attributes/auto-mapped-attributes for details.", true)]
         [JsonProperty("job_title")]
         public string JobTitle { get; set; }
 
@@ -81,10 +75,7 @@
         /// <summary>
         /// The User's e-mails.
         /// </summary>
-        [ObsoleteAttribute(
-            "Will be removed in a future major version. Enable the `emails` custom attribute in dashboard and pull from customAttributes instead. See https://workos.com/docs/directory-sync/attributes/custom-attributes/auto-mapped-attributes for details.",
-            true
-        )]
+        [ObsoleteAttribute("Will be removed in a future major version. Enable the `emails` custom attribute in dashboard and pull from customAttributes instead. See https://workos.com/docs/directory-sync/attributes/custom-attributes/auto-mapped-attributes for details.", true)]
         [JsonProperty("emails")]
         public EmailObject[] Emails { get; set; }
 
