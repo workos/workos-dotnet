@@ -71,6 +71,7 @@
                 OrganizationId = "org_123",
                 FirstName = "Rick",
                 LastName = "Sanchez",
+                Email = "rick.sanchez@foo-corp.com",
                 JobTitle = "Software Engineer",
                 Username = "rick.sanchez",
                 CreatedAt = "2021-07-26T18:55:16.072Z",
