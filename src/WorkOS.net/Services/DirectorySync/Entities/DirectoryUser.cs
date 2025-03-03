@@ -42,7 +42,7 @@
         /// <summary>
         /// The User's username.
         /// </summary>
-        [Obsolete(
+        [ObsoleteAttribute(
             "Will be removed in a future major version. Enable the `username` custom attribute in dashboard and pull from customAttributes instead. See https://workos.com/docs/directory-sync/attributes/custom-attributes/auto-mapped-attributes for details.",
             true
         )]
@@ -64,7 +64,7 @@
         /// <summary>
         /// The User's job title.
         /// </summary>
-        [Obsolete(
+        [ObsoleteAttribute(
             "Will be removed in a future major version. Enable the `job_title` custom attribute in dashboard and pull from customAttributes instead. See https://workos.com/docs/directory-sync/attributes/custom-attributes/auto-mapped-attributes for details.",
             true
         )]
@@ -80,12 +80,12 @@
         /// <summary>
         /// The User's e-mails.
         /// </summary>
-        [Obsolete(
+        [ObsoleteAttribute(
             "Will be removed in a future major version. Enable the `emails` custom attribute in dashboard and pull from customAttributes instead. See https://workos.com/docs/directory-sync/attributes/custom-attributes/auto-mapped-attributes for details.",
             true
         )]
         [JsonProperty("emails")]
-        public Email[] Emails { get; set; }
+        public EmailObject[] Emails { get; set; }
 
         /// <summary>
         /// The User's groups.
@@ -126,8 +126,8 @@
         /// <summary>
         /// The user's primary email.
         /// </summary>
-        [Obsolete("Use the `email` attribute instead.", true)]
-        public Email PrimaryEmail
+        [ObsoleteAttribute("Use the `email` attribute instead.", true)]
+        public EmailObject PrimaryEmail
         {
             get { return this.Emails.First(email => email.Primary == true); }
         }
@@ -135,7 +135,7 @@
         /// <summary>
         /// Contains data about a User's e-mails.
         /// </summary>
-        public class Email
+        public class EmailObject
         {
             /// <summary>
             /// Flag to indicate if the e-mail is primary.
