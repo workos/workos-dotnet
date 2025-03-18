@@ -118,7 +118,7 @@
         /// <summary>
         /// The user's primary email.
         /// </summary>
-        [ObsoleteAttribute("Use the `email` attribute instead.", true)]
+        [ObsoleteAttribute("Use the `email` attribute instead.", false)]
         public EmailObject PrimaryEmail
         {
             get { return this.Emails.First(email => email.Primary == true); }
