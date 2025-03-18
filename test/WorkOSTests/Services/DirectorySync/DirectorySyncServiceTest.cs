@@ -258,27 +258,5 @@
                 JsonConvert.SerializeObject(this.mockGroup),
                 JsonConvert.SerializeObject(response));
         }
-
-        [Fact]
-        public async void TestPrimaryEmail()
-        {
-            this.httpMock.MockResponse(
-                HttpMethod.Get,
-                $"/directory_users/{this.mockUser.Id}",
-                HttpStatusCode.OK,
-                RequestUtilities.ToJsonString(this.mockUser));
-
-            var user = await this.service.GetDirectoryUser(this.mockUser.Id);
-#pragma warning disable CS0618 // Disable obsolete warning
-            var primaryEmail = user.PrimaryEmail;
-#pragma warning restore CS0618 // Re-enable obsolete warning
-
-            this.httpMock.AssertRequestWasMade(
-                HttpMethod.Get,
-                $"/directory_users/{this.mockUser.Id}");
-            Assert.Equal(
-                JsonConvert.SerializeObject(this.mockUser.Email),
-                JsonConvert.SerializeObject(primaryEmail));
-        }
     }
 }
