@@ -72,22 +72,36 @@
                 FirstName = "Rick",
                 LastName = "Sanchez",
                 Email = "rick.sanchez@foo-corp.com",
-                JobTitle = "Software Engineer",
+#pragma warning disable 0618
                 Username = "rick.sanchez",
+                Emails = new DirectoryUser.EmailObject[]
+                    {
+                        new DirectoryUser.EmailObject
+                        {
+                            Primary = true,
+                            Value = "rick.sanchez@foo-corp.com",
+                            Type = "work",
+                        },
+                    },
+#pragma warning restore 0618
                 CreatedAt = "2021-07-26T18:55:16.072Z",
                 UpdatedAt = "2021-07-26T18:55:16.072Z",
                 State = DirectoryUserState.Active,
                 CustomAttributes = new Dictionary<string, object>()
                 {
                     { "manager_id", "123" },
-                },
-                Emails = new DirectoryUser.Email[]
-                {
-                    new DirectoryUser.Email
+                    { "job_title", "Software Engineer" },
+                    { "username", "rick.sanchez" },
                     {
-                        Primary = true,
-                        Value = "rick.sanchez@foo-corp.com",
-                        Type = "work",
+                        "emails", new List<DirectoryUser.EmailObject>
+                        {
+                            new DirectoryUser.EmailObject
+                            {
+                                Primary = true,
+                                Value = "rick.sanchez@foo-corp.com",
+                                Type = "work",
+                            },
+                        }
                     },
                 },
                 Groups = new List<DirectoryUser.Group>
@@ -267,6 +281,7 @@
                 RequestUtilities.ToJsonString(this.mockUser));
 
             var user = await this.service.GetDirectoryUser(this.mockUser.Id);
+#pragma warning disable 0618
             var primaryEmail = user.PrimaryEmail;
 
             this.httpMock.AssertRequestWasMade(
@@ -274,6 +289,7 @@
                 $"/directory_users/{this.mockUser.Id}");
             Assert.Equal(
                 JsonConvert.SerializeObject(this.mockUser.Emails[0]),
+#pragma warning restore 0618
                 JsonConvert.SerializeObject(primaryEmail));
         }
     }
