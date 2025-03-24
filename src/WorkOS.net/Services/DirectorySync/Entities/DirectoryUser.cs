@@ -1,5 +1,6 @@
 ﻿namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Newtonsoft.Json;
@@ -42,6 +43,7 @@
         /// <summary>
         /// The User's username.
         /// </summary>
+        [Obsolete("Will be removed in a future major version. Enable the `username` custom attribute in dashboard and pull from customAttributes instead. See https://workos.com/docs/directory-sync/attributes/custom-attributes/auto-mapped-attributes for details.", false)]
         [JsonProperty("username")]
         public string Username { get; set; }
 
@@ -60,14 +62,22 @@
         /// <summary>
         /// The User's job title.
         /// </summary>
+        [Obsolete("Will be removed in a future major version. Enable the `job_title` custom attribute in dashboard and pull from customAttributes instead. See https://workos.com/docs/directory-sync/attributes/custom-attributes/auto-mapped-attributes for details.", false)]
         [JsonProperty("job_title")]
         public string JobTitle { get; set; }
 
         /// <summary>
+        /// The primary email of the Directory User.
+        /// </summary>
+        [JsonProperty("email")]
+        public string Email { get; set; }
+
+        /// <summary>
         /// The User's e-mails.
         /// </summary>
+        [Obsolete("Will be removed in a future major version. Enable the `emails` custom attribute in dashboard and pull from customAttributes instead. See https://workos.com/docs/directory-sync/attributes/custom-attributes/auto-mapped-attributes for details.", false)]
         [JsonProperty("emails")]
-        public Email[] Emails { get; set; }
+        public EmailObject[] Emails { get; set; }
 
         /// <summary>
         /// The User's groups.
@@ -108,7 +118,8 @@
         /// <summary>
         /// The user's primary email.
         /// </summary>
-        public Email PrimaryEmail
+        [Obsolete("Use the `email` attribute instead.", false)]
+        public EmailObject PrimaryEmail
         {
             get { return this.Emails.First(email => email.Primary == true); }
         }
@@ -116,7 +127,7 @@
         /// <summary>
         /// Contains data about a User's e-mails.
         /// </summary>
-        public class Email
+        public class EmailObject
         {
             /// <summary>
             /// Flag to indicate if the e-mail is primary.
