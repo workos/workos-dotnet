@@ -71,6 +71,12 @@
         /// <summary>
         /// The raw response of Profile attributes from the identity provider.
         /// </summary>
+        [JsonProperty("custom_attributes")]
+        public Dictionary<string, object> CustomAttributes { get; set; }
+
+        /// <summary>
+        /// The raw response of Profile attributes from the identity provider.
+        /// </summary>
         [JsonProperty("raw_attributes")]
         public Dictionary<string, object> RawAttributes { get; set; }
     }

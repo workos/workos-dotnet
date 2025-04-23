@@ -211,12 +211,17 @@
                     "Admins",
                     "Developers",
                 },
+                CustomAttributes = new Dictionary<string, object>()
+                {
+                    { "license", "professional" },
+                },
                 RawAttributes = new Dictionary<string, object>()
                 {
                     { "idp_id", "123" },
                     { "email", "rick@sanchez.com" },
                     { "first_name", "Rick" },
                     { "last_name", "Sanchez" },
+                    { "license", "professional" },
                 },
             };
             var profileAndTokenResponse = new GetProfileAndTokenResponse
@@ -267,12 +272,17 @@
                     "Admins",
                     "Developers",
                 },
+                CustomAttributes = new Dictionary<string, object>()
+                {
+                    { "license", "professional" },
+                },
                 RawAttributes = new Dictionary<string, object>()
                 {
                     { "idp_id", "123" },
                     { "email", "rick@sanchez.com" },
                     { "first_name", "Rick" },
                     { "last_name", "Sanchez" },
+                    { "license", "professional" },
                 },
             };
 
