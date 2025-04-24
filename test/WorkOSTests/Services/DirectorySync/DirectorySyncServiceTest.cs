@@ -23,6 +23,8 @@
 
         private readonly DirectoryUser mockUser;
 
+        private readonly DirectoryUser mockUserWithoutEmails;
+
         private readonly Group mockGroup;
 
         public DirectorySyncServiceTest()
@@ -84,6 +86,44 @@
                         },
                     },
 #pragma warning restore 0618
+                CreatedAt = "2021-07-26T18:55:16.072Z",
+                UpdatedAt = "2021-07-26T18:55:16.072Z",
+                State = DirectoryUserState.Active,
+                CustomAttributes = new Dictionary<string, object>()
+                {
+                    { "manager_id", "123" },
+                    { "job_title", "Software Engineer" },
+                    { "username", "rick.sanchez" },
+                    {
+                        "emails", new List<DirectoryUser.EmailObject>
+                        {
+                            new DirectoryUser.EmailObject
+                            {
+                                Primary = true,
+                                Value = "rick.sanchez@foo-corp.com",
+                                Type = "work",
+                            },
+                        }
+                    },
+                },
+                Groups = new List<DirectoryUser.Group>
+                {
+                    new DirectoryUser.Group
+                    {
+                        Id = "directory_group_123",
+                        Name = "Scientists",
+                    },
+                },
+            };
+
+            this.mockUserWithoutEmails = new DirectoryUser
+            {
+                Id = "directory_user_123",
+                DirectoryId = "dir_123",
+                OrganizationId = "org_123",
+                FirstName = "Rick",
+                LastName = "Sanchez",
+                Email = "rick.sanchez@foo-corp.com",
                 CreatedAt = "2021-07-26T18:55:16.072Z",
                 UpdatedAt = "2021-07-26T18:55:16.072Z",
                 State = DirectoryUserState.Active,
@@ -291,6 +331,26 @@
                 JsonConvert.SerializeObject(this.mockUser.Emails[0]),
 #pragma warning restore 0618
                 JsonConvert.SerializeObject(primaryEmail));
+        }
+
+        [Fact]
+        public async void TestPrimaryEmailNull()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                $"/directory_users/{this.mockUserWithoutEmails.Id}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockUserWithoutEmails));
+
+            var user = await this.service.GetDirectoryUser(this.mockUserWithoutEmails.Id);
+#pragma warning disable 0618
+            var primaryEmail = user.PrimaryEmail;
+#pragma warning restore 0618
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Get,
+                $"/directory_users/{this.mockUserWithoutEmails.Id}");
+            Assert.Null(primaryEmail);
         }
     }
 }
