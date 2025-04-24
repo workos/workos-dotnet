@@ -121,7 +121,7 @@
         [Obsolete("Use the `email` attribute instead.", false)]
         public EmailObject PrimaryEmail
         {
-            get { return this.Emails.First(email => email.Primary == true); }
+            get { return this.Emails?.FirstOrDefault(email => email.Primary == true); }
         }
 
         /// <summary>
