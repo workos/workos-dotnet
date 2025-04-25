@@ -14,8 +14,14 @@ defaults:
 jobs:
   test:
     name: Publish to NuGet
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
+      # TODO: Remove libssl1.1 installation once we drop support for .NET Core 3.1
+      - name: Install libssl1.1 for .NET Core 3.1
+        run: |
+          wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb
+          sudo dpkg -i libssl1.1_1.1.0g-2ubuntu4_amd64.deb
+
       - uses: actions/checkout@v4
       - name: Setup dotNet
         uses: actions/setup-dotnet@v3
