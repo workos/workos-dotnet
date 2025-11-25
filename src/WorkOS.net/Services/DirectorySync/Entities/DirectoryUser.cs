@@ -116,6 +116,18 @@
         public Dictionary<string, object> CustomAttributes { get; set; }
 
         /// <summary>
+        /// The User's highest priority role.
+        /// </summary>
+        [JsonProperty("role")]
+        public RoleResponse Role { get; set; }
+
+        /// <summary>
+        /// All User roles..
+        /// </summary>
+        [JsonProperty("roles")]
+        public List<RoleResponse> Roles { get; set; }
+
+        /// <summary>
         /// The user's primary email.
         /// </summary>
         [Obsolete("Use the `email` attribute instead.", false)]

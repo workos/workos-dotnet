@@ -89,6 +89,12 @@
                 CreatedAt = "2021-07-26T18:55:16.072Z",
                 UpdatedAt = "2021-07-26T18:55:16.072Z",
                 State = DirectoryUserState.Active,
+                Role = new RoleResponse { Slug = "admin" },
+                Roles = new List<RoleResponse>
+                {
+                    new RoleResponse { Slug = "admin" },
+                    new RoleResponse { Slug = "developer" },
+                },
                 CustomAttributes = new Dictionary<string, object>()
                 {
                     { "manager_id", "123" },
@@ -127,6 +133,12 @@
                 CreatedAt = "2021-07-26T18:55:16.072Z",
                 UpdatedAt = "2021-07-26T18:55:16.072Z",
                 State = DirectoryUserState.Active,
+                Role = new RoleResponse { Slug = "admin" },
+                Roles = new List<RoleResponse>
+                {
+                    new RoleResponse { Slug = "admin" },
+                    new RoleResponse { Slug = "developer" },
+                },
                 CustomAttributes = new Dictionary<string, object>()
                 {
                     { "manager_id", "123" },
