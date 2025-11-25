@@ -122,7 +122,7 @@
         public RoleResponse Role { get; set; }
 
         /// <summary>
-        /// All User roles..
+        /// All User roles.
         /// </summary>
         [JsonProperty("roles")]
         public List<RoleResponse> Roles { get; set; }
