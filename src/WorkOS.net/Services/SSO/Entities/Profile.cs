@@ -57,10 +57,16 @@
         public string LastName { get; set; }
 
         /// <summary>
-        /// The User's role.
+        /// The User's highest priority role.
         /// </summary>
         [JsonProperty("role")]
         public RoleResponse Role { get; set; }
+
+        /// <summary>
+        /// All User roles.
+        /// </summary>
+        [JsonProperty("roles")]
+        public List<RoleResponse> Roles { get; set; }
 
         /// <summary>
         /// The user's groups.

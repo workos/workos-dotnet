@@ -206,6 +206,11 @@
                 FirstName = "Rick",
                 LastName = "Sanchez",
                 Role = new RoleResponse { Slug = "admin" },
+                Roles = new List<RoleResponse>
+                {
+                    new RoleResponse { Slug = "admin" },
+                    new RoleResponse { Slug = "developer" },
+                },
                 Groups = new List<string>()
                 {
                     "Admins",
@@ -267,6 +272,11 @@
                 FirstName = "Rick",
                 LastName = "Sanchez",
                 Role = new RoleResponse { Slug = "admin" },
+                Roles = new List<RoleResponse>
+                {
+                    new RoleResponse { Slug = "admin" },
+                    new RoleResponse { Slug = "developer" },
+                },
                 Groups = new List<string>()
                 {
                     "Admins",
