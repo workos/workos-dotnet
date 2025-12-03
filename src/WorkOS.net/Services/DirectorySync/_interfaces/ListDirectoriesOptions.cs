@@ -8,12 +8,6 @@
     public class ListDirectoriesOptions : ListOptions
     {
         /// <summary>
-        /// Domain of a <see cref="Directory"/>. Can be empty.
-        /// </summary>
-        [JsonProperty("domain")]
-        public string Domain { get; set; }
-
-        /// <summary>
         /// Searchable text for a <see cref="Directory"/>. Can be empty.
         /// </summary>
         [JsonProperty("search")]

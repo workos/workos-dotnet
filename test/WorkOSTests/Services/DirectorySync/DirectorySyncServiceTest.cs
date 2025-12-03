@@ -40,7 +40,7 @@
 
             this.listDirectoriesOptions = new ListDirectoriesOptions
             {
-                Domain = "foo-corp.com",
+                OrganizationId = "organization_123",
             };
 
             this.listUsersOptions = new ListDirectoryUsersOptions
