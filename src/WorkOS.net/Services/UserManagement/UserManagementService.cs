@@ -1,0 +1,162 @@
+namespace WorkOS
+{
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// A service that offers methods to interact with WorkOS User Management.
+    /// </summary>
+    public class UserManagementService : Service
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserManagementService"/> class.
+        /// </summary>
+        public UserManagementService()
+            : base(null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserManagementService"/> class.
+        /// </summary>
+        /// <param name="client">A client used to make requests to WorkOS.</param>
+        public UserManagementService(WorkOSClient client)
+            : base(client)
+        {
+        }
+
+        /// <summary>
+        /// Gets a User.
+        /// </summary>
+        /// <param name="id">User unique identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A WorkOS User record.</returns>
+        public async Task<User> GetUser(string id, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"/user_management/users/{id}",
+            };
+
+            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets a User by external ID.
+        /// </summary>
+        /// <param name="externalId">User external identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A WorkOS User record.</returns>
+        public async Task<User> GetUserByExternalId(string externalId, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"/user_management/users/external_id/{externalId}",
+            };
+
+            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Fetches a list of Users.
+        /// </summary>
+        /// <param name="options">Filter options when searching for Users.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A paginated list of Users.</returns>
+        public async Task<WorkOSList<User>> ListUsers(
+            ListUsersOptions options = null,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Get,
+                Path = "/user_management/users",
+            };
+
+            return await this.Client.MakeAPIRequest<WorkOSList<User>>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Creates a User.
+        /// </summary>
+        /// <param name="options">Parameters to create a User.</param>
+        /// <param name="idempotencyKey">An optional idempotency key.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>The created User.</returns>
+        public async Task<User> CreateUser(
+            CreateUserOptions options,
+            string idempotencyKey = null,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = "/user_management/users",
+            };
+            if (idempotencyKey != null)
+            {
+                request.WorkOSHeaders = new Dictionary<string, string>
+                {
+                    { "Idempotency-Key", idempotencyKey },
+                };
+            }
+
+            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Updates a User.
+        /// </summary>
+        /// <param name="options">Parameters to update a User.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>The updated User.</returns>
+        public async Task<User> UpdateUser(
+            UpdateUserOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Put,
+                Path = $"/user_management/users/{options.Id}",
+            };
+
+            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Deletes a User.
+        /// </summary>
+        /// <param name="id">User unique identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Task.</returns>
+        public async Task DeleteUser(string id, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"/user_management/users/{id}",
+            };
+
+            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+        }
+    }
+}
