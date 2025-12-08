@@ -28,6 +28,14 @@ namespace WorkOSTests
 
         private readonly PasswordReset mockPasswordReset;
 
+        private readonly CreateOrganizationMembershipOptions createOrganizationMembershipOptions;
+
+        private readonly UpdateOrganizationMembershipOptions updateOrganizationMembershipOptions;
+
+        private readonly ListOrganizationMembershipsOptions listOrganizationMembershipsOptions;
+
+        private readonly OrganizationMembership mockOrganizationMembership;
+
         public UserManagementServiceTest()
         {
             this.httpMock = new HttpMock();
@@ -95,6 +103,37 @@ namespace WorkOSTests
                 PasswordResetUrl = "https://your-app.com/reset-password?token=Z1uX3RbwcIl5fIGJJJCXXisdI",
                 ExpiresAt = "2025-07-14T18:00:54.578Z",
                 CreatedAt = "2025-07-14T17:45:54.578Z",
+            };
+
+            this.createOrganizationMembershipOptions = new CreateOrganizationMembershipOptions
+            {
+                UserId = "user_123",
+                OrganizationId = "org_123",
+                RoleSlug = "admin",
+            };
+
+            this.updateOrganizationMembershipOptions = new UpdateOrganizationMembershipOptions
+            {
+                Id = "om_123",
+                RoleSlug = "member",
+            };
+
+            this.listOrganizationMembershipsOptions = new ListOrganizationMembershipsOptions
+            {
+                OrganizationId = "org_123",
+            };
+
+            this.mockOrganizationMembership = new OrganizationMembership
+            {
+                Id = "om_123",
+                UserId = "user_123",
+                OrganizationId = "org_123",
+                OrganizationName = "Acme Corp",
+                Role = new OrganizationMembershipRole { Slug = "admin" },
+                Roles = new List<OrganizationMembershipRole> { new OrganizationMembershipRole { Slug = "admin" } },
+                Status = "active",
+                CreatedAt = "2021-07-26T18:55:16.072Z",
+                UpdatedAt = "2021-07-26T18:55:16.072Z",
             };
         }
 
@@ -271,6 +310,134 @@ namespace WorkOSTests
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/password_reset/confirm");
             Assert.Equal(
                 JsonConvert.SerializeObject(this.mockUser),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestGetOrganizationMembership()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                $"/user_management/organization_memberships/{this.mockOrganizationMembership.Id}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockOrganizationMembership));
+
+            var response = await this.service.GetOrganizationMembership(this.mockOrganizationMembership.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Get,
+                $"/user_management/organization_memberships/{this.mockOrganizationMembership.Id}");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockOrganizationMembership),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestListOrganizationMemberships()
+        {
+            var mockResponse = new WorkOSList<OrganizationMembership>
+            {
+                Data = new List<OrganizationMembership>
+                {
+                    this.mockOrganizationMembership,
+                },
+            };
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                "/user_management/organization_memberships",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(mockResponse));
+            var response = await this.service.ListOrganizationMemberships(this.listOrganizationMembershipsOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/organization_memberships");
+            Assert.Equal(
+                JsonConvert.SerializeObject(mockResponse),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestCreateOrganizationMembership()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/user_management/organization_memberships",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockOrganizationMembership));
+            var response = await this.service.CreateOrganizationMembership(this.createOrganizationMembershipOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/organization_memberships");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockOrganizationMembership),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestUpdateOrganizationMembership()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Put,
+                $"/user_management/organization_memberships/{this.updateOrganizationMembershipOptions.Id}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockOrganizationMembership));
+            var response = await this.service.UpdateOrganizationMembership(this.updateOrganizationMembershipOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Put, $"/user_management/organization_memberships/{this.updateOrganizationMembershipOptions.Id}");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockOrganizationMembership),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestDeleteOrganizationMembership()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Delete,
+                $"/user_management/organization_memberships/{this.mockOrganizationMembership.Id}",
+                HttpStatusCode.Accepted,
+                "Accepted");
+
+            await this.service.DeleteOrganizationMembership(this.mockOrganizationMembership.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Delete,
+                $"/user_management/organization_memberships/{this.mockOrganizationMembership.Id}");
+        }
+
+        [Fact]
+        public async void TestDeactivateOrganizationMembership()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Put,
+                $"/user_management/organization_memberships/{this.mockOrganizationMembership.Id}/deactivate",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockOrganizationMembership));
+
+            var response = await this.service.DeactivateOrganizationMembership(this.mockOrganizationMembership.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Put,
+                $"/user_management/organization_memberships/{this.mockOrganizationMembership.Id}/deactivate");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockOrganizationMembership),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestReactivateOrganizationMembership()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Put,
+                $"/user_management/organization_memberships/{this.mockOrganizationMembership.Id}/reactivate",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockOrganizationMembership));
+
+            var response = await this.service.ReactivateOrganizationMembership(this.mockOrganizationMembership.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Put,
+                $"/user_management/organization_memberships/{this.mockOrganizationMembership.Id}/reactivate");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockOrganizationMembership),
                 JsonConvert.SerializeObject(response));
         }
     }

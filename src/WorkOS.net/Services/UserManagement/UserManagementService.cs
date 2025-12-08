@@ -221,5 +221,147 @@ namespace WorkOS
 
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
         }
+
+        /// <summary>
+        /// Gets an organization membership.
+        /// </summary>
+        /// <param name="id">Organization membership unique identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A WorkOS OrganizationMembership record.</returns>
+        public async Task<OrganizationMembership> GetOrganizationMembership(string id, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"/user_management/organization_memberships/{id}",
+            };
+
+            return await this.Client.MakeAPIRequest<OrganizationMembership>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Fetches a list of organization memberships.
+        /// </summary>
+        /// <param name="options">Filter options when searching for organization memberships.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A paginated list of organization memberships.</returns>
+        public async Task<WorkOSList<OrganizationMembership>> ListOrganizationMemberships(
+            ListOrganizationMembershipsOptions options = null,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Get,
+                Path = "/user_management/organization_memberships",
+            };
+
+            return await this.Client.MakeAPIRequest<WorkOSList<OrganizationMembership>>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Creates an organization membership.
+        /// </summary>
+        /// <param name="options">Parameters to create an organization membership.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>The created organization membership.</returns>
+        public async Task<OrganizationMembership> CreateOrganizationMembership(
+            CreateOrganizationMembershipOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = "/user_management/organization_memberships",
+            };
+
+            return await this.Client.MakeAPIRequest<OrganizationMembership>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Updates an organization membership.
+        /// </summary>
+        /// <param name="options">Parameters to update an organization membership.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>The updated organization membership.</returns>
+        public async Task<OrganizationMembership> UpdateOrganizationMembership(
+            UpdateOrganizationMembershipOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Put,
+                Path = $"/user_management/organization_memberships/{options.Id}",
+            };
+
+            return await this.Client.MakeAPIRequest<OrganizationMembership>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Deletes an organization membership.
+        /// </summary>
+        /// <param name="id">Organization membership unique identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Task.</returns>
+        public async Task DeleteOrganizationMembership(string id, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"/user_management/organization_memberships/{id}",
+            };
+
+            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Deactivates an organization membership.
+        /// </summary>
+        /// <param name="id">Organization membership unique identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>The deactivated organization membership.</returns>
+        public async Task<OrganizationMembership> DeactivateOrganizationMembership(string id, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Put,
+                Path = $"/user_management/organization_memberships/{id}/deactivate",
+            };
+
+            return await this.Client.MakeAPIRequest<OrganizationMembership>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Reactivates an organization membership.
+        /// </summary>
+        /// <param name="id">Organization membership unique identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>The reactivated organization membership.</returns>
+        public async Task<OrganizationMembership> ReactivateOrganizationMembership(string id, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Put,
+                Path = $"/user_management/organization_memberships/{id}/reactivate",
+            };
+
+            return await this.Client.MakeAPIRequest<OrganizationMembership>(request, cancellationToken);
+        }
     }
 }
