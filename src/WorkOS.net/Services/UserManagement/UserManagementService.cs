@@ -387,5 +387,20 @@ namespace WorkOS
 
             return url;
         }
+
+        /// <summary>
+        /// Gets the JWKS (JSON Web Key Set) URL for validating session tokens.
+        /// </summary>
+        /// <param name="clientId">The client identifier for the WorkOS environment.</param>
+        /// <returns>The JWKS URL for the organization.</returns>
+        public string GetJwksUrl(string clientId)
+        {
+            if (string.IsNullOrEmpty(clientId))
+            {
+                throw new ArgumentNullException(nameof(clientId));
+            }
+
+            return $"{this.Client.ApiBaseURL}/sso/jwks/{System.Uri.EscapeDataString(clientId)}";
+        }
     }
 }

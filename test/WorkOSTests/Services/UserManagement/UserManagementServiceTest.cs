@@ -476,5 +476,37 @@ namespace WorkOSTests
         {
             Assert.Throws<ArgumentNullException>(() => this.service.GetLogoutUrl(string.Empty));
         }
+
+        [Fact]
+        public void TestGetJwksUrl()
+        {
+            var clientId = "client_ABCDEF0123456789";
+            var jwksUrl = this.service.GetJwksUrl(clientId);
+
+            Assert.NotNull(jwksUrl);
+            Assert.Contains($"/sso/jwks/{clientId}", jwksUrl);
+        }
+
+        [Fact]
+        public void TestGetJwksUrlWithSpecialCharacters()
+        {
+            var clientId = "org_test@example.com";
+            var jwksUrl = this.service.GetJwksUrl(clientId);
+
+            Assert.NotNull(jwksUrl);
+            Assert.Contains($"/sso/jwks/{System.Uri.EscapeDataString(clientId)}", jwksUrl);
+        }
+
+        [Fact]
+        public void TestGetJwksUrlWithNullClientId()
+        {
+            Assert.Throws<ArgumentNullException>(() => this.service.GetJwksUrl(null));
+        }
+
+        [Fact]
+        public void TestGetJwksUrlWithEmptyClientId()
+        {
+            Assert.Throws<ArgumentNullException>(() => this.service.GetJwksUrl(string.Empty));
+        }
     }
 }
