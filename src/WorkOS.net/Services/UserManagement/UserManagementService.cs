@@ -1,5 +1,6 @@
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -362,6 +363,29 @@ namespace WorkOS
             };
 
             return await this.Client.MakeAPIRequest<OrganizationMembership>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets a logout URL for a session.
+        /// </summary>
+        /// <param name="sessionId">The session identifier.</param>
+        /// <param name="returnTo">The URL to return to after logout. Optional.</param>
+        /// <returns>The logout URL where the user's browser should be redirected.</returns>
+        public string GetLogoutUrl(string sessionId, string returnTo = null)
+        {
+            if (string.IsNullOrEmpty(sessionId))
+            {
+                throw new ArgumentNullException(nameof(sessionId));
+            }
+
+            var url = $"{this.Client.ApiBaseURL}/user_management/sessions/logout?session_id={System.Uri.EscapeDataString(sessionId)}";
+
+            if (!string.IsNullOrEmpty(returnTo))
+            {
+                url += $"&return_to={System.Uri.EscapeDataString(returnTo)}";
+            }
+
+            return url;
         }
     }
 }

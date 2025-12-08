@@ -440,5 +440,41 @@ namespace WorkOSTests
                 JsonConvert.SerializeObject(this.mockOrganizationMembership),
                 JsonConvert.SerializeObject(response));
         }
+
+        [Fact]
+        public void TestGetLogoutUrl()
+        {
+            var sessionId = "session_01HQAG1HENBZMAZD82YRXDFC0B";
+            var logoutUrl = this.service.GetLogoutUrl(sessionId);
+
+            Assert.NotNull(logoutUrl);
+            Assert.Contains($"/user_management/sessions/logout", logoutUrl);
+            Assert.Contains($"session_id={System.Uri.EscapeDataString(sessionId)}", logoutUrl);
+        }
+
+        [Fact]
+        public void TestGetLogoutUrlWithReturnTo()
+        {
+            var sessionId = "session_01HQAG1HENBZMAZD82YRXDFC0B";
+            var returnTo = "https://your-app.com/signed-out";
+            var logoutUrl = this.service.GetLogoutUrl(sessionId, returnTo);
+
+            Assert.NotNull(logoutUrl);
+            Assert.Contains($"/user_management/sessions/logout", logoutUrl);
+            Assert.Contains($"session_id={System.Uri.EscapeDataString(sessionId)}", logoutUrl);
+            Assert.Contains($"return_to={System.Uri.EscapeDataString(returnTo)}", logoutUrl);
+        }
+
+        [Fact]
+        public void TestGetLogoutUrlWithNullSessionId()
+        {
+            Assert.Throws<ArgumentNullException>(() => this.service.GetLogoutUrl(null));
+        }
+
+        [Fact]
+        public void TestGetLogoutUrlWithEmptySessionId()
+        {
+            Assert.Throws<ArgumentNullException>(() => this.service.GetLogoutUrl(string.Empty));
+        }
     }
 }
