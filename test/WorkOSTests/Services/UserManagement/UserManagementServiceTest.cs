@@ -22,6 +22,12 @@ namespace WorkOSTests
 
         private readonly User mockUser;
 
+        private readonly CreatePasswordResetOptions createPasswordResetOptions;
+
+        private readonly ResetPasswordOptions resetPasswordOptions;
+
+        private readonly PasswordReset mockPasswordReset;
+
         public UserManagementServiceTest()
         {
             this.httpMock = new HttpMock();
@@ -55,6 +61,17 @@ namespace WorkOSTests
                 Email = "user@example.com",
             };
 
+            this.createPasswordResetOptions = new CreatePasswordResetOptions
+            {
+                Email = "user@example.com",
+            };
+
+            this.resetPasswordOptions = new ResetPasswordOptions
+            {
+                Token = "test_reset_token_123",
+                NewPassword = "NewSecurePassword456",
+            };
+
             this.mockUser = new User
             {
                 Id = "user_123",
@@ -67,6 +84,17 @@ namespace WorkOSTests
                 Locale = "en-US",
                 CreatedAt = "2021-07-26T18:55:16.072Z",
                 UpdatedAt = "2021-07-26T18:55:16.072Z",
+            };
+
+            this.mockPasswordReset = new PasswordReset
+            {
+                Id = "password_reset_123",
+                UserId = "user_123",
+                Email = "user@example.com",
+                PasswordResetToken = "Z1uX3RbwcIl5fIGJJJCXXisdI",
+                PasswordResetUrl = "https://your-app.com/reset-password?token=Z1uX3RbwcIl5fIGJJJCXXisdI",
+                ExpiresAt = "2025-07-14T18:00:54.578Z",
+                CreatedAt = "2025-07-14T17:45:54.578Z",
             };
         }
 
@@ -190,6 +218,57 @@ namespace WorkOSTests
             var response = await this.service.UpdateUser(this.updateUserOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, $"/user_management/users/{this.updateUserOptions.Id}");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockUser),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestGetPasswordReset()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Get,
+                $"/user_management/password_reset/{this.mockPasswordReset.Id}",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockPasswordReset));
+
+            var response = await this.service.GetPasswordReset(this.mockPasswordReset.Id);
+
+            this.httpMock.AssertRequestWasMade(
+                HttpMethod.Get,
+                $"/user_management/password_reset/{this.mockPasswordReset.Id}");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockPasswordReset),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestCreatePasswordReset()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/user_management/password_reset",
+                HttpStatusCode.Created,
+                RequestUtilities.ToJsonString(this.mockPasswordReset));
+            var response = await this.service.CreatePasswordReset(this.createPasswordResetOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/password_reset");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockPasswordReset),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestResetPassword()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/user_management/password_reset/confirm",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockUser));
+            var response = await this.service.ResetPassword(this.resetPasswordOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/password_reset/confirm");
             Assert.Equal(
                 JsonConvert.SerializeObject(this.mockUser),
                 JsonConvert.SerializeObject(response));

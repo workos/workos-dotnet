@@ -158,5 +158,68 @@ namespace WorkOS
 
             await this.Client.MakeRawAPIRequest(request, cancellationToken);
         }
+
+        /// <summary>
+        /// Gets a password reset token.
+        /// </summary>
+        /// <param name="id">Password reset token unique identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A WorkOS PasswordReset record.</returns>
+        public async Task<PasswordReset> GetPasswordReset(string id, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"/user_management/password_reset/{id}",
+            };
+
+            return await this.Client.MakeAPIRequest<PasswordReset>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Creates a password reset token for a user.
+        /// </summary>
+        /// <param name="options">Parameters to create a password reset token.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>The created password reset token.</returns>
+        public async Task<PasswordReset> CreatePasswordReset(
+            CreatePasswordResetOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = "/user_management/password_reset",
+            };
+
+            return await this.Client.MakeAPIRequest<PasswordReset>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Resets a user's password.
+        /// </summary>
+        /// <param name="options">Parameters to reset the password.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>The updated User after password reset.</returns>
+        public async Task<User> ResetPassword(
+            ResetPasswordOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = "/user_management/password_reset/confirm",
+            };
+
+            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+        }
     }
 }
