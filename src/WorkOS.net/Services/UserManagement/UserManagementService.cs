@@ -402,5 +402,27 @@ namespace WorkOS
 
             return $"{this.Client.ApiBaseURL}/sso/jwks/{System.Uri.EscapeDataString(clientId)}";
         }
+
+        /// <summary>
+        /// Authenticates a user using an authorization code.
+        /// </summary>
+        /// <param name="options">Parameters to authenticate a user with an authorization code.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>The authentication response containing the user and session tokens.</returns>
+        public async Task<AuthenticationResponse> AuthenticateWithCode(
+            AuthenticateWithCodeOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = "/user_management/authenticate",
+            };
+
+            return await this.Client.MakeAPIRequest<AuthenticationResponse>(request, cancellationToken);
+        }
     }
 }

@@ -36,6 +36,10 @@ namespace WorkOSTests
 
         private readonly OrganizationMembership mockOrganizationMembership;
 
+        private readonly AuthenticateWithCodeOptions authenticateWithCodeOptions;
+
+        private readonly AuthenticationResponse mockAuthenticationResponse;
+
         public UserManagementServiceTest()
         {
             this.httpMock = new HttpMock();
@@ -134,6 +138,29 @@ namespace WorkOSTests
                 Status = "active",
                 CreatedAt = "2021-07-26T18:55:16.072Z",
                 UpdatedAt = "2021-07-26T18:55:16.072Z",
+            };
+
+            this.authenticateWithCodeOptions = new AuthenticateWithCodeOptions
+            {
+                Code = "auth_code_123",
+                ClientId = "client_123",
+                ClientSecret = "client_secret_123",
+            };
+
+            this.mockAuthenticationResponse = new AuthenticationResponse
+            {
+                User = this.mockUser,
+                OrganizationId = "org_123",
+                AccessToken = "access_token_abc123",
+                RefreshToken = "refresh_token_def456",
+                AuthenticationMethod = AuthenticationMethod.Password,
+                OAuthTokens = new OAuthTokens
+                {
+                    AccessToken = "oauth_access_token_123",
+                    RefreshToken = "oauth_refresh_token_456",
+                    ExpiresAt = 1625162113,
+                    Scopes = new List<string> { "email", "profile" },
+                },
             };
         }
 
@@ -507,6 +534,22 @@ namespace WorkOSTests
         public void TestGetJwksUrlWithEmptyClientId()
         {
             Assert.Throws<ArgumentNullException>(() => this.service.GetJwksUrl(string.Empty));
+        }
+
+        [Fact]
+        public async void TestAuthenticateWithCode()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/user_management/authenticate",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockAuthenticationResponse));
+            var response = await this.service.AuthenticateWithCode(this.authenticateWithCodeOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockAuthenticationResponse),
+                JsonConvert.SerializeObject(response));
         }
     }
 }
