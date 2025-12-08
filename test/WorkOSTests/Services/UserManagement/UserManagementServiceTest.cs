@@ -38,6 +38,8 @@ namespace WorkOSTests
 
         private readonly AuthenticateWithCodeOptions authenticateWithCodeOptions;
 
+        private readonly AuthenticateWithRefreshTokenOptions authenticateWithRefreshTokenOptions;
+
         private readonly AuthenticationResponse mockAuthenticationResponse;
 
         public UserManagementServiceTest()
@@ -143,6 +145,13 @@ namespace WorkOSTests
             this.authenticateWithCodeOptions = new AuthenticateWithCodeOptions
             {
                 Code = "auth_code_123",
+                ClientId = "client_123",
+                ClientSecret = "client_secret_123",
+            };
+
+            this.authenticateWithRefreshTokenOptions = new AuthenticateWithRefreshTokenOptions
+            {
+                RefreshToken = "refresh_token_def456",
                 ClientId = "client_123",
                 ClientSecret = "client_secret_123",
             };
@@ -545,6 +554,22 @@ namespace WorkOSTests
                 HttpStatusCode.OK,
                 RequestUtilities.ToJsonString(this.mockAuthenticationResponse));
             var response = await this.service.AuthenticateWithCode(this.authenticateWithCodeOptions);
+
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
+            Assert.Equal(
+                JsonConvert.SerializeObject(this.mockAuthenticationResponse),
+                JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async void TestAuthenticateWithRefreshToken()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/user_management/authenticate",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockAuthenticationResponse));
+            var response = await this.service.AuthenticateWithRefreshToken(this.authenticateWithRefreshTokenOptions);
 
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
             Assert.Equal(

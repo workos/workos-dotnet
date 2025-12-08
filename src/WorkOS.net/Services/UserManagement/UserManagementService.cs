@@ -424,5 +424,27 @@ namespace WorkOS
 
             return await this.Client.MakeAPIRequest<AuthenticationResponse>(request, cancellationToken);
         }
+
+        /// <summary>
+        /// Authenticates a user using a refresh token.
+        /// </summary>
+        /// <param name="options">Parameters to authenticate a user with a refresh token.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>The authentication response containing the user and refreshed tokens.</returns>
+        public async Task<AuthenticationResponse> AuthenticateWithRefreshToken(
+            AuthenticateWithRefreshTokenOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Options = options,
+                Method = HttpMethod.Post,
+                Path = "/user_management/authenticate",
+            };
+
+            return await this.Client.MakeAPIRequest<AuthenticationResponse>(request, cancellationToken);
+        }
     }
 }
