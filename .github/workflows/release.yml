@@ -1,20 +1,21 @@
 name: Release
 
 on:
-  # Support manually pushing a new release
-  workflow_dispatch: {}
-  # Trigger when a release is published
+  workflow_dispatch:
   release:
-    types: [released]
+    types: [published]
 
 defaults:
   run:
     shell: bash
 
 jobs:
-  test:
+  publish:
     name: Publish to NuGet
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       # TODO: Remove libssl1.1 installation once we drop support for .NET Core 3.1
       - name: Install libssl1.1 for .NET Core 3.1
@@ -29,9 +30,14 @@ jobs:
           dotnet-version: |
             3.1.x
 
+      - name: Build
+        run: dotnet pack -c Release src/WorkOS.net/WorkOS.net.csproj
+
+      - name: NuGet login (trusted publishing)
+        id: login
+        uses: NuGet/login@d22cc5f58ff5b88bf9bd452535b4335137e24544 # v1.1.0
+        with:
+          user: workos
+
       - name: Publish
-        env:
-          DOTNET_NUGET_API_KEY: ${{ secrets.DOTNET_NUGET_API_KEY }}
-        run: |
-          dotnet pack -c Release src/WorkOS.net/WorkOS.net.csproj
-          dotnet nuget push src/WorkOS.net/bin/Release/WorkOS.net.*.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate -k $DOTNET_NUGET_API_KEY
+        run: dotnet nuget push src/WorkOS.net/bin/Release/WorkOS.net.*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
