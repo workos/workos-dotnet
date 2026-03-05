@@ -54,7 +54,7 @@ namespace WorkOS
         /// Type of the <see cref="User"/>'s password hash.
         /// </summary>
         [JsonProperty("password_hash_type")]
-        public UserPasswordHashType PasswordHashType { get; set; }
+        public UserPasswordHashType? PasswordHashType { get; set; }
 
         /// <summary>
         /// External identifier for the <see cref="User"/>.

@@ -30,7 +30,7 @@ namespace WorkOS
         /// Password hash type for the <see cref="User"/>.
         /// </summary>
         [JsonProperty("password_hash_type")]
-        public UserPasswordHashType PasswordHashType { get; set; }
+        public UserPasswordHashType? PasswordHashType { get; set; }
 
         /// <summary>
         /// First name of the <see cref="User"/>.
