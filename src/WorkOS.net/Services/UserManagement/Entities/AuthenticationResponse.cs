@@ -35,7 +35,7 @@ namespace WorkOS
         /// The authentication method used.
         /// </summary>
         [JsonProperty("authentication_method")]
-        public AuthenticationMethod AuthenticationMethod { get; set; }
+        public AuthenticationMethod? AuthenticationMethod { get; set; }
 
         /// <summary>
         /// Information about the impersonator if the user was impersonated (optional).

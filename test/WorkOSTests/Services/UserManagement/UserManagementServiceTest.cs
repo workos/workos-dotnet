@@ -221,7 +221,11 @@ namespace WorkOSTests
                 RequestUtilities.ToJsonString(this.mockUser));
             var response = await this.service.CreateUser(this.createUserOptions, "idemKey123456");
 
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users");
+            this.httpMock.AssertRequestWasMadeWithHeader(
+                HttpMethod.Post,
+                "/user_management/users",
+                "Idempotency-Key",
+                "idemKey123456");
             Assert.Equal(
                 JsonConvert.SerializeObject(this.mockUser),
                 JsonConvert.SerializeObject(response));
@@ -574,6 +578,32 @@ namespace WorkOSTests
             Assert.Equal(
                 JsonConvert.SerializeObject(this.mockAuthenticationResponse),
                 JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public async Task TestAuthenticateWithCodeInjectsClientSecret()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/user_management/authenticate",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockAuthenticationResponse));
+            await this.service.AuthenticateWithCode(this.authenticateWithCodeOptions);
+
+            Assert.Equal("test", this.authenticateWithCodeOptions.ClientSecret);
+        }
+
+        [Fact]
+        public async Task TestAuthenticateWithRefreshTokenInjectsClientSecret()
+        {
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/user_management/authenticate",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(this.mockAuthenticationResponse));
+            await this.service.AuthenticateWithRefreshToken(this.authenticateWithRefreshTokenOptions);
+
+            Assert.Equal("test", this.authenticateWithRefreshTokenOptions.ClientSecret);
         }
     }
 }

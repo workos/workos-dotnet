@@ -60,7 +60,7 @@ namespace WorkOS
             var request = new WorkOSRequest
             {
                 Method = HttpMethod.Get,
-                Path = $"/user_management/users/external_id/{externalId}",
+                Path = $"/user_management/users/external_id/{Uri.EscapeDataString(externalId)}",
             };
 
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
@@ -131,6 +131,11 @@ namespace WorkOS
             UpdateUserOptions options,
             CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrEmpty(options?.Id))
+            {
+                throw new ArgumentNullException(nameof(options), "User ID is required.");
+            }
+
             var request = new WorkOSRequest
             {
                 Options = options,
@@ -298,6 +303,11 @@ namespace WorkOS
             UpdateOrganizationMembershipOptions options,
             CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrEmpty(options?.Id))
+            {
+                throw new ArgumentNullException(nameof(options), "Organization membership ID is required.");
+            }
+
             var request = new WorkOSRequest
             {
                 Options = options,
