@@ -415,6 +415,7 @@ namespace WorkOS
             AuthenticateWithCodeOptions options,
             CancellationToken cancellationToken = default)
         {
+            options.ClientSecret = this.Client.ApiKey;
             var request = new WorkOSRequest
             {
                 Options = options,
@@ -437,6 +438,7 @@ namespace WorkOS
             AuthenticateWithRefreshTokenOptions options,
             CancellationToken cancellationToken = default)
         {
+            options.ClientSecret = this.Client.ApiKey;
             var request = new WorkOSRequest
             {
                 Options = options,

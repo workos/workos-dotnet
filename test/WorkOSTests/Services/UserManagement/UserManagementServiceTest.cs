@@ -146,14 +146,12 @@ namespace WorkOSTests
             {
                 Code = "auth_code_123",
                 ClientId = "client_123",
-                ClientSecret = "client_secret_123",
             };
 
             this.authenticateWithRefreshTokenOptions = new AuthenticateWithRefreshTokenOptions
             {
                 RefreshToken = "refresh_token_def456",
                 ClientId = "client_123",
-                ClientSecret = "client_secret_123",
             };
 
             this.mockAuthenticationResponse = new AuthenticationResponse
