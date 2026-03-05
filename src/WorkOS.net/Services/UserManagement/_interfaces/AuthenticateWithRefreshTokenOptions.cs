@@ -47,6 +47,6 @@ namespace WorkOS
         /// The grant type for token refresh. Defaults to "refresh_token".
         /// </summary>
         [JsonProperty("grant_type")]
-        public string GrantType { get; set; } = "refresh_token";
+        public string GrantType { get; } = "refresh_token";
     }
 }

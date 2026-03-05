@@ -53,6 +53,6 @@ namespace WorkOS
         /// The grant type for authentication. Defaults to "authorization_code".
         /// </summary>
         [JsonProperty("grant_type")]
-        public string GrantType { get; set; } = "authorization_code";
+        public string GrantType { get; } = "authorization_code";
     }
 }
