@@ -4,6 +4,7 @@ namespace WorkOSTests
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
@@ -172,7 +173,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestListUsers()
+        public async Task TestListUsers()
         {
             var mockResponse = new WorkOSList<User>
             {
@@ -195,7 +196,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestCreateUser()
+        public async Task TestCreateUser()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
@@ -211,7 +212,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestCreateUserWithIdempotency()
+        public async Task TestCreateUserWithIdempotency()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
@@ -227,7 +228,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestGetUser()
+        public async Task TestGetUser()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,
@@ -246,7 +247,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestGetUserByExternalId()
+        public async Task TestGetUserByExternalId()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,
@@ -265,7 +266,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestDeleteUser()
+        public async Task TestDeleteUser()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Delete,
@@ -281,7 +282,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestUpdateUser()
+        public async Task TestUpdateUser()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Put,
@@ -297,7 +298,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestGetPasswordReset()
+        public async Task TestGetPasswordReset()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,
@@ -316,7 +317,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestCreatePasswordReset()
+        public async Task TestCreatePasswordReset()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
@@ -332,7 +333,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestResetPassword()
+        public async Task TestResetPassword()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
@@ -348,7 +349,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestGetOrganizationMembership()
+        public async Task TestGetOrganizationMembership()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,
@@ -367,7 +368,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestListOrganizationMemberships()
+        public async Task TestListOrganizationMemberships()
         {
             var mockResponse = new WorkOSList<OrganizationMembership>
             {
@@ -390,7 +391,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestCreateOrganizationMembership()
+        public async Task TestCreateOrganizationMembership()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
@@ -406,7 +407,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestUpdateOrganizationMembership()
+        public async Task TestUpdateOrganizationMembership()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Put,
@@ -422,7 +423,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestDeleteOrganizationMembership()
+        public async Task TestDeleteOrganizationMembership()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Delete,
@@ -438,7 +439,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestDeactivateOrganizationMembership()
+        public async Task TestDeactivateOrganizationMembership()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Put,
@@ -457,7 +458,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestReactivateOrganizationMembership()
+        public async Task TestReactivateOrganizationMembership()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Put,
@@ -544,7 +545,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestAuthenticateWithCode()
+        public async Task TestAuthenticateWithCode()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
@@ -560,7 +561,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestAuthenticateWithRefreshToken()
+        public async Task TestAuthenticateWithRefreshToken()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
