@@ -1,5 +1,6 @@
 ﻿namespace WorkOSTests
 {
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading;
@@ -31,6 +32,20 @@
                     ItExpr.Is<HttpRequestMessage>(m =>
                         m.Method == method &&
                         m.RequestUri.AbsolutePath == path),
+                    ItExpr.IsAny<CancellationToken>());
+        }
+
+        public void AssertRequestWasMadeWithHeader(HttpMethod method, string path, string headerName, string headerValue)
+        {
+            this.MockHandler.Protected()
+                .Verify(
+                    "SendAsync",
+                    Times.Once(),
+                    ItExpr.Is<HttpRequestMessage>(m =>
+                        m.Method == method &&
+                        m.RequestUri.AbsolutePath == path &&
+                        m.Headers.Contains(headerName) &&
+                        m.Headers.GetValues(headerName).First() == headerValue),
                     ItExpr.IsAny<CancellationToken>());
         }
 
