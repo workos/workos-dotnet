@@ -11,7 +11,7 @@ namespace WorkOS
         /// <summary>
         /// The organization membership's identifier.
         /// </summary>
-        [JsonProperty("id")]
+        [JsonIgnore]
         public string Id { get; set; }
 
         /// <summary>

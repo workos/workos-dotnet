@@ -11,7 +11,7 @@ namespace WorkOS
         /// <summary>
         /// Unique Identifier of the <see cref="User"/>.
         /// </summary>
-        [JsonProperty("id")]
+        [JsonIgnore]
         public string Id { get; set; }
 
         /// <summary>
