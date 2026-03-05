@@ -24,7 +24,7 @@ namespace WorkOS
         /// The timestamp at which the access token expires.
         /// </summary>
         [JsonProperty("expires_at")]
-        public int ExpiresAt { get; set; }
+        public long ExpiresAt { get; set; }
 
         /// <summary>
         /// The list of OAuth scopes for which the access token is authorized.
