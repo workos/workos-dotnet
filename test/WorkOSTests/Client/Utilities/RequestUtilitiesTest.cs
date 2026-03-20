@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.IO;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
@@ -22,7 +23,7 @@
         }
 
         [Fact]
-        public void TestCreateHttpContent()
+        public async Task TestCreateHttpContent()
         {
             var options = new FakeOptions
             {
@@ -35,7 +36,7 @@
                 {
                     Options = options,
                 });
-            var jsonContent = content.ReadAsStringAsync().Result;
+            var jsonContent = await content.ReadAsStringAsync();
             var dictionaryContent = JsonConvert.DeserializeObject<IDictionary<string, string>>(jsonContent);
             var expectedDictionary = new Dictionary<string, string>
             {
@@ -48,7 +49,7 @@
         }
 
         [Fact]
-        public async void TestCreateHttpContentUrlEncoded()
+        public async Task TestCreateHttpContentUrlEncoded()
         {
             var options = new FakeOptions
             {

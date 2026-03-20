@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
@@ -70,7 +71,7 @@
         }
 
         [Fact]
-        public async void TestGenerateLinkSSO()
+        public async Task TestGenerateLinkSSO()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
@@ -84,7 +85,7 @@
         }
 
         [Fact]
-        public async void TestGenerateLinkDSync()
+        public async Task TestGenerateLinkDSync()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
@@ -98,7 +99,7 @@
         }
 
         [Fact]
-        public async void TestGenerateLinkAuditLogs()
+        public async Task TestGenerateLinkAuditLogs()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
@@ -112,7 +113,7 @@
         }
 
         [Fact]
-        public async void TestGenerateLinkLogStreams()
+        public async Task TestGenerateLinkLogStreams()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,

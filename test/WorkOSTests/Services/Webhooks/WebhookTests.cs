@@ -4,7 +4,6 @@ namespace WebhookTests
     using System.IO;
     using WorkOS;
     using Xunit;
-    using Xunit.Abstractions;
 
     public class WebhookTests
     {

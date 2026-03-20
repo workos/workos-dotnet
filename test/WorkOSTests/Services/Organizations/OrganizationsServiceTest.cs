@@ -4,6 +4,7 @@ namespace WorkOSTests
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
@@ -103,7 +104,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestListOrganizations()
+        public async Task TestListOrganizations()
         {
             var mockResponse = new WorkOSList<Organization>
             {
@@ -126,7 +127,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestCreateOrganization()
+        public async Task TestCreateOrganization()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
@@ -142,7 +143,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestCreateOrganizationWithObsoleteDomains()
+        public async Task TestCreateOrganizationWithObsoleteDomains()
         {
             var createOrganizationOptions = new CreateOrganizationOptions
             {
@@ -169,7 +170,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestCreateOrganizationWithIdempotency()
+        public async Task TestCreateOrganizationWithIdempotency()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
@@ -185,7 +186,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestGetOrganization()
+        public async Task TestGetOrganization()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,
@@ -204,7 +205,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestDeleteOrganization()
+        public async Task TestDeleteOrganization()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Delete,
@@ -220,7 +221,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestUpdateOrganization()
+        public async Task TestUpdateOrganization()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Put,
@@ -236,7 +237,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestUpdateOrganizationWithObsoleteDomains()
+        public async Task TestUpdateOrganizationWithObsoleteDomains()
         {
             var updateOrganizationOptions = new UpdateOrganizationOptions
             {
@@ -264,7 +265,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestListOrganizationRoles()
+        public async Task TestListOrganizationRoles()
         {
             var mockResponse = new WorkOSList<Role>
             {
