@@ -10,7 +10,7 @@
     public class RequestUtilitiesTest
     {
         [Fact]
-        public void TestCreateQueryString()
+        public Task TestCreateQueryString()
         {
             var options = new FakeOptions
             {
@@ -20,6 +20,7 @@
 
             var query = RequestUtilities.CreateQueryString(options);
             Assert.Equal("id=some_id&name=some_name", query);
+            return Task.CompletedTask;
         }
 
         [Fact]
@@ -72,7 +73,7 @@
         }
 
         [Fact]
-        public void TestToJsonString()
+        public Task TestToJsonString()
         {
             var options = new FakeOptions
             {
@@ -89,10 +90,11 @@
             };
 
             Assert.Equal(expectedDictionary, dictionaryContent);
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestFromJson()
+        public Task TestFromJson()
         {
             var jsonString = "{\"id\": \"some_id\", \"name\": \"some_name\"}";
             var result = RequestUtilities.FromJson<FakeOptions>(jsonString);
@@ -104,10 +106,11 @@
 
             Assert.Equal(expectedResult.Id, result.Id);
             Assert.Equal(expectedResult.Name, result.Name);
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestParseURLParameters()
+        public Task TestParseURLParameters()
         {
             var url = "https://api.workos.com/sso/authorize?domain=foo&state=bar";
             var parsedUrl = RequestUtilities.ParseURLParameters(url);
@@ -118,6 +121,7 @@
             };
 
             Assert.Equal(expectedDictionary, parsedUrl);
+            return Task.CompletedTask;
         }
 
         private class FakeOptions : BaseOptions

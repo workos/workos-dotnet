@@ -69,7 +69,7 @@
         }
 
         [Fact]
-        public void TestCreateEvent()
+        public Task TestCreateEvent()
         {
             var mockResponse = new Dictionary<string, bool>
             {
@@ -90,6 +90,7 @@
 
             this.service.CreateEvent(options);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/audit_logs/events");
+            return Task.CompletedTask;
         }
 
         [Fact]

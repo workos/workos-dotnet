@@ -481,7 +481,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public void TestGetLogoutUrl()
+        public Task TestGetLogoutUrl()
         {
             var sessionId = "session_01HQAG1HENBZMAZD82YRXDFC0B";
             var logoutUrl = this.service.GetLogoutUrl(sessionId);
@@ -489,10 +489,11 @@ namespace WorkOSTests
             Assert.NotNull(logoutUrl);
             Assert.Contains($"/user_management/sessions/logout", logoutUrl);
             Assert.Contains($"session_id={System.Uri.EscapeDataString(sessionId)}", logoutUrl);
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestGetLogoutUrlWithReturnTo()
+        public Task TestGetLogoutUrlWithReturnTo()
         {
             var sessionId = "session_01HQAG1HENBZMAZD82YRXDFC0B";
             var returnTo = "https://your-app.com/signed-out";
@@ -502,50 +503,57 @@ namespace WorkOSTests
             Assert.Contains($"/user_management/sessions/logout", logoutUrl);
             Assert.Contains($"session_id={System.Uri.EscapeDataString(sessionId)}", logoutUrl);
             Assert.Contains($"return_to={System.Uri.EscapeDataString(returnTo)}", logoutUrl);
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestGetLogoutUrlWithNullSessionId()
+        public Task TestGetLogoutUrlWithNullSessionId()
         {
             Assert.Throws<ArgumentNullException>(() => this.service.GetLogoutUrl(null));
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestGetLogoutUrlWithEmptySessionId()
+        public Task TestGetLogoutUrlWithEmptySessionId()
         {
             Assert.Throws<ArgumentNullException>(() => this.service.GetLogoutUrl(string.Empty));
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestGetJwksUrl()
+        public Task TestGetJwksUrl()
         {
             var clientId = "client_ABCDEF0123456789";
             var jwksUrl = this.service.GetJwksUrl(clientId);
 
             Assert.NotNull(jwksUrl);
             Assert.Contains($"/sso/jwks/{clientId}", jwksUrl);
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestGetJwksUrlWithSpecialCharacters()
+        public Task TestGetJwksUrlWithSpecialCharacters()
         {
             var clientId = "org_test@example.com";
             var jwksUrl = this.service.GetJwksUrl(clientId);
 
             Assert.NotNull(jwksUrl);
             Assert.Contains($"/sso/jwks/{System.Uri.EscapeDataString(clientId)}", jwksUrl);
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestGetJwksUrlWithNullClientId()
+        public Task TestGetJwksUrlWithNullClientId()
         {
             Assert.Throws<ArgumentNullException>(() => this.service.GetJwksUrl(null));
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestGetJwksUrlWithEmptyClientId()
+        public Task TestGetJwksUrlWithEmptyClientId()
         {
             Assert.Throws<ArgumentNullException>(() => this.service.GetJwksUrl(string.Empty));
+            return Task.CompletedTask;
         }
 
         [Fact]

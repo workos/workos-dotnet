@@ -48,7 +48,7 @@
         }
 
         [Fact]
-        public void TestGetAuthorizationURLWithNoConnectionDomainOrProvider()
+        public Task TestGetAuthorizationURLWithNoConnectionDomainOrProvider()
         {
             var options = new GetAuthorizationURLOptions
             {
@@ -57,10 +57,11 @@
             };
             var exception = Assert.Throws<ArgumentNullException>(() =>
                 this.service.GetAuthorizationURL(options));
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestGetAuthorizationURLWithProvider()
+        public Task TestGetAuthorizationURLWithProvider()
         {
             var options = new GetAuthorizationURLOptions
             {
@@ -75,10 +76,11 @@
             Assert.Equal(options.Provider.ToString(), parameters["provider"]);
             Assert.Equal(options.RedirectURI, parameters["redirect_uri"]);
             Assert.Equal("code", parameters["response_type"]);
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestGetAuthorizationURLWithDomain()
+        public Task TestGetAuthorizationURLWithDomain()
         {
             var options = new GetAuthorizationURLOptions
             {
@@ -97,10 +99,11 @@
 #pragma warning restore CS0618 // GetAuthorizationURLOptions.Domain' is obsolete: 'The Domain property is deprecated. Please use Organization instead.
             Assert.Equal(options.RedirectURI, parameters["redirect_uri"]);
             Assert.Equal("code", parameters["response_type"]);
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestGetAuthorizationURLWithDomainHint()
+        public Task TestGetAuthorizationURLWithDomainHint()
         {
             var options = new GetAuthorizationURLOptions
             {
@@ -116,10 +119,11 @@
             Assert.Equal(options.DomainHint, parameters["domain_hint"]);
             Assert.Equal(options.RedirectURI, parameters["redirect_uri"]);
             Assert.Equal("code", parameters["response_type"]);
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestGetAuthorizationURLWithLoginHint()
+        public Task TestGetAuthorizationURLWithLoginHint()
         {
             var options = new GetAuthorizationURLOptions
             {
@@ -135,10 +139,11 @@
             Assert.Equal(options.LoginHint, parameters["login_hint"]);
             Assert.Equal(options.RedirectURI, parameters["redirect_uri"]);
             Assert.Equal("code", parameters["response_type"]);
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestGetAuthorizationURLWithConnection()
+        public Task TestGetAuthorizationURLWithConnection()
         {
             var options = new GetAuthorizationURLOptions
             {
@@ -153,10 +158,11 @@
             Assert.Equal(options.Connection, parameters["connection"]);
             Assert.Equal(options.RedirectURI, parameters["redirect_uri"]);
             Assert.Equal("code", parameters["response_type"]);
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestGetAuthorizationURLWithOrganization()
+        public Task TestGetAuthorizationURLWithOrganization()
         {
             var options = new GetAuthorizationURLOptions
             {
@@ -171,10 +177,11 @@
             Assert.Equal(options.Organization, parameters["organization"]);
             Assert.Equal(options.RedirectURI, parameters["redirect_uri"]);
             Assert.Equal("code", parameters["response_type"]);
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public void TestGetAuthorizationURLWithState()
+        public Task TestGetAuthorizationURLWithState()
         {
             var options = new GetAuthorizationURLOptions
             {
@@ -191,6 +198,7 @@
             Assert.Equal(options.RedirectURI, parameters["redirect_uri"]);
             Assert.Equal(options.State, parameters["state"]);
             Assert.Equal("code", parameters["response_type"]);
+            return Task.CompletedTask;
         }
 
         [Fact]
