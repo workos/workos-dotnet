@@ -27,4 +27,4 @@ jobs:
       - name: Test
         run: |
           dotnet build -c Debug src/WorkOS.net/WorkOS.net.csproj
-          dotnet run --project test/WorkOSTests/WorkOSTests.csproj -c Debug
+          dotnet test -c Debug test/WorkOSTests/WorkOSTests.csproj
