@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
@@ -81,7 +82,7 @@
         }
 
         [Fact]
-        public async void TestCreateEvent()
+        public async Task TestCreateEvent()
         {
             var mockResponse = new Dictionary<string, bool>
             {
@@ -100,7 +101,7 @@
         }
 
         [Fact]
-        public async void TestListEvents()
+        public async Task TestListEvents()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,

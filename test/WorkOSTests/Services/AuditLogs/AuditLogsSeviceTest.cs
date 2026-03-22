@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
@@ -68,7 +69,7 @@
         }
 
         [Fact]
-        public void TestCreateEvent()
+        public Task TestCreateEvent()
         {
             var mockResponse = new Dictionary<string, bool>
             {
@@ -89,10 +90,11 @@
 
             this.service.CreateEvent(options);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/audit_logs/events");
+            return Task.CompletedTask;
         }
 
         [Fact]
-        public async void TestCreateExport()
+        public async Task TestCreateExport()
         {
             var mockResponse = new Dictionary<string, string>
             {
@@ -137,7 +139,7 @@
         }
 
         [Fact]
-        public async void TestGetExport()
+        public async Task TestGetExport()
         {
             var mockResponse = new Dictionary<string, string>
             {

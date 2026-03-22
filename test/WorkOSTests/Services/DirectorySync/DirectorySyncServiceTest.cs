@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
@@ -179,7 +180,7 @@
         }
 
         [Fact]
-        public async void TestGetDirectory()
+        public async Task TestGetDirectory()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,
@@ -198,7 +199,7 @@
         }
 
         [Fact]
-        public async void TestListDirectories()
+        public async Task TestListDirectories()
         {
             var mockResponse = new WorkOSList<Directory>
             {
@@ -222,7 +223,7 @@
         }
 
         [Fact]
-        public async void TestDeleteDirectory()
+        public async Task TestDeleteDirectory()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Delete,
@@ -238,7 +239,7 @@
         }
 
         [Fact]
-        public async void TestListUsers()
+        public async Task TestListUsers()
         {
             var mockResponse = new WorkOSList<DirectoryUser>
             {
@@ -262,7 +263,7 @@
         }
 
         [Fact]
-        public async void TestGetUser()
+        public async Task TestGetUser()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,
@@ -281,7 +282,7 @@
         }
 
         [Fact]
-        public async void TestListGroups()
+        public async Task TestListGroups()
         {
             var mockResponse = new WorkOSList<Group>
             {
@@ -305,7 +306,7 @@
         }
 
         [Fact]
-        public async void TestGetGroup()
+        public async Task TestGetGroup()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,
@@ -324,7 +325,7 @@
         }
 
         [Fact]
-        public async void TestPrimaryEmail()
+        public async Task TestPrimaryEmail()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,
@@ -346,7 +347,7 @@
         }
 
         [Fact]
-        public async void TestPrimaryEmailNull()
+        public async Task TestPrimaryEmailNull()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,

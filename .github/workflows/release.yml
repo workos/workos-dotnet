@@ -17,18 +17,11 @@ jobs:
       id-token: write
       contents: read
     steps:
-      # TODO: Remove libssl1.1 installation once we drop support for .NET Core 3.1
-      - name: Install libssl1.1 for .NET Core 3.1
-        run: |
-          wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb
-          sudo dpkg -i libssl1.1_1.1.0g-2ubuntu4_amd64.deb
-
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Setup dotNet
         uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5.1.0
         with:
-          dotnet-version: |
-            3.1.x
+          dotnet-version: 8.x
 
       - name: Build
         run: dotnet pack -c Release src/WorkOS.net/WorkOS.net.csproj
