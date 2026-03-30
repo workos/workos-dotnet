@@ -605,5 +605,40 @@ namespace WorkOSTests
 
             Assert.Equal("test", this.authenticateWithRefreshTokenOptions.ClientSecret);
         }
+
+        [Theory]
+        [InlineData(AuthenticationMethod.Passkey)]
+        [InlineData(AuthenticationMethod.BitbucketOAuth)]
+        [InlineData(AuthenticationMethod.DiscordOAuth)]
+        [InlineData(AuthenticationMethod.GitLabOAuth)]
+        [InlineData(AuthenticationMethod.IntuitOAuth)]
+        [InlineData(AuthenticationMethod.LinkedInOAuth)]
+        [InlineData(AuthenticationMethod.SalesforceOAuth)]
+        [InlineData(AuthenticationMethod.SlackOAuth)]
+        [InlineData(AuthenticationMethod.VercelOAuth)]
+        [InlineData(AuthenticationMethod.VercelMarketplaceOAuth)]
+        [InlineData(AuthenticationMethod.XeroOAuth)]
+        [InlineData(AuthenticationMethod.CrossAppAuth)]
+        [InlineData(AuthenticationMethod.ExternalAuth)]
+        [InlineData(AuthenticationMethod.MigratedSession)]
+        public async Task TestAuthenticateWithCodeDeserializesAuthenticationMethod(AuthenticationMethod expected)
+        {
+            var mockResponse = new AuthenticationResponse
+            {
+                User = this.mockUser,
+                OrganizationId = "org_123",
+                AccessToken = "access_token_abc123",
+                RefreshToken = "refresh_token_def456",
+                AuthenticationMethod = expected,
+            };
+            this.httpMock.MockResponse(
+                HttpMethod.Post,
+                "/user_management/authenticate",
+                HttpStatusCode.OK,
+                RequestUtilities.ToJsonString(mockResponse));
+            var response = await this.service.AuthenticateWithCode(this.authenticateWithCodeOptions);
+
+            Assert.Equal(expected, response.AuthenticationMethod);
+        }
     }
 }
