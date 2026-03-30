@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.12.0](https://github.com/workos/workos-dotnet/compare/v2.11.0...v2.12.0) (2026-03-30)
+
+
+### Features
+
+* Add Passkey authentication method and expand OAuth providers ([#227](https://github.com/workos/workos-dotnet/issues/227)) ([e7e236e](https://github.com/workos/workos-dotnet/commit/e7e236e01a12d752bb609c41c8d4f39326f19a1b))
+
 ## [2.11.0](https://github.com/workos/workos-dotnet/compare/v2.10.1...v2.11.0) (2026-03-05)
 
 
