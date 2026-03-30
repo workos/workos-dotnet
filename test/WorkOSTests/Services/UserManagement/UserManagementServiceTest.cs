@@ -639,6 +639,7 @@ namespace WorkOSTests
             var response = await this.service.AuthenticateWithCode(this.authenticateWithCodeOptions);
 
             Assert.Equal(expected, response.AuthenticationMethod);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
         }
     }
 }
