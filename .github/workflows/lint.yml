@@ -1,9 +1,9 @@
-name: CI
+name: Lint
 
 on:
   push:
     branches:
-      - "main"
+      - main
   pull_request: {}
 
 defaults:
@@ -11,8 +11,8 @@ defaults:
     shell: bash
 
 jobs:
-  test:
-    name: Test (${{ matrix.dotnet }})
+  lint:
+    name: Lint (${{ matrix.dotnet }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -29,11 +29,11 @@ jobs:
           dotnet-version: ${{ matrix.dotnet }}
       - name: Restore
         run: dotnet restore test/WorkOSTests/WorkOSTests.csproj
-      - name: Build
+      - name: Verify formatting
+        run: |
+          dotnet format src/WorkOS.net/WorkOS.net.csproj --no-restore --verify-no-changes --severity warn
+          dotnet format test/WorkOSTests/WorkOSTests.csproj --no-restore --verify-no-changes --severity warn
+      - name: Verify analyzers
         run: |
           dotnet build -c Release src/WorkOS.net/WorkOS.net.csproj --no-restore
           dotnet build -c Release test/WorkOSTests/WorkOSTests.csproj --no-restore
-      - name: Test
-        run: dotnet test -c Release -f net8.0 --no-build test/WorkOSTests/WorkOSTests.csproj
-        env:
-          DOTNET_ROLL_FORWARD: Major
