@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
@@ -46,7 +47,7 @@
         }
 
         [Fact]
-        public async void TestCreateSession()
+        public async Task TestCreateSession()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Post,
@@ -62,7 +63,7 @@
         }
 
         [Fact]
-        public async void TestSendSession()
+        public async Task TestSendSession()
         {
             var id = this.mockPasswordlessSession.Id;
 

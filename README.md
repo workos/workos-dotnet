@@ -4,7 +4,7 @@
 [![CI](https://github.com/workos/workos-dotnet/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/workos/workos-dotnet/actions/workflows/ci.yml)
 
 The WorkOS library for .NET provides convenient access to the WorkOS API from applications using .NET.
-Supports .NET Standard 2.0+ and .NET Framework 4.6.1+
+Supports .NET 8+
 
 ## Documentation
 
@@ -20,7 +20,7 @@ There are several options to install the WorkOS .NET SDK.
 nuget install WorkOS.net
 ```
 
-### Via the .NET Core Command Line Tools
+### Via the .NET CLI
 
 ```sh
 dotnet add package WorkOS.net
@@ -63,7 +63,7 @@ dotnet test test/WorkOSTests/WorkOSTests.csproj
 Run tests for a specific framework with the following command:
 
 ```sh
-dotnet test test/WorkOSTests/WorkOSTests.csproj -f netcoreapp3.1
+dotnet test test/WorkOSTests/WorkOSTests.csproj -f net8.0
 ```
 
 ## SDK Versioning

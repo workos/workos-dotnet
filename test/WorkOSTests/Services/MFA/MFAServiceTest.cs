@@ -2,6 +2,7 @@ namespace WorkOSTests
 {
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
@@ -25,7 +26,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestGenericEnroll()
+        public async Task TestGenericEnroll()
         {
             var enrollFactorResponse = new Factor
             {
@@ -48,7 +49,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestSmsEnroll()
+        public async Task TestSmsEnroll()
         {
             var phoneDetails = new Sms
             {
@@ -78,7 +79,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestTotpEnroll()
+        public async Task TestTotpEnroll()
         {
             var totpDetails = new Totp
             {
@@ -112,7 +113,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestChallengeWithCode()
+        public async Task TestChallengeWithCode()
         {
             var challengeResponse = new Challenge
             {
@@ -141,7 +142,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestChallengeWithoutCode()
+        public async Task TestChallengeWithoutCode()
         {
             var challengeResponse = new Challenge
             {
@@ -169,7 +170,7 @@ namespace WorkOSTests
 
 #pragma warning disable CS0618 // 'VerifyFactorResponseSuccess' is obsolete: 'Please use VerifyChallengeResponseSuccess instead.
         [Fact]
-        public async void TestVerify()
+        public async Task TestVerify()
         {
             var verifyChallenge = new Challenge
             {
@@ -209,7 +210,7 @@ namespace WorkOSTests
 #pragma warning restore CS0618 // 'VerifyFactorResponseSuccess' is obsolete: 'Please use VerifyChallengeResponseSuccess instead.
 
         [Fact]
-        public async void TestVerifyChallenge()
+        public async Task TestVerifyChallenge()
         {
             var verifyChallenge = new Challenge
             {
@@ -248,7 +249,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestGetFactor()
+        public async Task TestGetFactor()
         {
             var mockFactor = new Factor
             {
@@ -275,7 +276,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async void TestDeleteFactor()
+        public async Task TestDeleteFactor()
         {
             var mockFactor = new Factor
             {

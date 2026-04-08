@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
@@ -193,7 +194,7 @@
         }
 
         [Fact]
-        public async void TestGetProfileAndToken()
+        public async Task TestGetProfileAndToken()
         {
             var mockProfile = new Profile
             {
@@ -259,7 +260,7 @@
         }
 
         [Fact]
-        public async void TestGetProfile()
+        public async Task TestGetProfile()
         {
             var mockProfile = new Profile
             {
@@ -316,7 +317,7 @@
         }
 
         [Fact]
-        public async void TestListConnections()
+        public async Task TestListConnections()
         {
             var mockResponse = new WorkOSList<Connection>
             {
@@ -340,7 +341,7 @@
         }
 
         [Fact]
-        public async void TestGetConnection()
+        public async Task TestGetConnection()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Get,
@@ -359,7 +360,7 @@
         }
 
         [Fact]
-        public async void TestDeleteConnection()
+        public async Task TestDeleteConnection()
         {
             this.httpMock.MockResponse(
                 HttpMethod.Delete,

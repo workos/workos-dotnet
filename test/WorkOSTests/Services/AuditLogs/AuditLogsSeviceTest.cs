@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
@@ -92,7 +93,7 @@
         }
 
         [Fact]
-        public async void TestCreateExport()
+        public async Task TestCreateExport()
         {
             var mockResponse = new Dictionary<string, string>
             {
@@ -137,7 +138,7 @@
         }
 
         [Fact]
-        public async void TestGetExport()
+        public async Task TestGetExport()
         {
             var mockResponse = new Dictionary<string, string>
             {
