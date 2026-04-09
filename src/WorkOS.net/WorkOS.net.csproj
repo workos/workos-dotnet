@@ -5,14 +5,12 @@
     <AssemblyName>WorkOS.net</AssemblyName>
     <Authors>WorkOS</Authors>
     <Copyright>Copyright © WorkOS</Copyright>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <IncludeSymbols>true</IncludeSymbols>
-    <NeutralLanguage>en-US</NeutralLanguage>
     <PackageId>WorkOS.net</PackageId>
-    <PackageTags>workos;sso;audit;trail;directory;sync;portal;passwordless;magic;link</PackageTags>
     <PackageProjectUrl>https://github.com/workos-inc/workos-dotnet</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <NeutralLanguage>en-US</NeutralLanguage>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RootNamespace>WorkOS</RootNamespace>
     <SignAssembly>True</SignAssembly>

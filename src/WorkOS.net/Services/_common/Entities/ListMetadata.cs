@@ -1,4 +1,5 @@
-﻿namespace WorkOS
+// @oagen-ignore-file
+namespace WorkOS
 {
     using Newtonsoft.Json;
 

@@ -1,4 +1,5 @@
-﻿namespace WorkOS
+// @oagen-ignore-file
+namespace WorkOS
 {
     /// <summary>
     /// A base class to represent request options to the WorkOS API.

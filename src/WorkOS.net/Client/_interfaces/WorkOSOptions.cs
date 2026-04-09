@@ -1,4 +1,5 @@
-﻿namespace WorkOS
+// @oagen-ignore-file
+namespace WorkOS
 {
     using System.Net.Http;
 
@@ -16,6 +17,8 @@
         /// The API key to authenticate requests to the WorkOS API.
         /// </summary>
         public string ApiKey { get; set; }
+
+        public string ClientId { get; set; }
 
         /// <summary>
         /// The HTTP client to make API requests.

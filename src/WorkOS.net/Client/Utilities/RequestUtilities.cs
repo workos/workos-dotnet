@@ -1,4 +1,5 @@
-﻿namespace WorkOS
+// @oagen-ignore-file
+namespace WorkOS
 {
     using System;
     using System.Collections;
@@ -86,19 +87,6 @@
             return jsonSerializer.Deserialize<T>(reader);
         }
 
-        /// <summary>
-        /// Parses query parameters from a URL into a dictionary.
-        /// </summary>
-        /// <param name="url">URL to parse.</param>
-        /// <returns>A dictionary of parameters.</returns>
-        public static Dictionary<string, string> ParseURLParameters(string url)
-        {
-            int startIndex = url.IndexOf('?') + 1;
-            return url.Substring(startIndex).Split('&')
-                .Select(x => x.Split(new[] { '=' }, 2))
-                .ToDictionary(x => WebUtility.UrlDecode(x[0]), x => WebUtility.UrlDecode(x[1]));
-        }
-
         private static string UrlEncodeAndClean(string value)
         {
             return WebUtility.UrlEncode(value)
@@ -120,11 +108,9 @@
                 {
                     case null:
                         break;
-
                     case string s:
                         result.Add(new KeyValuePair<string, string>(key, s));
                         break;
-
                     case IEnumerable e:
                         foreach (object elem in e)
                         {
@@ -132,24 +118,18 @@
                         }
 
                         break;
-
                     case DateTime dt:
-                        var isoDt = dt.ToString("yyyy-MM-ddTHH:mm:ssZ");
-                        result.Add(new KeyValuePair<string, string>(key, isoDt));
+                        result.Add(new KeyValuePair<string, string>(key, dt.ToString("yyyy-MM-ddTHH:mm:ssZ")));
                         break;
-
-                    case Enum e:
-                        result.Add(new KeyValuePair<string, string>(key, e.ToString()));
+                    case Enum en:
+                        result.Add(new KeyValuePair<string, string>(key, en.ToString()));
                         break;
-
                     case long l:
                         result.Add(new KeyValuePair<string, string>(key, l.ToString()));
                         break;
-
                     case int i:
                         result.Add(new KeyValuePair<string, string>(key, i.ToString()));
                         break;
-
                     default:
                         break;
                 }

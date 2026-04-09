@@ -1,9 +1,12 @@
-﻿namespace WorkOS
+// @oagen-ignore-file
+namespace WorkOS
 {
     using System;
     using System.IO;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Reflection;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
@@ -11,7 +14,7 @@
     /// <summary>
     /// A client to manage requests to the WorkOS API.
     /// </summary>
-    public class WorkOSClient
+    public partial class WorkOSClient
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkOSClient"/> class.
@@ -26,13 +29,19 @@
 
             this.ApiBaseURL = options.ApiBaseURL ?? DefaultApiBaseURL;
             this.ApiKey = options.ApiKey;
+            this.ClientId = options.ClientId;
             this.HttpClient = options.HttpClient ?? this.DefaultHttpClient();
+            this.InitializeGeneratedServices();
         }
 
         /// <summary>
         /// Describes the .NET SDK version.
         /// </summary>
-        public static string SdkVersion => "2.10.1";
+        public static string SdkVersion =>
+            typeof(WorkOSClient).Assembly
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+                .InformationalVersion
+                .Split('+')[0] ?? "unknown";
 
         /// <summary>
         /// Default timeout for HTTP requests.
@@ -53,6 +62,8 @@
         /// The API key used to authenticate requests to the WorkOS API.
         /// </summary>
         public string ApiKey { get; }
+
+        public string ClientId { get; }
 
         /// <summary>
         /// The client used to make HTTP requests to the WorkOS API.
@@ -82,8 +93,15 @@
             CancellationToken cancellationToken = default)
         {
             var requestMessage = this.CreateHttpRequestMessage(request);
+            var response = await this.HttpClient.SendAsync(requestMessage, cancellationToken);
 
-            return await this.HttpClient.SendAsync(requestMessage, cancellationToken);
+            if (!response.IsSuccessStatusCode)
+            {
+                var body = await response.Content.ReadAsStringAsync();
+                throw MapError(response.StatusCode, body);
+            }
+
+            return response;
         }
 
         /// <summary>
@@ -102,6 +120,28 @@
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
             var data = await reader.ReadToEndAsync().ConfigureAwait(false);
             return RequestUtilities.FromJson<T>(data);
+        }
+
+        private static Exception MapError(HttpStatusCode statusCode, string body)
+        {
+            switch ((int)statusCode)
+            {
+                case 401:
+                    return new AuthenticationError(body);
+                case 404:
+                    return new NotFoundError(body);
+                case 422:
+                    return new UnprocessableEntityError(body);
+                case 429:
+                    return new RateLimitExceededError(body);
+                default:
+                    if ((int)statusCode >= 500)
+                    {
+                        return new ServerError(body);
+                    }
+
+                    return new ApiError(body, statusCode);
+            }
         }
 
         private HttpRequestMessage CreateHttpRequestMessage(WorkOSRequest request)

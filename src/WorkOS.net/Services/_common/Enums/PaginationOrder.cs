@@ -1,3 +1,4 @@
+// @oagen-ignore-file
 namespace WorkOS
 {
     using System.Runtime.Serialization;

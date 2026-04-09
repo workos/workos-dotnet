@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+echo "==> Cleaning..."
+dotnet clean --configuration Release -v q
+
+echo "==> Restoring dependencies..."
+dotnet restore
+
+echo "==> Building solution..."
+dotnet build --no-restore --configuration Release
+
+echo "==> Checking formatting..."
+dotnet format --verify-no-changes --no-restore
+
+echo "==> Running tests..."
+dotnet test --no-build --configuration Release
