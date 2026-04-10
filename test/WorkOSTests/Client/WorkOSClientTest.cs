@@ -1,4 +1,5 @@
-﻿namespace WorkOSTests
+// @oagen-ignore-file
+namespace WorkOSTests
 {
     using System;
     using WorkOS;

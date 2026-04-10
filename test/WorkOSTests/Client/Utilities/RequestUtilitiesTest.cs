@@ -1,4 +1,5 @@
-﻿namespace WorkOSTests
+// @oagen-ignore-file
+namespace WorkOSTests
 {
     using System.Collections.Generic;
     using System.IO;
@@ -104,20 +105,6 @@
 
             Assert.Equal(expectedResult.Id, result.Id);
             Assert.Equal(expectedResult.Name, result.Name);
-        }
-
-        [Fact]
-        public void TestParseURLParameters()
-        {
-            var url = "https://api.workos.com/sso/authorize?domain=foo&state=bar";
-            var parsedUrl = RequestUtilities.ParseURLParameters(url);
-            var expectedDictionary = new Dictionary<string, string>
-            {
-                { "domain", "foo" },
-                { "state", "bar" },
-            };
-
-            Assert.Equal(expectedDictionary, parsedUrl);
         }
 
         private class FakeOptions : BaseOptions

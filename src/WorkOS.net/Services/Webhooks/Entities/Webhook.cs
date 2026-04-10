@@ -1,9 +1,10 @@
+// @oagen-ignore-file
 namespace WorkOS
 {
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Describes the webhook records associated with a Webhook Event.
+    /// Describes the webhook records associated with a webhook event.
     /// </summary>
     public class Webhook
     {
@@ -14,13 +15,13 @@ namespace WorkOS
         public string Id { get; set; }
 
         /// <summary>
-        /// The event of webhook.
+        /// The event type.
         /// </summary>
         [JsonProperty("event")]
         public string Event { get; set; }
 
         /// <summary>
-        /// The raw data webhook.
+        /// The raw webhook payload data.
         /// </summary>
         [JsonProperty("data")]
         public object Data { get; set; }
