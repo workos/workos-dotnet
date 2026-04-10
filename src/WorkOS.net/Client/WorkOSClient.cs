@@ -38,6 +38,12 @@ namespace WorkOS
 
         // @oagen-end service-accessors (backing fields)
 
+        // Non-spec service backing fields (hand-maintained)
+        private PasswordlessService? passwordless;
+        private VaultService? vault;
+        private ActionsService? actions;
+        private SessionService? session;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkOSClient"/> class.
         /// </summary>
@@ -122,6 +128,20 @@ namespace WorkOS
         public virtual AuditLogsService AuditLogs => this.auditLogs ??= new AuditLogsService(this);
 
         // @oagen-end service-accessors (properties)
+
+        // Non-spec service accessors (hand-maintained)
+
+        /// <summary>Gets the Passwordless service for magic-link sessions.</summary>
+        public virtual PasswordlessService Passwordless => this.passwordless ??= new PasswordlessService(this);
+
+        /// <summary>Gets the Vault service for KV storage and encryption.</summary>
+        public virtual VaultService Vault => this.vault ??= new VaultService(this);
+
+        /// <summary>Gets the Actions service for AuthKit Actions verification and signing.</summary>
+        public virtual ActionsService Actions => this.actions ??= new ActionsService();
+
+        /// <summary>Gets the Session service for sealed session management and JWT validation.</summary>
+        public virtual SessionService Session => this.session ??= new SessionService(this);
 
         /// <summary>
         /// The client used to make HTTP requests to the WorkOS API.
