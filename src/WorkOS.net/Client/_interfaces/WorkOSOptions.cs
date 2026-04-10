@@ -11,18 +11,18 @@ namespace WorkOS
         /// <summary>
         /// Base URL for the WorkOS API.
         /// </summary>
-        public string ApiBaseURL { get; set; }
+        public string? ApiBaseURL { get; set; }
 
         /// <summary>
         /// The API key to authenticate requests to the WorkOS API.
         /// </summary>
-        public string ApiKey { get; set; }
+        public string? ApiKey { get; set; }
 
-        public string ClientId { get; set; }
+        public string? ClientId { get; set; }
 
         /// <summary>
         /// The HTTP client to make API requests.
         /// </summary>
-        public HttpClient HttpClient { get; set; }
+        public HttpClient? HttpClient { get; set; }
     }
 }

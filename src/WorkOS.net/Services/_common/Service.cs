@@ -3,7 +3,7 @@ namespace WorkOS
 {
     public class Service
     {
-        private WorkOSClient client;
+        private WorkOSClient? client;
 
         protected Service()
         {

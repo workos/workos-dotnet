@@ -8,9 +8,9 @@ namespace WorkOS
     /// </summary>
     public static class WorkOS
     {
-        private static string _apiKey;
+        private static string? _apiKey;
 
-        private static WorkOSClient _workOSClient;
+        private static WorkOSClient? _workOSClient;
 
         /// <summary>
         /// Gets or sets a default or custom <see cref="WorkOSClient"/>.

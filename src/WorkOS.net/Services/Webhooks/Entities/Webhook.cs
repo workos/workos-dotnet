@@ -12,24 +12,24 @@ namespace WorkOS
         /// Unique identifier for the object.
         /// </summary>
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>
         /// The event type.
         /// </summary>
         [JsonProperty("event")]
-        public string Event { get; set; }
+        public string Event { get; set; } = default!;
 
         /// <summary>
         /// The raw webhook payload data.
         /// </summary>
         [JsonProperty("data")]
-        public object Data { get; set; }
+        public object? Data { get; set; }
 
         /// <summary>
         /// The timestamp of when the event was created.
         /// </summary>
         [JsonProperty("created_at")]
-        public string CreatedAt { get; set; }
+        public string? CreatedAt { get; set; }
     }
 }

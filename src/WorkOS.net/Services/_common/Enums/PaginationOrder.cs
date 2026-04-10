@@ -8,6 +8,9 @@ namespace WorkOS
     [JsonConverter(typeof(StringEnumConverter))]
     public enum PaginationOrder
     {
+        [EnumMember(Value = "normal")]
+        Normal,
+
         [EnumMember(Value = "asc")]
         Asc,
 

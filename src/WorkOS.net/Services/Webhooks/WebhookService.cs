@@ -39,7 +39,7 @@ namespace WorkOS
         public Webhook ConstructEvent(string json, string signatureHeader, string secret, long tolerance = DefaultTimeTolerance)
         {
             this.VerifyHeader(json, signatureHeader, secret, tolerance);
-            return JsonConvert.DeserializeObject<Webhook>(json);
+            return JsonConvert.DeserializeObject<Webhook>(json)!;
         }
 
         /// <summary>

@@ -13,31 +13,36 @@ namespace WorkOS
         /// <summary>
         /// The HTTP method.
         /// </summary>
-        public HttpMethod Method { get; set; }
+        public HttpMethod Method { get; set; } = default!;
 
         /// <summary>
         /// The parameters for the HTTP request.
         /// </summary>
-        public BaseOptions Options { get; set; }
+        public BaseOptions? Options { get; set; }
 
         /// <summary>
         /// The path of the WorkOS API request.
         /// </summary>
-        public string Path { get; set; }
+        public string Path { get; set; } = default!;
 
         /// <summary>
         /// The access token to use for authentication instead of an API key.
         /// </summary>
-        public string AccessToken { get; set; }
+        public string? AccessToken { get; set; }
 
         /// <summary>
         /// Dictionary of custom WorkOS headers.
         /// </summary>
-        public IDictionary<string, string> WorkOSHeaders { get; set; }
+        public IDictionary<string, string>? WorkOSHeaders { get; set; }
 
         /// <summary>
         /// Optional flag to indicate if the request is JSON encoded.
         /// </summary>
         public bool IsJsonContentType { get; set; } = true;
+
+        /// <summary>
+        /// Per-request configuration overrides (API key, idempotency key, etc.).
+        /// </summary>
+        public RequestOptions? RequestOptions { get; set; }
     }
 }

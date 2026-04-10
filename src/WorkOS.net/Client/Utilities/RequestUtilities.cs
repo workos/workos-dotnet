@@ -25,7 +25,7 @@ namespace WorkOS
         public static string CreateQueryString(BaseOptions options)
         {
             var jsonOptions = ToJsonString(options);
-            var dictionaryOptions = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonOptions);
+            var dictionaryOptions = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonOptions)!;
             var flattenedQuery = FlattenQueryParameters(dictionaryOptions);
             return string.Join(
                 "&",
@@ -54,7 +54,7 @@ namespace WorkOS
                 return content;
             }
 
-            var dictionaryOptions = JsonConvert.DeserializeObject<IDictionary<string, string>>(jsonOptions);
+            var dictionaryOptions = JsonConvert.DeserializeObject<IDictionary<string, string>>(jsonOptions)!;
             return new FormUrlEncodedContent(dictionaryOptions.ToList());
         }
 
@@ -84,7 +84,7 @@ namespace WorkOS
         {
             JsonSerializer jsonSerializer = JsonSerializer.Create();
             JsonTextReader reader = new JsonTextReader(new StringReader(value));
-            return jsonSerializer.Deserialize<T>(reader);
+            return jsonSerializer.Deserialize<T>(reader)!;
         }
 
         private static string UrlEncodeAndClean(string value)
@@ -114,7 +114,7 @@ namespace WorkOS
                     case IEnumerable e:
                         foreach (object elem in e)
                         {
-                            result.Add(new KeyValuePair<string, string>($"{key}[]", elem.ToString()));
+                            result.Add(new KeyValuePair<string, string>($"{key}[]", elem.ToString() ?? string.Empty));
                         }
 
                         break;

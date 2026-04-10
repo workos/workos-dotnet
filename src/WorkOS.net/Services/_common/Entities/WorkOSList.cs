@@ -15,12 +15,12 @@ namespace WorkOS
         /// List of WorkOS records.
         /// </summary>
         [JsonProperty("data")]
-        public List<T> Data { get; set; }
+        public List<T>? Data { get; set; }
 
         /// <summary>
         /// Pagination cursor options.
         /// </summary>
         [JsonProperty("list_metadata")]
-        public ListMetadata ListMetadata { get; set; }
+        public ListMetadata? ListMetadata { get; set; }
     }
 }

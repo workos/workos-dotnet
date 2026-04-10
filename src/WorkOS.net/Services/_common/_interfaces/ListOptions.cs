@@ -12,13 +12,13 @@ namespace WorkOS
         /// Pagination cursor to receive records before a provided identifier.
         /// </summary>
         [JsonProperty("before")]
-        public string Before { get; set; }
+        public string? Before { get; set; }
 
         /// <summary>
         /// Pagination cursor to receive records after a provided identifier.
         /// </summary>
         [JsonProperty("after")]
-        public string After { get; set; }
+        public string? After { get; set; }
 
         /// <summary>
         /// Maximum number of records to return.
