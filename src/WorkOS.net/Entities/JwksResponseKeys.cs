@@ -13,41 +13,41 @@ namespace WorkOS
         /// <summary>Algorithm.</summary>
         [JsonProperty("alg")]
         [STJS.JsonPropertyName("alg")]
-        public string Alg { get; set; }
+        public string Alg { get; set; } = default!;
 
         /// <summary>Key type.</summary>
         [JsonProperty("kty")]
         [STJS.JsonPropertyName("kty")]
-        public string Kty { get; set; }
+        public string Kty { get; set; } = default!;
 
         /// <summary>Key use (signature).</summary>
         [JsonProperty("use")]
         [STJS.JsonPropertyName("use")]
-        public string Use { get; set; }
+        public string Use { get; set; } = default!;
 
         /// <summary>X.509 certificate chain.</summary>
         [JsonProperty("x5c")]
         [STJS.JsonPropertyName("x5c")]
-        public List<string> X5C { get; set; }
+        public List<string> X5C { get; set; } = default!;
 
         /// <summary>RSA modulus.</summary>
         [JsonProperty("n")]
         [STJS.JsonPropertyName("n")]
-        public string N { get; set; }
+        public string N { get; set; } = default!;
 
         /// <summary>RSA exponent.</summary>
         [JsonProperty("e")]
         [STJS.JsonPropertyName("e")]
-        public string E { get; set; }
+        public string E { get; set; } = default!;
 
         /// <summary>Key ID.</summary>
         [JsonProperty("kid")]
         [STJS.JsonPropertyName("kid")]
-        public string Kid { get; set; }
+        public string Kid { get; set; } = default!;
 
         /// <summary>X.509 certificate SHA-256 thumbprint.</summary>
         [JsonProperty("x5t#S256")]
         [STJS.JsonPropertyName("x5t#S256")]
-        public string X5TS256 { get; set; }
+        public string X5TS256 { get; set; } = default!;
     }
 }

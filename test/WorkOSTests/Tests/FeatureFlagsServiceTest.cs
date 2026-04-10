@@ -2,7 +2,7 @@
 
 namespace WorkOSTests
 {
-    using System.IO;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -28,7 +28,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestList()
         {
-            var fixture = File.ReadAllText("testdata/list_flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_flag.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/feature-flags", HttpStatusCode.OK, fixture);
             var result = await this.service.List(new FeatureFlagsListOptions());
             Assert.NotNull(result);
@@ -37,9 +37,18 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/feature-flags", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.List(new FeatureFlagsListOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public async Task TestGet()
         {
-            var fixture = File.ReadAllText("testdata/flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/flag.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/feature-flags/test_slug", HttpStatusCode.OK, fixture);
             var result = await this.service.Get("test_slug");
             Assert.NotNull(result);
@@ -52,7 +61,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestDisable()
         {
-            var fixture = File.ReadAllText("testdata/feature_flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/feature_flag.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/feature-flags/test_slug/disable", HttpStatusCode.OK, fixture);
             var result = await this.service.Disable("test_slug");
             Assert.NotNull(result);
@@ -65,7 +74,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestEnable()
         {
-            var fixture = File.ReadAllText("testdata/feature_flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/feature_flag.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/feature-flags/test_slug/enable", HttpStatusCode.OK, fixture);
             var result = await this.service.Enable("test_slug");
             Assert.NotNull(result);
@@ -94,7 +103,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListOrganizationFeatureFlags()
         {
-            var fixture = File.ReadAllText("testdata/list_flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_flag.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organizationId/feature-flags", HttpStatusCode.OK, fixture);
             var result = await this.service.ListOrganizationFeatureFlags("test_organizationId", new FeatureFlagsListOrganizationFeatureFlagsOptions());
             Assert.NotNull(result);
@@ -103,14 +112,128 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListOrganizationFeatureFlagsEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organizationId/feature-flags", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListOrganizationFeatureFlags("test_organizationId", new FeatureFlagsListOrganizationFeatureFlagsOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public async Task TestListUserFeatureFlags()
         {
-            var fixture = File.ReadAllText("testdata/list_flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_flag.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_userId/feature-flags", HttpStatusCode.OK, fixture);
             var result = await this.service.ListUserFeatureFlags("test_userId", new FeatureFlagsListUserFeatureFlagsOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/users/test_userId/feature-flags");
+        }
+
+        [Fact]
+        public async Task TestListUserFeatureFlagsEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_userId/feature-flags", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListUserFeatureFlags("test_userId", new FeatureFlagsListUserFeatureFlagsOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
+        public async Task TestListAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/flag.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/feature-flags", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<Flag>();
+            await foreach (var item in this.service.ListAutoPagingAsync(new FeatureFlagsListOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/feature-flags", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<Flag>();
+            await foreach (var item in this.service.ListAutoPagingAsync(new FeatureFlagsListOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
+        public async Task TestListOrganizationFeatureFlagsAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/flag.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_organizationId/feature-flags", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<Flag>();
+            await foreach (var item in this.service.ListOrganizationFeatureFlagsAutoPagingAsync("test_organizationId", new FeatureFlagsListOrganizationFeatureFlagsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListOrganizationFeatureFlagsAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_organizationId/feature-flags", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<Flag>();
+            await foreach (var item in this.service.ListOrganizationFeatureFlagsAutoPagingAsync("test_organizationId", new FeatureFlagsListOrganizationFeatureFlagsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
+        public async Task TestListUserFeatureFlagsAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/flag.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_userId/feature-flags", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<Flag>();
+            await foreach (var item in this.service.ListUserFeatureFlagsAutoPagingAsync("test_userId", new FeatureFlagsListUserFeatureFlagsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListUserFeatureFlagsAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_userId/feature-flags", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<Flag>();
+            await foreach (var item in this.service.ListUserFeatureFlagsAutoPagingAsync("test_userId", new FeatureFlagsListUserFeatureFlagsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
         }
 
         [Fact]
@@ -132,6 +255,20 @@ namespace WorkOSTests
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
             await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.List(new FeatureFlagsListOptions()));
+        }
+
+        [Fact]
+        public async Task TestError429()
+        {
+            this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.List(new FeatureFlagsListOptions()));
+        }
+
+        [Fact]
+        public async Task TestError500()
+        {
+            this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
+            await Assert.ThrowsAsync<ServerError>(() => this.service.List(new FeatureFlagsListOptions()));
         }
     }
 }

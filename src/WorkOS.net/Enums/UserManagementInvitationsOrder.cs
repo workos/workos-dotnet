@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum UserManagementInvitationsOrder
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "normal")]
         Normal,
         [EnumMember(Value = "desc")]

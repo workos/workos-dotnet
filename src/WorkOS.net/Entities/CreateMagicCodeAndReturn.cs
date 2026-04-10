@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>The email address to send the magic code to.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
 
         /// <summary>The invitation token to associate with this magic code.</summary>
         [JsonProperty("invitation_token")]
         [STJS.JsonPropertyName("invitation_token")]
-        public string InvitationToken { get; set; }
+        public string? InvitationToken { get; set; }
     }
 }

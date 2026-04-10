@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum DataIntegrationsListResponseDataConnectedAccountState
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "connected")]
         Connected,
         [EnumMember(Value = "needs_reauthorization")]

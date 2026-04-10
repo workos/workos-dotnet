@@ -2,7 +2,7 @@
 
 namespace WorkOSTests
 {
-    using System.IO;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -28,7 +28,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGenerateLink()
         {
-            var fixture = File.ReadAllText("testdata/portal_link_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/portal_link_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/portal/generate_link", HttpStatusCode.OK, fixture);
             var result = await this.service.GenerateLink(new AdminPortalGenerateLinkOptions());
             Assert.NotNull(result);
@@ -55,6 +55,20 @@ namespace WorkOSTests
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
             await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.GenerateLink(new AdminPortalGenerateLinkOptions()));
+        }
+
+        [Fact]
+        public async Task TestError429()
+        {
+            this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.GenerateLink(new AdminPortalGenerateLinkOptions()));
+        }
+
+        [Fact]
+        public async Task TestError500()
+        {
+            this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
+            await Assert.ThrowsAsync<ServerError>(() => this.service.GenerateLink(new AdminPortalGenerateLinkOptions()));
         }
     }
 }

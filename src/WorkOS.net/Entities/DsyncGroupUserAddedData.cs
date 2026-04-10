@@ -12,16 +12,16 @@ namespace WorkOS
         /// <summary>The ID of the directory.</summary>
         [JsonProperty("directory_id")]
         [STJS.JsonPropertyName("directory_id")]
-        public string DirectoryId { get; set; }
+        public string DirectoryId { get; set; } = default!;
 
         /// <summary>The directory user added to the group.</summary>
         [JsonProperty("user")]
         [STJS.JsonPropertyName("user")]
-        public DirectoryUser User { get; set; }
+        public DirectoryUser User { get; set; } = default!;
 
         /// <summary>The directory group the user was added to.</summary>
         [JsonProperty("group")]
         [STJS.JsonPropertyName("group")]
-        public DirectoryGroup Group { get; set; }
+        public DirectoryGroup Group { get; set; } = default!;
     }
 }

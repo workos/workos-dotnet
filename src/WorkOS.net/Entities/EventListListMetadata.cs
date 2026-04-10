@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>An object ID that defines your place in the list. When the ID is not present, you are at the end of the list.</summary>
         [JsonProperty("after")]
         [STJS.JsonPropertyName("after")]
-        public string After { get; set; }
+        public string? After { get; set; }
     }
 }

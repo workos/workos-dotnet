@@ -13,17 +13,17 @@ namespace WorkOS
         /// <summary>The previous name of the flag.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>The previous description of the flag.</summary>
         [JsonProperty("description")]
         [STJS.JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>The previous tags of the flag.</summary>
         [JsonProperty("tags")]
         [STJS.JsonPropertyName("tags")]
-        public List<string> Tags { get; set; }
+        public List<string>? Tags { get; set; }
 
         /// <summary>Whether the flag was previously enabled.</summary>
         [JsonProperty("enabled")]

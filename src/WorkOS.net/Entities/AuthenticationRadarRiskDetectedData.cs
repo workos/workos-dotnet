@@ -12,7 +12,7 @@ namespace WorkOS
         /// <summary>The authentication method used.</summary>
         [JsonProperty("auth_method")]
         [STJS.JsonPropertyName("auth_method")]
-        public string AuthMethod { get; set; }
+        public string AuthMethod { get; set; } = default!;
         [JsonProperty("action")]
         [STJS.JsonPropertyName("action")]
         public AuthenticationRadarRiskDetectedDataAction Action { get; set; }
@@ -20,31 +20,31 @@ namespace WorkOS
         /// <summary>The control action taken for the detected risk.</summary>
         [JsonProperty("control")]
         [STJS.JsonPropertyName("control")]
-        public string Control { get; set; }
+        public string? Control { get; set; }
 
         /// <summary>The type of blocklist that triggered the risk detection.</summary>
         [JsonProperty("blocklist_type")]
         [STJS.JsonPropertyName("blocklist_type")]
-        public string BlocklistType { get; set; }
+        public string? BlocklistType { get; set; }
 
         /// <summary>The IP address of the request.</summary>
         [JsonProperty("ip_address")]
         [STJS.JsonPropertyName("ip_address")]
-        public string IpAddress { get; set; }
+        public string? IpAddress { get; set; }
 
         /// <summary>The user agent of the request.</summary>
         [JsonProperty("user_agent")]
         [STJS.JsonPropertyName("user_agent")]
-        public string UserAgent { get; set; }
+        public string? UserAgent { get; set; }
 
         /// <summary>The ID of the user.</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = default!;
 
         /// <summary>The email address of the user.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
     }
 }

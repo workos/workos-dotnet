@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -11,17 +12,17 @@ namespace WorkOS
         /// <summary>The IP address of the request to assess.</summary>
         [JsonProperty("ip_address")]
         [STJS.JsonPropertyName("ip_address")]
-        public string IpAddress { get; set; }
+        public string IpAddress { get; set; } = default!;
 
         /// <summary>The user agent string of the request to assess.</summary>
         [JsonProperty("user_agent")]
         [STJS.JsonPropertyName("user_agent")]
-        public string UserAgent { get; set; }
+        public string UserAgent { get; set; } = default!;
 
         /// <summary>The email address of the user making the request.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
 
         /// <summary>The authentication method being used.</summary>
         [JsonProperty("auth_method")]
@@ -36,12 +37,12 @@ namespace WorkOS
         /// <summary>An optional device fingerprint for the request.</summary>
         [JsonProperty("device_fingerprint")]
         [STJS.JsonPropertyName("device_fingerprint")]
-        public string DeviceFingerprint { get; set; }
+        public string? DeviceFingerprint { get; set; }
 
         /// <summary>An optional bot detection score for the request.</summary>
         [JsonProperty("bot_score")]
         [STJS.JsonPropertyName("bot_score")]
-        public string BotScore { get; set; }
+        public string? BotScore { get; set; }
 
     }
 
@@ -50,12 +51,12 @@ namespace WorkOS
         /// <summary>Set to `"success"` to mark the challenge as completed.</summary>
         [JsonProperty("challenge_status")]
         [STJS.JsonPropertyName("challenge_status")]
-        public string ChallengeStatus { get; set; }
+        public string? ChallengeStatus { get; set; }
 
         /// <summary>Set to `"success"` to mark the authentication attempt as successful.</summary>
         [JsonProperty("attempt_status")]
         [STJS.JsonPropertyName("attempt_status")]
-        public string AttemptStatus { get; set; }
+        public string? AttemptStatus { get; set; }
 
     }
 
@@ -64,7 +65,7 @@ namespace WorkOS
         /// <summary>The value to add to the list. Must match the format of the list type (e.g. a valid IP address for `ip_address`, a valid email for `email`).</summary>
         [JsonProperty("entry")]
         [STJS.JsonPropertyName("entry")]
-        public string Entry { get; set; }
+        public string Entry { get; set; } = default!;
 
     }
 
@@ -73,7 +74,7 @@ namespace WorkOS
         /// <summary>The value to remove from the list. Must match an existing entry.</summary>
         [JsonProperty("entry")]
         [STJS.JsonPropertyName("entry")]
-        public string Entry { get; set; }
+        public string Entry { get; set; } = default!;
 
     }
 }

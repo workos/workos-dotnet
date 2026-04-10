@@ -17,6 +17,6 @@ namespace WorkOS
         /// <summary>The previous configured targets for the flag rule.</summary>
         [JsonProperty("configured_targets")]
         [STJS.JsonPropertyName("configured_targets")]
-        public FlagRuleUpdatedContextPreviousAttributeContextConfiguredTarget ConfiguredTargets { get; set; }
+        public FlagRuleUpdatedContextPreviousAttributeContextConfiguredTarget? ConfiguredTargets { get; set; }
     }
 }

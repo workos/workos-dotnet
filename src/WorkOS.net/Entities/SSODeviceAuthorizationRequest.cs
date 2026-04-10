@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The WorkOS client ID for your application.</summary>
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        public string ClientId { get; set; }
+        public string ClientId { get; set; } = default!;
     }
 }

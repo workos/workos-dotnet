@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum InvitationResentDataState
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "pending")]
         Pending,
         [EnumMember(Value = "accepted")]

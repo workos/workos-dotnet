@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -13,22 +14,22 @@ namespace WorkOS
         /// <summary>Distinguishes the organization membership object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>Unique identifier of the organization membership.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The ID of the user.</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = default!;
 
         /// <summary>The ID of the organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
 
         /// <summary>The status of the organization membership.</summary>
         [JsonProperty("status")]
@@ -38,17 +39,17 @@ namespace WorkOS
         /// <summary>The role associated with the membership.</summary>
         [JsonProperty("role")]
         [STJS.JsonPropertyName("role")]
-        public SlimRole Role { get; set; }
+        public SlimRole Role { get; set; } = default!;
 
         /// <summary>The roles associated with the membership.</summary>
         [JsonProperty("roles")]
         [STJS.JsonPropertyName("roles")]
-        public List<SlimRole> Roles { get; set; }
+        public List<SlimRole>? Roles { get; set; }
 
         /// <summary>Custom attributes associated with the membership.</summary>
         [JsonProperty("custom_attributes")]
         [STJS.JsonPropertyName("custom_attributes")]
-        public Dictionary<string, object> CustomAttributes { get; set; }
+        public Dictionary<string, object> CustomAttributes { get; set; } = default!;
 
         /// <summary>Whether the membership is managed by a directory sync provider.</summary>
         [JsonProperty("directory_managed")]
@@ -58,11 +59,11 @@ namespace WorkOS
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

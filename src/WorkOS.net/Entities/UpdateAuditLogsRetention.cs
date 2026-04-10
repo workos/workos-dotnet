@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The number of days Audit Log events will be retained. Valid values are `30` and `365`.</summary>
         [JsonProperty("retention_period_in_days")]
         [STJS.JsonPropertyName("retention_period_in_days")]
-        public int RetentionPeriodInDays { get; set; }
+        public long RetentionPeriodInDays { get; set; }
     }
 }

@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum VaultByokKeyVerificationCompletedDataKeyProvider
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "AWS_KMS")]
         AwsKms,
         [EnumMember(Value = "GCP_KMS")]

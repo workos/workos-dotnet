@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -12,31 +13,31 @@ namespace WorkOS
         /// <summary>Distinguishes the role assignment object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>Unique identifier of the role assignment.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The role included in the assignment.</summary>
         [JsonProperty("role")]
         [STJS.JsonPropertyName("role")]
-        public SlimRole Role { get; set; }
+        public SlimRole Role { get; set; } = default!;
 
         /// <summary>The resource to which the role is assigned.</summary>
         [JsonProperty("resource")]
         [STJS.JsonPropertyName("resource")]
-        public RoleAssignmentResource Resource { get; set; }
+        public RoleAssignmentResource Resource { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

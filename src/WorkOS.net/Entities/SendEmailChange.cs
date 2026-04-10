@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The new email address to change to.</summary>
         [JsonProperty("new_email")]
         [STJS.JsonPropertyName("new_email")]
-        public string NewEmail { get; set; }
+        public string NewEmail { get; set; } = default!;
     }
 }

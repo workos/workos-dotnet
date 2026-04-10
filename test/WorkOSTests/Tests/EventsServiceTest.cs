@@ -2,7 +2,7 @@
 
 namespace WorkOSTests
 {
-    using System.IO;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -28,12 +28,53 @@ namespace WorkOSTests
         [Fact]
         public async Task TestList()
         {
-            var fixture = File.ReadAllText("testdata/list_event_schema.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_event_schema.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/events", HttpStatusCode.OK, fixture);
             var result = await this.service.List(new EventsListOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/events");
+        }
+
+        [Fact]
+        public async Task TestListEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/events", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.List(new EventsListOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
+        public async Task TestListAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/event_schema.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/events", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<EventSchema>();
+            await foreach (var item in this.service.ListAutoPagingAsync(new EventsListOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/events", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<EventSchema>();
+            await foreach (var item in this.service.ListAutoPagingAsync(new EventsListOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
         }
 
         [Fact]
@@ -55,6 +96,20 @@ namespace WorkOSTests
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
             await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.List(new EventsListOptions()));
+        }
+
+        [Fact]
+        public async Task TestError429()
+        {
+            this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.List(new EventsListOptions()));
+        }
+
+        [Fact]
+        public async Task TestError500()
+        {
+            this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
+            await Assert.ThrowsAsync<ServerError>(() => this.service.List(new EventsListOptions()));
         }
     }
 }

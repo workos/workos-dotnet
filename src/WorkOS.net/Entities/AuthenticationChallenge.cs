@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -12,36 +13,36 @@ namespace WorkOS
         /// <summary>Distinguishes the authentication challenge object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The unique ID of the authentication challenge.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The timestamp when the challenge will expire. Does not apply to TOTP factors.</summary>
         [JsonProperty("expires_at")]
         [STJS.JsonPropertyName("expires_at")]
-        public string ExpiresAt { get; set; }
+        public DateTimeOffset? ExpiresAt { get; set; }
 
         /// <summary>The one-time code for the challenge.</summary>
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string Code { get; set; }
+        public string? Code { get; set; }
 
         /// <summary>The unique ID of the authentication factor the challenge belongs to.</summary>
         [JsonProperty("authentication_factor_id")]
         [STJS.JsonPropertyName("authentication_factor_id")]
-        public string AuthenticationFactorId { get; set; }
+        public string AuthenticationFactorId { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

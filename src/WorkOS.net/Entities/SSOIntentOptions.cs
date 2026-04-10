@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>The bookmark slug to use for SSO.</summary>
         [JsonProperty("bookmark_slug")]
         [STJS.JsonPropertyName("bookmark_slug")]
-        public string BookmarkSlug { get; set; }
+        public string? BookmarkSlug { get; set; }
 
         /// <summary>The SSO provider type to configure.</summary>
         [JsonProperty("provider_type")]
         [STJS.JsonPropertyName("provider_type")]
-        public string ProviderType { get; set; }
+        public string? ProviderType { get; set; }
     }
 }

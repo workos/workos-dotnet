@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum OrganizationDomainUpdatedDataState
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "failed")]
         Failed,
         [EnumMember(Value = "legacy_verified")]

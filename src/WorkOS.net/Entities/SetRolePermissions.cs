@@ -13,6 +13,6 @@ namespace WorkOS
         /// <summary>The permission slugs to assign to the role.</summary>
         [JsonProperty("permissions")]
         [STJS.JsonPropertyName("permissions")]
-        public List<string> Permissions { get; set; }
+        public List<string> Permissions { get; set; } = default!;
     }
 }

@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The one-time code to verify.</summary>
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string Code { get; set; }
+        public string Code { get; set; } = default!;
     }
 }

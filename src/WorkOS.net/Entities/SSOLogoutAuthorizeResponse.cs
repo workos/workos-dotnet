@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>The URL to redirect the user to in order to log out ([Logout Redirect](https://workos.com/docs/reference/sso/logout) endpoint ready to use).</summary>
         [JsonProperty("logout_url")]
         [STJS.JsonPropertyName("logout_url")]
-        public string LogoutUrl { get; set; }
+        public string LogoutUrl { get; set; } = default!;
 
         /// <summary>The logout token to be used in the [Logout Redirect](https://workos.com/docs/reference/sso/logout) endpoint.</summary>
         [JsonProperty("logout_token")]
         [STJS.JsonPropertyName("logout_token")]
-        public string LogoutToken { get; set; }
+        public string LogoutToken { get; set; } = default!;
     }
 }

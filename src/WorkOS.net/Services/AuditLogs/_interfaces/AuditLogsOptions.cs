@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -11,7 +12,7 @@ namespace WorkOS
         /// <summary>The number of days Audit Log events will be retained. Valid values are `30` and `365`.</summary>
         [JsonProperty("retention_period_in_days")]
         [STJS.JsonPropertyName("retention_period_in_days")]
-        public int RetentionPeriodInDays { get; set; }
+        public long RetentionPeriodInDays { get; set; }
 
     }
 
@@ -28,17 +29,17 @@ namespace WorkOS
         /// <summary>The metadata schema for the actor.</summary>
         [JsonProperty("actor")]
         [STJS.JsonPropertyName("actor")]
-        public AuditLogSchemaActor Actor { get; set; }
+        public AuditLogSchemaActor? Actor { get; set; }
 
         /// <summary>The list of targets for the schema.</summary>
         [JsonProperty("targets")]
         [STJS.JsonPropertyName("targets")]
-        public List<AuditLogSchemaTarget> Targets { get; set; }
+        public List<AuditLogSchemaTarget> Targets { get; set; } = default!;
 
         /// <summary>Optional JSON schema for event metadata.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, object> Metadata { get; set; }
+        public Dictionary<string, object>? Metadata { get; set; }
 
     }
 
@@ -47,12 +48,12 @@ namespace WorkOS
         /// <summary>The unique ID of the Organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
 
         /// <summary>The audit log event to create.</summary>
         [JsonProperty("event")]
         [STJS.JsonPropertyName("event")]
-        public AuditLogEvent Event { get; set; }
+        public AuditLogEvent Event { get; set; } = default!;
 
     }
 
@@ -61,42 +62,42 @@ namespace WorkOS
         /// <summary>The unique ID of the Organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
 
         /// <summary>ISO-8601 value for start of the export range.</summary>
         [JsonProperty("range_start")]
         [STJS.JsonPropertyName("range_start")]
-        public string RangeStart { get; set; }
+        public string RangeStart { get; set; } = default!;
 
         /// <summary>ISO-8601 value for end of the export range.</summary>
         [JsonProperty("range_end")]
         [STJS.JsonPropertyName("range_end")]
-        public string RangeEnd { get; set; }
+        public string RangeEnd { get; set; } = default!;
 
         /// <summary>List of actions to filter against.</summary>
         [JsonProperty("actions")]
         [STJS.JsonPropertyName("actions")]
-        public List<string> Actions { get; set; }
+        public List<string>? Actions { get; set; }
 
         /// <summary>Deprecated. Use `actor_names` instead.</summary>
         [JsonProperty("actors")]
         [STJS.JsonPropertyName("actors")]
-        public List<string> Actors { get; set; }
+        public List<string>? Actors { get; set; }
 
         /// <summary>List of actor names to filter against.</summary>
         [JsonProperty("actor_names")]
         [STJS.JsonPropertyName("actor_names")]
-        public List<string> ActorNames { get; set; }
+        public List<string>? ActorNames { get; set; }
 
         /// <summary>List of actor IDs to filter against.</summary>
         [JsonProperty("actor_ids")]
         [STJS.JsonPropertyName("actor_ids")]
-        public List<string> ActorIds { get; set; }
+        public List<string>? ActorIds { get; set; }
 
         /// <summary>List of target types to filter against.</summary>
         [JsonProperty("targets")]
         [STJS.JsonPropertyName("targets")]
-        public List<string> Targets { get; set; }
+        public List<string>? Targets { get; set; }
 
     }
 }

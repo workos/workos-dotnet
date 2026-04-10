@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum UpdateUserPasswordHashType
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "bcrypt")]
         Bcrypt,
         [EnumMember(Value = "firebase-scrypt")]

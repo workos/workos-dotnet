@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum AuditLogConfigurationLogStreamType
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "AzureSentinel")]
         AzureSentinel,
         [EnumMember(Value = "Datadog")]

@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The OAuth authorization URL to redirect the user to.</summary>
         [JsonProperty("url")]
         [STJS.JsonPropertyName("url")]
-        public string Url { get; set; }
+        public string Url { get; set; } = default!;
     }
 }

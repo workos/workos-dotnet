@@ -19,7 +19,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ApiKeyValidationResponse"/> result.</returns>
-        public async Task<ApiKeyValidationResponse> CreateValidations(ApiKeysCreateValidationsOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<ApiKeyValidationResponse> CreateValidations(ApiKeysCreateValidationsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -35,7 +35,7 @@ namespace WorkOS
         /// <param name="id">The unique ID of the API key.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task Delete(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -52,7 +52,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="ApiKey"/> results.</returns>
-        public async Task<WorkOSList<ApiKey>> ListOrganizationApiKeys(string organizationId, ApiKeysListOrganizationApiKeysOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<ApiKey>> ListOrganizationApiKeys(string organizationId, ApiKeysListOrganizationApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -70,7 +70,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="ApiKey"/> items.</returns>
-        public IAsyncEnumerable<ApiKey> ListOrganizationApiKeysAutoPagingAsync(string organizationId, ApiKeysListOrganizationApiKeysOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<ApiKey> ListOrganizationApiKeysAutoPagingAsync(string organizationId, ApiKeysListOrganizationApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -88,7 +88,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ApiKeyWithValue"/> result.</returns>
-        public async Task<ApiKeyWithValue> CreateOrganizationApiKeys(string organizationId, ApiKeysCreateOrganizationApiKeysOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<ApiKeyWithValue> CreateOrganizationApiKeys(string organizationId, ApiKeysCreateOrganizationApiKeysOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {

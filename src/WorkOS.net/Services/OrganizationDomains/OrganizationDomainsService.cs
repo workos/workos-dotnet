@@ -19,7 +19,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="OrganizationDomain"/> result.</returns>
-        public async Task<OrganizationDomain> Create(OrganizationDomainsCreateOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<OrganizationDomain> Create(OrganizationDomainsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -36,7 +36,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="OrganizationDomainStandAlone"/> result.</returns>
-        public async Task<OrganizationDomainStandAlone> Get(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<OrganizationDomainStandAlone> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -51,7 +51,7 @@ namespace WorkOS
         /// <param name="id">Unique identifier of the organization domain.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task Delete(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -67,7 +67,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="OrganizationDomainStandAlone"/> result.</returns>
-        public async Task<OrganizationDomainStandAlone> Verify(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<OrganizationDomainStandAlone> Verify(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {

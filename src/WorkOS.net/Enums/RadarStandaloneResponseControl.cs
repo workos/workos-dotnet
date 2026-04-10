@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum RadarStandaloneResponseControl
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "bot_detection")]
         BotDetection,
         [EnumMember(Value = "brute_force_attack")]

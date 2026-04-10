@@ -2,7 +2,7 @@
 
 namespace WorkOSTests
 {
-    using System.IO;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -28,7 +28,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestVerifyChallenge()
         {
-            var fixture = File.ReadAllText("testdata/authentication_challenge_verify_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/authentication_challenge_verify_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/auth/challenges/test_id/verify", HttpStatusCode.OK, fixture);
             var result = await this.service.VerifyChallenge("test_id", new MultiFactorAuthVerifyChallengeOptions());
             Assert.NotNull(result);
@@ -38,26 +38,22 @@ namespace WorkOSTests
         [Fact]
         public async Task TestEnrollFactor()
         {
-            var fixture = File.ReadAllText("testdata/authentication_factor_enrolled.json");
+            var fixture = System.IO.File.ReadAllText("testdata/authentication_factor_enrolled.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/auth/factors/enroll", HttpStatusCode.OK, fixture);
             var result = await this.service.EnrollFactor(new MultiFactorAuthEnrollFactorOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.CreatedAt);
-            Assert.NotEmpty(result.UpdatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/enroll");
         }
 
         [Fact]
         public async Task TestGetFactor()
         {
-            var fixture = File.ReadAllText("testdata/authentication_factor.json");
+            var fixture = System.IO.File.ReadAllText("testdata/authentication_factor.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/auth/factors/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.GetFactor("test_id");
             Assert.NotNull(result);
             Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.CreatedAt);
-            Assert.NotEmpty(result.UpdatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/auth/factors/test_id");
         }
 
@@ -72,20 +68,19 @@ namespace WorkOSTests
         [Fact]
         public async Task TestChallengeFactor()
         {
-            var fixture = File.ReadAllText("testdata/authentication_challenge.json");
+            var fixture = System.IO.File.ReadAllText("testdata/authentication_challenge.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/auth/factors/test_id/challenge", HttpStatusCode.OK, fixture);
             var result = await this.service.ChallengeFactor("test_id", new MultiFactorAuthChallengeFactorOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Id);
             Assert.NotEmpty(result.AuthenticationFactorId);
-            Assert.NotEmpty(result.CreatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/auth/factors/test_id/challenge");
         }
 
         [Fact]
         public async Task TestListUserAuthFactors()
         {
-            var fixture = File.ReadAllText("testdata/list_authentication_factor.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_authentication_factor.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_userlandUserId/auth_factors", HttpStatusCode.OK, fixture);
             var result = await this.service.ListUserAuthFactors("test_userlandUserId", new MultiFactorAuthListUserAuthFactorsOptions());
             Assert.NotNull(result);
@@ -94,13 +89,54 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListUserAuthFactorsEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_userlandUserId/auth_factors", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListUserAuthFactors("test_userlandUserId", new MultiFactorAuthListUserAuthFactorsOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public async Task TestCreateUserAuthFactors()
         {
-            var fixture = File.ReadAllText("testdata/user_authentication_factor_enroll_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/user_authentication_factor_enroll_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/users/test_userlandUserId/auth_factors", HttpStatusCode.OK, fixture);
             var result = await this.service.CreateUserAuthFactors("test_userlandUserId", new MultiFactorAuthCreateUserAuthFactorsOptions());
             Assert.NotNull(result);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users/test_userlandUserId/auth_factors");
+        }
+
+        [Fact]
+        public async Task TestListUserAuthFactorsAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/authentication_factor.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_userlandUserId/auth_factors", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<AuthenticationFactor>();
+            await foreach (var item in this.service.ListUserAuthFactorsAutoPagingAsync("test_userlandUserId", new MultiFactorAuthListUserAuthFactorsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListUserAuthFactorsAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_userlandUserId/auth_factors", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<AuthenticationFactor>();
+            await foreach (var item in this.service.ListUserAuthFactorsAutoPagingAsync("test_userlandUserId", new MultiFactorAuthListUserAuthFactorsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
         }
 
         [Fact]
@@ -122,6 +158,20 @@ namespace WorkOSTests
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
             await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.VerifyChallenge("test_id", new MultiFactorAuthVerifyChallengeOptions()));
+        }
+
+        [Fact]
+        public async Task TestError429()
+        {
+            this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.VerifyChallenge("test_id", new MultiFactorAuthVerifyChallengeOptions()));
+        }
+
+        [Fact]
+        public async Task TestError500()
+        {
+            this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
+            await Assert.ThrowsAsync<ServerError>(() => this.service.VerifyChallenge("test_id", new MultiFactorAuthVerifyChallengeOptions()));
         }
     }
 }

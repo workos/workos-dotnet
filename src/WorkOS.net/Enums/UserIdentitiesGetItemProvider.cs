@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum UserIdentitiesGetItemProvider
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "AppleOAuth")]
         AppleOAuth,
         [EnumMember(Value = "BitbucketOAuth")]

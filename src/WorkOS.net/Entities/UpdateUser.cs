@@ -13,17 +13,17 @@ namespace WorkOS
         /// <summary>The email address of the user.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         /// <summary>The first name of the user.</summary>
         [JsonProperty("first_name")]
         [STJS.JsonPropertyName("first_name")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         /// <summary>The last name of the user.</summary>
         [JsonProperty("last_name")]
         [STJS.JsonPropertyName("last_name")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         /// <summary>Whether the user's email has been verified.</summary>
         [JsonProperty("email_verified")]
@@ -33,12 +33,12 @@ namespace WorkOS
         /// <summary>The password to set for the user.</summary>
         [JsonProperty("password")]
         [STJS.JsonPropertyName("password")]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         /// <summary>The hashed password to set for the user. Mutually exclusive with `password`.</summary>
         [JsonProperty("password_hash")]
         [STJS.JsonPropertyName("password_hash")]
-        public string PasswordHash { get; set; }
+        public string? PasswordHash { get; set; }
 
         /// <summary>The algorithm originally used to hash the password, used when providing a `password_hash`.</summary>
         [JsonProperty("password_hash_type")]
@@ -48,16 +48,16 @@ namespace WorkOS
         /// <summary>Object containing metadata key/value pairs associated with the user.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, string> Metadata { get; set; }
+        public Dictionary<string, string>? Metadata { get; set; }
 
         /// <summary>The external ID of the user.</summary>
         [JsonProperty("external_id")]
         [STJS.JsonPropertyName("external_id")]
-        public string ExternalId { get; set; }
+        public string? ExternalId { get; set; }
 
         /// <summary>The user's preferred locale.</summary>
         [JsonProperty("locale")]
         [STJS.JsonPropertyName("locale")]
-        public string Locale { get; set; }
+        public string? Locale { get; set; }
     }
 }

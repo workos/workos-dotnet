@@ -17,11 +17,11 @@ namespace WorkOS
         /// <summary>The type of email address.</summary>
         [JsonProperty("type")]
         [STJS.JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string? Type { get; set; }
 
         /// <summary>The email address value.</summary>
         [JsonProperty("value")]
         [STJS.JsonPropertyName("value")]
-        public string Value { get; set; }
+        public string? Value { get; set; }
     }
 }

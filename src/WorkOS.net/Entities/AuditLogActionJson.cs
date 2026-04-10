@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -12,26 +13,26 @@ namespace WorkOS
         /// <summary>Distinguishes the Audit Log Action object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>Identifier of what action was taken.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>The schema associated with the action.</summary>
         [JsonProperty("schema")]
         [STJS.JsonPropertyName("schema")]
-        public AuditLogSchemaJson Schema { get; set; }
+        public AuditLogSchemaJson Schema { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

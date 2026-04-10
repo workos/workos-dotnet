@@ -20,7 +20,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthenticationChallengeVerifyResponse"/> result.</returns>
-        public async Task<AuthenticationChallengeVerifyResponse> VerifyChallenge(string id, MultiFactorAuthVerifyChallengeOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuthenticationChallengeVerifyResponse> VerifyChallenge(string id, MultiFactorAuthVerifyChallengeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -37,7 +37,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthenticationFactorEnrolled"/> result.</returns>
-        public async Task<AuthenticationFactorEnrolled> EnrollFactor(MultiFactorAuthEnrollFactorOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuthenticationFactorEnrolled> EnrollFactor(MultiFactorAuthEnrollFactorOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -54,7 +54,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthenticationFactor"/> result.</returns>
-        public async Task<AuthenticationFactor> GetFactor(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuthenticationFactor> GetFactor(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -69,7 +69,7 @@ namespace WorkOS
         /// <param name="id">The unique ID of the Factor.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task DeleteFactor(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task DeleteFactor(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -86,7 +86,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthenticationChallenge"/> result.</returns>
-        public async Task<AuthenticationChallenge> ChallengeFactor(string id, MultiFactorAuthChallengeFactorOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuthenticationChallenge> ChallengeFactor(string id, MultiFactorAuthChallengeFactorOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -104,7 +104,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="AuthenticationFactor"/> results.</returns>
-        public async Task<WorkOSList<AuthenticationFactor>> ListUserAuthFactors(string userlandUserId, MultiFactorAuthListUserAuthFactorsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<AuthenticationFactor>> ListUserAuthFactors(string userlandUserId, MultiFactorAuthListUserAuthFactorsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -122,7 +122,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="AuthenticationFactor"/> items.</returns>
-        public IAsyncEnumerable<AuthenticationFactor> ListUserAuthFactorsAutoPagingAsync(string userlandUserId, MultiFactorAuthListUserAuthFactorsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<AuthenticationFactor> ListUserAuthFactorsAutoPagingAsync(string userlandUserId, MultiFactorAuthListUserAuthFactorsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -140,7 +140,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="UserAuthenticationFactorEnrollResponse"/> result.</returns>
-        public async Task<UserAuthenticationFactorEnrollResponse> CreateUserAuthFactors(string userlandUserId, MultiFactorAuthCreateUserAuthFactorsOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<UserAuthenticationFactorEnrollResponse> CreateUserAuthFactors(string userlandUserId, MultiFactorAuthCreateUserAuthFactorsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {

@@ -13,7 +13,7 @@ namespace WorkOS
         /// <summary>The unique identifier of the actor.</summary>
         [JsonProperty("actor_id")]
         [STJS.JsonPropertyName("actor_id")]
-        public string ActorId { get; set; }
+        public string ActorId { get; set; } = default!;
         [JsonProperty("actor_source")]
         [STJS.JsonPropertyName("actor_source")]
         public VaultDataCreatedDataActorSource ActorSource { get; set; }
@@ -21,19 +21,19 @@ namespace WorkOS
         /// <summary>The name of the actor.</summary>
         [JsonProperty("actor_name")]
         [STJS.JsonPropertyName("actor_name")]
-        public string ActorName { get; set; }
+        public string ActorName { get; set; } = default!;
 
         /// <summary>The name of the key-value store.</summary>
         [JsonProperty("kv_name")]
         [STJS.JsonPropertyName("kv_name")]
-        public string KvName { get; set; }
+        public string KvName { get; set; } = default!;
 
         /// <summary>The unique identifier of the encryption key.</summary>
         [JsonProperty("key_id")]
         [STJS.JsonPropertyName("key_id")]
-        public string KeyId { get; set; }
+        public string KeyId { get; set; } = default!;
         [JsonProperty("key_context")]
         [STJS.JsonPropertyName("key_context")]
-        public Dictionary<string, string> KeyContext { get; set; }
+        public Dictionary<string, string> KeyContext { get; set; } = default!;
     }
 }

@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>The ID of the user.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The email of the user.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
     }
 }

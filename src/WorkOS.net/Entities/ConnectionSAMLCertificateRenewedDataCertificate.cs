@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -17,6 +18,6 @@ namespace WorkOS
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("expiry_date")]
         [STJS.JsonPropertyName("expiry_date")]
-        public string ExpiryDate { get; set; }
+        public DateTimeOffset ExpiryDate { get; set; }
     }
 }

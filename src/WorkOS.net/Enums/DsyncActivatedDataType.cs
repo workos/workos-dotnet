@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum DsyncActivatedDataType
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "azure scim v2.0")]
         AzureSCIMV20,
         [EnumMember(Value = "bamboohr")]

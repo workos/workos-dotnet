@@ -12,12 +12,12 @@ namespace WorkOS
         /// <summary>The client ID associated with the flag event.</summary>
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        public string ClientId { get; set; }
+        public string ClientId { get; set; } = default!;
 
         /// <summary>The actor who performed the action.</summary>
         [JsonProperty("actor")]
         [STJS.JsonPropertyName("actor")]
-        public FlagRuleUpdatedContextActor Actor { get; set; }
+        public FlagRuleUpdatedContextActor Actor { get; set; } = default!;
 
         /// <summary>The access type of the flag rule.</summary>
         [JsonProperty("access_type")]
@@ -27,11 +27,11 @@ namespace WorkOS
         /// <summary>The configured targets for the flag rule.</summary>
         [JsonProperty("configured_targets")]
         [STJS.JsonPropertyName("configured_targets")]
-        public FlagRuleUpdatedContextConfiguredTarget ConfiguredTargets { get; set; }
+        public FlagRuleUpdatedContextConfiguredTarget ConfiguredTargets { get; set; } = default!;
 
         /// <summary>Attributes that changed from their previous values.</summary>
         [JsonProperty("previous_attributes")]
         [STJS.JsonPropertyName("previous_attributes")]
-        public FlagRuleUpdatedContextPreviousAttribute PreviousAttributes { get; set; }
+        public FlagRuleUpdatedContextPreviousAttribute PreviousAttributes { get; set; } = default!;
     }
 }

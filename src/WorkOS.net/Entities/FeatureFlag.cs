@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -13,37 +14,37 @@ namespace WorkOS
         /// <summary>Distinguishes the Feature Flag object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>Unique identifier of the Feature Flag.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>A unique key to reference the Feature Flag.</summary>
         [JsonProperty("slug")]
         [STJS.JsonPropertyName("slug")]
-        public string Slug { get; set; }
+        public string Slug { get; set; } = default!;
 
         /// <summary>A descriptive name for the Feature Flag. This field does not need to be unique.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>A description for the Feature Flag.</summary>
         [JsonProperty("description")]
         [STJS.JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>The owner of the Feature Flag.</summary>
         [JsonProperty("owner")]
         [STJS.JsonPropertyName("owner")]
-        public FeatureFlagOwner Owner { get; set; }
+        public FeatureFlagOwner? Owner { get; set; }
 
         /// <summary>Labels assigned to the Feature Flag for categorizing and filtering.</summary>
         [JsonProperty("tags")]
         [STJS.JsonPropertyName("tags")]
-        public List<string> Tags { get; set; }
+        public List<string> Tags { get; set; } = default!;
 
         /// <summary>Specifies whether the Feature Flag is active for the current environment.</summary>
         [JsonProperty("enabled")]
@@ -58,11 +59,11 @@ namespace WorkOS
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

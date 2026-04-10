@@ -13,21 +13,21 @@ namespace WorkOS
         /// <summary>Actor identifier.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>Actor type.</summary>
         [JsonProperty("type")]
         [STJS.JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string Type { get; set; } = default!;
 
         /// <summary>Optional actor name.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>Additional data associated with the event or entity.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, AnyOf<string, double, bool>> Metadata { get; set; }
+        public Dictionary<string, AnyOf<string, double, bool>>? Metadata { get; set; }
     }
 }

@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>The password reset token.</summary>
         [JsonProperty("token")]
         [STJS.JsonPropertyName("token")]
-        public string Token { get; set; }
+        public string Token { get; set; } = default!;
 
         /// <summary>The new password to set for the user.</summary>
         [JsonProperty("new_password")]
         [STJS.JsonPropertyName("new_password")]
-        public string NewPassword { get; set; }
+        public string NewPassword { get; set; } = default!;
     }
 }

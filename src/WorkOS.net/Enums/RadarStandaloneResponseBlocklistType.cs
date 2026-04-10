@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum RadarStandaloneResponseBlocklistType
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "ip_address")]
         IpAddress,
         [EnumMember(Value = "domain")]

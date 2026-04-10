@@ -1,0 +1,18 @@
+{
+  "object": "profile",
+  "id": "prof_01DMC79VCBZ0NY2099737PSVF1",
+  "organization_id": null,
+  "connection_id": "conn_01E4ZCR3C56J083X43JQXF3JK5",
+  "connection_type": "GoogleOAuth",
+  "idp_id": "103456789012345678901",
+  "email": "todd@example.com",
+  "first_name": null,
+  "last_name": null,
+  "role": null,
+  "roles": null,
+  "groups": null,
+  "custom_attributes": null,
+  "raw_attributes": {
+    "key": {}
+  }
+}

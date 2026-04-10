@@ -20,7 +20,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthorizationCheck"/> result.</returns>
-        public async Task<AuthorizationCheck> Check(string organizationMembershipId, AuthorizationCheckOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuthorizationCheck> Check(string organizationMembershipId, AuthorizationCheckOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -38,7 +38,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="AuthorizationResource"/> results.</returns>
-        public async Task<WorkOSList<AuthorizationResource>> ListOrganizationMembershipResources(string organizationMembershipId, AuthorizationListOrganizationMembershipResourcesOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<AuthorizationResource>> ListOrganizationMembershipResources(string organizationMembershipId, AuthorizationListOrganizationMembershipResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -56,7 +56,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="AuthorizationResource"/> items.</returns>
-        public IAsyncEnumerable<AuthorizationResource> ListOrganizationMembershipResourcesAutoPagingAsync(string organizationMembershipId, AuthorizationListOrganizationMembershipResourcesOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<AuthorizationResource> ListOrganizationMembershipResourcesAutoPagingAsync(string organizationMembershipId, AuthorizationListOrganizationMembershipResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -74,7 +74,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="RoleAssignment"/> results.</returns>
-        public async Task<WorkOSList<RoleAssignment>> ListOrganizationMembershipRoleAssignments(string organizationMembershipId, AuthorizationListOrganizationMembershipRoleAssignmentsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<RoleAssignment>> ListOrganizationMembershipRoleAssignments(string organizationMembershipId, AuthorizationListOrganizationMembershipRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -92,7 +92,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="RoleAssignment"/> items.</returns>
-        public IAsyncEnumerable<RoleAssignment> ListOrganizationMembershipRoleAssignmentsAutoPagingAsync(string organizationMembershipId, AuthorizationListOrganizationMembershipRoleAssignmentsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<RoleAssignment> ListOrganizationMembershipRoleAssignmentsAutoPagingAsync(string organizationMembershipId, AuthorizationListOrganizationMembershipRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -110,7 +110,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="RoleAssignment"/> result.</returns>
-        public async Task<RoleAssignment> AssignRole(string organizationMembershipId, AuthorizationAssignRoleOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<RoleAssignment> AssignRole(string organizationMembershipId, AuthorizationAssignRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -127,7 +127,7 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task RemoveRole(string organizationMembershipId, AuthorizationRemoveRoleOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task RemoveRole(string organizationMembershipId, AuthorizationRemoveRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -144,7 +144,7 @@ namespace WorkOS
         /// <param name="roleAssignmentId">The ID of the role assignment to remove.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task DeleteOrganizationMembershipRoleAssignment(string organizationMembershipId, string roleAssignmentId, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task DeleteOrganizationMembershipRoleAssignment(string organizationMembershipId, string roleAssignmentId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -160,7 +160,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="RoleList"/> result.</returns>
-        public async Task<RoleList> ListOrganizationRoles(string organizationId, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<RoleList> ListOrganizationRoles(string organizationId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -177,7 +177,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Role"/> result.</returns>
-        public async Task<Role> CreateOrganizationRole(string organizationId, AuthorizationCreateOrganizationRoleOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Role> CreateOrganizationRole(string organizationId, AuthorizationCreateOrganizationRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -195,7 +195,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Role"/> result.</returns>
-        public async Task<Role> GetOrganizationRole(string organizationId, string slug, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Role> GetOrganizationRole(string organizationId, string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -213,7 +213,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Role"/> result.</returns>
-        public async Task<Role> UpdateOrganizationRole(string organizationId, string slug, AuthorizationUpdateOrganizationRoleOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Role> UpdateOrganizationRole(string organizationId, string slug, AuthorizationUpdateOrganizationRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -230,7 +230,7 @@ namespace WorkOS
         /// <param name="slug">The slug of the role.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task DeleteOrganizationRole(string organizationId, string slug, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task DeleteOrganizationRole(string organizationId, string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -248,7 +248,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Role"/> result.</returns>
-        public async Task<Role> CreateRolePermissions(string organizationId, string slug, AuthorizationCreateRolePermissionsOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Role> CreateRolePermissions(string organizationId, string slug, AuthorizationCreateRolePermissionsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -267,7 +267,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Role"/> result.</returns>
-        public async Task<Role> UpdateRolePermissions(string organizationId, string slug, AuthorizationUpdateRolePermissionsOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Role> UpdateRolePermissions(string organizationId, string slug, AuthorizationUpdateRolePermissionsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -285,7 +285,7 @@ namespace WorkOS
         /// <param name="permissionSlug">The slug of the permission to remove.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task DeleteRolePermission(string organizationId, string slug, string permissionSlug, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task DeleteRolePermission(string organizationId, string slug, string permissionSlug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -303,7 +303,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
-        public async Task<AuthorizationResource> GetOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuthorizationResource> GetOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -322,7 +322,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
-        public async Task<AuthorizationResource> UpdateOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, AuthorizationUpdateOrganizationResourceOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuthorizationResource> UpdateOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, AuthorizationUpdateOrganizationResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -341,7 +341,7 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task DeleteOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, AuthorizationDeleteOrganizationResourceOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task DeleteOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, AuthorizationDeleteOrganizationResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -361,7 +361,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="UserOrganizationMembershipBaseListData"/> results.</returns>
-        public async Task<WorkOSList<UserOrganizationMembershipBaseListData>> ListResourceOrganizationMemberships(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListResourceOrganizationMembershipsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<UserOrganizationMembershipBaseListData>> ListResourceOrganizationMemberships(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListResourceOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -381,7 +381,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="UserOrganizationMembershipBaseListData"/> items.</returns>
-        public IAsyncEnumerable<UserOrganizationMembershipBaseListData> ListResourceOrganizationMembershipsAutoPagingAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListResourceOrganizationMembershipsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<UserOrganizationMembershipBaseListData> ListResourceOrganizationMembershipsAutoPagingAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListResourceOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -398,7 +398,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="AuthorizationResource"/> results.</returns>
-        public async Task<WorkOSList<AuthorizationResource>> ListResources(AuthorizationListResourcesOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<AuthorizationResource>> ListResources(AuthorizationListResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -415,7 +415,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="AuthorizationResource"/> items.</returns>
-        public IAsyncEnumerable<AuthorizationResource> ListResourcesAutoPagingAsync(AuthorizationListResourcesOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<AuthorizationResource> ListResourcesAutoPagingAsync(AuthorizationListResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -432,7 +432,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
-        public async Task<AuthorizationResource> CreateResource(AuthorizationCreateResourceOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuthorizationResource> CreateResource(AuthorizationCreateResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -449,7 +449,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
-        public async Task<AuthorizationResource> GetResource(string resourceId, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuthorizationResource> GetResource(string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -466,7 +466,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
-        public async Task<AuthorizationResource> UpdateResource(string resourceId, AuthorizationUpdateResourceOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuthorizationResource> UpdateResource(string resourceId, AuthorizationUpdateResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -483,7 +483,7 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task DeleteResource(string resourceId, AuthorizationDeleteResourceOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task DeleteResource(string resourceId, AuthorizationDeleteResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -501,7 +501,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="UserOrganizationMembershipBaseListData"/> results.</returns>
-        public async Task<WorkOSList<UserOrganizationMembershipBaseListData>> ListMembershipsForResource(string resourceId, AuthorizationListMembershipsForResourceOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<UserOrganizationMembershipBaseListData>> ListMembershipsForResource(string resourceId, AuthorizationListMembershipsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -519,7 +519,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="UserOrganizationMembershipBaseListData"/> items.</returns>
-        public IAsyncEnumerable<UserOrganizationMembershipBaseListData> ListMembershipsForResourceAutoPagingAsync(string resourceId, AuthorizationListMembershipsForResourceOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<UserOrganizationMembershipBaseListData> ListMembershipsForResourceAutoPagingAsync(string resourceId, AuthorizationListMembershipsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -535,7 +535,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="RoleList"/> result.</returns>
-        public async Task<RoleList> ListEnvironmentRoles(RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<RoleList> ListEnvironmentRoles(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -551,7 +551,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Role"/> result.</returns>
-        public async Task<Role> CreateEnvironmentRole(AuthorizationCreateEnvironmentRoleOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Role> CreateEnvironmentRole(AuthorizationCreateEnvironmentRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -568,7 +568,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Role"/> result.</returns>
-        public async Task<Role> GetEnvironmentRole(string slug, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Role> GetEnvironmentRole(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -585,7 +585,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Role"/> result.</returns>
-        public async Task<Role> UpdateEnvironmentRole(string slug, AuthorizationUpdateEnvironmentRoleOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Role> UpdateEnvironmentRole(string slug, AuthorizationUpdateEnvironmentRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -603,7 +603,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Role"/> result.</returns>
-        public async Task<Role> AddEnvironmentRolePermission(string slug, AuthorizationAddEnvironmentRolePermissionOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Role> AddEnvironmentRolePermission(string slug, AuthorizationAddEnvironmentRolePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -621,7 +621,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Role"/> result.</returns>
-        public async Task<Role> SetEnvironmentRolePermissions(string slug, AuthorizationSetEnvironmentRolePermissionsOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Role> SetEnvironmentRolePermissions(string slug, AuthorizationSetEnvironmentRolePermissionsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -638,7 +638,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="AuthorizationPermission"/> results.</returns>
-        public async Task<WorkOSList<AuthorizationPermission>> ListPermissions(AuthorizationListPermissionsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<AuthorizationPermission>> ListPermissions(AuthorizationListPermissionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -655,7 +655,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="AuthorizationPermission"/> items.</returns>
-        public IAsyncEnumerable<AuthorizationPermission> ListPermissionsAutoPagingAsync(AuthorizationListPermissionsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<AuthorizationPermission> ListPermissionsAutoPagingAsync(AuthorizationListPermissionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -672,7 +672,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Permission"/> result.</returns>
-        public async Task<Permission> CreatePermission(AuthorizationCreatePermissionOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Permission> CreatePermission(AuthorizationCreatePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -689,7 +689,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthorizationPermission"/> result.</returns>
-        public async Task<AuthorizationPermission> GetPermission(string slug, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuthorizationPermission> GetPermission(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -706,7 +706,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthorizationPermission"/> result.</returns>
-        public async Task<AuthorizationPermission> UpdatePermission(string slug, AuthorizationUpdatePermissionOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuthorizationPermission> UpdatePermission(string slug, AuthorizationUpdatePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -722,7 +722,7 @@ namespace WorkOS
         /// <param name="slug">A unique key to reference the permission. Must be lowercase and contain only letters, numbers, hyphens, underscores, colons, periods, and asterisks.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task DeletePermission(string slug, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task DeletePermission(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {

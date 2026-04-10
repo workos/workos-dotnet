@@ -2,7 +2,7 @@
 
 namespace WorkOSTests
 {
-    using System.IO;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -28,7 +28,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListOrganizationAuditLogsRetention()
         {
-            var fixture = File.ReadAllText("testdata/audit_logs_retention_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_logs_retention_json.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_id/audit_logs_retention", HttpStatusCode.OK, fixture);
             var result = await this.service.ListOrganizationAuditLogsRetention("test_id");
             Assert.NotNull(result);
@@ -38,7 +38,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestUpdateOrganizationAuditLogsRetention()
         {
-            var fixture = File.ReadAllText("testdata/audit_logs_retention_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_logs_retention_json.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/organizations/test_id/audit_logs_retention", HttpStatusCode.OK, fixture);
             var result = await this.service.UpdateOrganizationAuditLogsRetention("test_id", new AuditLogsUpdateOrganizationAuditLogsRetentionOptions());
             Assert.NotNull(result);
@@ -48,7 +48,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListActions()
         {
-            var fixture = File.ReadAllText("testdata/list_audit_log_action_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_audit_log_action_json.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions", HttpStatusCode.OK, fixture);
             var result = await this.service.ListActions(new AuditLogsListActionsOptions());
             Assert.NotNull(result);
@@ -57,9 +57,18 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListActionsEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListActions(new AuditLogsListActionsOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public async Task TestListActionSchemas()
         {
-            var fixture = File.ReadAllText("testdata/list_audit_log_schema_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_audit_log_schema_json.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, fixture);
             var result = await this.service.ListActionSchemas("test_actionName", new AuditLogsListActionSchemasOptions());
             Assert.NotNull(result);
@@ -68,20 +77,28 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListActionSchemasEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListActionSchemas("test_actionName", new AuditLogsListActionSchemasOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public async Task TestCreateSchema()
         {
-            var fixture = File.ReadAllText("testdata/audit_log_schema_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_schema_json.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, fixture);
             var result = await this.service.CreateSchema("test_actionName", new AuditLogsCreateSchemaOptions());
             Assert.NotNull(result);
-            Assert.NotEmpty(result.CreatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/audit_logs/actions/test_actionName/schemas");
         }
 
         [Fact]
         public async Task TestCreateEvent()
         {
-            var fixture = File.ReadAllText("testdata/audit_log_event_create_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_event_create_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/audit_logs/events", HttpStatusCode.OK, fixture);
             var result = await this.service.CreateEvent(new AuditLogsCreateEventOptions());
             Assert.NotNull(result);
@@ -91,27 +108,87 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateExport()
         {
-            var fixture = File.ReadAllText("testdata/audit_log_export_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_export_json.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/audit_logs/exports", HttpStatusCode.OK, fixture);
             var result = await this.service.CreateExport(new AuditLogsCreateExportOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.CreatedAt);
-            Assert.NotEmpty(result.UpdatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/audit_logs/exports");
         }
 
         [Fact]
         public async Task TestGetExport()
         {
-            var fixture = File.ReadAllText("testdata/audit_log_export_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_export_json.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/exports/test_auditLogExportId", HttpStatusCode.OK, fixture);
             var result = await this.service.GetExport("test_auditLogExportId");
             Assert.NotNull(result);
             Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.CreatedAt);
-            Assert.NotEmpty(result.UpdatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/audit_logs/exports/test_auditLogExportId");
+        }
+
+        [Fact]
+        public async Task TestListActionsAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_action_json.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/audit_logs/actions", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<AuditLogActionJson>();
+            await foreach (var item in this.service.ListActionsAutoPagingAsync(new AuditLogsListActionsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListActionsAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/audit_logs/actions", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<AuditLogActionJson>();
+            await foreach (var item in this.service.ListActionsAutoPagingAsync(new AuditLogsListActionsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
+        public async Task TestListActionSchemasAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_schema_json.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<AuditLogSchemaJson>();
+            await foreach (var item in this.service.ListActionSchemasAutoPagingAsync("test_actionName", new AuditLogsListActionSchemasOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListActionSchemasAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<AuditLogSchemaJson>();
+            await foreach (var item in this.service.ListActionSchemasAutoPagingAsync("test_actionName", new AuditLogsListActionSchemasOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
         }
 
         [Fact]
@@ -133,6 +210,20 @@ namespace WorkOSTests
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
             await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.ListOrganizationAuditLogsRetention("test_id"));
+        }
+
+        [Fact]
+        public async Task TestError429()
+        {
+            this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.ListOrganizationAuditLogsRetention("test_id"));
+        }
+
+        [Fact]
+        public async Task TestError500()
+        {
+            this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
+            await Assert.ThrowsAsync<ServerError>(() => this.service.ListOrganizationAuditLogsRetention("test_id"));
         }
     }
 }

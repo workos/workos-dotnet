@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The user whose password was reset.</summary>
         [JsonProperty("user")]
         [STJS.JsonPropertyName("user")]
-        public User User { get; set; }
+        public User User { get; set; } = default!;
     }
 }

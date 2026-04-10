@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The value for an API key.</summary>
         [JsonProperty("value")]
         [STJS.JsonPropertyName("value")]
-        public string Value { get; set; }
+        public string Value { get; set; } = default!;
     }
 }

@@ -1,0 +1,17 @@
+{
+  "id": "event_01EHZNVPK3SFK441A1RGBFSHRT",
+  "event": "permission.updated",
+  "data": {
+    "object": "permission",
+    "id": "perm_01EHWNCE74X7JSDV0X3SZ3KJNY",
+    "slug": "billing:manage",
+    "name": "Manage Billing",
+    "description": "Allows managing billing settings.",
+    "system": false,
+    "created_at": "2026-01-15T12:00:00.000Z",
+    "updated_at": "2026-01-15T12:00:00.000Z"
+  },
+  "created_at": "2026-01-15T12:00:00.000Z",
+  "context": null,
+  "object": "event"
+}

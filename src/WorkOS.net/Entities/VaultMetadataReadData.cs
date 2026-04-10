@@ -2,29 +2,6 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
-
-    /// <summary>The event payload.</summary>
-    public class VaultMetadataReadData : WorkOSEntity<VaultMetadataReadData>
-    {
-
-        /// <summary>The unique identifier of the actor.</summary>
-        [JsonProperty("actor_id")]
-        [STJS.JsonPropertyName("actor_id")]
-        public string ActorId { get; set; }
-        [JsonProperty("actor_source")]
-        [STJS.JsonPropertyName("actor_source")]
-        public VaultMetadataReadDataActorSource ActorSource { get; set; }
-
-        /// <summary>The name of the actor.</summary>
-        [JsonProperty("actor_name")]
-        [STJS.JsonPropertyName("actor_name")]
-        public string ActorName { get; set; }
-
-        /// <summary>The name of the key-value store.</summary>
-        [JsonProperty("kv_name")]
-        [STJS.JsonPropertyName("kv_name")]
-        public string KvName { get; set; }
-    }
+    /// <summary>VaultMetadataReadData is structurally identical to VaultDataDeletedData.</summary>
+    public class VaultMetadataReadData : VaultDataDeletedData { }
 }

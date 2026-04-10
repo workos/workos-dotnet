@@ -13,7 +13,7 @@ namespace WorkOS
         /// <summary>The name of the organization.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>Whether the organization allows profiles from outside the organization to sign in.</summary>
         [JsonProperty("allow_profiles_outside_organization")]
@@ -24,26 +24,26 @@ namespace WorkOS
         [System.Obsolete("This field is deprecated.")]
         [JsonProperty("domains")]
         [STJS.JsonPropertyName("domains")]
-        public List<string> Domains { get; set; }
+        public List<string>? Domains { get; set; }
 
         /// <summary>The domains associated with the organization, including verification state.</summary>
         [JsonProperty("domain_data")]
         [STJS.JsonPropertyName("domain_data")]
-        public List<OrganizationDomainData> DomainData { get; set; }
+        public List<OrganizationDomainData>? DomainData { get; set; }
 
         /// <summary>The Stripe customer ID associated with the organization.</summary>
         [JsonProperty("stripe_customer_id")]
         [STJS.JsonPropertyName("stripe_customer_id")]
-        public string StripeCustomerId { get; set; }
+        public string? StripeCustomerId { get; set; }
 
         /// <summary>Object containing [metadata](https://workos.com/docs/authkit/metadata) key/value pairs associated with the Organization.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, string> Metadata { get; set; }
+        public Dictionary<string, string>? Metadata { get; set; }
 
         /// <summary>An external identifier for the Organization.</summary>
         [JsonProperty("external_id")]
         [STJS.JsonPropertyName("external_id")]
-        public string ExternalId { get; set; }
+        public string? ExternalId { get; set; }
     }
 }

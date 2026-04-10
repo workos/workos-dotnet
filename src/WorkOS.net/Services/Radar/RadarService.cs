@@ -19,7 +19,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="RadarStandaloneResponse"/> result.</returns>
-        public async Task<RadarStandaloneResponse> CreateAttempts(RadarCreateAttemptsOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<RadarStandaloneResponse> CreateAttempts(RadarCreateAttemptsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -36,7 +36,7 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task UpdateAttempt(string id, RadarUpdateAttemptOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task UpdateAttempt(string id, RadarUpdateAttemptOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -55,7 +55,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="RadarListEntryAlreadyPresentResponse"/> result.</returns>
-        public async Task<RadarListEntryAlreadyPresentResponse> AddListEntry(string type, string action, RadarAddListEntryOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<RadarListEntryAlreadyPresentResponse> AddListEntry(string type, string action, RadarAddListEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -73,7 +73,7 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task RemoveListEntry(string type, string action, RadarRemoveListEntryOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task RemoveListEntry(string type, string action, RadarRemoveListEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {

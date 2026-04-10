@@ -12,16 +12,16 @@ namespace WorkOS
         /// <summary>The ID of the organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         /// <summary>The ID of the SSO connection.</summary>
         [JsonProperty("connection_id")]
         [STJS.JsonPropertyName("connection_id")]
-        public string ConnectionId { get; set; }
+        public string? ConnectionId { get; set; }
 
         /// <summary>The ID of the SSO session.</summary>
         [JsonProperty("session_id")]
         [STJS.JsonPropertyName("session_id")]
-        public string SessionId { get; set; }
+        public string? SessionId { get; set; }
     }
 }

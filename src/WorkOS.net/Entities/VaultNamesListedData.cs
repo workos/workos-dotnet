@@ -12,7 +12,7 @@ namespace WorkOS
         /// <summary>The unique identifier of the actor.</summary>
         [JsonProperty("actor_id")]
         [STJS.JsonPropertyName("actor_id")]
-        public string ActorId { get; set; }
+        public string ActorId { get; set; } = default!;
         [JsonProperty("actor_source")]
         [STJS.JsonPropertyName("actor_source")]
         public VaultNamesListedDataActorSource ActorSource { get; set; }
@@ -20,6 +20,6 @@ namespace WorkOS
         /// <summary>The name of the actor.</summary>
         [JsonProperty("actor_name")]
         [STJS.JsonPropertyName("actor_name")]
-        public string ActorName { get; set; }
+        public string ActorName { get; set; } = default!;
     }
 }

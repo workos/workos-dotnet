@@ -12,12 +12,12 @@ namespace WorkOS
         /// <summary>Unique identifier of the Organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
 
         /// <summary>The number of days Audit Log events will be retained before being permanently deleted.</summary>
         [JsonProperty("retention_period_in_days")]
         [STJS.JsonPropertyName("retention_period_in_days")]
-        public int RetentionPeriodInDays { get; set; }
+        public long RetentionPeriodInDays { get; set; }
 
         /// <summary>The current state of the audit log configuration for the organization.</summary>
         [JsonProperty("state")]
@@ -27,6 +27,6 @@ namespace WorkOS
         /// <summary>The Audit Log Stream currently configured for the organization, if any.</summary>
         [JsonProperty("log_stream")]
         [STJS.JsonPropertyName("log_stream")]
-        public AuditLogConfigurationLogStream LogStream { get; set; }
+        public AuditLogConfigurationLogStream? LogStream { get; set; }
     }
 }

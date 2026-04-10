@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -12,41 +13,41 @@ namespace WorkOS
         /// <summary>Distinguishes the Magic Auth object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The unique ID of the Magic Auth code.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The unique ID of the user.</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = default!;
 
         /// <summary>The email address of the user.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
 
         /// <summary>The timestamp when the Magic Auth code expires.</summary>
         [JsonProperty("expires_at")]
         [STJS.JsonPropertyName("expires_at")]
-        public string ExpiresAt { get; set; }
+        public DateTimeOffset ExpiresAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
 
         /// <summary>The code used to verify the Magic Auth code.</summary>
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string Code { get; set; }
+        public string Code { get; set; } = default!;
     }
 }

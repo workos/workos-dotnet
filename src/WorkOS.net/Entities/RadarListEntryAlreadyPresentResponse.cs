@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>A message indicating the entry already exists.</summary>
         [JsonProperty("message")]
         [STJS.JsonPropertyName("message")]
-        public string Message { get; set; }
+        public string Message { get; set; } = default!;
     }
 }

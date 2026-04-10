@@ -1,0 +1,21 @@
+{
+  "id": "event_01EHZNVPK3SFK441A1RGBFSHRT",
+  "event": "organization_role.created",
+  "data": {
+    "object": "organization_role",
+    "organization_id": "org_01EHWNCE74X7JSDV0X3SZ3KJNY",
+    "slug": "billing-admin",
+    "name": "Billing Administrator",
+    "description": "Can manage billing settings.",
+    "resource_type_slug": "organization",
+    "permissions": [
+      "users:read",
+      "users:write"
+    ],
+    "created_at": "2026-01-15T12:00:00.000Z",
+    "updated_at": "2026-01-15T12:00:00.000Z"
+  },
+  "created_at": "2026-01-15T12:00:00.000Z",
+  "context": null,
+  "object": "event"
+}

@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -12,16 +13,16 @@ namespace WorkOS
         /// <summary>The connection with the renewed certificate.</summary>
         [JsonProperty("connection")]
         [STJS.JsonPropertyName("connection")]
-        public ConnectionSAMLCertificateRenewedDataConnection Connection { get; set; }
+        public ConnectionSAMLCertificateRenewedDataConnection Connection { get; set; } = default!;
 
         /// <summary>The renewed SAML certificate details.</summary>
         [JsonProperty("certificate")]
         [STJS.JsonPropertyName("certificate")]
-        public ConnectionSAMLCertificateRenewedDataCertificate Certificate { get; set; }
+        public ConnectionSAMLCertificateRenewedDataCertificate Certificate { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("renewed_at")]
         [STJS.JsonPropertyName("renewed_at")]
-        public string RenewedAt { get; set; }
+        public DateTimeOffset RenewedAt { get; set; }
     }
 }

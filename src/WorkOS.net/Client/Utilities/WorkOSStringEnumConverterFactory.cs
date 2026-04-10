@@ -1,3 +1,4 @@
+// @oagen-ignore-file
 namespace WorkOS
 {
     using System;
@@ -17,7 +18,7 @@ namespace WorkOS
         public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
         {
             var converterType = typeof(WorkOSStringEnumConverter<>).MakeGenericType(typeToConvert);
-            return (JsonConverter)Activator.CreateInstance(converterType);
+            return (JsonConverter)Activator.CreateInstance(converterType)!;
         }
     }
 
@@ -32,12 +33,12 @@ namespace WorkOS
                 var attr = field.GetCustomAttribute<EnumMemberAttribute>();
                 if (attr != null && attr.Value == value)
                 {
-                    return (T)field.GetValue(null);
+                    return (T)field.GetValue(null)!;
                 }
 
                 if (field.Name == value)
                 {
-                    return (T)field.GetValue(null);
+                    return (T)field.GetValue(null)!;
                 }
             }
 

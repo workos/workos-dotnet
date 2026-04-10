@@ -13,16 +13,16 @@ namespace WorkOS
         /// <summary>The metadata schema for the actor.</summary>
         [JsonProperty("actor")]
         [STJS.JsonPropertyName("actor")]
-        public AuditLogSchemaActor Actor { get; set; }
+        public AuditLogSchemaActor? Actor { get; set; }
 
         /// <summary>The list of targets for the schema.</summary>
         [JsonProperty("targets")]
         [STJS.JsonPropertyName("targets")]
-        public List<AuditLogSchemaTarget> Targets { get; set; }
+        public List<AuditLogSchemaTarget> Targets { get; set; } = default!;
 
         /// <summary>Optional JSON schema for event metadata.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, object> Metadata { get; set; }
+        public Dictionary<string, object>? Metadata { get; set; }
     }
 }

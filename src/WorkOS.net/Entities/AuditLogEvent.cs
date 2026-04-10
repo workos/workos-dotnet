@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -13,36 +14,36 @@ namespace WorkOS
         /// <summary>Identifier of what happened.</summary>
         [JsonProperty("action")]
         [STJS.JsonPropertyName("action")]
-        public string Action { get; set; }
+        public string Action { get; set; } = default!;
 
         /// <summary>ISO-8601 value of when the action occurred.</summary>
         [JsonProperty("occurred_at")]
         [STJS.JsonPropertyName("occurred_at")]
-        public string OccurredAt { get; set; }
+        public DateTimeOffset OccurredAt { get; set; }
 
         /// <summary>The entity that performed the action.</summary>
         [JsonProperty("actor")]
         [STJS.JsonPropertyName("actor")]
-        public AuditLogEventActor Actor { get; set; }
+        public AuditLogEventActor Actor { get; set; } = default!;
 
         /// <summary>The resources affected by the action.</summary>
         [JsonProperty("targets")]
         [STJS.JsonPropertyName("targets")]
-        public List<AuditLogEventTarget> Targets { get; set; }
+        public List<AuditLogEventTarget> Targets { get; set; } = default!;
 
         /// <summary>Additional context about where and how the action occurred.</summary>
         [JsonProperty("context")]
         [STJS.JsonPropertyName("context")]
-        public AuditLogEventContext Context { get; set; }
+        public AuditLogEventContext Context { get; set; } = default!;
 
         /// <summary>Additional data associated with the event or entity.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, AnyOf<string, double, bool>> Metadata { get; set; }
+        public Dictionary<string, AnyOf<string, double, bool>>? Metadata { get; set; }
 
         /// <summary>What schema version the event is associated with.</summary>
         [JsonProperty("version")]
         [STJS.JsonPropertyName("version")]
-        public int? Version { get; set; }
+        public long? Version { get; set; }
     }
 }

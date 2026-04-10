@@ -12,21 +12,21 @@ namespace WorkOS
         /// <summary>The slug of the permission to check.</summary>
         [JsonProperty("permission_slug")]
         [STJS.JsonPropertyName("permission_slug")]
-        public string PermissionSlug { get; set; }
+        public string PermissionSlug { get; set; } = default!;
 
         /// <summary>The ID of the resource.</summary>
         [JsonProperty("resource_id")]
         [STJS.JsonPropertyName("resource_id")]
-        public string ResourceId { get; set; }
+        public string? ResourceId { get; set; }
 
         /// <summary>The external ID of the resource.</summary>
         [JsonProperty("resource_external_id")]
         [STJS.JsonPropertyName("resource_external_id")]
-        public string ResourceExternalId { get; set; }
+        public string? ResourceExternalId { get; set; }
 
         /// <summary>The slug of the resource type.</summary>
         [JsonProperty("resource_type_slug")]
         [STJS.JsonPropertyName("resource_type_slug")]
-        public string ResourceTypeSlug { get; set; }
+        public string? ResourceTypeSlug { get; set; }
     }
 }

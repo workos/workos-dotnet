@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The redirect URI to create.</summary>
         [JsonProperty("uri")]
         [STJS.JsonPropertyName("uri")]
-        public string Uri { get; set; }
+        public string Uri { get; set; } = default!;
     }
 }

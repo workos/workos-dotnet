@@ -12,21 +12,21 @@ namespace WorkOS
         /// <summary>The object type.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The JWT template content as a Liquid template string.</summary>
         [JsonProperty("content")]
         [STJS.JsonPropertyName("content")]
-        public string Content { get; set; }
+        public string Content { get; set; } = default!;
 
         /// <summary>The timestamp when the JWT template was created.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public string CreatedAt { get; set; } = default!;
 
         /// <summary>The timestamp when the JWT template was last updated.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public string UpdatedAt { get; set; } = default!;
     }
 }

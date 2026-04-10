@@ -1,3 +1,4 @@
+// @oagen-ignore-file
 namespace WorkOS
 {
     /// <summary>
@@ -7,17 +8,17 @@ namespace WorkOS
     /// <typeparam name="T2">The second possible type.</typeparam>
     public class AnyOf<T1, T2>
     {
-        private readonly object value;
+        private readonly object? value;
 
-        private AnyOf(object value) => this.value = value;
+        private AnyOf(object? value) => this.value = value;
 
         /// <summary>
         /// Gets the underlying value.
         /// </summary>
-        public object Value => this.value;
+        public object? Value => this.value;
 
-        public static implicit operator AnyOf<T1, T2>(T1 value) => new AnyOf<T1, T2>(value);
-        public static implicit operator AnyOf<T1, T2>(T2 value) => new AnyOf<T1, T2>(value);
+        public static implicit operator AnyOf<T1, T2>(T1? value) => new AnyOf<T1, T2>(value);
+        public static implicit operator AnyOf<T1, T2>(T2? value) => new AnyOf<T1, T2>(value);
     }
 
     /// <summary>
@@ -28,17 +29,17 @@ namespace WorkOS
     /// <typeparam name="T3">The third possible type.</typeparam>
     public class AnyOf<T1, T2, T3>
     {
-        private readonly object value;
+        private readonly object? value;
 
-        private AnyOf(object value) => this.value = value;
+        private AnyOf(object? value) => this.value = value;
 
         /// <summary>
         /// Gets the underlying value.
         /// </summary>
-        public object Value => this.value;
+        public object? Value => this.value;
 
-        public static implicit operator AnyOf<T1, T2, T3>(T1 value) => new AnyOf<T1, T2, T3>(value);
-        public static implicit operator AnyOf<T1, T2, T3>(T2 value) => new AnyOf<T1, T2, T3>(value);
-        public static implicit operator AnyOf<T1, T2, T3>(T3 value) => new AnyOf<T1, T2, T3>(value);
+        public static implicit operator AnyOf<T1, T2, T3>(T1? value) => new AnyOf<T1, T2, T3>(value);
+        public static implicit operator AnyOf<T1, T2, T3>(T2? value) => new AnyOf<T1, T2, T3>(value);
+        public static implicit operator AnyOf<T1, T2, T3>(T3? value) => new AnyOf<T1, T2, T3>(value);
     }
 }

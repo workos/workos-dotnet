@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The widget session token.</summary>
         [JsonProperty("token")]
         [STJS.JsonPropertyName("token")]
-        public string Token { get; set; }
+        public string Token { get; set; } = default!;
     }
 }

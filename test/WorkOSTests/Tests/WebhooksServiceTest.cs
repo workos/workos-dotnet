@@ -2,7 +2,7 @@
 
 namespace WorkOSTests
 {
-    using System.IO;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -28,7 +28,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListEndpoints()
         {
-            var fixture = File.ReadAllText("testdata/list_webhook_endpoint_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_webhook_endpoint_json.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/webhook_endpoints", HttpStatusCode.OK, fixture);
             var result = await this.service.ListEndpoints(new WebhooksListEndpointsOptions());
             Assert.NotNull(result);
@@ -37,9 +37,18 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListEndpointsEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/webhook_endpoints", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListEndpoints(new WebhooksListEndpointsOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public async Task TestCreateEndpoints()
         {
-            var fixture = File.ReadAllText("testdata/webhook_endpoint_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/webhook_endpoint_json.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/webhook_endpoints", HttpStatusCode.OK, fixture);
             var result = await this.service.CreateEndpoints(new WebhooksCreateEndpointsOptions());
             Assert.NotNull(result);
@@ -52,7 +61,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestUpdateEndpoint()
         {
-            var fixture = File.ReadAllText("testdata/webhook_endpoint_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/webhook_endpoint_json.json");
             this.httpMock.MockResponse(HttpMethod.Patch, "/webhook_endpoints/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.UpdateEndpoint("test_id", new WebhooksUpdateEndpointOptions());
             Assert.NotNull(result);
@@ -68,6 +77,38 @@ namespace WorkOSTests
             this.httpMock.MockResponse(HttpMethod.Delete, "/webhook_endpoints/test_id", HttpStatusCode.NoContent, "");
             await this.service.DeleteEndpoint("test_id");
             this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/webhook_endpoints/test_id");
+        }
+
+        [Fact]
+        public async Task TestListEndpointsAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/webhook_endpoint_json.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/webhook_endpoints", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<WebhookEndpointJson>();
+            await foreach (var item in this.service.ListEndpointsAutoPagingAsync(new WebhooksListEndpointsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListEndpointsAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/webhook_endpoints", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<WebhookEndpointJson>();
+            await foreach (var item in this.service.ListEndpointsAutoPagingAsync(new WebhooksListEndpointsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
         }
 
         [Fact]
@@ -89,6 +130,20 @@ namespace WorkOSTests
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
             await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
+        }
+
+        [Fact]
+        public async Task TestError429()
+        {
+            this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
+        }
+
+        [Fact]
+        public async Task TestError500()
+        {
+            this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
+            await Assert.ThrowsAsync<ServerError>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
         }
     }
 }

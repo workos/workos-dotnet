@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -13,31 +14,31 @@ namespace WorkOS
         /// <summary>Distinguishes the Audit Log Schema object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The version of the schema.</summary>
         [JsonProperty("version")]
         [STJS.JsonPropertyName("version")]
-        public int Version { get; set; }
+        public long Version { get; set; }
 
         /// <summary>The metadata schema for the actor.</summary>
         [JsonProperty("actor")]
         [STJS.JsonPropertyName("actor")]
-        public AuditLogSchemaJsonActor Actor { get; set; }
+        public AuditLogSchemaJsonActor? Actor { get; set; }
 
         /// <summary>The list of targets for the schema.</summary>
         [JsonProperty("targets")]
         [STJS.JsonPropertyName("targets")]
-        public List<AuditLogSchemaJsonTarget> Targets { get; set; }
+        public List<AuditLogSchemaJsonTarget> Targets { get; set; } = default!;
 
         /// <summary>Additional data associated with the event or entity.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, object> Metadata { get; set; }
+        public Dictionary<string, object>? Metadata { get; set; }
 
         /// <summary>The timestamp when the Audit Log Schema was created.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
     }
 }

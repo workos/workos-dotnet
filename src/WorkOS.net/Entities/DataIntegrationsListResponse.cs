@@ -13,11 +13,11 @@ namespace WorkOS
         /// <summary>Indicates this is a list response.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>A list of [providers](https://workos.com/docs/reference/pipes/provider), each including a [`connected_account`](https://workos.com/docs/reference/pipes/connected-account) field with the user's connection status.</summary>
         [JsonProperty("data")]
         [STJS.JsonPropertyName("data")]
-        public List<DataIntegrationsListResponseData> Data { get; set; }
+        public List<DataIntegrationsListResponseData> Data { get; set; } = default!;
     }
 }

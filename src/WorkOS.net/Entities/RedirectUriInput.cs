@@ -12,7 +12,7 @@ namespace WorkOS
         /// <summary>The redirect URI.</summary>
         [JsonProperty("uri")]
         [STJS.JsonPropertyName("uri")]
-        public string Uri { get; set; }
+        public string Uri { get; set; } = default!;
 
         /// <summary>Whether this is the default redirect URI.</summary>
         [JsonProperty("default")]

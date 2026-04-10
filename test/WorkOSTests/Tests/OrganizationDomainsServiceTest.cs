@@ -2,7 +2,7 @@
 
 namespace WorkOSTests
 {
-    using System.IO;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -28,7 +28,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreate()
         {
-            var fixture = File.ReadAllText("testdata/organization_domain.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization_domain.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/organization_domains", HttpStatusCode.OK, fixture);
             var result = await this.service.Create(new OrganizationDomainsCreateOptions());
             Assert.NotNull(result);
@@ -41,7 +41,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGet()
         {
-            var fixture = File.ReadAllText("testdata/organization_domain_stand_alone.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization_domain_stand_alone.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organization_domains/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.Get("test_id");
             Assert.NotNull(result);
@@ -62,7 +62,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestVerify()
         {
-            var fixture = File.ReadAllText("testdata/organization_domain_stand_alone.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization_domain_stand_alone.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/organization_domains/test_id/verify", HttpStatusCode.OK, fixture);
             var result = await this.service.Verify("test_id");
             Assert.NotNull(result);
@@ -91,6 +91,20 @@ namespace WorkOSTests
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
             await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.Create(new OrganizationDomainsCreateOptions()));
+        }
+
+        [Fact]
+        public async Task TestError429()
+        {
+            this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.Create(new OrganizationDomainsCreateOptions()));
+        }
+
+        [Fact]
+        public async Task TestError500()
+        {
+            this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
+            await Assert.ThrowsAsync<ServerError>(() => this.service.Create(new OrganizationDomainsCreateOptions()));
         }
     }
 }

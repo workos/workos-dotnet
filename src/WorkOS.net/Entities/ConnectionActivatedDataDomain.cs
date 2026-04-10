@@ -12,16 +12,16 @@ namespace WorkOS
         /// <summary>Distinguishes the connection domain object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>Unique identifier of the connection domain.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The domain value.</summary>
         [JsonProperty("domain")]
         [STJS.JsonPropertyName("domain")]
-        public string Domain { get; set; }
+        public string Domain { get; set; } = default!;
     }
 }

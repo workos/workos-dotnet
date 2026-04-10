@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>A custom template for the SMS message. Use the {{code}} placeholder to include the verification code.</summary>
         [JsonProperty("sms_template")]
         [STJS.JsonPropertyName("sms_template")]
-        public string SmsTemplate { get; set; }
+        public string? SmsTemplate { get; set; }
     }
 }

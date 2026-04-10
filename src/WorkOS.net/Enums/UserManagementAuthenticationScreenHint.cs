@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum UserManagementAuthenticationScreenHint
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "sign-up")]
         SignUp,
         [EnumMember(Value = "sign-in")]

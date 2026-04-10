@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>Unique identifier of the connection.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The ID of the organization the connection belongs to.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
     }
 }

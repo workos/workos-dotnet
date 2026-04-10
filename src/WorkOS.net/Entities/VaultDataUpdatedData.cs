@@ -2,38 +2,6 @@
 
 namespace WorkOS
 {
-    using System.Collections.Generic;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
-
-    /// <summary>The event payload.</summary>
-    public class VaultDataUpdatedData : WorkOSEntity<VaultDataUpdatedData>
-    {
-
-        /// <summary>The unique identifier of the actor.</summary>
-        [JsonProperty("actor_id")]
-        [STJS.JsonPropertyName("actor_id")]
-        public string ActorId { get; set; }
-        [JsonProperty("actor_source")]
-        [STJS.JsonPropertyName("actor_source")]
-        public VaultDataUpdatedDataActorSource ActorSource { get; set; }
-
-        /// <summary>The name of the actor.</summary>
-        [JsonProperty("actor_name")]
-        [STJS.JsonPropertyName("actor_name")]
-        public string ActorName { get; set; }
-
-        /// <summary>The name of the key-value store.</summary>
-        [JsonProperty("kv_name")]
-        [STJS.JsonPropertyName("kv_name")]
-        public string KvName { get; set; }
-
-        /// <summary>The unique identifier of the encryption key.</summary>
-        [JsonProperty("key_id")]
-        [STJS.JsonPropertyName("key_id")]
-        public string KeyId { get; set; }
-        [JsonProperty("key_context")]
-        [STJS.JsonPropertyName("key_context")]
-        public Dictionary<string, string> KeyContext { get; set; }
-    }
+    /// <summary>VaultDataUpdatedData is structurally identical to VaultDataCreatedData.</summary>
+    public class VaultDataUpdatedData : VaultDataCreatedData { }
 }

@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The user's phone number for SMS-based authentication.</summary>
         [JsonProperty("phone_number")]
         [STJS.JsonPropertyName("phone_number")]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = default!;
     }
 }

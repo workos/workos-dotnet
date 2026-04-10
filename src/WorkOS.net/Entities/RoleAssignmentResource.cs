@@ -12,16 +12,16 @@ namespace WorkOS
         /// <summary>The unique ID of the Resource.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>An identifier you provide to reference the resource in your system.</summary>
         [JsonProperty("external_id")]
         [STJS.JsonPropertyName("external_id")]
-        public string ExternalId { get; set; }
+        public string ExternalId { get; set; } = default!;
 
         /// <summary>The slug of the resource type this resource belongs to.</summary>
         [JsonProperty("resource_type_slug")]
         [STJS.JsonPropertyName("resource_type_slug")]
-        public string ResourceTypeSlug { get; set; }
+        public string ResourceTypeSlug { get; set; } = default!;
     }
 }

@@ -19,7 +19,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ExternalAuthCompleteResponse"/> result.</returns>
-        public async Task<ExternalAuthCompleteResponse> CompleteOAuth2(ConnectCompleteOAuth2Options options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<ExternalAuthCompleteResponse> CompleteOAuth2(ConnectCompleteOAuth2Options options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -36,7 +36,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="ConnectApplication"/> results.</returns>
-        public async Task<WorkOSList<ConnectApplication>> ListApplications(ConnectListApplicationsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<ConnectApplication>> ListApplications(ConnectListApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -53,7 +53,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="ConnectApplication"/> items.</returns>
-        public IAsyncEnumerable<ConnectApplication> ListApplicationsAutoPagingAsync(ConnectListApplicationsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<ConnectApplication> ListApplicationsAutoPagingAsync(ConnectListApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -70,7 +70,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ConnectApplication"/> result.</returns>
-        public async Task<ConnectApplication> CreateApplications(ConnectCreateApplicationsOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<ConnectApplication> CreateApplications(ConnectCreateApplicationsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -87,7 +87,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ConnectApplication"/> result.</returns>
-        public async Task<ConnectApplication> CreateOAuthApplication(CreateOAuthApplicationOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<ConnectApplication> CreateOAuthApplication(CreateOAuthApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.ApplicationType = "oauth";
             var request = new WorkOSRequest
@@ -105,7 +105,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ConnectApplication"/> result.</returns>
-        public async Task<ConnectApplication> CreateM2MApplication(CreateM2MApplicationOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<ConnectApplication> CreateM2MApplication(CreateM2MApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.ApplicationType = "m2m";
             var request = new WorkOSRequest
@@ -123,7 +123,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ConnectApplication"/> result.</returns>
-        public async Task<ConnectApplication> GetApplication(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<ConnectApplication> GetApplication(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -140,7 +140,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ConnectApplication"/> result.</returns>
-        public async Task<ConnectApplication> UpdateApplication(string id, ConnectUpdateApplicationOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<ConnectApplication> UpdateApplication(string id, ConnectUpdateApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -156,7 +156,7 @@ namespace WorkOS
         /// <param name="id">The application ID or client ID of the Connect Application.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task DeleteApplication(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task DeleteApplication(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -172,7 +172,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ApplicationCredentialsListItem"/> result.</returns>
-        public async Task<List<ApplicationCredentialsListItem>> ListApplicationClientSecrets(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<List<ApplicationCredentialsListItem>> ListApplicationClientSecrets(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -188,7 +188,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="NewConnectApplicationSecret"/> result.</returns>
-        public async Task<NewConnectApplicationSecret> CreateApplicationClientSecrets(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<NewConnectApplicationSecret> CreateApplicationClientSecrets(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -203,7 +203,7 @@ namespace WorkOS
         /// <param name="id">The unique ID of the client secret.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task DeleteClientSecret(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task DeleteClientSecret(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {

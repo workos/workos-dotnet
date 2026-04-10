@@ -2,7 +2,7 @@
 
 namespace WorkOSTests
 {
-    using System.IO;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -28,7 +28,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateValidations()
         {
-            var fixture = File.ReadAllText("testdata/api_key_validation_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/api_key_validation_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/api_keys/validations", HttpStatusCode.OK, fixture);
             var result = await this.service.CreateValidations(new ApiKeysCreateValidationsOptions());
             Assert.NotNull(result);
@@ -46,7 +46,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListOrganizationApiKeys()
         {
-            var fixture = File.ReadAllText("testdata/list_api_key.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_api_key.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, fixture);
             var result = await this.service.ListOrganizationApiKeys("test_organizationId", new ApiKeysListOrganizationApiKeysOptions());
             Assert.NotNull(result);
@@ -55,9 +55,18 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListOrganizationApiKeysEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListOrganizationApiKeys("test_organizationId", new ApiKeysListOrganizationApiKeysOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public async Task TestCreateOrganizationApiKeys()
         {
-            var fixture = File.ReadAllText("testdata/api_key_with_value.json");
+            var fixture = System.IO.File.ReadAllText("testdata/api_key_with_value.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, fixture);
             var result = await this.service.CreateOrganizationApiKeys("test_organizationId", new ApiKeysCreateOrganizationApiKeysOptions());
             Assert.NotNull(result);
@@ -65,6 +74,38 @@ namespace WorkOSTests
             Assert.NotEmpty(result.Name);
             Assert.NotEmpty(result.ObfuscatedValue);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations/test_organizationId/api_keys");
+        }
+
+        [Fact]
+        public async Task TestListOrganizationApiKeysAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/api_key.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<ApiKey>();
+            await foreach (var item in this.service.ListOrganizationApiKeysAutoPagingAsync("test_organizationId", new ApiKeysListOrganizationApiKeysOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListOrganizationApiKeysAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<ApiKey>();
+            await foreach (var item in this.service.ListOrganizationApiKeysAutoPagingAsync("test_organizationId", new ApiKeysListOrganizationApiKeysOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
         }
 
         [Fact]
@@ -86,6 +127,20 @@ namespace WorkOSTests
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
             await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.CreateValidations(new ApiKeysCreateValidationsOptions()));
+        }
+
+        [Fact]
+        public async Task TestError429()
+        {
+            this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.CreateValidations(new ApiKeysCreateValidationsOptions()));
+        }
+
+        [Fact]
+        public async Task TestError500()
+        {
+            this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
+            await Assert.ThrowsAsync<ServerError>(() => this.service.CreateValidations(new ApiKeysCreateValidationsOptions()));
         }
     }
 }

@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum UserManagementAuthenticationProvider
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "authkit")]
         Authkit,
         [EnumMember(Value = "AppleOAuth")]

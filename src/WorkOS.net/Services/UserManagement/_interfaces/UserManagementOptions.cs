@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -15,37 +16,37 @@ namespace WorkOS
         /// <summary>The only valid PKCE code challenge method is `"S256"`. Required when specifying a `code_challenge`.</summary>
         [JsonProperty("code_challenge_method")]
         [STJS.JsonPropertyName("code_challenge_method")]
-        public string CodeChallengeMethod { get; set; }
+        public string? CodeChallengeMethod { get; set; }
 
         /// <summary>Code challenge derived from the code verifier used for the PKCE flow.</summary>
         [JsonProperty("code_challenge")]
         [STJS.JsonPropertyName("code_challenge")]
-        public string CodeChallenge { get; set; }
+        public string? CodeChallenge { get; set; }
 
         /// <summary>A domain hint for SSO connection lookup.</summary>
         [JsonProperty("domain_hint")]
         [STJS.JsonPropertyName("domain_hint")]
-        public string DomainHint { get; set; }
+        public string? DomainHint { get; set; }
 
         /// <summary>The ID of an SSO connection to use for authentication.</summary>
         [JsonProperty("connection_id")]
         [STJS.JsonPropertyName("connection_id")]
-        public string ConnectionId { get; set; }
+        public string? ConnectionId { get; set; }
 
         /// <summary>Key/value pairs of query parameters to pass to the OAuth provider.</summary>
         [JsonProperty("provider_query_params")]
         [STJS.JsonPropertyName("provider_query_params")]
-        public Dictionary<string, string> ProviderQueryParams { get; set; }
+        public Dictionary<string, string>? ProviderQueryParams { get; set; }
 
         /// <summary>Additional OAuth scopes to request from the identity provider.</summary>
         [JsonProperty("provider_scopes")]
         [STJS.JsonPropertyName("provider_scopes")]
-        public List<string> ProviderScopes { get; set; }
+        public List<string>? ProviderScopes { get; set; }
 
         /// <summary>A token representing a user invitation to redeem during authentication.</summary>
         [JsonProperty("invitation_token")]
         [STJS.JsonPropertyName("invitation_token")]
-        public string InvitationToken { get; set; }
+        public string? InvitationToken { get; set; }
 
         /// <summary>Used to specify which screen to display when the provider is `authkit`.</summary>
         [JsonProperty("screen_hint")]
@@ -55,7 +56,7 @@ namespace WorkOS
         /// <summary>A hint to the authorization server about the login identifier the user might use.</summary>
         [JsonProperty("login_hint")]
         [STJS.JsonPropertyName("login_hint")]
-        public string LoginHint { get; set; }
+        public string? LoginHint { get; set; }
 
         /// <summary>The OAuth provider to authenticate with (e.g., GoogleOAuth, MicrosoftOAuth, GitHubOAuth).</summary>
         [JsonProperty("provider")]
@@ -65,30 +66,30 @@ namespace WorkOS
         /// <summary>Controls the authentication flow behavior for the user.</summary>
         [JsonProperty("prompt")]
         [STJS.JsonPropertyName("prompt")]
-        public string Prompt { get; set; }
+        public string? Prompt { get; set; }
 
         /// <summary>An opaque value used to maintain state between the request and the callback.</summary>
         [JsonProperty("state")]
         [STJS.JsonPropertyName("state")]
-        public string State { get; set; }
+        public string? State { get; set; }
 
         /// <summary>The ID of the organization to authenticate the user against.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         /// <summary>The callback URI where the authorization code will be sent after authentication.</summary>
         [JsonProperty("redirect_uri")]
         [STJS.JsonPropertyName("redirect_uri")]
-        public string RedirectUri { get; set; }
+        public string RedirectUri { get; set; } = default!;
 
         [JsonProperty("response_type")]
         [STJS.JsonPropertyName("response_type")]
-        internal string ResponseType { get; set; }
+        internal string ResponseType { get; set; } = default!;
 
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        internal string ClientId { get; set; }
+        internal string ClientId { get; set; } = default!;
 
     }
 
@@ -97,7 +98,7 @@ namespace WorkOS
         /// <summary>The WorkOS client ID for your application.</summary>
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        public string ClientId { get; set; }
+        public string ClientId { get; set; } = default!;
 
     }
 
@@ -106,12 +107,12 @@ namespace WorkOS
         /// <summary>The ID of the session to revoke. This can be extracted from the `sid` claim of the access token.</summary>
         [JsonProperty("session_id")]
         [STJS.JsonPropertyName("session_id")]
-        public string SessionId { get; set; }
+        public string SessionId { get; set; } = default!;
 
         /// <summary>The URL to redirect the user to after session revocation.</summary>
         [JsonProperty("return_to")]
         [STJS.JsonPropertyName("return_to")]
-        public string ReturnTo { get; set; }
+        public string? ReturnTo { get; set; }
 
     }
 
@@ -120,12 +121,12 @@ namespace WorkOS
         /// <summary>The ID of the session to revoke. This can be extracted from the `sid` claim of the access token.</summary>
         [JsonProperty("session_id")]
         [STJS.JsonPropertyName("session_id")]
-        public string SessionId { get; set; }
+        public string SessionId { get; set; } = default!;
 
         /// <summary>The URL to redirect the user to after session revocation.</summary>
         [JsonProperty("return_to")]
         [STJS.JsonPropertyName("return_to")]
-        public string ReturnTo { get; set; }
+        public string? ReturnTo { get; set; }
 
     }
 
@@ -134,7 +135,7 @@ namespace WorkOS
         /// <summary>The origin URL to allow for CORS requests.</summary>
         [JsonProperty("origin")]
         [STJS.JsonPropertyName("origin")]
-        public string Origin { get; set; }
+        public string Origin { get; set; } = default!;
 
     }
 
@@ -143,7 +144,7 @@ namespace WorkOS
         /// <summary>The email address of the user requesting a password reset.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
 
     }
 
@@ -152,12 +153,12 @@ namespace WorkOS
         /// <summary>The password reset token.</summary>
         [JsonProperty("token")]
         [STJS.JsonPropertyName("token")]
-        public string Token { get; set; }
+        public string Token { get; set; } = default!;
 
         /// <summary>The new password to set for the user.</summary>
         [JsonProperty("new_password")]
         [STJS.JsonPropertyName("new_password")]
-        public string NewPassword { get; set; }
+        public string NewPassword { get; set; } = default!;
 
     }
 
@@ -166,17 +167,17 @@ namespace WorkOS
         /// <summary>Filter users by the organization they are a member of. Deprecated in favor of `organization_id`.</summary>
         [JsonProperty("organization")]
         [STJS.JsonPropertyName("organization")]
-        public string Organization { get; set; }
+        public string? Organization { get; set; }
 
         /// <summary>Filter users by the organization they are a member of.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         /// <summary>Filter users by their email address.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
     }
 
@@ -185,17 +186,17 @@ namespace WorkOS
         /// <summary>The email address of the user.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
 
         /// <summary>The password to set for the user. Mutually exclusive with `password_hash` and `password_hash_type`.</summary>
         [JsonProperty("password")]
         [STJS.JsonPropertyName("password")]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         /// <summary>The hashed password to set for the user. Mutually exclusive with `password`.</summary>
         [JsonProperty("password_hash")]
         [STJS.JsonPropertyName("password_hash")]
-        public string PasswordHash { get; set; }
+        public string? PasswordHash { get; set; }
 
         /// <summary>The algorithm originally used to hash the password, used when providing a `password_hash`.</summary>
         [JsonProperty("password_hash_type")]
@@ -205,12 +206,12 @@ namespace WorkOS
         /// <summary>The first name of the user.</summary>
         [JsonProperty("first_name")]
         [STJS.JsonPropertyName("first_name")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         /// <summary>The last name of the user.</summary>
         [JsonProperty("last_name")]
         [STJS.JsonPropertyName("last_name")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         /// <summary>Whether the user's email has been verified.</summary>
         [JsonProperty("email_verified")]
@@ -220,12 +221,12 @@ namespace WorkOS
         /// <summary>Object containing metadata key/value pairs associated with the user.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, string> Metadata { get; set; }
+        public Dictionary<string, string>? Metadata { get; set; }
 
         /// <summary>The external ID of the user.</summary>
         [JsonProperty("external_id")]
         [STJS.JsonPropertyName("external_id")]
-        public string ExternalId { get; set; }
+        public string? ExternalId { get; set; }
 
     }
 
@@ -234,17 +235,17 @@ namespace WorkOS
         /// <summary>The email address of the user.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         /// <summary>The first name of the user.</summary>
         [JsonProperty("first_name")]
         [STJS.JsonPropertyName("first_name")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         /// <summary>The last name of the user.</summary>
         [JsonProperty("last_name")]
         [STJS.JsonPropertyName("last_name")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         /// <summary>Whether the user's email has been verified.</summary>
         [JsonProperty("email_verified")]
@@ -254,12 +255,12 @@ namespace WorkOS
         /// <summary>The password to set for the user.</summary>
         [JsonProperty("password")]
         [STJS.JsonPropertyName("password")]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         /// <summary>The hashed password to set for the user. Mutually exclusive with `password`.</summary>
         [JsonProperty("password_hash")]
         [STJS.JsonPropertyName("password_hash")]
-        public string PasswordHash { get; set; }
+        public string? PasswordHash { get; set; }
 
         /// <summary>The algorithm originally used to hash the password, used when providing a `password_hash`.</summary>
         [JsonProperty("password_hash_type")]
@@ -269,17 +270,17 @@ namespace WorkOS
         /// <summary>Object containing metadata key/value pairs associated with the user.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, string> Metadata { get; set; }
+        public Dictionary<string, string>? Metadata { get; set; }
 
         /// <summary>The external ID of the user.</summary>
         [JsonProperty("external_id")]
         [STJS.JsonPropertyName("external_id")]
-        public string ExternalId { get; set; }
+        public string? ExternalId { get; set; }
 
         /// <summary>The user's preferred locale.</summary>
         [JsonProperty("locale")]
         [STJS.JsonPropertyName("locale")]
-        public string Locale { get; set; }
+        public string? Locale { get; set; }
 
     }
 
@@ -288,7 +289,7 @@ namespace WorkOS
         /// <summary>The one-time code used to confirm the email change.</summary>
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string Code { get; set; }
+        public string Code { get; set; } = default!;
 
     }
 
@@ -297,7 +298,7 @@ namespace WorkOS
         /// <summary>The new email address to change to.</summary>
         [JsonProperty("new_email")]
         [STJS.JsonPropertyName("new_email")]
-        public string NewEmail { get; set; }
+        public string NewEmail { get; set; } = default!;
 
     }
 
@@ -306,7 +307,7 @@ namespace WorkOS
         /// <summary>The one-time email verification code.</summary>
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string Code { get; set; }
+        public string Code { get; set; } = default!;
 
     }
 
@@ -319,12 +320,12 @@ namespace WorkOS
         /// <summary>The ID of the [organization](https://workos.com/docs/reference/organization) that the recipient will join.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         /// <summary>The email address of the recipient.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
     }
 
@@ -333,27 +334,27 @@ namespace WorkOS
         /// <summary>The email address of the recipient.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
 
         /// <summary>The ID of the [organization](https://workos.com/docs/reference/organization) that the recipient will join.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         /// <summary>The [role](https://workos.com/docs/authkit/roles) that the recipient will receive when they join the organization in the invitation.</summary>
         [JsonProperty("role_slug")]
         [STJS.JsonPropertyName("role_slug")]
-        public string RoleSlug { get; set; }
+        public string? RoleSlug { get; set; }
 
         /// <summary>How many days the invitations will be valid for. Must be between 1 and 30 days. Defaults to 7 days if not specified.</summary>
         [JsonProperty("expires_in_days")]
         [STJS.JsonPropertyName("expires_in_days")]
-        public int? ExpiresInDays { get; set; }
+        public long? ExpiresInDays { get; set; }
 
         /// <summary>The ID of the [user](https://workos.com/docs/reference/authkit/user) who invites the recipient. The invitation email will mention the name of this user.</summary>
         [JsonProperty("inviter_user_id")]
         [STJS.JsonPropertyName("inviter_user_id")]
-        public string InviterUserId { get; set; }
+        public string? InviterUserId { get; set; }
 
         /// <summary>The locale to use when rendering the invitation email. See [supported locales](https://workos.com/docs/authkit/hosted-ui/localization).</summary>
         [JsonProperty("locale")]
@@ -376,7 +377,7 @@ namespace WorkOS
         /// <summary>The JWT template content as a Liquid template string.</summary>
         [JsonProperty("content")]
         [STJS.JsonPropertyName("content")]
-        public string Content { get; set; }
+        public string Content { get; set; } = default!;
 
     }
 
@@ -385,12 +386,12 @@ namespace WorkOS
         /// <summary>The email address to send the magic code to.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
 
         /// <summary>The invitation token to associate with this magic code.</summary>
         [JsonProperty("invitation_token")]
         [STJS.JsonPropertyName("invitation_token")]
-        public string InvitationToken { get; set; }
+        public string? InvitationToken { get; set; }
 
     }
 
@@ -399,17 +400,17 @@ namespace WorkOS
         /// <summary>The ID of the [organization](https://workos.com/docs/reference/organization) which the user belongs to.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         /// <summary>Filter by the status of the organization membership. Array including any of `active`, `inactive`, or `pending`.</summary>
         [JsonProperty("statuses")]
         [STJS.JsonPropertyName("statuses")]
-        public List<UserManagementOrganizationMembershipStatuses> Statuses { get; set; }
+        public List<UserManagementOrganizationMembershipStatuses>? Statuses { get; set; }
 
         /// <summary>The ID of the [user](https://workos.com/docs/reference/authkit/user).</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
     }
 
@@ -418,22 +419,22 @@ namespace WorkOS
         /// <summary>The ID of the [user](https://workos.com/docs/reference/authkit/user).</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = default!;
 
         /// <summary>The ID of the [organization](https://workos.com/docs/reference/organization) which the user belongs to.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
 
         /// <summary>A single role identifier. Defaults to `member` or the explicit default role. Mutually exclusive with `role_slugs`.</summary>
         [JsonProperty("role_slug")]
         [STJS.JsonPropertyName("role_slug")]
-        public string RoleSlug { get; set; }
+        public string? RoleSlug { get; set; }
 
         /// <summary>An array of role identifiers. Limited to one role when Multiple Roles is disabled. Mutually exclusive with `role_slug`.</summary>
         [JsonProperty("role_slugs")]
         [STJS.JsonPropertyName("role_slugs")]
-        public List<string> RoleSlugs { get; set; }
+        public List<string>? RoleSlugs { get; set; }
 
     }
 
@@ -442,12 +443,12 @@ namespace WorkOS
         /// <summary>A single role identifier. Defaults to `member` or the explicit default role. Mutually exclusive with `role_slugs`.</summary>
         [JsonProperty("role_slug")]
         [STJS.JsonPropertyName("role_slug")]
-        public string RoleSlug { get; set; }
+        public string? RoleSlug { get; set; }
 
         /// <summary>An array of role identifiers. Limited to one role when Multiple Roles is disabled. Mutually exclusive with `role_slug`.</summary>
         [JsonProperty("role_slugs")]
         [STJS.JsonPropertyName("role_slugs")]
-        public List<string> RoleSlugs { get; set; }
+        public List<string>? RoleSlugs { get; set; }
 
     }
 
@@ -456,7 +457,7 @@ namespace WorkOS
         /// <summary>The redirect URI to create.</summary>
         [JsonProperty("uri")]
         [STJS.JsonPropertyName("uri")]
-        public string Uri { get; set; }
+        public string Uri { get; set; } = default!;
 
     }
 

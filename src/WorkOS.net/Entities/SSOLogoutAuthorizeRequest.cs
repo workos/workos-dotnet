@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The unique ID of the profile to log out.</summary>
         [JsonProperty("profile_id")]
         [STJS.JsonPropertyName("profile_id")]
-        public string ProfileId { get; set; }
+        public string ProfileId { get; set; } = default!;
     }
 }

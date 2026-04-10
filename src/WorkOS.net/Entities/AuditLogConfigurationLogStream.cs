@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -12,7 +13,7 @@ namespace WorkOS
         /// <summary>Unique identifier of the Audit Log Stream.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The type of the Audit Log Stream destination.</summary>
         [JsonProperty("type")]
@@ -27,11 +28,11 @@ namespace WorkOS
         /// <summary>ISO-8601 timestamp of when the last event was successfully synced, or null if no events have been synced.</summary>
         [JsonProperty("last_synced_at")]
         [STJS.JsonPropertyName("last_synced_at")]
-        public string LastSyncedAt { get; set; }
+        public string? LastSyncedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
     }
 }

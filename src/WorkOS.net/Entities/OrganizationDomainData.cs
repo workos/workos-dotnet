@@ -12,7 +12,7 @@ namespace WorkOS
         /// <summary>The domain value.</summary>
         [JsonProperty("domain")]
         [STJS.JsonPropertyName("domain")]
-        public string Domain { get; set; }
+        public string Domain { get; set; } = default!;
 
         /// <summary>The verification state of the domain.</summary>
         [JsonProperty("state")]

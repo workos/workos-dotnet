@@ -12,16 +12,16 @@ namespace WorkOS
         /// <summary>The client ID associated with the flag event.</summary>
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        public string ClientId { get; set; }
+        public string ClientId { get; set; } = default!;
 
         /// <summary>The actor who performed the action.</summary>
         [JsonProperty("actor")]
         [STJS.JsonPropertyName("actor")]
-        public FlagUpdatedContextActor Actor { get; set; }
+        public FlagUpdatedContextActor Actor { get; set; } = default!;
 
         /// <summary>Attributes that changed from their previous values.</summary>
         [JsonProperty("previous_attributes")]
         [STJS.JsonPropertyName("previous_attributes")]
-        public FlagUpdatedContextPreviousAttribute PreviousAttributes { get; set; }
+        public FlagUpdatedContextPreviousAttribute? PreviousAttributes { get; set; }
     }
 }

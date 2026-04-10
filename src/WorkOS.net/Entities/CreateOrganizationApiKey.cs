@@ -13,11 +13,11 @@ namespace WorkOS
         /// <summary>The name for the API key.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>The permission slugs to assign to the API key.</summary>
         [JsonProperty("permissions")]
         [STJS.JsonPropertyName("permissions")]
-        public List<string> Permissions { get; set; }
+        public List<string>? Permissions { get; set; }
     }
 }

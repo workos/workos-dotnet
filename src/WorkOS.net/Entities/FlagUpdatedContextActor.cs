@@ -2,26 +2,6 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
-
-    /// <summary>The actor who performed the action.</summary>
-    public class FlagUpdatedContextActor : WorkOSEntity<FlagUpdatedContextActor>
-    {
-
-        /// <summary>Unique identifier of the actor.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
-
-        /// <summary>The source of the actor that performed the action.</summary>
-        [JsonProperty("source")]
-        [STJS.JsonPropertyName("source")]
-        public FlagUpdatedContextActorSource Source { get; set; }
-
-        /// <summary>The name of the actor.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
-    }
+    /// <summary>FlagUpdatedContextActor is structurally identical to EventContextActor.</summary>
+    public class FlagUpdatedContextActor : EventContextActor { }
 }

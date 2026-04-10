@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The value to remove from the list. Must match an existing entry.</summary>
         [JsonProperty("entry")]
         [STJS.JsonPropertyName("entry")]
-        public string Entry { get; set; }
+        public string Entry { get; set; } = default!;
     }
 }

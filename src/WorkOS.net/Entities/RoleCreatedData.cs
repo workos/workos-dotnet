@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -13,31 +14,31 @@ namespace WorkOS
         /// <summary>Distinguishes the role object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The slug identifier of the role.</summary>
         [JsonProperty("slug")]
         [STJS.JsonPropertyName("slug")]
-        public string Slug { get; set; }
+        public string Slug { get; set; } = default!;
 
         /// <summary>The slug of the resource type the role applies to.</summary>
         [JsonProperty("resource_type_slug")]
         [STJS.JsonPropertyName("resource_type_slug")]
-        public string ResourceTypeSlug { get; set; }
+        public string ResourceTypeSlug { get; set; } = default!;
 
         /// <summary>The permissions granted by the role.</summary>
         [JsonProperty("permissions")]
         [STJS.JsonPropertyName("permissions")]
-        public List<string> Permissions { get; set; }
+        public List<string>? Permissions { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

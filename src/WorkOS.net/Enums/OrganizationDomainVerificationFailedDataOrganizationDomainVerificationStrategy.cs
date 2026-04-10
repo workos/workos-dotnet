@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum OrganizationDomainVerificationFailedDataOrganizationDomainVerificationStrategy
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "dns")]
         Dns,
         [EnumMember(Value = "manual")]

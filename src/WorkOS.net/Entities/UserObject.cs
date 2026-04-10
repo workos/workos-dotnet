@@ -13,26 +13,26 @@ namespace WorkOS
         /// <summary>Your application's user identifier, which will be stored as an [`external_id`](https://workos.com/docs/authkit/metadata/external-identifiers). Used for upserting and deduplication.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The user's email address.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
 
         /// <summary>The user's first name.</summary>
         [JsonProperty("first_name")]
         [STJS.JsonPropertyName("first_name")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         /// <summary>The user's last name.</summary>
         [JsonProperty("last_name")]
         [STJS.JsonPropertyName("last_name")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         /// <summary>A set of key-value pairs to attach to the user.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, string> Metadata { get; set; }
+        public Dictionary<string, string>? Metadata { get; set; }
     }
 }

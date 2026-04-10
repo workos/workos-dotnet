@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>URI to redirect the user back to AuthKit to complete the OAuth flow.</summary>
         [JsonProperty("redirect_uri")]
         [STJS.JsonPropertyName("redirect_uri")]
-        public string RedirectUri { get; set; }
+        public string RedirectUri { get; set; } = default!;
     }
 }

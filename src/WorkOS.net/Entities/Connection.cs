@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -13,17 +14,17 @@ namespace WorkOS
         /// <summary>Distinguishes the Connection object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>Unique identifier for the Connection.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>Unique identifier for the Organization in which the Connection resides.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         /// <summary>The type of the SSO Connection used to authenticate the user. The Connection type may be used to dynamically generate authorization URLs.</summary>
         [JsonProperty("connection_type")]
@@ -33,7 +34,7 @@ namespace WorkOS
         /// <summary>A human-readable name for the Connection. This will most commonly be the organization's name.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>Indicates whether a Connection is able to authenticate users.</summary>
         [JsonProperty("state")]
@@ -49,21 +50,21 @@ namespace WorkOS
         /// <summary>List of Organization Domains.</summary>
         [JsonProperty("domains")]
         [STJS.JsonPropertyName("domains")]
-        public List<ConnectionDomain> Domains { get; set; }
+        public List<ConnectionDomain> Domains { get; set; } = default!;
 
         /// <summary>Configuration options for SAML connections. Only present for SAML connection types.</summary>
         [JsonProperty("options")]
         [STJS.JsonPropertyName("options")]
-        public ConnectionOption Options { get; set; }
+        public ConnectionOption? Options { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

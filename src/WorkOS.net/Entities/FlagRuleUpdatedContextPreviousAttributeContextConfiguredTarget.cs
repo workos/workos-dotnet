@@ -13,11 +13,11 @@ namespace WorkOS
         /// <summary>The organizations targeted by the flag rule.</summary>
         [JsonProperty("organizations")]
         [STJS.JsonPropertyName("organizations")]
-        public List<FlagRuleUpdatedContextPreviousAttributeContextConfiguredTargetOrganization> Organizations { get; set; }
+        public List<FlagRuleUpdatedContextPreviousAttributeContextConfiguredTargetOrganization> Organizations { get; set; } = default!;
 
         /// <summary>The users targeted by the flag rule.</summary>
         [JsonProperty("users")]
         [STJS.JsonPropertyName("users")]
-        public List<FlagRuleUpdatedContextPreviousAttributeContextConfiguredTargetUser> Users { get; set; }
+        public List<FlagRuleUpdatedContextPreviousAttributeContextConfiguredTargetUser> Users { get; set; } = default!;
     }
 }

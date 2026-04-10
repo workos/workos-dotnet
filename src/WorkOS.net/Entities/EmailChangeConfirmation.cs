@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>Distinguishes the email change confirmation object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The user object.</summary>
         [JsonProperty("user")]
         [STJS.JsonPropertyName("user")]
-        public EmailChangeConfirmationUser User { get; set; }
+        public EmailChangeConfirmationUser User { get; set; } = default!;
     }
 }

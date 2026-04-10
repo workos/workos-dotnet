@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -12,22 +13,22 @@ namespace WorkOS
         /// <summary>Distinguishes the organization domain object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>Unique identifier of the organization domain.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>ID of the parent Organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
 
         /// <summary>Domain for the organization domain.</summary>
         [JsonProperty("domain")]
         [STJS.JsonPropertyName("domain")]
-        public string Domain { get; set; }
+        public string Domain { get; set; } = default!;
 
         /// <summary>Verification state of the domain.</summary>
         [JsonProperty("state")]
@@ -37,12 +38,12 @@ namespace WorkOS
         /// <summary>The prefix used in DNS verification.</summary>
         [JsonProperty("verification_prefix")]
         [STJS.JsonPropertyName("verification_prefix")]
-        public string VerificationPrefix { get; set; }
+        public string? VerificationPrefix { get; set; }
 
         /// <summary>Validation token to be used in DNS TXT record.</summary>
         [JsonProperty("verification_token")]
         [STJS.JsonPropertyName("verification_token")]
-        public string VerificationToken { get; set; }
+        public string? VerificationToken { get; set; }
 
         /// <summary>Strategy used to verify the domain.</summary>
         [JsonProperty("verification_strategy")]
@@ -52,11 +53,11 @@ namespace WorkOS
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

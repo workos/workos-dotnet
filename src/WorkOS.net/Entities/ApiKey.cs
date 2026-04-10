@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -13,46 +14,46 @@ namespace WorkOS
         /// <summary>Distinguishes the API Key object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>Unique identifier of the API Key.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The entity that owns the API Key.</summary>
         [JsonProperty("owner")]
         [STJS.JsonPropertyName("owner")]
-        public ApiKeyOwner Owner { get; set; }
+        public ApiKeyOwner Owner { get; set; } = default!;
 
         /// <summary>A descriptive name for the API Key.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>An obfuscated representation of the API Key value.</summary>
         [JsonProperty("obfuscated_value")]
         [STJS.JsonPropertyName("obfuscated_value")]
-        public string ObfuscatedValue { get; set; }
+        public string ObfuscatedValue { get; set; } = default!;
 
         /// <summary>Timestamp of when the API Key was last used.</summary>
         [JsonProperty("last_used_at")]
         [STJS.JsonPropertyName("last_used_at")]
-        public string LastUsedAt { get; set; }
+        public DateTimeOffset? LastUsedAt { get; set; }
 
         /// <summary>The permission slugs assigned to the API Key.</summary>
         [JsonProperty("permissions")]
         [STJS.JsonPropertyName("permissions")]
-        public List<string> Permissions { get; set; }
+        public List<string> Permissions { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

@@ -12,41 +12,41 @@ namespace WorkOS
         /// <summary>An external identifier for the resource.</summary>
         [JsonProperty("external_id")]
         [STJS.JsonPropertyName("external_id")]
-        public string ExternalId { get; set; }
+        public string ExternalId { get; set; } = default!;
 
         /// <summary>A display name for the resource.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>An optional description of the resource.</summary>
         [JsonProperty("description")]
         [STJS.JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>The slug of the resource type.</summary>
         [JsonProperty("resource_type_slug")]
         [STJS.JsonPropertyName("resource_type_slug")]
-        public string ResourceTypeSlug { get; set; }
+        public string ResourceTypeSlug { get; set; } = default!;
 
         /// <summary>The ID of the organization this resource belongs to.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
 
         /// <summary>The ID of the parent resource.</summary>
         [JsonProperty("parent_resource_id")]
         [STJS.JsonPropertyName("parent_resource_id")]
-        public string ParentResourceId { get; set; }
+        public string? ParentResourceId { get; set; }
 
         /// <summary>The external ID of the parent resource.</summary>
         [JsonProperty("parent_resource_external_id")]
         [STJS.JsonPropertyName("parent_resource_external_id")]
-        public string ParentResourceExternalId { get; set; }
+        public string? ParentResourceExternalId { get; set; }
 
         /// <summary>The resource type slug of the parent resource.</summary>
         [JsonProperty("parent_resource_type_slug")]
         [STJS.JsonPropertyName("parent_resource_type_slug")]
-        public string ParentResourceTypeSlug { get; set; }
+        public string? ParentResourceTypeSlug { get; set; }
     }
 }

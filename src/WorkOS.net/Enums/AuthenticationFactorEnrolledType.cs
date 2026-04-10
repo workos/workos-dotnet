@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum AuthenticationFactorEnrolledType
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "generic_otp")]
         GenericOtp,
         [EnumMember(Value = "sms")]

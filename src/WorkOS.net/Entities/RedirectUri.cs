@@ -12,17 +12,17 @@ namespace WorkOS
         /// <summary>The object type.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The ID of the redirect URI.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The redirect URI.</summary>
         [JsonProperty("uri")]
         [STJS.JsonPropertyName("uri")]
-        public string Uri { get; set; }
+        public string Uri { get; set; } = default!;
 
         /// <summary>Whether this is the default redirect URI.</summary>
         [JsonProperty("default")]
@@ -32,11 +32,11 @@ namespace WorkOS
         /// <summary>The timestamp when the redirect URI was created.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public string CreatedAt { get; set; } = default!;
 
         /// <summary>The timestamp when the redirect URI was last updated.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public string UpdatedAt { get; set; } = default!;
     }
 }

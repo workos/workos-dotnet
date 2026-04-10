@@ -11,29 +11,29 @@ namespace WorkOS
         /// <summary>The user's email address.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
 
         /// <summary>The user's password.</summary>
         [JsonProperty("password")]
         [STJS.JsonPropertyName("password")]
-        public string Password { get; set; }
+        public string Password { get; set; } = default!;
 
         /// <summary>An invitation token to accept during authentication.</summary>
         [JsonProperty("invitation_token")]
         [STJS.JsonPropertyName("invitation_token")]
-        public string InvitationToken { get; set; }
+        public string? InvitationToken { get; set; }
 
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
-        internal string GrantType { get; set; }
+        internal string GrantType { get; set; } = default!;
 
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        internal string ClientId { get; set; }
+        internal string ClientId { get; set; } = default!;
 
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
-        internal string ClientSecret { get; set; }
+        internal string ClientSecret { get; set; } = default!;
 
     }
 
@@ -41,19 +41,19 @@ namespace WorkOS
     {
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string Code { get; set; }
+        public string? Code { get; set; }
 
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
-        internal string GrantType { get; set; }
+        internal string GrantType { get; set; } = default!;
 
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        internal string ClientId { get; set; }
+        internal string ClientId { get; set; } = default!;
 
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
-        internal string ClientSecret { get; set; }
+        internal string ClientSecret { get; set; } = default!;
 
     }
 
@@ -62,24 +62,24 @@ namespace WorkOS
         /// <summary>The refresh token to exchange for new tokens.</summary>
         [JsonProperty("refresh_token")]
         [STJS.JsonPropertyName("refresh_token")]
-        public string RefreshToken { get; set; }
+        public string RefreshToken { get; set; } = default!;
 
         /// <summary>The ID of the organization to scope the session to.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
-        internal string GrantType { get; set; }
+        internal string GrantType { get; set; } = default!;
 
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        internal string ClientId { get; set; }
+        internal string ClientId { get; set; } = default!;
 
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
-        internal string ClientSecret { get; set; }
+        internal string ClientSecret { get; set; } = default!;
 
     }
 
@@ -87,27 +87,27 @@ namespace WorkOS
     {
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string Code { get; set; }
+        public string? Code { get; set; }
 
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [JsonProperty("invitation_token")]
         [STJS.JsonPropertyName("invitation_token")]
-        public string InvitationToken { get; set; }
+        public string? InvitationToken { get; set; }
 
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
-        internal string GrantType { get; set; }
+        internal string GrantType { get; set; } = default!;
 
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        internal string ClientId { get; set; }
+        internal string ClientId { get; set; } = default!;
 
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
-        internal string ClientSecret { get; set; }
+        internal string ClientSecret { get; set; } = default!;
 
     }
 
@@ -115,23 +115,23 @@ namespace WorkOS
     {
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string Code { get; set; }
+        public string? Code { get; set; }
 
         [JsonProperty("pending_authentication_token")]
         [STJS.JsonPropertyName("pending_authentication_token")]
-        public string PendingAuthenticationToken { get; set; }
+        public string? PendingAuthenticationToken { get; set; }
 
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
-        internal string GrantType { get; set; }
+        internal string GrantType { get; set; } = default!;
 
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        internal string ClientId { get; set; }
+        internal string ClientId { get; set; } = default!;
 
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
-        internal string ClientSecret { get; set; }
+        internal string ClientSecret { get; set; } = default!;
 
     }
 
@@ -139,27 +139,27 @@ namespace WorkOS
     {
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string Code { get; set; }
+        public string? Code { get; set; }
 
         [JsonProperty("pending_authentication_token")]
         [STJS.JsonPropertyName("pending_authentication_token")]
-        public string PendingAuthenticationToken { get; set; }
+        public string? PendingAuthenticationToken { get; set; }
 
         [JsonProperty("authentication_challenge_id")]
         [STJS.JsonPropertyName("authentication_challenge_id")]
-        public string AuthenticationChallengeId { get; set; }
+        public string? AuthenticationChallengeId { get; set; }
 
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
-        internal string GrantType { get; set; }
+        internal string GrantType { get; set; } = default!;
 
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        internal string ClientId { get; set; }
+        internal string ClientId { get; set; } = default!;
 
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
-        internal string ClientSecret { get; set; }
+        internal string ClientSecret { get; set; } = default!;
 
     }
 
@@ -167,23 +167,23 @@ namespace WorkOS
     {
         [JsonProperty("pending_authentication_token")]
         [STJS.JsonPropertyName("pending_authentication_token")]
-        public string PendingAuthenticationToken { get; set; }
+        public string? PendingAuthenticationToken { get; set; }
 
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
-        internal string GrantType { get; set; }
+        internal string GrantType { get; set; } = default!;
 
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        internal string ClientId { get; set; }
+        internal string ClientId { get; set; } = default!;
 
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
-        internal string ClientSecret { get; set; }
+        internal string ClientSecret { get; set; } = default!;
 
     }
 
@@ -191,15 +191,15 @@ namespace WorkOS
     {
         [JsonProperty("device_code")]
         [STJS.JsonPropertyName("device_code")]
-        public string DeviceCode { get; set; }
+        public string? DeviceCode { get; set; }
 
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
-        internal string GrantType { get; set; }
+        internal string GrantType { get; set; } = default!;
 
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        internal string ClientId { get; set; }
+        internal string ClientId { get; set; } = default!;
 
     }
 }

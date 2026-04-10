@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum UserSessionsAuthMethod
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "cross_app_auth")]
         CrossAppAuth,
         [EnumMember(Value = "external_auth")]
@@ -30,7 +33,5 @@ namespace WorkOS
         Password,
         [EnumMember(Value = "sso")]
         SSO,
-        [EnumMember(Value = "unknown")]
-        Unknown,
     }
 }

@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -12,17 +13,17 @@ namespace WorkOS
         /// <summary>Distinguishes the invitation object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The unique ID of the invitation.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The email address of the recipient.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
 
         /// <summary>The state of the invitation.</summary>
         [JsonProperty("state")]
@@ -32,41 +33,41 @@ namespace WorkOS
         /// <summary>The timestamp when the invitation was accepted, or null if not yet accepted.</summary>
         [JsonProperty("accepted_at")]
         [STJS.JsonPropertyName("accepted_at")]
-        public string AcceptedAt { get; set; }
+        public DateTimeOffset? AcceptedAt { get; set; }
 
         /// <summary>The timestamp when the invitation was revoked, or null if not revoked.</summary>
         [JsonProperty("revoked_at")]
         [STJS.JsonPropertyName("revoked_at")]
-        public string RevokedAt { get; set; }
+        public DateTimeOffset? RevokedAt { get; set; }
 
         /// <summary>The timestamp when the invitation expires.</summary>
         [JsonProperty("expires_at")]
         [STJS.JsonPropertyName("expires_at")]
-        public string ExpiresAt { get; set; }
+        public DateTimeOffset ExpiresAt { get; set; }
 
         /// <summary>The ID of the [organization](https://workos.com/docs/reference/organization) that the recipient will join.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         /// <summary>The ID of the user who invited the recipient, if provided.</summary>
         [JsonProperty("inviter_user_id")]
         [STJS.JsonPropertyName("inviter_user_id")]
-        public string InviterUserId { get; set; }
+        public string? InviterUserId { get; set; }
 
         /// <summary>The ID of the user who accepted the invitation, once accepted.</summary>
         [JsonProperty("accepted_user_id")]
         [STJS.JsonPropertyName("accepted_user_id")]
-        public string AcceptedUserId { get; set; }
+        public string? AcceptedUserId { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

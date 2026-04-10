@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The signing certificate of the SAML connection.</summary>
         [JsonProperty("signing_cert")]
         [STJS.JsonPropertyName("signing_cert")]
-        public string SigningCert { get; set; }
+        public string? SigningCert { get; set; }
     }
 }

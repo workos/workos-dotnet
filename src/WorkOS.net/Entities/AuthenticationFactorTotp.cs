@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>Your application or company name displayed in the user's authenticator app. Defaults to your WorkOS team name.</summary>
         [JsonProperty("issuer")]
         [STJS.JsonPropertyName("issuer")]
-        public string Issuer { get; set; }
+        public string Issuer { get; set; } = default!;
 
         /// <summary>The user's account name displayed in their authenticator app. Defaults to the user's email.</summary>
         [JsonProperty("user")]
         [STJS.JsonPropertyName("user")]
-        public string User { get; set; }
+        public string User { get; set; } = default!;
     }
 }

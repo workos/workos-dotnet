@@ -39,5 +39,7 @@
     <Rule Id="SA1629" Action="None" />
     <!-- Constructor initializers on own line. -->
     <Rule Id="SA1128" Action="None" />
+    <!-- Closing parenthesis spacing (relaxed for lambda expressions). -->
+    <Rule Id="SA1009" Action="None" />
   </Rules>
 </RuleSet>

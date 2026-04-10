@@ -13,19 +13,19 @@ namespace WorkOS
         /// <summary>Distinguishes the authorized connect application object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The unique ID of the authorized connect application.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The scopes granted by the user to the application.</summary>
         [JsonProperty("granted_scopes")]
         [STJS.JsonPropertyName("granted_scopes")]
-        public List<string> GrantedScopes { get; set; }
+        public List<string> GrantedScopes { get; set; } = default!;
         [JsonProperty("application")]
         [STJS.JsonPropertyName("application")]
-        public ConnectApplication Application { get; set; }
+        public ConnectApplication Application { get; set; } = default!;
     }
 }

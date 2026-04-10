@@ -17,6 +17,6 @@ namespace WorkOS
         /// <summary>The organization domain that failed verification.</summary>
         [JsonProperty("organization_domain")]
         [STJS.JsonPropertyName("organization_domain")]
-        public OrganizationDomainVerificationFailedDataOrganizationDomain OrganizationDomain { get; set; }
+        public OrganizationDomainVerificationFailedDataOrganizationDomain OrganizationDomain { get; set; } = default!;
     }
 }

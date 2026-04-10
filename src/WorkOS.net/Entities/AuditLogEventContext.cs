@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>IP Address or some other geolocation identifier.</summary>
         [JsonProperty("location")]
         [STJS.JsonPropertyName("location")]
-        public string Location { get; set; }
+        public string Location { get; set; } = default!;
 
         /// <summary>User agent string.</summary>
         [JsonProperty("user_agent")]
         [STJS.JsonPropertyName("user_agent")]
-        public string UserAgent { get; set; }
+        public string? UserAgent { get; set; }
     }
 }

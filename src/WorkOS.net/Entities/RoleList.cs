@@ -11,11 +11,11 @@ namespace WorkOS
     {
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The list of records for the current page.</summary>
         [JsonProperty("data")]
         [STJS.JsonPropertyName("data")]
-        public List<Role> Data { get; set; }
+        public List<Role> Data { get; set; } = default!;
     }
 }

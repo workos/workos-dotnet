@@ -13,46 +13,46 @@ namespace WorkOS
         /// <summary>Distinguishes the API key object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>Unique identifier of the API key.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The owner of the API key.</summary>
         [JsonProperty("owner")]
         [STJS.JsonPropertyName("owner")]
-        public ApiKeyCreatedDataOwner Owner { get; set; }
+        public ApiKeyCreatedDataOwner Owner { get; set; } = default!;
 
         /// <summary>The name of the API key.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>The obfuscated value of the API key.</summary>
         [JsonProperty("obfuscated_value")]
         [STJS.JsonPropertyName("obfuscated_value")]
-        public string ObfuscatedValue { get; set; }
+        public string ObfuscatedValue { get; set; } = default!;
 
         /// <summary>The timestamp when the API key was last used.</summary>
         [JsonProperty("last_used_at")]
         [STJS.JsonPropertyName("last_used_at")]
-        public string LastUsedAt { get; set; }
+        public string? LastUsedAt { get; set; }
 
         /// <summary>The permissions granted to the API key.</summary>
         [JsonProperty("permissions")]
         [STJS.JsonPropertyName("permissions")]
-        public List<string> Permissions { get; set; }
+        public List<string> Permissions { get; set; } = default!;
 
         /// <summary>The timestamp when the API key was created.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public string CreatedAt { get; set; } = default!;
 
         /// <summary>The timestamp when the API key was last updated.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public string UpdatedAt { get; set; } = default!;
     }
 }

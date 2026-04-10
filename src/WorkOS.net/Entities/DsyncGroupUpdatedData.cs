@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -13,49 +14,49 @@ namespace WorkOS
         /// <summary>Distinguishes the Directory Group object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>Unique identifier for the Directory Group.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>Unique identifier for the group, assigned by the Directory Provider. Different Directory Providers use different ID formats.</summary>
         [JsonProperty("idp_id")]
         [STJS.JsonPropertyName("idp_id")]
-        public string IdpId { get; set; }
+        public string IdpId { get; set; } = default!;
 
         /// <summary>The identifier of the Directory the Directory Group belongs to.</summary>
         [JsonProperty("directory_id")]
         [STJS.JsonPropertyName("directory_id")]
-        public string DirectoryId { get; set; }
+        public string DirectoryId { get; set; } = default!;
 
         /// <summary>The identifier for the Organization in which the Directory resides.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
 
         /// <summary>The name of the Directory Group.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>The raw attributes received from the directory provider.</summary>
         [JsonProperty("raw_attributes")]
         [STJS.JsonPropertyName("raw_attributes")]
-        public Dictionary<string, object> RawAttributes { get; set; }
+        public Dictionary<string, object>? RawAttributes { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
         [JsonProperty("previous_attributes")]
         [STJS.JsonPropertyName("previous_attributes")]
-        public Dictionary<string, object> PreviousAttributes { get; set; }
+        public Dictionary<string, object>? PreviousAttributes { get; set; }
     }
 }

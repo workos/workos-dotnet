@@ -13,26 +13,26 @@ namespace WorkOS
         /// <summary>The OAuth provider used for authentication.</summary>
         [JsonProperty("provider")]
         [STJS.JsonPropertyName("provider")]
-        public string Provider { get; set; }
+        public string Provider { get; set; } = default!;
 
         /// <summary>The refresh token from the OAuth provider.</summary>
         [JsonProperty("refresh_token")]
         [STJS.JsonPropertyName("refresh_token")]
-        public string RefreshToken { get; set; }
+        public string RefreshToken { get; set; } = default!;
 
         /// <summary>The access token from the OAuth provider.</summary>
         [JsonProperty("access_token")]
         [STJS.JsonPropertyName("access_token")]
-        public string AccessToken { get; set; }
+        public string AccessToken { get; set; } = default!;
 
         /// <summary>The timestamp at which the access token expires.</summary>
         [JsonProperty("expires_at")]
         [STJS.JsonPropertyName("expires_at")]
-        public int ExpiresAt { get; set; }
+        public long ExpiresAt { get; set; }
 
         /// <summary>A list of OAuth scopes for which the access token is authorized.</summary>
         [JsonProperty("scopes")]
         [STJS.JsonPropertyName("scopes")]
-        public List<string> Scopes { get; set; }
+        public List<string> Scopes { get; set; } = default!;
     }
 }

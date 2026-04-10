@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>Count of active directory users.</summary>
         [JsonProperty("active")]
         [STJS.JsonPropertyName("active")]
-        public int Active { get; set; }
+        public long Active { get; set; }
 
         /// <summary>Count of inactive directory users.</summary>
         [JsonProperty("inactive")]
         [STJS.JsonPropertyName("inactive")]
-        public int Inactive { get; set; }
+        public long Inactive { get; set; }
     }
 }

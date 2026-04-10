@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The previous data attributes of the flag.</summary>
         [JsonProperty("data")]
         [STJS.JsonPropertyName("data")]
-        public FlagUpdatedContextPreviousAttributeData Data { get; set; }
+        public FlagUpdatedContextPreviousAttributeData? Data { get; set; }
     }
 }

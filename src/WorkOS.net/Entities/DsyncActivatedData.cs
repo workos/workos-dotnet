@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -13,17 +14,17 @@ namespace WorkOS
         /// <summary>Distinguishes the directory object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>Unique identifier of the directory.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The ID of the organization the directory belongs to.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         /// <summary>The type of the directory.</summary>
         [JsonProperty("type")]
@@ -38,26 +39,26 @@ namespace WorkOS
         /// <summary>The name of the directory.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
 
         /// <summary>The external key of the directory.</summary>
         [JsonProperty("external_key")]
         [STJS.JsonPropertyName("external_key")]
-        public string ExternalKey { get; set; }
+        public string ExternalKey { get; set; } = default!;
 
         /// <summary>The domains associated with the directory.</summary>
         [JsonProperty("domains")]
         [STJS.JsonPropertyName("domains")]
-        public List<DsyncActivatedDataDomain> Domains { get; set; }
+        public List<DsyncActivatedDataDomain> Domains { get; set; } = default!;
     }
 }

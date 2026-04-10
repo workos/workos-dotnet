@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>Set to `"success"` to mark the challenge as completed.</summary>
         [JsonProperty("challenge_status")]
         [STJS.JsonPropertyName("challenge_status")]
-        public string ChallengeStatus { get; set; }
+        public string? ChallengeStatus { get; set; }
 
         /// <summary>Set to `"success"` to mark the authentication attempt as successful.</summary>
         [JsonProperty("attempt_status")]
         [STJS.JsonPropertyName("attempt_status")]
-        public string AttemptStatus { get; set; }
+        public string? AttemptStatus { get; set; }
     }
 }

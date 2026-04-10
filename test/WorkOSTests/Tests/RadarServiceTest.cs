@@ -2,7 +2,7 @@
 
 namespace WorkOSTests
 {
-    using System.IO;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -28,7 +28,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateAttempts()
         {
-            var fixture = File.ReadAllText("testdata/radar_standalone_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/radar_standalone_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/radar/attempts", HttpStatusCode.OK, fixture);
             var result = await this.service.CreateAttempts(new RadarCreateAttemptsOptions());
             Assert.NotNull(result);
@@ -48,7 +48,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestAddListEntry()
         {
-            var fixture = File.ReadAllText("testdata/radar_list_entry_already_present_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/radar_list_entry_already_present_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/radar/lists/test_type/test_action", HttpStatusCode.OK, fixture);
             var result = await this.service.AddListEntry("test_type", "test_action", new RadarAddListEntryOptions());
             Assert.NotNull(result);
@@ -83,6 +83,20 @@ namespace WorkOSTests
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
             await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.CreateAttempts(new RadarCreateAttemptsOptions()));
+        }
+
+        [Fact]
+        public async Task TestError429()
+        {
+            this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.CreateAttempts(new RadarCreateAttemptsOptions()));
+        }
+
+        [Fact]
+        public async Task TestError500()
+        {
+            this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
+            await Assert.ThrowsAsync<ServerError>(() => this.service.CreateAttempts(new RadarCreateAttemptsOptions()));
         }
     }
 }

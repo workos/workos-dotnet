@@ -12,7 +12,7 @@ namespace WorkOS
         /// <summary>The unique identifier of the organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
 
         /// <summary>The external key provider used for BYOK.</summary>
         [JsonProperty("key_provider")]

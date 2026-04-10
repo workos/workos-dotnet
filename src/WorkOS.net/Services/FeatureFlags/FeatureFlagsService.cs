@@ -19,7 +19,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="Flag"/> results.</returns>
-        public async Task<WorkOSList<Flag>> List(FeatureFlagsListOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<Flag>> List(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -36,7 +36,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="Flag"/> items.</returns>
-        public IAsyncEnumerable<Flag> ListAutoPagingAsync(FeatureFlagsListOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<Flag> ListAutoPagingAsync(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -53,7 +53,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Flag"/> result.</returns>
-        public async Task<Flag> Get(string slug, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Flag> Get(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -69,7 +69,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="FeatureFlag"/> result.</returns>
-        public async Task<FeatureFlag> Disable(string slug, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<FeatureFlag> Disable(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -85,7 +85,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="FeatureFlag"/> result.</returns>
-        public async Task<FeatureFlag> Enable(string slug, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<FeatureFlag> Enable(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -101,7 +101,7 @@ namespace WorkOS
         /// <param name="resourceId">The resource ID in format "user_&lt;id&gt;" or "org_&lt;id&gt;".</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task AddFlagTarget(string slug, string resourceId, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task AddFlagTarget(string slug, string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -117,7 +117,7 @@ namespace WorkOS
         /// <param name="resourceId">The resource ID in format "user_&lt;id&gt;" or "org_&lt;id&gt;".</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task RemoveFlagTarget(string slug, string resourceId, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task RemoveFlagTarget(string slug, string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -134,7 +134,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="Flag"/> results.</returns>
-        public async Task<WorkOSList<Flag>> ListOrganizationFeatureFlags(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<Flag>> ListOrganizationFeatureFlags(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -152,7 +152,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="Flag"/> items.</returns>
-        public IAsyncEnumerable<Flag> ListOrganizationFeatureFlagsAutoPagingAsync(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<Flag> ListOrganizationFeatureFlagsAutoPagingAsync(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -170,7 +170,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="Flag"/> results.</returns>
-        public async Task<WorkOSList<Flag>> ListUserFeatureFlags(string userId, FeatureFlagsListUserFeatureFlagsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<Flag>> ListUserFeatureFlags(string userId, FeatureFlagsListUserFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -188,7 +188,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="Flag"/> items.</returns>
-        public IAsyncEnumerable<Flag> ListUserFeatureFlagsAutoPagingAsync(string userId, FeatureFlagsListUserFeatureFlagsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<Flag> ListUserFeatureFlagsAutoPagingAsync(string userId, FeatureFlagsListUserFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {

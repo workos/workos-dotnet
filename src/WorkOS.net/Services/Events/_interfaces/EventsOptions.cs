@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -11,22 +12,22 @@ namespace WorkOS
         /// <summary>Filter events by one or more event types (e.g. `dsync.user.created`).</summary>
         [JsonProperty("events")]
         [STJS.JsonPropertyName("events")]
-        public List<string> Events { get; set; }
+        public List<string>? Events { get; set; }
 
         /// <summary>ISO-8601 date string to filter events created after this date.</summary>
         [JsonProperty("range_start")]
         [STJS.JsonPropertyName("range_start")]
-        public string RangeStart { get; set; }
+        public string? RangeStart { get; set; }
 
         /// <summary>ISO-8601 date string to filter events created before this date.</summary>
         [JsonProperty("range_end")]
         [STJS.JsonPropertyName("range_end")]
-        public string RangeEnd { get; set; }
+        public string? RangeEnd { get; set; }
 
         /// <summary>Filter events by the [Organization](https://workos.com/docs/reference/organization) that the event is associated with.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
     }
 }

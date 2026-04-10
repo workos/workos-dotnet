@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>SSO-specific options for the Admin Portal.</summary>
         [JsonProperty("sso")]
         [STJS.JsonPropertyName("sso")]
-        public SSOIntentOptions SSO { get; set; }
+        public SSOIntentOptions SSO { get; set; } = default!;
     }
 }

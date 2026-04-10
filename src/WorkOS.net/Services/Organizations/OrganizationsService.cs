@@ -19,7 +19,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="Organization"/> results.</returns>
-        public async Task<WorkOSList<Organization>> List(OrganizationsListOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<Organization>> List(OrganizationsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -36,7 +36,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="Organization"/> items.</returns>
-        public IAsyncEnumerable<Organization> ListAutoPagingAsync(OrganizationsListOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<Organization> ListAutoPagingAsync(OrganizationsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -53,7 +53,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Organization"/> result.</returns>
-        public async Task<Organization> Create(OrganizationsCreateOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Organization> Create(OrganizationsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -70,7 +70,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Organization"/> result.</returns>
-        public async Task<Organization> GetByExternalId(string externalId, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Organization> GetByExternalId(string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -86,7 +86,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Organization"/> result.</returns>
-        public async Task<Organization> Get(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Organization> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -103,7 +103,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Organization"/> result.</returns>
-        public async Task<Organization> Update(string id, OrganizationsUpdateOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<Organization> Update(string id, OrganizationsUpdateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -119,7 +119,7 @@ namespace WorkOS
         /// <param name="id">Unique identifier of the Organization.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task Delete(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -135,7 +135,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuditLogConfiguration"/> result.</returns>
-        public async Task<AuditLogConfiguration> ListAuditLogConfiguration(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuditLogConfiguration> ListAuditLogConfiguration(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {

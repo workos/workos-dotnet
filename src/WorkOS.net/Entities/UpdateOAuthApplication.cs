@@ -13,21 +13,21 @@ namespace WorkOS
         /// <summary>The name of the application.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>A description for the application.</summary>
         [JsonProperty("description")]
         [STJS.JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>The OAuth scopes granted to the application.</summary>
         [JsonProperty("scopes")]
         [STJS.JsonPropertyName("scopes")]
-        public List<string> Scopes { get; set; }
+        public List<string>? Scopes { get; set; }
 
         /// <summary>Updated redirect URIs for the application. OAuth applications only.</summary>
         [JsonProperty("redirect_uris")]
         [STJS.JsonPropertyName("redirect_uris")]
-        public List<RedirectUriInput> RedirectUris { get; set; }
+        public List<RedirectUriInput>? RedirectUris { get; set; }
     }
 }

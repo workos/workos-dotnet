@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -12,22 +13,22 @@ namespace WorkOS
         /// <summary>Distinguishes the Directory object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>Unique identifier for the Directory.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The unique identifier for the Organization in which the directory resides.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
 
         /// <summary>External Key for the Directory.</summary>
         [JsonProperty("external_key")]
         [STJS.JsonPropertyName("external_key")]
-        public string ExternalKey { get; set; }
+        public string ExternalKey { get; set; } = default!;
 
         /// <summary>The type of external Directory Provider integrated with.</summary>
         [JsonProperty("type")]
@@ -42,26 +43,26 @@ namespace WorkOS
         /// <summary>The name of the directory.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>The URL associated with an Enterprise Client.</summary>
         [JsonProperty("domain")]
         [STJS.JsonPropertyName("domain")]
-        public string Domain { get; set; }
+        public string? Domain { get; set; }
 
         /// <summary>Aggregate counts of directory users and groups synced from the provider.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public DirectoryMetadata Metadata { get; set; }
+        public DirectoryMetadata? Metadata { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

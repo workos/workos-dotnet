@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -12,37 +13,37 @@ namespace WorkOS
         /// <summary>Distinguishes the session object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The unique ID of the session.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>Information about the impersonator if this session was created via impersonation.</summary>
         [JsonProperty("impersonator")]
         [STJS.JsonPropertyName("impersonator")]
-        public SessionCreatedDataImpersonator Impersonator { get; set; }
+        public SessionCreatedDataImpersonator? Impersonator { get; set; }
 
         /// <summary>The IP address from which the session was created.</summary>
         [JsonProperty("ip_address")]
         [STJS.JsonPropertyName("ip_address")]
-        public string IpAddress { get; set; }
+        public string? IpAddress { get; set; }
 
         /// <summary>The ID of the organization this session is associated with.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         /// <summary>The user agent string from the device that created the session.</summary>
         [JsonProperty("user_agent")]
         [STJS.JsonPropertyName("user_agent")]
-        public string UserAgent { get; set; }
+        public string? UserAgent { get; set; }
 
         /// <summary>The ID of the user this session belongs to.</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = default!;
 
         /// <summary>The authentication method used to create this session.</summary>
         [JsonProperty("auth_method")]
@@ -57,21 +58,21 @@ namespace WorkOS
         /// <summary>The timestamp when the session expires.</summary>
         [JsonProperty("expires_at")]
         [STJS.JsonPropertyName("expires_at")]
-        public string ExpiresAt { get; set; }
+        public DateTimeOffset ExpiresAt { get; set; }
 
         /// <summary>The timestamp when the session ended.</summary>
         [JsonProperty("ended_at")]
         [STJS.JsonPropertyName("ended_at")]
-        public string EndedAt { get; set; }
+        public DateTimeOffset? EndedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>The previous data attributes of the flag.</summary>
         [JsonProperty("data")]
         [STJS.JsonPropertyName("data")]
-        public FlagRuleUpdatedContextPreviousAttributeData Data { get; set; }
+        public FlagRuleUpdatedContextPreviousAttributeData? Data { get; set; }
 
         /// <summary>The previous context attributes of the flag rule.</summary>
         [JsonProperty("context")]
         [STJS.JsonPropertyName("context")]
-        public FlagRuleUpdatedContextPreviousAttributeContext Context { get; set; }
+        public FlagRuleUpdatedContextPreviousAttributeContext? Context { get; set; }
     }
 }

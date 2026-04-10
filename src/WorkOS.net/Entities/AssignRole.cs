@@ -12,21 +12,21 @@ namespace WorkOS
         /// <summary>The slug of the role to assign.</summary>
         [JsonProperty("role_slug")]
         [STJS.JsonPropertyName("role_slug")]
-        public string RoleSlug { get; set; }
+        public string RoleSlug { get; set; } = default!;
 
         /// <summary>The ID of the resource. Use either this or `resource_external_id` and `resource_type_slug`.</summary>
         [JsonProperty("resource_id")]
         [STJS.JsonPropertyName("resource_id")]
-        public string ResourceId { get; set; }
+        public string? ResourceId { get; set; }
 
         /// <summary>The external ID of the resource. Requires `resource_type_slug`.</summary>
         [JsonProperty("resource_external_id")]
         [STJS.JsonPropertyName("resource_external_id")]
-        public string ResourceExternalId { get; set; }
+        public string? ResourceExternalId { get; set; }
 
         /// <summary>The resource type slug. Required with `resource_external_id`.</summary>
         [JsonProperty("resource_type_slug")]
         [STJS.JsonPropertyName("resource_type_slug")]
-        public string ResourceTypeSlug { get; set; }
+        public string? ResourceTypeSlug { get; set; }
     }
 }

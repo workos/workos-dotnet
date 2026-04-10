@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -11,17 +12,17 @@ namespace WorkOS
         /// <summary>The ID of the user to authorize.</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = default!;
 
         /// <summary>An organization ID to scope the authorization to a specific organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         /// <summary>The URL to redirect the user to after authorization.</summary>
         [JsonProperty("return_to")]
         [STJS.JsonPropertyName("return_to")]
-        public string ReturnTo { get; set; }
+        public string? ReturnTo { get; set; }
 
     }
 
@@ -30,12 +31,12 @@ namespace WorkOS
         /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = default!;
 
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
     }
 
@@ -44,7 +45,7 @@ namespace WorkOS
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
     }
 
@@ -53,7 +54,7 @@ namespace WorkOS
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
     }
 
@@ -62,7 +63,7 @@ namespace WorkOS
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to filter connections for a specific organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
     }
 }

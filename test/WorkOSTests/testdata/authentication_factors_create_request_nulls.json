@@ -1,0 +1,7 @@
+{
+  "type": "totp",
+  "phone_number": null,
+  "totp_issuer": null,
+  "totp_user": null,
+  "user_id": null
+}

@@ -2,7 +2,7 @@
 
 namespace WorkOSTests
 {
-    using System.IO;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -28,7 +28,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestAuthorizeDataIntegration()
         {
-            var fixture = File.ReadAllText("testdata/data_integration_authorize_url_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/data_integration_authorize_url_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/data-integrations/test_slug/authorize", HttpStatusCode.OK, fixture);
             var result = await this.service.AuthorizeDataIntegration("test_slug", new PipesAuthorizeDataIntegrationOptions());
             Assert.NotNull(result);
@@ -39,7 +39,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateDataIntegrationToken()
         {
-            var fixture = File.ReadAllText("testdata/data_integration_access_token_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/data_integration_access_token_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/data-integrations/test_slug/token", HttpStatusCode.OK, fixture);
             var result = await this.service.CreateDataIntegrationToken("test_slug", new PipesCreateDataIntegrationTokenOptions());
             Assert.NotNull(result);
@@ -49,7 +49,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGetUserConnectedAccount()
         {
-            var fixture = File.ReadAllText("testdata/connected_account.json");
+            var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_user_id/connected_accounts/test_slug", HttpStatusCode.OK, fixture);
             var result = await this.service.GetUserConnectedAccount("test_user_id", "test_slug", new PipesGetUserConnectedAccountOptions());
             Assert.NotNull(result);
@@ -70,7 +70,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListUserDataProviders()
         {
-            var fixture = File.ReadAllText("testdata/data_integrations_list_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/data_integrations_list_response.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_user_id/data_providers", HttpStatusCode.OK, fixture);
             var result = await this.service.ListUserDataProviders("test_user_id", new PipesListUserDataProvidersOptions());
             Assert.NotNull(result);
@@ -96,6 +96,20 @@ namespace WorkOSTests
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
             await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.AuthorizeDataIntegration("test_slug", new PipesAuthorizeDataIntegrationOptions()));
+        }
+
+        [Fact]
+        public async Task TestError429()
+        {
+            this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.AuthorizeDataIntegration("test_slug", new PipesAuthorizeDataIntegrationOptions()));
+        }
+
+        [Fact]
+        public async Task TestError500()
+        {
+            this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
+            await Assert.ThrowsAsync<ServerError>(() => this.service.AuthorizeDataIntegration("test_slug", new PipesAuthorizeDataIntegrationOptions()));
         }
     }
 }

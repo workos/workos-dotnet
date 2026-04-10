@@ -2,7 +2,7 @@
 
 namespace WorkOSTests
 {
-    using System.IO;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -28,7 +28,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListConnections()
         {
-            var fixture = File.ReadAllText("testdata/list_connection.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_connection.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/connections", HttpStatusCode.OK, fixture);
             var result = await this.service.ListConnections(new SSOListConnectionsOptions());
             Assert.NotNull(result);
@@ -37,15 +37,23 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListConnectionsEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/connections", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListConnections(new SSOListConnectionsOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public async Task TestGetConnection()
         {
-            var fixture = File.ReadAllText("testdata/connection.json");
+            var fixture = System.IO.File.ReadAllText("testdata/connection.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/connections/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.GetConnection("test_id");
             Assert.NotNull(result);
             Assert.NotEmpty(result.Id);
             Assert.NotEmpty(result.Name);
-            Assert.NotEmpty(result.CreatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/connections/test_id");
         }
 
@@ -60,7 +68,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGetAuthorizationUrl()
         {
-            var fixture = File.ReadAllText("testdata/sso_authorize_url_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/sso_authorize_url_response.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/sso/authorize", HttpStatusCode.OK, fixture);
             var result = await this.service.GetAuthorizationUrl(new SSOGetAuthorizationUrlOptions());
             Assert.NotNull(result);
@@ -79,7 +87,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestAuthorizeLogout()
         {
-            var fixture = File.ReadAllText("testdata/sso_logout_authorize_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/sso_logout_authorize_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/sso/logout/authorize", HttpStatusCode.OK, fixture);
             var result = await this.service.AuthorizeLogout(new SSOAuthorizeLogoutOptions());
             Assert.NotNull(result);
@@ -91,9 +99,9 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGetProfile()
         {
-            var fixture = File.ReadAllText("testdata/profile.json");
+            var fixture = System.IO.File.ReadAllText("testdata/profile.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/sso/profile", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetProfile();
+            var result = await this.service.GetProfile("test_access_token");
             Assert.NotNull(result);
             Assert.NotEmpty(result.Id);
             Assert.NotEmpty(result.ConnectionId);
@@ -104,12 +112,44 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGetProfileAndToken()
         {
-            var fixture = File.ReadAllText("testdata/sso_token_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/sso_token_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/sso/token", HttpStatusCode.OK, fixture);
             var result = await this.service.GetProfileAndToken(new SSOGetProfileAndTokenOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.AccessToken);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/sso/token");
+        }
+
+        [Fact]
+        public async Task TestListConnectionsAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/connection.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/connections", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<Connection>();
+            await foreach (var item in this.service.ListConnectionsAutoPagingAsync(new SSOListConnectionsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListConnectionsAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/connections", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<Connection>();
+            await foreach (var item in this.service.ListConnectionsAutoPagingAsync(new SSOListConnectionsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
         }
 
         [Fact]
@@ -131,6 +171,20 @@ namespace WorkOSTests
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
             await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.ListConnections(new SSOListConnectionsOptions()));
+        }
+
+        [Fact]
+        public async Task TestError429()
+        {
+            this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.ListConnections(new SSOListConnectionsOptions()));
+        }
+
+        [Fact]
+        public async Task TestError500()
+        {
+            this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
+            await Assert.ThrowsAsync<ServerError>(() => this.service.ListConnections(new SSOListConnectionsOptions()));
         }
     }
 }

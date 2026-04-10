@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>An ephemeral link to initiate the Admin Portal.</summary>
         [JsonProperty("link")]
         [STJS.JsonPropertyName("link")]
-        public string Link { get; set; }
+        public string Link { get; set; } = default!;
     }
 }

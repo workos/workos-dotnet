@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The slug of the permission to add to the role.</summary>
         [JsonProperty("slug")]
         [STJS.JsonPropertyName("slug")]
-        public string Slug { get; set; }
+        public string Slug { get; set; } = default!;
     }
 }

@@ -17,12 +17,12 @@ namespace WorkOS
         /// <summary>A human-readable reason for the verdict.</summary>
         [JsonProperty("reason")]
         [STJS.JsonPropertyName("reason")]
-        public string Reason { get; set; }
+        public string Reason { get; set; } = default!;
 
         /// <summary>Unique identifier of the authentication attempt.</summary>
         [JsonProperty("attempt_id")]
         [STJS.JsonPropertyName("attempt_id")]
-        public string AttemptId { get; set; }
+        public string AttemptId { get; set; } = default!;
 
         /// <summary>The Radar control that triggered the verdict. Only present if the verdict is `block` or `challenge`.</summary>
         [JsonProperty("control")]

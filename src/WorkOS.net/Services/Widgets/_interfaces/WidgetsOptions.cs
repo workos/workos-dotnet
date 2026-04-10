@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -11,17 +12,17 @@ namespace WorkOS
         /// <summary>The ID of the organization to scope the widget session to.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
 
         /// <summary>The ID of the user to issue the widget session token for.</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
         /// <summary>The scopes to grant the widget session.</summary>
         [JsonProperty("scopes")]
         [STJS.JsonPropertyName("scopes")]
-        public List<WidgetSessionTokenScopes> Scopes { get; set; }
+        public List<WidgetSessionTokenScopes>? Scopes { get; set; }
 
     }
 }

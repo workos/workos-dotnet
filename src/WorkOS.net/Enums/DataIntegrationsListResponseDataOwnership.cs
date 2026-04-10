@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum DataIntegrationsListResponseDataOwnership
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "userland_user")]
         UserlandUser,
         [EnumMember(Value = "organization")]

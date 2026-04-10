@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -11,17 +12,17 @@ namespace WorkOS
         /// <summary>The URL to go to when an admin clicks on your logo in the Admin Portal. If not specified, the return URL configured on the [Redirects](https://dashboard.workos.com/redirects) page will be used.</summary>
         [JsonProperty("return_url")]
         [STJS.JsonPropertyName("return_url")]
-        public string ReturnUrl { get; set; }
+        public string? ReturnUrl { get; set; }
 
         /// <summary>The URL to redirect the admin to when they finish setup. If not specified, the success URL configured on the [Redirects](https://dashboard.workos.com/redirects) page will be used.</summary>
         [JsonProperty("success_url")]
         [STJS.JsonPropertyName("success_url")]
-        public string SuccessUrl { get; set; }
+        public string? SuccessUrl { get; set; }
 
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier.</summary>
         [JsonProperty("organization")]
         [STJS.JsonPropertyName("organization")]
-        public string Organization { get; set; }
+        public string Organization { get; set; } = default!;
 
         /// <summary>The intent of the Admin Portal.</summary>
         [JsonProperty("intent")]
@@ -31,12 +32,12 @@ namespace WorkOS
         /// <summary>Options to configure the Admin Portal based on the intent.</summary>
         [JsonProperty("intent_options")]
         [STJS.JsonPropertyName("intent_options")]
-        public IntentOptions IntentOptions { get; set; }
+        public IntentOptions? IntentOptions { get; set; }
 
         /// <summary>The email addresses of the IT admins to grant access to the Admin Portal for the given organization. Accepts up to 20 emails.</summary>
         [JsonProperty("admin_emails")]
         [STJS.JsonPropertyName("admin_emails")]
-        public List<string> AdminEmails { get; set; }
+        public List<string>? AdminEmails { get; set; }
 
     }
 }

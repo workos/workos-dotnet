@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>The error code.</summary>
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string Code { get; set; }
+        public string Code { get; set; } = default!;
 
         /// <summary>A human-readable error message.</summary>
         [JsonProperty("message")]
         [STJS.JsonPropertyName("message")]
-        public string Message { get; set; }
+        public string Message { get; set; } = default!;
     }
 }

@@ -17,21 +17,21 @@ namespace WorkOS
         /// <summary>Required when type is 'sms'.</summary>
         [JsonProperty("phone_number")]
         [STJS.JsonPropertyName("phone_number")]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
         /// <summary>Required when type is 'totp'.</summary>
         [JsonProperty("totp_issuer")]
         [STJS.JsonPropertyName("totp_issuer")]
-        public string TotpIssuer { get; set; }
+        public string? TotpIssuer { get; set; }
 
         /// <summary>Required when type is 'totp'.</summary>
         [JsonProperty("totp_user")]
         [STJS.JsonPropertyName("totp_user")]
-        public string TotpUser { get; set; }
+        public string? TotpUser { get; set; }
 
         /// <summary>The ID of the user to associate the factor with.</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
     }
 }

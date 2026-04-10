@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>An OAuth 2.0 authorization URL.</summary>
         [JsonProperty("url")]
         [STJS.JsonPropertyName("url")]
-        public string Url { get; set; }
+        public string Url { get; set; } = default!;
     }
 }

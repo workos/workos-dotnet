@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum ConnectionSAMLCertificateRenewalRequiredDataCertificateCertificateType
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "ResponseSigning")]
         ResponseSigning,
         [EnumMember(Value = "RequestSigning")]

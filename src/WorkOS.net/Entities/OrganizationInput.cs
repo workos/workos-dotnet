@@ -13,7 +13,7 @@ namespace WorkOS
         /// <summary>The name of the organization.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>Whether the organization allows profiles from outside the organization to sign in.</summary>
         [JsonProperty("allow_profiles_outside_organization")]
@@ -23,21 +23,21 @@ namespace WorkOS
         /// <summary>The domains associated with the organization. Deprecated in favor of `domain_data`.</summary>
         [JsonProperty("domains")]
         [STJS.JsonPropertyName("domains")]
-        public List<string> Domains { get; set; }
+        public List<string>? Domains { get; set; }
 
         /// <summary>The domains associated with the organization, including verification state.</summary>
         [JsonProperty("domain_data")]
         [STJS.JsonPropertyName("domain_data")]
-        public List<OrganizationDomainData> DomainData { get; set; }
+        public List<OrganizationDomainData>? DomainData { get; set; }
 
         /// <summary>Object containing [metadata](https://workos.com/docs/authkit/metadata) key/value pairs associated with the Organization.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, string> Metadata { get; set; }
+        public Dictionary<string, string>? Metadata { get; set; }
 
         /// <summary>An external identifier for the Organization.</summary>
         [JsonProperty("external_id")]
         [STJS.JsonPropertyName("external_id")]
-        public string ExternalId { get; set; }
+        public string? ExternalId { get; set; }
     }
 }

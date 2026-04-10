@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -13,46 +14,46 @@ namespace WorkOS
         /// <summary>Distinguishes the Organization object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>Unique identifier of the Organization.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>A descriptive name for the Organization. This field does not need to be unique.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>List of Organization Domains.</summary>
         [JsonProperty("domains")]
         [STJS.JsonPropertyName("domains")]
-        public List<OrganizationUpdatedDataDomain> Domains { get; set; }
+        public List<OrganizationUpdatedDataDomain> Domains { get; set; } = default!;
 
         /// <summary>Object containing [metadata](https://workos.com/docs/authkit/metadata) key/value pairs associated with the Organization.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, string> Metadata { get; set; }
+        public Dictionary<string, string> Metadata { get; set; } = default!;
 
         /// <summary>The external ID of the Organization.</summary>
         [JsonProperty("external_id")]
         [STJS.JsonPropertyName("external_id")]
-        public string ExternalId { get; set; }
+        public string? ExternalId { get; set; }
 
         /// <summary>The Stripe customer ID of the Organization.</summary>
         [JsonProperty("stripe_customer_id")]
         [STJS.JsonPropertyName("stripe_customer_id")]
-        public string StripeCustomerId { get; set; }
+        public string? StripeCustomerId { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

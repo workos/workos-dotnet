@@ -10,6 +10,6 @@ namespace WorkOS
     {
         [JsonProperty("api_key")]
         [STJS.JsonPropertyName("api_key")]
-        public ApiKey ApiKey { get; set; }
+        public ApiKey? ApiKey { get; set; }
     }
 }

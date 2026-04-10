@@ -12,22 +12,22 @@ namespace WorkOS
         /// <summary>The device verification code.</summary>
         [JsonProperty("device_code")]
         [STJS.JsonPropertyName("device_code")]
-        public string DeviceCode { get; set; }
+        public string DeviceCode { get; set; } = default!;
 
         /// <summary>The end-user verification code.</summary>
         [JsonProperty("user_code")]
         [STJS.JsonPropertyName("user_code")]
-        public string UserCode { get; set; }
+        public string UserCode { get; set; } = default!;
 
         /// <summary>The end-user verification URI.</summary>
         [JsonProperty("verification_uri")]
         [STJS.JsonPropertyName("verification_uri")]
-        public string VerificationUri { get; set; }
+        public string VerificationUri { get; set; } = default!;
 
         /// <summary>Verification URI that includes the user code.</summary>
         [JsonProperty("verification_uri_complete")]
         [STJS.JsonPropertyName("verification_uri_complete")]
-        public string VerificationUriComplete { get; set; }
+        public string? VerificationUriComplete { get; set; }
 
         /// <summary>Lifetime in seconds of the codes.</summary>
         [JsonProperty("expires_in")]

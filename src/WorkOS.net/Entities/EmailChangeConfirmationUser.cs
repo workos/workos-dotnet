@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -13,32 +14,32 @@ namespace WorkOS
         /// <summary>Distinguishes the user object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The unique ID of the user.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The first name of the user.</summary>
         [JsonProperty("first_name")]
         [STJS.JsonPropertyName("first_name")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         /// <summary>The last name of the user.</summary>
         [JsonProperty("last_name")]
         [STJS.JsonPropertyName("last_name")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         /// <summary>A URL reference to an image representing the user.</summary>
         [JsonProperty("profile_picture_url")]
         [STJS.JsonPropertyName("profile_picture_url")]
-        public string ProfilePictureUrl { get; set; }
+        public string? ProfilePictureUrl { get; set; }
 
         /// <summary>The email address of the user.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
 
         /// <summary>Whether the user's email has been verified.</summary>
         [JsonProperty("email_verified")]
@@ -48,31 +49,31 @@ namespace WorkOS
         /// <summary>The external ID of the user.</summary>
         [JsonProperty("external_id")]
         [STJS.JsonPropertyName("external_id")]
-        public string ExternalId { get; set; }
+        public string? ExternalId { get; set; }
 
         /// <summary>Object containing metadata key/value pairs associated with the user.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, string> Metadata { get; set; }
+        public Dictionary<string, string>? Metadata { get; set; }
 
         /// <summary>The timestamp when the user last signed in.</summary>
         [JsonProperty("last_sign_in_at")]
         [STJS.JsonPropertyName("last_sign_in_at")]
-        public string LastSignInAt { get; set; }
+        public DateTimeOffset? LastSignInAt { get; set; }
 
         /// <summary>The user's preferred locale.</summary>
         [JsonProperty("locale")]
         [STJS.JsonPropertyName("locale")]
-        public string Locale { get; set; }
+        public string? Locale { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

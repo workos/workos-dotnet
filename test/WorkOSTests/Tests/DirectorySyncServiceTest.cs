@@ -2,7 +2,7 @@
 
 namespace WorkOSTests
 {
-    using System.IO;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -28,7 +28,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestList()
         {
-            var fixture = File.ReadAllText("testdata/list_directory.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_directory.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/directories", HttpStatusCode.OK, fixture);
             var result = await this.service.List(new DirectorySyncListOptions());
             Assert.NotNull(result);
@@ -37,9 +37,18 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/directories", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.List(new DirectorySyncListOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public async Task TestGet()
         {
-            var fixture = File.ReadAllText("testdata/directory.json");
+            var fixture = System.IO.File.ReadAllText("testdata/directory.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/directories/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.Get("test_id");
             Assert.NotNull(result);
@@ -60,7 +69,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListGroups()
         {
-            var fixture = File.ReadAllText("testdata/list_directory_group.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_directory_group.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/directory_groups", HttpStatusCode.OK, fixture);
             var result = await this.service.ListGroups(new DirectorySyncListGroupsOptions());
             Assert.NotNull(result);
@@ -69,9 +78,18 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListGroupsEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/directory_groups", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListGroups(new DirectorySyncListGroupsOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public async Task TestGetGroup()
         {
-            var fixture = File.ReadAllText("testdata/directory_group.json");
+            var fixture = System.IO.File.ReadAllText("testdata/directory_group.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/directory_groups/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.GetGroup("test_id");
             Assert.NotNull(result);
@@ -84,7 +102,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListUsers()
         {
-            var fixture = File.ReadAllText("testdata/list_directory_user_with_groups.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_directory_user_with_groups.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/directory_users", HttpStatusCode.OK, fixture);
             var result = await this.service.ListUsers(new DirectorySyncListUsersOptions());
             Assert.NotNull(result);
@@ -93,9 +111,18 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListUsersEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/directory_users", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListUsers(new DirectorySyncListUsersOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public async Task TestGetUser()
         {
-            var fixture = File.ReadAllText("testdata/directory_user_with_groups.json");
+            var fixture = System.IO.File.ReadAllText("testdata/directory_user_with_groups.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/directory_users/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.GetUser("test_id");
             Assert.NotNull(result);
@@ -103,6 +130,102 @@ namespace WorkOSTests
             Assert.NotEmpty(result.DirectoryId);
             Assert.NotEmpty(result.OrganizationId);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directory_users/test_id");
+        }
+
+        [Fact]
+        public async Task TestListAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/directory.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/directories", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<Directory>();
+            await foreach (var item in this.service.ListAutoPagingAsync(new DirectorySyncListOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/directories", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<Directory>();
+            await foreach (var item in this.service.ListAutoPagingAsync(new DirectorySyncListOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
+        public async Task TestListGroupsAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/directory_group.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/directory_groups", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<DirectoryGroup>();
+            await foreach (var item in this.service.ListGroupsAutoPagingAsync(new DirectorySyncListGroupsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListGroupsAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/directory_groups", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<DirectoryGroup>();
+            await foreach (var item in this.service.ListGroupsAutoPagingAsync(new DirectorySyncListGroupsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
+        public async Task TestListUsersAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/directory_user_with_groups.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/directory_users", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<DirectoryUserWithGroups>();
+            await foreach (var item in this.service.ListUsersAutoPagingAsync(new DirectorySyncListUsersOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListUsersAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/directory_users", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<DirectoryUserWithGroups>();
+            await foreach (var item in this.service.ListUsersAutoPagingAsync(new DirectorySyncListUsersOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
         }
 
         [Fact]
@@ -124,6 +247,20 @@ namespace WorkOSTests
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
             await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.List(new DirectorySyncListOptions()));
+        }
+
+        [Fact]
+        public async Task TestError429()
+        {
+            this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.List(new DirectorySyncListOptions()));
+        }
+
+        [Fact]
+        public async Task TestError500()
+        {
+            this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
+            await Assert.ThrowsAsync<ServerError>(() => this.service.List(new DirectorySyncListOptions()));
         }
     }
 }

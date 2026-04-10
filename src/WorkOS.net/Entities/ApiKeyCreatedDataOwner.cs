@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>The type of the API key owner.</summary>
         [JsonProperty("type")]
         [STJS.JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string Type { get; set; } = default!;
 
         /// <summary>The unique identifier of the API key owner.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
     }
 }

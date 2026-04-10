@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>Counts of active and inactive directory users.</summary>
         [JsonProperty("users")]
         [STJS.JsonPropertyName("users")]
-        public DirectoryMetadataUser Users { get; set; }
+        public DirectoryMetadataUser Users { get; set; } = default!;
 
         /// <summary>Count of directory groups.</summary>
         [JsonProperty("groups")]
         [STJS.JsonPropertyName("groups")]
-        public int Groups { get; set; }
+        public long Groups { get; set; }
     }
 }

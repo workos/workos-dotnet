@@ -13,42 +13,42 @@ namespace WorkOS
         /// <summary>Distinguishes the data provider object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The unique identifier of the provider.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The display name of the provider (e.g., "GitHub", "Slack").</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>A description of the provider explaining how it will be used, if configured.</summary>
         [JsonProperty("description")]
         [STJS.JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>The slug identifier used in API calls (e.g., `github`, `slack`, `notion`).</summary>
         [JsonProperty("slug")]
         [STJS.JsonPropertyName("slug")]
-        public string Slug { get; set; }
+        public string Slug { get; set; } = default!;
 
         /// <summary>The type of integration (e.g., `github`, `slack`).</summary>
         [JsonProperty("integration_type")]
         [STJS.JsonPropertyName("integration_type")]
-        public string IntegrationType { get; set; }
+        public string IntegrationType { get; set; } = default!;
 
         /// <summary>The type of credentials used by the provider (e.g., `oauth2`).</summary>
         [JsonProperty("credentials_type")]
         [STJS.JsonPropertyName("credentials_type")]
-        public string CredentialsType { get; set; }
+        public string CredentialsType { get; set; } = default!;
 
         /// <summary>The OAuth scopes configured for this provider, or `null` if none are configured.</summary>
         [JsonProperty("scopes")]
         [STJS.JsonPropertyName("scopes")]
-        public List<string> Scopes { get; set; }
+        public List<string>? Scopes { get; set; }
 
         /// <summary>Whether the provider is owned by a user or organization.</summary>
         [JsonProperty("ownership")]
@@ -58,16 +58,16 @@ namespace WorkOS
         /// <summary>The timestamp when the provider was created.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public string CreatedAt { get; set; } = default!;
 
         /// <summary>The timestamp when the provider was last updated.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public string UpdatedAt { get; set; } = default!;
 
         /// <summary>The user's [connected account](https://workos.com/docs/reference/pipes/connected-account) for this provider, or `null` if the user has not connected.</summary>
         [JsonProperty("connected_account")]
         [STJS.JsonPropertyName("connected_account")]
-        public DataIntegrationsListResponseDataConnectedAccount ConnectedAccount { get; set; }
+        public DataIntegrationsListResponseDataConnectedAccount? ConnectedAccount { get; set; }
     }
 }

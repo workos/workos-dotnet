@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The JWT template content as a Liquid template string.</summary>
         [JsonProperty("content")]
         [STJS.JsonPropertyName("content")]
-        public string Content { get; set; }
+        public string Content { get; set; } = default!;
     }
 }

@@ -1,0 +1,16 @@
+{
+  "id": "event_01EHZNVPK3SFK441A1RGBFSHRT",
+  "event": "magic_auth.created",
+  "data": {
+    "object": "magic_auth",
+    "id": "magic_auth_01HWZBQZY2M3AMQW166Q22K88F",
+    "user_id": "user_01E4ZCR3C56J083X43JQXF3JK5",
+    "email": "marcelina.davis@example.com",
+    "expires_at": "2026-01-15T12:00:00.000Z",
+    "created_at": "2026-01-15T12:00:00.000Z",
+    "updated_at": "2026-01-15T12:00:00.000Z"
+  },
+  "created_at": "2026-01-15T12:00:00.000Z",
+  "context": null,
+  "object": "event"
+}

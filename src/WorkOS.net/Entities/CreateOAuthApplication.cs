@@ -13,27 +13,27 @@ namespace WorkOS
         /// <summary>The name of the application.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>The type of application to create.</summary>
         [JsonProperty("application_type")]
         [STJS.JsonPropertyName("application_type")]
-        public string ApplicationType { get; set; }
+        public string ApplicationType { get; set; } = default!;
 
         /// <summary>A description for the application.</summary>
         [JsonProperty("description")]
         [STJS.JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>The OAuth scopes granted to the application.</summary>
         [JsonProperty("scopes")]
         [STJS.JsonPropertyName("scopes")]
-        public List<string> Scopes { get; set; }
+        public List<string>? Scopes { get; set; }
 
         /// <summary>Redirect URIs for the application.</summary>
         [JsonProperty("redirect_uris")]
         [STJS.JsonPropertyName("redirect_uris")]
-        public List<RedirectUriInput> RedirectUris { get; set; }
+        public List<RedirectUriInput>? RedirectUris { get; set; }
 
         /// <summary>Whether the application uses PKCE (Proof Key for Code Exchange).</summary>
         [JsonProperty("uses_pkce")]
@@ -48,6 +48,6 @@ namespace WorkOS
         /// <summary>The organization ID this application belongs to. Required when is_first_party is false.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
     }
 }

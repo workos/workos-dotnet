@@ -13,21 +13,21 @@ namespace WorkOS
         /// <summary>The ID of the [user](https://workos.com/docs/reference/authkit/user).</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = default!;
 
         /// <summary>The ID of the [organization](https://workos.com/docs/reference/organization) which the user belongs to.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
 
         /// <summary>A single role identifier. Defaults to `member` or the explicit default role. Mutually exclusive with `role_slugs`.</summary>
         [JsonProperty("role_slug")]
         [STJS.JsonPropertyName("role_slug")]
-        public string RoleSlug { get; set; }
+        public string? RoleSlug { get; set; }
 
         /// <summary>An array of role identifiers. Limited to one role when Multiple Roles is disabled. Mutually exclusive with `role_slug`.</summary>
         [JsonProperty("role_slugs")]
         [STJS.JsonPropertyName("role_slugs")]
-        public List<string> RoleSlugs { get; set; }
+        public List<string>? RoleSlugs { get; set; }
     }
 }

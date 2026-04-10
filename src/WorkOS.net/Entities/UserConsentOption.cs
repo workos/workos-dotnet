@@ -13,21 +13,21 @@ namespace WorkOS
         /// <summary>The claim name for this consent option.</summary>
         [JsonProperty("claim")]
         [STJS.JsonPropertyName("claim")]
-        public string Claim { get; set; }
+        public string Claim { get; set; } = default!;
 
         /// <summary>The type of consent option.</summary>
         [JsonProperty("type")]
         [STJS.JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string Type { get; set; } = default!;
 
         /// <summary>A human-readable label for this consent option.</summary>
         [JsonProperty("label")]
         [STJS.JsonPropertyName("label")]
-        public string Label { get; set; }
+        public string Label { get; set; } = default!;
 
         /// <summary>The available choices for this consent option.</summary>
         [JsonProperty("choices")]
         [STJS.JsonPropertyName("choices")]
-        public List<UserConsentOptionChoice> Choices { get; set; }
+        public List<UserConsentOptionChoice> Choices { get; set; } = default!;
     }
 }

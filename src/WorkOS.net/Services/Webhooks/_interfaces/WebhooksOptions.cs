@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -15,12 +16,12 @@ namespace WorkOS
         /// <summary>The HTTPS URL where webhooks will be sent.</summary>
         [JsonProperty("endpoint_url")]
         [STJS.JsonPropertyName("endpoint_url")]
-        public string EndpointUrl { get; set; }
+        public string EndpointUrl { get; set; } = default!;
 
         /// <summary>The events that the Webhook Endpoint is subscribed to.</summary>
         [JsonProperty("events")]
         [STJS.JsonPropertyName("events")]
-        public List<CreateWebhookEndpointEvents> Events { get; set; }
+        public List<CreateWebhookEndpointEvents> Events { get; set; } = default!;
 
     }
 
@@ -29,7 +30,7 @@ namespace WorkOS
         /// <summary>The HTTPS URL where webhooks will be sent.</summary>
         [JsonProperty("endpoint_url")]
         [STJS.JsonPropertyName("endpoint_url")]
-        public string EndpointUrl { get; set; }
+        public string? EndpointUrl { get; set; }
 
         /// <summary>Whether the Webhook Endpoint is enabled or disabled.</summary>
         [JsonProperty("status")]
@@ -39,7 +40,7 @@ namespace WorkOS
         /// <summary>The events that the Webhook Endpoint is subscribed to.</summary>
         [JsonProperty("events")]
         [STJS.JsonPropertyName("events")]
-        public List<UpdateWebhookEndpointEvents> Events { get; set; }
+        public List<UpdateWebhookEndpointEvents>? Events { get; set; }
 
     }
 }

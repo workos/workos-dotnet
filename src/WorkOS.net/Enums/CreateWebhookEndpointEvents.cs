@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum CreateWebhookEndpointEvents
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "authentication.email_verification_succeeded")]
         AuthenticationEmailVerificationSucceeded,
         [EnumMember(Value = "authentication.magic_auth_failed")]

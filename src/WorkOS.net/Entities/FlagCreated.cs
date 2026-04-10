@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -12,29 +13,29 @@ namespace WorkOS
         /// <summary>Unique identifier for the event.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
         [JsonProperty("event")]
         [STJS.JsonPropertyName("event")]
-        public string Event { get; set; }
+        public string Event { get; set; } = default!;
 
         /// <summary>The event payload.</summary>
         [JsonProperty("data")]
         [STJS.JsonPropertyName("data")]
-        public FlagCreatedData Data { get; set; }
+        public FlagCreatedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>Additional context about the event.</summary>
         [JsonProperty("context")]
         [STJS.JsonPropertyName("context")]
-        public FlagCreatedContext Context { get; set; }
+        public FlagCreatedContext Context { get; set; } = default!;
 
         /// <summary>Distinguishes the Event object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
     }
 }

@@ -18,23 +18,23 @@ namespace WorkOS
     public class WorkOSClient
     {
         // @oagen-start service-accessors (backing fields)
-        private ApiKeysService apiKeys;
-        private MultiFactorAuthService multiFactorAuth;
-        private ConnectService connect;
-        private AuthorizationService authorization;
-        private SSOService sSO;
-        private PipesService pipes;
-        private DirectorySyncService directorySync;
-        private EventsService events;
-        private FeatureFlagsService featureFlags;
-        private OrganizationDomainsService organizationDomains;
-        private OrganizationsService organizations;
-        private AdminPortalService adminPortal;
-        private RadarService radar;
-        private UserManagementService userManagement;
-        private WebhooksService webhooks;
-        private WidgetsService widgets;
-        private AuditLogsService auditLogs;
+        private ApiKeysService? apiKeys;
+        private MultiFactorAuthService? multiFactorAuth;
+        private ConnectService? connect;
+        private AuthorizationService? authorization;
+        private SSOService? sSO;
+        private PipesService? pipes;
+        private DirectorySyncService? directorySync;
+        private EventsService? events;
+        private FeatureFlagsService? featureFlags;
+        private OrganizationDomainsService? organizationDomains;
+        private OrganizationsService? organizations;
+        private AdminPortalService? adminPortal;
+        private RadarService? radar;
+        private UserManagementService? userManagement;
+        private WebhooksService? webhooks;
+        private WidgetsService? widgets;
+        private AuditLogsService? auditLogs;
 
         // @oagen-end service-accessors (backing fields)
 
@@ -191,7 +191,7 @@ namespace WorkOS
             WorkOSRequest request,
             [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            string afterCursor = null;
+            string? afterCursor = null;
             while (true)
             {
                 if (afterCursor != null && request.Options is ListOptions listOpts)
@@ -245,7 +245,7 @@ namespace WorkOS
         private HttpRequestMessage CreateHttpRequestMessage(WorkOSRequest request)
         {
             Uri uri = this.BuildUri(request);
-            HttpContent content = null;
+            HttpContent? content = null;
 
             if (request.Method != HttpMethod.Get)
             {

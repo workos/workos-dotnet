@@ -12,16 +12,16 @@ namespace WorkOS
         /// <summary>The connection with the expiring certificate.</summary>
         [JsonProperty("connection")]
         [STJS.JsonPropertyName("connection")]
-        public ConnectionSAMLCertificateRenewalRequiredDataConnection Connection { get; set; }
+        public ConnectionSAMLCertificateRenewalRequiredDataConnection Connection { get; set; } = default!;
 
         /// <summary>The SAML certificate details.</summary>
         [JsonProperty("certificate")]
         [STJS.JsonPropertyName("certificate")]
-        public ConnectionSAMLCertificateRenewalRequiredDataCertificate Certificate { get; set; }
+        public ConnectionSAMLCertificateRenewalRequiredDataCertificate Certificate { get; set; } = default!;
 
         /// <summary>The number of days until the certificate expires.</summary>
         [JsonProperty("days_until_expiry")]
         [STJS.JsonPropertyName("days_until_expiry")]
-        public int DaysUntilExpiry { get; set; }
+        public long DaysUntilExpiry { get; set; }
     }
 }

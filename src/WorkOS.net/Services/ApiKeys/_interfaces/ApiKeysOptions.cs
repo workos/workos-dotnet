@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
@@ -11,7 +12,7 @@ namespace WorkOS
         /// <summary>The value for an API key.</summary>
         [JsonProperty("value")]
         [STJS.JsonPropertyName("value")]
-        public string Value { get; set; }
+        public string Value { get; set; } = default!;
 
     }
 
@@ -24,12 +25,12 @@ namespace WorkOS
         /// <summary>The name for the API key.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>The permission slugs to assign to the API key.</summary>
         [JsonProperty("permissions")]
         [STJS.JsonPropertyName("permissions")]
-        public List<string> Permissions { get; set; }
+        public List<string>? Permissions { get; set; }
 
     }
 }

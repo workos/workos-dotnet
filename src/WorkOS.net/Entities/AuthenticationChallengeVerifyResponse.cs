@@ -12,7 +12,7 @@ namespace WorkOS
         /// <summary>The authentication challenge object.</summary>
         [JsonProperty("challenge")]
         [STJS.JsonPropertyName("challenge")]
-        public AuthenticationChallenge Challenge { get; set; }
+        public AuthenticationChallenge Challenge { get; set; } = default!;
 
         /// <summary>Whether the code was valid.</summary>
         [JsonProperty("valid")]

@@ -13,42 +13,42 @@ namespace WorkOS
         /// <summary>The unique ID of the Organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
 
         /// <summary>ISO-8601 value for start of the export range.</summary>
         [JsonProperty("range_start")]
         [STJS.JsonPropertyName("range_start")]
-        public string RangeStart { get; set; }
+        public string RangeStart { get; set; } = default!;
 
         /// <summary>ISO-8601 value for end of the export range.</summary>
         [JsonProperty("range_end")]
         [STJS.JsonPropertyName("range_end")]
-        public string RangeEnd { get; set; }
+        public string RangeEnd { get; set; } = default!;
 
         /// <summary>List of actions to filter against.</summary>
         [JsonProperty("actions")]
         [STJS.JsonPropertyName("actions")]
-        public List<string> Actions { get; set; }
+        public List<string>? Actions { get; set; }
 
         /// <summary>Deprecated. Use `actor_names` instead.</summary>
         [System.Obsolete("This field is deprecated.")]
         [JsonProperty("actors")]
         [STJS.JsonPropertyName("actors")]
-        public List<string> Actors { get; set; }
+        public List<string>? Actors { get; set; }
 
         /// <summary>List of actor names to filter against.</summary>
         [JsonProperty("actor_names")]
         [STJS.JsonPropertyName("actor_names")]
-        public List<string> ActorNames { get; set; }
+        public List<string>? ActorNames { get; set; }
 
         /// <summary>List of actor IDs to filter against.</summary>
         [JsonProperty("actor_ids")]
         [STJS.JsonPropertyName("actor_ids")]
-        public List<string> ActorIds { get; set; }
+        public List<string>? ActorIds { get; set; }
 
         /// <summary>List of target types to filter against.</summary>
         [JsonProperty("targets")]
         [STJS.JsonPropertyName("targets")]
-        public List<string> Targets { get; set; }
+        public List<string>? Targets { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -12,12 +13,12 @@ namespace WorkOS
         /// <summary>Distinguishes the authentication factor object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The unique ID of the factor.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The type of the factor to enroll.</summary>
         [JsonProperty("type")]
@@ -27,26 +28,26 @@ namespace WorkOS
         /// <summary>The ID of the [user](https://workos.com/docs/reference/authkit/user).</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
         /// <summary>SMS-based authentication factor details.</summary>
         [JsonProperty("sms")]
         [STJS.JsonPropertyName("sms")]
-        public AuthenticationFactorEnrolledSms Sms { get; set; }
+        public AuthenticationFactorEnrolledSms? Sms { get; set; }
 
         /// <summary>TOTP-based authentication factor details. Includes enrollment secrets only available at creation time.</summary>
         [JsonProperty("totp")]
         [STJS.JsonPropertyName("totp")]
-        public AuthenticationFactorEnrolledTotp Totp { get; set; }
+        public AuthenticationFactorEnrolledTotp? Totp { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

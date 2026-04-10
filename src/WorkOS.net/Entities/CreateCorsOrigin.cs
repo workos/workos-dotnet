@@ -12,6 +12,6 @@ namespace WorkOS
         /// <summary>The origin URL to allow for CORS requests.</summary>
         [JsonProperty("origin")]
         [STJS.JsonPropertyName("origin")]
-        public string Origin { get; set; }
+        public string Origin { get; set; } = default!;
     }
 }

@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>The client ID associated with the flag event.</summary>
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        public string ClientId { get; set; }
+        public string ClientId { get; set; } = default!;
 
         /// <summary>The actor who performed the action.</summary>
         [JsonProperty("actor")]
         [STJS.JsonPropertyName("actor")]
-        public FlagCreatedContextActor Actor { get; set; }
+        public FlagCreatedContextActor Actor { get; set; } = default!;
     }
 }

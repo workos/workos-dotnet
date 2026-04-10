@@ -12,34 +12,34 @@ namespace WorkOS
         /// <summary>The client ID of the application.</summary>
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
-        public string ClientId { get; set; }
+        public string ClientId { get; set; } = default!;
 
         /// <summary>The client secret of the application.</summary>
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
-        public string ClientSecret { get; set; }
+        public string ClientSecret { get; set; } = default!;
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
-        public string GrantType { get; set; }
+        public string GrantType { get; set; } = default!;
 
         /// <summary>The authorization code received from the redirect.</summary>
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string Code { get; set; }
+        public string Code { get; set; } = default!;
 
         /// <summary>The IP address of the user's request.</summary>
         [JsonProperty("ip_address")]
         [STJS.JsonPropertyName("ip_address")]
-        public string IpAddress { get; set; }
+        public string? IpAddress { get; set; }
 
         /// <summary>A unique identifier for the device.</summary>
         [JsonProperty("device_id")]
         [STJS.JsonPropertyName("device_id")]
-        public string DeviceId { get; set; }
+        public string? DeviceId { get; set; }
 
         /// <summary>The user agent string from the user's browser.</summary>
         [JsonProperty("user_agent")]
         [STJS.JsonPropertyName("user_agent")]
-        public string UserAgent { get; set; }
+        public string? UserAgent { get; set; }
     }
 }

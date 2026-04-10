@@ -13,27 +13,27 @@ namespace WorkOS
         /// <summary>Distinguishes the connected account object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; }
+        public string Object { get; set; } = default!;
 
         /// <summary>The unique identifier of the connected account.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>The [User](https://workos.com/docs/reference/authkit/user) identifier associated with this connection.</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
         /// <summary>The [Organization](https://workos.com/docs/reference/organization) identifier associated with this connection, or `null` if not scoped to an organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         /// <summary>The OAuth scopes granted for this connection.</summary>
         [JsonProperty("scopes")]
         [STJS.JsonPropertyName("scopes")]
-        public List<string> Scopes { get; set; }
+        public List<string> Scopes { get; set; } = default!;
 
         /// <summary>The state of the connected account:</summary>
         [JsonProperty("state")]
@@ -43,11 +43,11 @@ namespace WorkOS
         /// <summary>The timestamp when the connection was created.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public string CreatedAt { get; set; } = default!;
 
         /// <summary>The timestamp when the connection was last updated.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
-        public string UpdatedAt { get; set; }
+        public string UpdatedAt { get; set; } = default!;
     }
 }

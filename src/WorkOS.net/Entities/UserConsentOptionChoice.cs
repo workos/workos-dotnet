@@ -12,11 +12,11 @@ namespace WorkOS
         /// <summary>The value of this choice.</summary>
         [JsonProperty("value")]
         [STJS.JsonPropertyName("value")]
-        public string Value { get; set; }
+        public string? Value { get; set; }
 
         /// <summary>A human-readable label for this choice.</summary>
         [JsonProperty("label")]
         [STJS.JsonPropertyName("label")]
-        public string Label { get; set; }
+        public string? Label { get; set; }
     }
 }

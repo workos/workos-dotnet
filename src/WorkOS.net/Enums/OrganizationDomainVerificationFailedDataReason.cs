@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum OrganizationDomainVerificationFailedDataReason
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "domain_verification_period_expired")]
         DomainVerificationPeriodExpired,
         [EnumMember(Value = "domain_verified_by_other_organization")]

@@ -13,6 +13,6 @@ namespace WorkOS
         /// <summary>The public keys used for verifying access tokens.</summary>
         [JsonProperty("keys")]
         [STJS.JsonPropertyName("keys")]
-        public List<JwksResponseKeys> Keys { get; set; }
+        public List<JwksResponseKeys> Keys { get; set; } = default!;
     }
 }

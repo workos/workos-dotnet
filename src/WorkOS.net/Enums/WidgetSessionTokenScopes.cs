@@ -12,6 +12,9 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum WidgetSessionTokenScopes
     {
+        [EnumMember(Value = "unknown")]
+        Unknown,
+
         [EnumMember(Value = "widgets:users-table:manage")]
         WidgetsUsersTableManage,
         [EnumMember(Value = "widgets:domain-verification:manage")]

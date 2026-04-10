@@ -19,7 +19,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuditLogsRetentionJson"/> result.</returns>
-        public async Task<AuditLogsRetentionJson> ListOrganizationAuditLogsRetention(string id, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuditLogsRetentionJson> ListOrganizationAuditLogsRetention(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -36,7 +36,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuditLogsRetentionJson"/> result.</returns>
-        public async Task<AuditLogsRetentionJson> UpdateOrganizationAuditLogsRetention(string id, AuditLogsUpdateOrganizationAuditLogsRetentionOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuditLogsRetentionJson> UpdateOrganizationAuditLogsRetention(string id, AuditLogsUpdateOrganizationAuditLogsRetentionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -53,7 +53,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="AuditLogActionJson"/> results.</returns>
-        public async Task<WorkOSList<AuditLogActionJson>> ListActions(AuditLogsListActionsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<AuditLogActionJson>> ListActions(AuditLogsListActionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -70,7 +70,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="AuditLogActionJson"/> items.</returns>
-        public IAsyncEnumerable<AuditLogActionJson> ListActionsAutoPagingAsync(AuditLogsListActionsOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<AuditLogActionJson> ListActionsAutoPagingAsync(AuditLogsListActionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -88,7 +88,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="AuditLogSchemaJson"/> results.</returns>
-        public async Task<WorkOSList<AuditLogSchemaJson>> ListActionSchemas(string actionName, AuditLogsListActionSchemasOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<WorkOSList<AuditLogSchemaJson>> ListActionSchemas(string actionName, AuditLogsListActionSchemasOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -106,7 +106,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="AuditLogSchemaJson"/> items.</returns>
-        public IAsyncEnumerable<AuditLogSchemaJson> ListActionSchemasAutoPagingAsync(string actionName, AuditLogsListActionSchemasOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public IAsyncEnumerable<AuditLogSchemaJson> ListActionSchemasAutoPagingAsync(string actionName, AuditLogsListActionSchemasOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -124,7 +124,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuditLogSchemaJson"/> result.</returns>
-        public async Task<AuditLogSchemaJson> CreateSchema(string actionName, AuditLogsCreateSchemaOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuditLogSchemaJson> CreateSchema(string actionName, AuditLogsCreateSchemaOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -141,7 +141,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuditLogEventCreateResponse"/> result.</returns>
-        public async Task<AuditLogEventCreateResponse> CreateEvent(AuditLogsCreateEventOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuditLogEventCreateResponse> CreateEvent(AuditLogsCreateEventOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -158,7 +158,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuditLogExportJson"/> result.</returns>
-        public async Task<AuditLogExportJson> CreateExport(AuditLogsCreateExportOptions options, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuditLogExportJson> CreateExport(AuditLogsCreateExportOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -175,7 +175,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuditLogExportJson"/> result.</returns>
-        public async Task<AuditLogExportJson> GetExport(string auditLogExportId, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<AuditLogExportJson> GetExport(string auditLogExportId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
