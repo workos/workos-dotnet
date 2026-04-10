@@ -16,7 +16,7 @@ namespace WorkOS
 
         protected WorkOSClient Client
         {
-            get => this.client ?? WorkOS.WorkOSClient;
+            get => this.client ?? WorkOSConfiguration.WorkOSClient;
             set => this.client = value;
         }
     }

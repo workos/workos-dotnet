@@ -6,7 +6,7 @@ namespace WorkOS
     /// <summary>
     /// Global configuration class for interacting with the WorkOS API.
     /// </summary>
-    public static class WorkOS
+    public static class WorkOSConfiguration
     {
         private static string? _apiKey;
 
