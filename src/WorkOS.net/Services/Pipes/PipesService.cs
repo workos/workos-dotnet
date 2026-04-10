@@ -20,7 +20,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="DataIntegrationAuthorizeUrlResponse"/> result.</returns>
-        public async Task<DataIntegrationAuthorizeUrlResponse> AuthorizeDataIntegration(string slug, PipesAuthorizeDataIntegrationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<DataIntegrationAuthorizeUrlResponse> AuthorizeDataIntegration(string slug, PipesAuthorizeDataIntegrationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -38,7 +38,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="DataIntegrationAccessTokenResponse"/> result.</returns>
-        public async Task<DataIntegrationAccessTokenResponse> CreateDataIntegrationToken(string slug, PipesCreateDataIntegrationTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<DataIntegrationAccessTokenResponse> CreateDataIntegrationToken(string slug, PipesCreateDataIntegrationTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -57,7 +57,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
-        public async Task<ConnectedAccount> GetUserConnectedAccount(string userId, string slug, PipesGetUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<ConnectedAccount> GetUserConnectedAccount(string userId, string slug, PipesGetUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -75,7 +75,7 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task DeleteUserConnectedAccount(string userId, string slug, PipesDeleteUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteUserConnectedAccount(string userId, string slug, PipesDeleteUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -93,7 +93,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="DataIntegrationsListResponse"/> result.</returns>
-        public async Task<DataIntegrationsListResponse> ListUserDataProviders(string userId, PipesListUserDataProvidersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<DataIntegrationsListResponse> ListUserDataProviders(string userId, PipesListUserDataProvidersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {

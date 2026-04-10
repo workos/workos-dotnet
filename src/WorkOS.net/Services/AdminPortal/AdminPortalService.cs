@@ -19,7 +19,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="PortalLinkResponse"/> result.</returns>
-        public async Task<PortalLinkResponse> GenerateLink(AdminPortalGenerateLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<PortalLinkResponse> GenerateLink(AdminPortalGenerateLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {

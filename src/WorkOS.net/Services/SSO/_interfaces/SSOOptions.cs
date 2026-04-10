@@ -44,6 +44,7 @@ namespace WorkOS
         public Dictionary<string, string>? ProviderQueryParams { get; set; }
 
         /// <summary>Deprecated. Use `connection` or `organization` instead. Used to initiate SSO for a connection by domain. The domain must be associated with a connection in your WorkOS environment.</summary>
+        [System.Obsolete("This parameter is deprecated.")]
         [JsonProperty("domain")]
         [STJS.JsonPropertyName("domain")]
         public string? Domain { get; set; }

@@ -20,6 +20,7 @@ namespace WorkOS
         public string? Search { get; set; }
 
         /// <summary>Filter Directories by their associated domain.</summary>
+        [System.Obsolete("This parameter is deprecated.")]
         [JsonProperty("domain")]
         [STJS.JsonPropertyName("domain")]
         public string? Domain { get; set; }

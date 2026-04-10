@@ -89,7 +89,7 @@ namespace WorkOS
         /// <summary>Get the JWKS URL for the current client.</summary>
         /// <param name="clientId">Optional client ID override.</param>
         /// <returns>The JWKS URL string.</returns>
-        public string GetJwksUrl(string? clientId = null)
+        public virtual string GetJwksUrl(string? clientId = null)
         {
             var id = clientId ?? this.client.ClientId;
             if (string.IsNullOrEmpty(id))
@@ -105,7 +105,7 @@ namespace WorkOS
         /// <param name="cookiePassword">The password used to seal the session.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The authentication result.</returns>
-        public async Task<SessionAuthResult> Authenticate(
+        public virtual async Task<SessionAuthResult> Authenticate(
             string sessionData,
             string cookiePassword,
             CancellationToken cancellationToken = default)

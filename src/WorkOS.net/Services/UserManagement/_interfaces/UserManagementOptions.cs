@@ -165,6 +165,7 @@ namespace WorkOS
     public class UserManagementListOptions : ListOptions
     {
         /// <summary>Filter users by the organization they are a member of. Deprecated in favor of `organization_id`.</summary>
+        [System.Obsolete("This parameter is deprecated.")]
         [JsonProperty("organization")]
         [STJS.JsonPropertyName("organization")]
         public string? Organization { get; set; }

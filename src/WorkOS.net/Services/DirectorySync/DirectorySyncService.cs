@@ -19,7 +19,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="Directory"/> results.</returns>
-        public async Task<WorkOSList<Directory>> List(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<Directory>> List(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -36,7 +36,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="Directory"/> items.</returns>
-        public IAsyncEnumerable<Directory> ListAutoPagingAsync(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual IAsyncEnumerable<Directory> ListAutoPagingAsync(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -53,7 +53,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Directory"/> result.</returns>
-        public async Task<Directory> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Directory> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -68,7 +68,7 @@ namespace WorkOS
         /// <param name="id">Unique identifier for the Directory.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -84,7 +84,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="DirectoryGroup"/> results.</returns>
-        public async Task<WorkOSList<DirectoryGroup>> ListGroups(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<DirectoryGroup>> ListGroups(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -101,7 +101,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="DirectoryGroup"/> items.</returns>
-        public IAsyncEnumerable<DirectoryGroup> ListGroupsAutoPagingAsync(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual IAsyncEnumerable<DirectoryGroup> ListGroupsAutoPagingAsync(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -118,7 +118,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="DirectoryGroup"/> result.</returns>
-        public async Task<DirectoryGroup> GetGroup(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<DirectoryGroup> GetGroup(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -134,7 +134,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="DirectoryUserWithGroups"/> results.</returns>
-        public async Task<WorkOSList<DirectoryUserWithGroups>> ListUsers(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<DirectoryUserWithGroups>> ListUsers(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -151,7 +151,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="DirectoryUserWithGroups"/> items.</returns>
-        public IAsyncEnumerable<DirectoryUserWithGroups> ListUsersAutoPagingAsync(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual IAsyncEnumerable<DirectoryUserWithGroups> ListUsersAutoPagingAsync(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -168,7 +168,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="DirectoryUserWithGroups"/> result.</returns>
-        public async Task<DirectoryUserWithGroups> GetUser(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<DirectoryUserWithGroups> GetUser(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {

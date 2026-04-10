@@ -19,7 +19,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="WebhookEndpointJson"/> results.</returns>
-        public async Task<WorkOSList<WebhookEndpointJson>> ListEndpoints(WebhooksListEndpointsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<WebhookEndpointJson>> ListEndpoints(WebhooksListEndpointsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -36,7 +36,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="WebhookEndpointJson"/> items.</returns>
-        public IAsyncEnumerable<WebhookEndpointJson> ListEndpointsAutoPagingAsync(WebhooksListEndpointsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual IAsyncEnumerable<WebhookEndpointJson> ListEndpointsAutoPagingAsync(WebhooksListEndpointsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -53,7 +53,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="WebhookEndpointJson"/> result.</returns>
-        public async Task<WebhookEndpointJson> CreateEndpoints(WebhooksCreateEndpointsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WebhookEndpointJson> CreateEndpoints(WebhooksCreateEndpointsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -71,7 +71,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="WebhookEndpointJson"/> result.</returns>
-        public async Task<WebhookEndpointJson> UpdateEndpoint(string id, WebhooksUpdateEndpointOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WebhookEndpointJson> UpdateEndpoint(string id, WebhooksUpdateEndpointOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -87,7 +87,7 @@ namespace WorkOS
         /// <param name="id">Unique identifier of the Webhook Endpoint.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public async Task DeleteEndpoint(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteEndpoint(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {

@@ -145,7 +145,7 @@ namespace WorkOS
         }
 
         /// <summary>List Vault objects.</summary>
-        public async Task<WorkOSList<ObjectDigest>> ListObjects(
+        public virtual async Task<WorkOSList<ObjectDigest>> ListObjects(
             ListVaultObjectsOptions? options = null,
             RequestOptions? requestOptions = null,
             CancellationToken cancellationToken = default)
@@ -161,7 +161,7 @@ namespace WorkOS
         }
 
         /// <summary>Create a Vault object.</summary>
-        public async Task<VaultObject> CreateObject(
+        public virtual async Task<VaultObject> CreateObject(
             CreateVaultObjectOptions options,
             RequestOptions? requestOptions = null,
             CancellationToken cancellationToken = default)
@@ -177,7 +177,7 @@ namespace WorkOS
         }
 
         /// <summary>Read a Vault object by ID (decrypted).</summary>
-        public async Task<VaultObject> ReadObject(
+        public virtual async Task<VaultObject> ReadObject(
             string objectId,
             RequestOptions? requestOptions = null,
             CancellationToken cancellationToken = default)
@@ -192,7 +192,7 @@ namespace WorkOS
         }
 
         /// <summary>Read a Vault object by name (decrypted).</summary>
-        public async Task<VaultObject> ReadObjectByName(
+        public virtual async Task<VaultObject> ReadObjectByName(
             string name,
             RequestOptions? requestOptions = null,
             CancellationToken cancellationToken = default)
@@ -207,7 +207,7 @@ namespace WorkOS
         }
 
         /// <summary>Get Vault object metadata (no decryption).</summary>
-        public async Task<VaultObject> GetObjectMetadata(
+        public virtual async Task<VaultObject> GetObjectMetadata(
             string objectId,
             RequestOptions? requestOptions = null,
             CancellationToken cancellationToken = default)
@@ -222,7 +222,7 @@ namespace WorkOS
         }
 
         /// <summary>Update a Vault object.</summary>
-        public async Task<VaultObject> UpdateObject(
+        public virtual async Task<VaultObject> UpdateObject(
             string objectId,
             UpdateVaultObjectOptions options,
             RequestOptions? requestOptions = null,
@@ -239,7 +239,7 @@ namespace WorkOS
         }
 
         /// <summary>Delete a Vault object.</summary>
-        public async Task DeleteObject(
+        public virtual async Task DeleteObject(
             string objectId,
             RequestOptions? requestOptions = null,
             CancellationToken cancellationToken = default)
@@ -254,7 +254,7 @@ namespace WorkOS
         }
 
         /// <summary>List Vault object versions.</summary>
-        public async Task<List<ObjectVersion>> ListObjectVersions(
+        public virtual async Task<List<ObjectVersion>> ListObjectVersions(
             string objectId,
             RequestOptions? requestOptions = null,
             CancellationToken cancellationToken = default)
@@ -269,7 +269,7 @@ namespace WorkOS
         }
 
         /// <summary>Generate a data key for local encryption.</summary>
-        public async Task<DataKeyPair> CreateDataKey(
+        public virtual async Task<DataKeyPair> CreateDataKey(
             CreateDataKeyOptions options,
             RequestOptions? requestOptions = null,
             CancellationToken cancellationToken = default)
@@ -285,7 +285,7 @@ namespace WorkOS
         }
 
         /// <summary>Decrypt a previously generated data key.</summary>
-        public async Task<DataKey> DecryptDataKey(
+        public virtual async Task<DataKey> DecryptDataKey(
             DecryptDataKeyOptions options,
             RequestOptions? requestOptions = null,
             CancellationToken cancellationToken = default)
@@ -306,7 +306,7 @@ namespace WorkOS
         /// <param name="associatedData">Optional additional authenticated data.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A base64-encoded encrypted payload.</returns>
-        public async Task<string> Encrypt(
+        public virtual async Task<string> Encrypt(
             string data,
             Dictionary<string, string> keyContext,
             string? associatedData = null,
@@ -351,7 +351,7 @@ namespace WorkOS
         /// <param name="associatedData">Optional additional authenticated data (must match encryption).</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The decrypted plaintext string.</returns>
-        public async Task<string> Decrypt(
+        public virtual async Task<string> Decrypt(
             string encryptedData,
             string? associatedData = null,
             CancellationToken cancellationToken = default)

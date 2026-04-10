@@ -62,6 +62,16 @@ namespace WorkOS
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="WorkOSClient"/> class for mocking.
+        /// </summary>
+        protected WorkOSClient()
+        {
+            this.ApiBaseURL = default!;
+            this.ApiKey = default!;
+            this.HttpClient = default!;
+        }
+
+        /// <summary>
         /// Describes the .NET SDK version.
         /// </summary>
         public static string SdkVersion =>
@@ -166,7 +176,7 @@ namespace WorkOS
         /// <param name="request">The request to make to the WorkOS API.</param>
         /// <param name="cancellationToken">A token used to cancel the request.</param>
         /// <returns>The response from the WorkOS API.</returns>
-        public async Task<HttpResponseMessage> MakeRawAPIRequest(
+        public virtual async Task<HttpResponseMessage> MakeRawAPIRequest(
             WorkOSRequest request,
             CancellationToken cancellationToken = default)
         {
@@ -189,7 +199,7 @@ namespace WorkOS
         /// <param name="request">The request to make to the WorkOS API.</param>
         /// <param name="cancellationToken">A token used to cancel the request.</param>
         /// <returns>The response from the WorkOS API.</returns>
-        public async Task<T> MakeAPIRequest<T>(
+        public virtual async Task<T> MakeAPIRequest<T>(
             WorkOSRequest request,
             CancellationToken cancellationToken = default)
         {

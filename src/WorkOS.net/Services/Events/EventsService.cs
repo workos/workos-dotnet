@@ -19,7 +19,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="EventSchema"/> results.</returns>
-        public async Task<WorkOSList<EventSchema>> List(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<EventSchema>> List(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -36,7 +36,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="EventSchema"/> items.</returns>
-        public IAsyncEnumerable<EventSchema> ListAutoPagingAsync(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual IAsyncEnumerable<EventSchema> ListAutoPagingAsync(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
