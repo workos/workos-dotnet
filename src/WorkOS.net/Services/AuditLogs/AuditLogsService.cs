@@ -19,7 +19,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuditLogsRetentionJson"/> result.</returns>
-        public virtual async Task<AuditLogsRetentionJson> ListOrganizationAuditLogsRetention(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<AuditLogsRetentionJson> GetOrganizationAuditLogsRetention(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {

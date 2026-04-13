@@ -135,7 +135,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuditLogConfiguration"/> result.</returns>
-        public virtual async Task<AuditLogConfiguration> ListAuditLogConfiguration(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<AuditLogConfiguration> GetAuditLogConfiguration(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
