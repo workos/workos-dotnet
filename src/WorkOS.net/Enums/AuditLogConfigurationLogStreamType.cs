@@ -4,11 +4,10 @@ namespace WorkOS
 {
     using System.Runtime.Serialization;
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Converters;
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents audit log configuration log stream type values.</summary>
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonConverter(typeof(WorkOSNewtonsoftStringEnumConverter))]
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum AuditLogConfigurationLogStreamType
     {

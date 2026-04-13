@@ -3,9 +3,8 @@ namespace WorkOS
 {
     using System.Runtime.Serialization;
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Converters;
 
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonConverter(typeof(WorkOSNewtonsoftStringEnumConverter))]
     public enum PaginationOrder
     {
         [EnumMember(Value = "normal")]
