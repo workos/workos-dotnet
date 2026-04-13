@@ -37,11 +37,12 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestGetAuthorizationUrl()
+        public void TestGetAuthorizationUrl()
         {
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/authorize", HttpStatusCode.OK, "");
-            await this.service.GetAuthorizationUrl(new UserManagementGetAuthorizationUrlOptions());
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/authorize");
+            var url = this.service.GetAuthorizationUrl(new UserManagementGetAuthorizationUrlOptions());
+            Assert.Contains("/user_management/authorize", url);
+            Assert.Contains("client_id=client_test", url);
+            Assert.Contains("response_type=code", url);
         }
 
         [Fact]
@@ -57,11 +58,10 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestGetLogoutUrl()
+        public void TestGetLogoutUrl()
         {
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/sessions/logout", HttpStatusCode.OK, "");
-            await this.service.GetLogoutUrl(new UserManagementGetLogoutUrlOptions());
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/sessions/logout");
+            var url = this.service.GetLogoutUrl(new UserManagementGetLogoutUrlOptions());
+            Assert.Contains("/user_management/sessions/logout", url);
         }
 
         [Fact]

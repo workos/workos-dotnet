@@ -67,22 +67,19 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestGetAuthorizationUrl()
+        public void TestGetAuthorizationUrl()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/sso_authorize_url_response.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/sso/authorize", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetAuthorizationUrl(new SSOGetAuthorizationUrlOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Url);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/sso/authorize");
+            var url = this.service.GetAuthorizationUrl(new SSOGetAuthorizationUrlOptions());
+            Assert.Contains("/sso/authorize", url);
+            Assert.Contains("client_id=client_test", url);
+            Assert.Contains("response_type=code", url);
         }
 
         [Fact]
-        public async Task TestGetLogoutUrl()
+        public void TestGetLogoutUrl()
         {
-            this.httpMock.MockResponse(HttpMethod.Get, "/sso/logout", HttpStatusCode.OK, "");
-            await this.service.GetLogoutUrl(new SSOGetLogoutUrlOptions());
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/sso/logout");
+            var url = this.service.GetLogoutUrl(new SSOGetLogoutUrlOptions());
+            Assert.Contains("/sso/logout", url);
         }
 
         [Fact]

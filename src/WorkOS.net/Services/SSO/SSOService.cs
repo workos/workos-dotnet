@@ -79,12 +79,14 @@ namespace WorkOS
             await this.Client.MakeRawAPIRequest(request, cancellationToken);
         }
 
-        /// <summary>Initiate SSO</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="SSOAuthorizeUrlResponse"/> result.</returns>
-        public virtual async Task<SSOAuthorizeUrlResponse> GetAuthorizationUrl(SSOGetAuthorizationUrlOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Builds the SSO authorization URL for the configured client. The caller is
+        /// expected to redirect the user's browser to the returned URL — the SDK does
+        /// not call the endpoint directly.
+        /// </summary>
+        /// <param name="options">SSO parameters (connection, organization, redirect_uri, state, etc.).</param>
+        /// <returns>The fully-qualified authorization URL.</returns>
+        public virtual string GetAuthorizationUrl(SSOGetAuthorizationUrlOptions? options = null)
         {
             options ??= new SSOGetAuthorizationUrlOptions();
             options.ResponseType = "code";
@@ -94,25 +96,25 @@ namespace WorkOS
                 Method = HttpMethod.Get,
                 Path = "/sso/authorize",
                 Options = options,
-                RequestOptions = requestOptions,
             };
-            return await this.Client.MakeAPIRequest<SSOAuthorizeUrlResponse>(request, cancellationToken);
+            return this.Client.BuildRequestUri(request).ToString();
         }
 
-        /// <summary>Logout Redirect</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task GetLogoutUrl(SSOGetLogoutUrlOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Builds the SSO logout URL. The caller is expected to redirect the user's
+        /// browser to the returned URL — the SDK does not call the endpoint directly.
+        /// </summary>
+        /// <param name="options">Logout parameters.</param>
+        /// <returns>The fully-qualified logout URL.</returns>
+        public virtual string GetLogoutUrl(SSOGetLogoutUrlOptions? options = null)
         {
             var request = new WorkOSRequest
             {
                 Method = HttpMethod.Get,
                 Path = "/sso/logout",
                 Options = options,
-                RequestOptions = requestOptions,
             };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            return this.Client.BuildRequestUri(request).ToString();
         }
 
         /// <summary>Logout Authorize</summary>

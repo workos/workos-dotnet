@@ -177,6 +177,22 @@ namespace WorkOS
         }
 
         /// <summary>
+        /// Constructs the absolute URL the SDK would send for <paramref name="request"/>,
+        /// without performing any HTTP I/O. Used by URL-builder methods such as
+        /// <see cref="SSOService.GetAuthorizationUrl"/> and
+        /// <see cref="UserManagementService.GetAuthorizationUrl"/>, which return a URL
+        /// that the caller redirects the browser to rather than calling themselves.
+        /// </summary>
+        /// <param name="request">The request to build a URI for. Only the Path and (for
+        /// GET/DELETE) Options participate; Method, AccessToken, headers, and request
+        /// bodies are ignored.</param>
+        /// <returns>The full request URI including any query string.</returns>
+        public virtual Uri BuildRequestUri(WorkOSRequest request)
+        {
+            return this.BuildUri(request);
+        }
+
+        /// <summary>
         /// Returns the configured <see cref="ClientId"/>, throwing an <see cref="InvalidOperationException"/>
         /// with a descriptive message if it was not set. Used by generated services for endpoints
         /// that require a <c>client_id</c> parameter (SSO, User Management authenticate-with-* flows).

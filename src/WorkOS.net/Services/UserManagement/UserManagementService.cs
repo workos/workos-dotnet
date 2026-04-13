@@ -189,11 +189,14 @@ namespace WorkOS
             return await this.Client.MakeAPIRequest<AuthenticateResponse>(request, cancellationToken);
         }
 
-        /// <summary>Get an authorization URL</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task GetAuthorizationUrl(UserManagementGetAuthorizationUrlOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Builds the AuthKit authorization URL for the configured client. The caller
+        /// is expected to redirect the user's browser to the returned URL — the SDK
+        /// does not call the endpoint directly.
+        /// </summary>
+        /// <param name="options">Authorization parameters (provider, redirect_uri, state, code_challenge, etc.).</param>
+        /// <returns>The fully-qualified authorization URL.</returns>
+        public virtual string GetAuthorizationUrl(UserManagementGetAuthorizationUrlOptions? options = null)
         {
             options ??= new UserManagementGetAuthorizationUrlOptions();
             options.ResponseType = "code";
@@ -203,9 +206,8 @@ namespace WorkOS
                 Method = HttpMethod.Get,
                 Path = "/user_management/authorize",
                 Options = options,
-                RequestOptions = requestOptions,
             };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            return this.Client.BuildRequestUri(request).ToString();
         }
 
         /// <summary>Get device authorization URL</summary>
@@ -225,20 +227,22 @@ namespace WorkOS
             return await this.Client.MakeAPIRequest<DeviceAuthorizationResponse>(request, cancellationToken);
         }
 
-        /// <summary>Logout</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task GetLogoutUrl(UserManagementGetLogoutUrlOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Builds the User Management logout URL. The caller is expected to redirect
+        /// the user's browser to the returned URL — the SDK does not call the
+        /// endpoint directly.
+        /// </summary>
+        /// <param name="options">Logout parameters (session_id, return_to, etc.).</param>
+        /// <returns>The fully-qualified logout URL.</returns>
+        public virtual string GetLogoutUrl(UserManagementGetLogoutUrlOptions? options = null)
         {
             var request = new WorkOSRequest
             {
                 Method = HttpMethod.Get,
                 Path = "/user_management/sessions/logout",
                 Options = options,
-                RequestOptions = requestOptions,
             };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            return this.Client.BuildRequestUri(request).ToString();
         }
 
         /// <summary>Revoke Session</summary>
