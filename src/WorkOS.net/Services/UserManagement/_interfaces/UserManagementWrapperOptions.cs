@@ -23,6 +23,21 @@ namespace WorkOS
         [STJS.JsonPropertyName("invitation_token")]
         public string? InvitationToken { get; set; }
 
+        /// <summary>The IP address of the user's request.</summary>
+        [JsonProperty("ip_address")]
+        [STJS.JsonPropertyName("ip_address")]
+        public string? IpAddress { get; set; }
+
+        /// <summary>A unique identifier for the device.</summary>
+        [JsonProperty("device_id")]
+        [STJS.JsonPropertyName("device_id")]
+        public string? DeviceId { get; set; }
+
+        /// <summary>The user agent string from the user's browser.</summary>
+        [JsonProperty("user_agent")]
+        [STJS.JsonPropertyName("user_agent")]
+        public string? UserAgent { get; set; }
+
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
         internal string GrantType { get; set; } = default!;
@@ -34,14 +49,29 @@ namespace WorkOS
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
         internal string ClientSecret { get; set; } = default!;
-
     }
 
     public class AuthenticateWithCodeOptions : BaseOptions
     {
+        /// <summary>The authorization code received from the redirect.</summary>
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string? Code { get; set; }
+        public string Code { get; set; } = default!;
+
+        /// <summary>The IP address of the user's request.</summary>
+        [JsonProperty("ip_address")]
+        [STJS.JsonPropertyName("ip_address")]
+        public string? IpAddress { get; set; }
+
+        /// <summary>A unique identifier for the device.</summary>
+        [JsonProperty("device_id")]
+        [STJS.JsonPropertyName("device_id")]
+        public string? DeviceId { get; set; }
+
+        /// <summary>The user agent string from the user's browser.</summary>
+        [JsonProperty("user_agent")]
+        [STJS.JsonPropertyName("user_agent")]
+        public string? UserAgent { get; set; }
 
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
@@ -54,7 +84,6 @@ namespace WorkOS
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
         internal string ClientSecret { get; set; } = default!;
-
     }
 
     public class AuthenticateWithRefreshTokenOptions : BaseOptions
@@ -69,6 +98,21 @@ namespace WorkOS
         [STJS.JsonPropertyName("organization_id")]
         public string? OrganizationId { get; set; }
 
+        /// <summary>The IP address of the user's request.</summary>
+        [JsonProperty("ip_address")]
+        [STJS.JsonPropertyName("ip_address")]
+        public string? IpAddress { get; set; }
+
+        /// <summary>A unique identifier for the device.</summary>
+        [JsonProperty("device_id")]
+        [STJS.JsonPropertyName("device_id")]
+        public string? DeviceId { get; set; }
+
+        /// <summary>The user agent string from the user's browser.</summary>
+        [JsonProperty("user_agent")]
+        [STJS.JsonPropertyName("user_agent")]
+        public string? UserAgent { get; set; }
+
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
         internal string GrantType { get; set; } = default!;
@@ -80,23 +124,40 @@ namespace WorkOS
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
         internal string ClientSecret { get; set; } = default!;
-
     }
 
     public class AuthenticateWithMagicAuthOptions : BaseOptions
     {
+        /// <summary>The one-time code for Magic Auth authentication.</summary>
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string? Code { get; set; }
+        public string Code { get; set; } = default!;
 
+        /// <summary>The user's email address.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
-        public string? Email { get; set; }
+        public string Email { get; set; } = default!;
 
+        /// <summary>An invitation token to accept during authentication.</summary>
         [JsonProperty("invitation_token")]
         [STJS.JsonPropertyName("invitation_token")]
         public string? InvitationToken { get; set; }
 
+        /// <summary>The IP address of the user's request.</summary>
+        [JsonProperty("ip_address")]
+        [STJS.JsonPropertyName("ip_address")]
+        public string? IpAddress { get; set; }
+
+        /// <summary>A unique identifier for the device.</summary>
+        [JsonProperty("device_id")]
+        [STJS.JsonPropertyName("device_id")]
+        public string? DeviceId { get; set; }
+
+        /// <summary>The user agent string from the user's browser.</summary>
+        [JsonProperty("user_agent")]
+        [STJS.JsonPropertyName("user_agent")]
+        public string? UserAgent { get; set; }
+
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
         internal string GrantType { get; set; } = default!;
@@ -108,18 +169,34 @@ namespace WorkOS
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
         internal string ClientSecret { get; set; } = default!;
-
     }
 
     public class AuthenticateWithEmailVerificationOptions : BaseOptions
     {
+        /// <summary>The email verification code.</summary>
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string? Code { get; set; }
+        public string Code { get; set; } = default!;
 
+        /// <summary>The pending authentication token from a previous authentication attempt.</summary>
         [JsonProperty("pending_authentication_token")]
         [STJS.JsonPropertyName("pending_authentication_token")]
         public string? PendingAuthenticationToken { get; set; }
+
+        /// <summary>The IP address of the user's request.</summary>
+        [JsonProperty("ip_address")]
+        [STJS.JsonPropertyName("ip_address")]
+        public string? IpAddress { get; set; }
+
+        /// <summary>A unique identifier for the device.</summary>
+        [JsonProperty("device_id")]
+        [STJS.JsonPropertyName("device_id")]
+        public string? DeviceId { get; set; }
+
+        /// <summary>The user agent string from the user's browser.</summary>
+        [JsonProperty("user_agent")]
+        [STJS.JsonPropertyName("user_agent")]
+        public string? UserAgent { get; set; }
 
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
@@ -132,22 +209,39 @@ namespace WorkOS
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
         internal string ClientSecret { get; set; } = default!;
-
     }
 
     public class AuthenticateWithTotpOptions : BaseOptions
     {
+        /// <summary>The TOTP code from the user's authenticator app.</summary>
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
-        public string? Code { get; set; }
+        public string Code { get; set; } = default!;
 
+        /// <summary>The pending authentication token from a previous authentication attempt.</summary>
         [JsonProperty("pending_authentication_token")]
         [STJS.JsonPropertyName("pending_authentication_token")]
-        public string? PendingAuthenticationToken { get; set; }
+        public string PendingAuthenticationToken { get; set; } = default!;
 
+        /// <summary>The ID of the authentication challenge.</summary>
         [JsonProperty("authentication_challenge_id")]
         [STJS.JsonPropertyName("authentication_challenge_id")]
-        public string? AuthenticationChallengeId { get; set; }
+        public string AuthenticationChallengeId { get; set; } = default!;
+
+        /// <summary>The IP address of the user's request.</summary>
+        [JsonProperty("ip_address")]
+        [STJS.JsonPropertyName("ip_address")]
+        public string? IpAddress { get; set; }
+
+        /// <summary>A unique identifier for the device.</summary>
+        [JsonProperty("device_id")]
+        [STJS.JsonPropertyName("device_id")]
+        public string? DeviceId { get; set; }
+
+        /// <summary>The user agent string from the user's browser.</summary>
+        [JsonProperty("user_agent")]
+        [STJS.JsonPropertyName("user_agent")]
+        public string? UserAgent { get; set; }
 
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
@@ -160,18 +254,34 @@ namespace WorkOS
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
         internal string ClientSecret { get; set; } = default!;
-
     }
 
     public class AuthenticateWithOrganizationSelectionOptions : BaseOptions
     {
+        /// <summary>The pending authentication token from a previous authentication attempt.</summary>
         [JsonProperty("pending_authentication_token")]
         [STJS.JsonPropertyName("pending_authentication_token")]
-        public string? PendingAuthenticationToken { get; set; }
+        public string PendingAuthenticationToken { get; set; } = default!;
 
+        /// <summary>The ID of the organization to scope the session to.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string? OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
+
+        /// <summary>The IP address of the user's request.</summary>
+        [JsonProperty("ip_address")]
+        [STJS.JsonPropertyName("ip_address")]
+        public string? IpAddress { get; set; }
+
+        /// <summary>A unique identifier for the device.</summary>
+        [JsonProperty("device_id")]
+        [STJS.JsonPropertyName("device_id")]
+        public string? DeviceId { get; set; }
+
+        /// <summary>The user agent string from the user's browser.</summary>
+        [JsonProperty("user_agent")]
+        [STJS.JsonPropertyName("user_agent")]
+        public string? UserAgent { get; set; }
 
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
@@ -184,14 +294,29 @@ namespace WorkOS
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
         internal string ClientSecret { get; set; } = default!;
-
     }
 
     public class AuthenticateWithDeviceCodeOptions : BaseOptions
     {
+        /// <summary>The device code obtained from the device authorization endpoint.</summary>
         [JsonProperty("device_code")]
         [STJS.JsonPropertyName("device_code")]
-        public string? DeviceCode { get; set; }
+        public string DeviceCode { get; set; } = default!;
+
+        /// <summary>The IP address of the user's request.</summary>
+        [JsonProperty("ip_address")]
+        [STJS.JsonPropertyName("ip_address")]
+        public string? IpAddress { get; set; }
+
+        /// <summary>A unique identifier for the device.</summary>
+        [JsonProperty("device_id")]
+        [STJS.JsonPropertyName("device_id")]
+        public string? DeviceId { get; set; }
+
+        /// <summary>The user agent string from the user's browser.</summary>
+        [JsonProperty("user_agent")]
+        [STJS.JsonPropertyName("user_agent")]
+        public string? UserAgent { get; set; }
 
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
@@ -200,6 +325,5 @@ namespace WorkOS
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
         internal string ClientId { get; set; } = default!;
-
     }
 }
