@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a dsync activated data domain.</summary>
-    public class DsyncActivatedDataDomain : WorkOSEntity<DsyncActivatedDataDomain>
+    public class DsyncActivatedDataDomain
     {
 
         /// <summary>Distinguishes the organization domain object.</summary>

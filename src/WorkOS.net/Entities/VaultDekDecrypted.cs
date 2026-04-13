@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a vault dek decrypted.</summary>
-    public class VaultDekDecrypted : WorkOSEntity<VaultDekDecrypted>
+    public class VaultDekDecrypted
     {
 
         /// <summary>Unique identifier for the event.</summary>

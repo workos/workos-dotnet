@@ -8,7 +8,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a role.</summary>
-    public class Role : WorkOSEntity<Role>
+    public class Role
     {
 
         /// <summary>A unique slug for the role.</summary>

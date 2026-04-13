@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a audit log event actor.</summary>
-    public class AuditLogEventActor : WorkOSEntity<AuditLogEventActor>
+    public class AuditLogEventActor
     {
 
         /// <summary>Actor identifier.</summary>

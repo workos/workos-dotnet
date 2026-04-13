@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a revoke session.</summary>
-    public class RevokeSession : WorkOSEntity<RevokeSession>
+    public class RevokeSession
     {
 
         /// <summary>The ID of the session to revoke. This can be extracted from the `sid` claim of the access token.</summary>

@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authentication email verification failed.</summary>
-    public class AuthenticationEmailVerificationFailed : WorkOSEntity<AuthenticationEmailVerificationFailed>
+    public class AuthenticationEmailVerificationFailed
     {
 
         /// <summary>Unique identifier for the event.</summary>

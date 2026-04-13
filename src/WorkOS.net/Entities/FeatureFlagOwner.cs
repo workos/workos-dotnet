@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a feature flag owner.</summary>
-    public class FeatureFlagOwner : WorkOSEntity<FeatureFlagOwner>
+    public class FeatureFlagOwner
     {
 
         /// <summary>The email address of the flag owner.</summary>

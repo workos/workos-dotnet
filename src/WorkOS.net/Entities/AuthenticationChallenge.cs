@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authentication challenge.</summary>
-    public class AuthenticationChallenge : WorkOSEntity<AuthenticationChallenge>
+    public class AuthenticationChallenge
     {
 
         /// <summary>Distinguishes the authentication challenge object.</summary>

@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a application credentials list item.</summary>
-    public class ApplicationCredentialsListItem : WorkOSEntity<ApplicationCredentialsListItem>
+    public class ApplicationCredentialsListItem
     {
 
         /// <summary>Distinguishes the connect application secret object.</summary>

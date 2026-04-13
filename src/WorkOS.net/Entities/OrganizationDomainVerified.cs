@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a organization domain verified.</summary>
-    public class OrganizationDomainVerified : WorkOSEntity<OrganizationDomainVerified>
+    public class OrganizationDomainVerified
     {
 
         /// <summary>Unique identifier for the event.</summary>

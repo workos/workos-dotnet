@@ -8,7 +8,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a directory user.</summary>
-    public class DirectoryUser : WorkOSEntity<DirectoryUser>
+    public class DirectoryUser
     {
 
         /// <summary>Distinguishes the Directory User object.</summary>

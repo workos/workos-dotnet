@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class AuthenticationPasswordSucceededData : WorkOSEntity<AuthenticationPasswordSucceededData>
+    public class AuthenticationPasswordSucceededData
     {
         [JsonProperty("type")]
         [STJS.JsonPropertyName("type")]

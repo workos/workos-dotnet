@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a sso logout authorize request.</summary>
-    public class SSOLogoutAuthorizeRequest : WorkOSEntity<SSOLogoutAuthorizeRequest>
+    public class SSOLogoutAuthorizeRequest
     {
 
         /// <summary>The unique ID of the profile to log out.</summary>

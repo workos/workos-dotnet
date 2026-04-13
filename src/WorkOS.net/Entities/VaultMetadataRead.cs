@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a vault metadata read.</summary>
-    public class VaultMetadataRead : WorkOSEntity<VaultMetadataRead>
+    public class VaultMetadataRead
     {
 
         /// <summary>Unique identifier for the event.</summary>

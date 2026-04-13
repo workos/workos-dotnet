@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authentication sso timed out.</summary>
-    public class AuthenticationSSOTimedOut : WorkOSEntity<AuthenticationSSOTimedOut>
+    public class AuthenticationSSOTimedOut
     {
 
         /// <summary>Unique identifier for the event.</summary>

@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a user authentication factor enroll response.</summary>
-    public class UserAuthenticationFactorEnrollResponse : WorkOSEntity<UserAuthenticationFactorEnrollResponse>
+    public class UserAuthenticationFactorEnrollResponse
     {
 
         /// <summary>The [authentication factor](https://workos.com/docs/reference/authkit/mfa/authentication-factor) object that represents the additional authentication method used on top of the existing authentication strategy.</summary>

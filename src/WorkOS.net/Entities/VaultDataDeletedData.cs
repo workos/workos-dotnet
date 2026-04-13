@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class VaultDataDeletedData : WorkOSEntity<VaultDataDeletedData>
+    public class VaultDataDeletedData
     {
 
         /// <summary>The unique identifier of the actor.</summary>

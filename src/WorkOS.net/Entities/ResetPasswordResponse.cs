@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a reset password response.</summary>
-    public class ResetPasswordResponse : WorkOSEntity<ResetPasswordResponse>
+    public class ResetPasswordResponse
     {
 
         /// <summary>The user whose password was reset.</summary>

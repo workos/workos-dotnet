@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a audit logs retention json.</summary>
-    public class AuditLogsRetentionJson : WorkOSEntity<AuditLogsRetentionJson>
+    public class AuditLogsRetentionJson
     {
 
         /// <summary>The number of days Audit Log events will be retained before being permanently deleted. Valid values are 30 and 365.</summary>

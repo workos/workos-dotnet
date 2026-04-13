@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authentication mfa succeeded.</summary>
-    public class AuthenticationMfaSucceeded : WorkOSEntity<AuthenticationMfaSucceeded>
+    public class AuthenticationMfaSucceeded
     {
 
         /// <summary>Unique identifier for the event.</summary>

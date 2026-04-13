@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a data integration access token response.</summary>
-    public class DataIntegrationAccessTokenResponse : WorkOSEntity<DataIntegrationAccessTokenResponse>
+    public class DataIntegrationAccessTokenResponse
     {
 
         /// <summary>Indicates whether the access token is valid and ready for use, or if reauthorization is required.</summary>

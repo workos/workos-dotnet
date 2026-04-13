@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authentication sso started.</summary>
-    public class AuthenticationSSOStarted : WorkOSEntity<AuthenticationSSOStarted>
+    public class AuthenticationSSOStarted
     {
 
         /// <summary>Unique identifier for the event.</summary>

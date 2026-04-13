@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Information about the impersonator if this session was created via impersonation.</summary>
-    public class AuthenticateResponseImpersonator : WorkOSEntity<AuthenticateResponseImpersonator>
+    public class AuthenticateResponseImpersonator
     {
 
         /// <summary>The email address of the WorkOS Dashboard user who is impersonating the user.</summary>

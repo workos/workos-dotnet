@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a update user.</summary>
-    public class UpdateUser : WorkOSEntity<UpdateUser>
+    public class UpdateUser
     {
 
         /// <summary>The email address of the user.</summary>

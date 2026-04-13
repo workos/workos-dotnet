@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a jwt template response.</summary>
-    public class JWTTemplateResponse : WorkOSEntity<JWTTemplateResponse>
+    public class JWTTemplateResponse
     {
 
         /// <summary>The object type.</summary>

@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a connected account.</summary>
-    public class ConnectedAccount : WorkOSEntity<ConnectedAccount>
+    public class ConnectedAccount
     {
 
         /// <summary>Distinguishes the connected account object.</summary>

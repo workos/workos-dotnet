@@ -8,7 +8,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a flag.</summary>
-    public class Flag : WorkOSEntity<Flag>
+    public class Flag
     {
 
         /// <summary>Distinguishes the Feature Flag object.</summary>

@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Pagination cursor for navigating to the next page of results.</summary>
-    public class EventListListMetadata : WorkOSEntity<EventListListMetadata>
+    public class EventListListMetadata
     {
 
         /// <summary>An object ID that defines your place in the list. When the ID is not present, you are at the end of the list.</summary>

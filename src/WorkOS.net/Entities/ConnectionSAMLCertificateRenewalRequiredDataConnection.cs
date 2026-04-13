@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The connection with the expiring certificate.</summary>
-    public class ConnectionSAMLCertificateRenewalRequiredDataConnection : WorkOSEntity<ConnectionSAMLCertificateRenewalRequiredDataConnection>
+    public class ConnectionSAMLCertificateRenewalRequiredDataConnection
     {
 
         /// <summary>Unique identifier of the connection.</summary>

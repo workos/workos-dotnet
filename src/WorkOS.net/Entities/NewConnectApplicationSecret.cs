@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a new connect application secret.</summary>
-    public class NewConnectApplicationSecret : WorkOSEntity<NewConnectApplicationSecret>
+    public class NewConnectApplicationSecret
     {
 
         /// <summary>Distinguishes the connect application secret object.</summary>

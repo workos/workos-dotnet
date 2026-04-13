@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class ActionUserRegistrationDeniedData : WorkOSEntity<ActionUserRegistrationDeniedData>
+    public class ActionUserRegistrationDeniedData
     {
 
         /// <summary>The ID of the action endpoint.</summary>

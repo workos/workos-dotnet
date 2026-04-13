@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a widget session token response.</summary>
-    public class WidgetSessionTokenResponse : WorkOSEntity<WidgetSessionTokenResponse>
+    public class WidgetSessionTokenResponse
     {
 
         /// <summary>The widget session token.</summary>

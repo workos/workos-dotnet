@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The previous context attributes of the flag rule.</summary>
-    public class FlagRuleUpdatedContextPreviousAttributeContext : WorkOSEntity<FlagRuleUpdatedContextPreviousAttributeContext>
+    public class FlagRuleUpdatedContextPreviousAttributeContext
     {
 
         /// <summary>The previous access type of the flag rule.</summary>

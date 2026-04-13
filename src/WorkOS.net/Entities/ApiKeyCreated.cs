@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a api key created.</summary>
-    public class ApiKeyCreated : WorkOSEntity<ApiKeyCreated>
+    public class ApiKeyCreated
     {
 
         /// <summary>Unique identifier for the event.</summary>

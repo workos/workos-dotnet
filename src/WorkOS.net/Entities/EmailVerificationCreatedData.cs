@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class EmailVerificationCreatedData : WorkOSEntity<EmailVerificationCreatedData>
+    public class EmailVerificationCreatedData
     {
 
         /// <summary>Distinguishes the email verification object.</summary>

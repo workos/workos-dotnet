@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a data integration authorize url response.</summary>
-    public class DataIntegrationAuthorizeUrlResponse : WorkOSEntity<DataIntegrationAuthorizeUrlResponse>
+    public class DataIntegrationAuthorizeUrlResponse
     {
 
         /// <summary>The OAuth authorization URL to redirect the user to.</summary>

@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authentication challenges verify request.</summary>
-    public class AuthenticationChallengesVerifyRequest : WorkOSEntity<AuthenticationChallengesVerifyRequest>
+    public class AuthenticationChallengesVerifyRequest
     {
 
         /// <summary>The one-time code to verify.</summary>

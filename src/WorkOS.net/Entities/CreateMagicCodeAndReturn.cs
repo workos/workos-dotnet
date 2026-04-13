@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create magic code and return.</summary>
-    public class CreateMagicCodeAndReturn : WorkOSEntity<CreateMagicCodeAndReturn>
+    public class CreateMagicCodeAndReturn
     {
 
         /// <summary>The email address to send the magic code to.</summary>

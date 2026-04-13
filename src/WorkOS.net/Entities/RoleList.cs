@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a role list.</summary>
-    public class RoleList : WorkOSEntity<RoleList>
+    public class RoleList
     {
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]

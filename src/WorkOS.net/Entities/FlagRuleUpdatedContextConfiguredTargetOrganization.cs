@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a flag rule updated context configured target organization.</summary>
-    public class FlagRuleUpdatedContextConfiguredTargetOrganization : WorkOSEntity<FlagRuleUpdatedContextConfiguredTargetOrganization>
+    public class FlagRuleUpdatedContextConfiguredTargetOrganization
     {
 
         /// <summary>The ID of the organization.</summary>

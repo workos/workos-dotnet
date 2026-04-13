@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a sso token response.</summary>
-    public class SSOTokenResponse : WorkOSEntity<SSOTokenResponse>
+    public class SSOTokenResponse
     {
 
         /// <summary>The type of token issued.</summary>

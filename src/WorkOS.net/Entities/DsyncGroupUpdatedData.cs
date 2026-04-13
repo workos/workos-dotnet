@@ -8,7 +8,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class DsyncGroupUpdatedData : WorkOSEntity<DsyncGroupUpdatedData>
+    public class DsyncGroupUpdatedData
     {
 
         /// <summary>Distinguishes the Directory Group object.</summary>

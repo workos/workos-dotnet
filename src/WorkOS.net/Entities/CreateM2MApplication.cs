@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create m2m application.</summary>
-    public class CreateM2MApplication : WorkOSEntity<CreateM2MApplication>
+    public class CreateM2MApplication
     {
 
         /// <summary>The name of the application.</summary>

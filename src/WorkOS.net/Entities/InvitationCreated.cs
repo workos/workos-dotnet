@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a invitation created.</summary>
-    public class InvitationCreated : WorkOSEntity<InvitationCreated>
+    public class InvitationCreated
     {
 
         /// <summary>Unique identifier for the event.</summary>

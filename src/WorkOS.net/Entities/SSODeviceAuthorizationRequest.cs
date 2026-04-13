@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a sso device authorization request.</summary>
-    public class SSODeviceAuthorizationRequest : WorkOSEntity<SSODeviceAuthorizationRequest>
+    public class SSODeviceAuthorizationRequest
     {
 
         /// <summary>The WorkOS client ID for your application.</summary>

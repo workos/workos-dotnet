@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a organization input.</summary>
-    public class OrganizationInput : WorkOSEntity<OrganizationInput>
+    public class OrganizationInput
     {
 
         /// <summary>The name of the organization.</summary>

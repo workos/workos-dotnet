@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class AuthenticationRadarRiskDetectedData : WorkOSEntity<AuthenticationRadarRiskDetectedData>
+    public class AuthenticationRadarRiskDetectedData
     {
 
         /// <summary>The authentication method used.</summary>

@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a vault byok key verification completed.</summary>
-    public class VaultByokKeyVerificationCompleted : WorkOSEntity<VaultByokKeyVerificationCompleted>
+    public class VaultByokKeyVerificationCompleted
     {
 
         /// <summary>Unique identifier for the event.</summary>

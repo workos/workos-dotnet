@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a email change.</summary>
-    public class EmailChange : WorkOSEntity<EmailChange>
+    public class EmailChange
     {
 
         /// <summary>Distinguishes the email change object.</summary>

@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a update o auth application.</summary>
-    public class UpdateOAuthApplication : WorkOSEntity<UpdateOAuthApplication>
+    public class UpdateOAuthApplication
     {
 
         /// <summary>The name of the application.</summary>

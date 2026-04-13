@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authentication passkey succeeded.</summary>
-    public class AuthenticationPasskeySucceeded : WorkOSEntity<AuthenticationPasskeySucceeded>
+    public class AuthenticationPasskeySucceeded
     {
 
         /// <summary>Unique identifier for the event.</summary>

@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a intent options.</summary>
-    public class IntentOptions : WorkOSEntity<IntentOptions>
+    public class IntentOptions
     {
 
         /// <summary>SSO-specific options for the Admin Portal.</summary>

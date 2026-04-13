@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a permission updated.</summary>
-    public class PermissionUpdated : WorkOSEntity<PermissionUpdated>
+    public class PermissionUpdated
     {
 
         /// <summary>Unique identifier for the event.</summary>

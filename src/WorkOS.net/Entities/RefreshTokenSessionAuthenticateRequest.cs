@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a refresh token session authenticate request.</summary>
-    public class RefreshTokenSessionAuthenticateRequest : WorkOSEntity<RefreshTokenSessionAuthenticateRequest>
+    public class RefreshTokenSessionAuthenticateRequest
     {
 
         /// <summary>The client ID of the application.</summary>

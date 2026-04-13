@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a organization role deleted.</summary>
-    public class OrganizationRoleDeleted : WorkOSEntity<OrganizationRoleDeleted>
+    public class OrganizationRoleDeleted
     {
 
         /// <summary>Unique identifier for the event.</summary>

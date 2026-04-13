@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a external auth complete response.</summary>
-    public class ExternalAuthCompleteResponse : WorkOSEntity<ExternalAuthCompleteResponse>
+    public class ExternalAuthCompleteResponse
     {
 
         /// <summary>URI to redirect the user back to AuthKit to complete the OAuth flow.</summary>

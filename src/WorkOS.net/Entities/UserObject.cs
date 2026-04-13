@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a user object.</summary>
-    public class UserObject : WorkOSEntity<UserObject>
+    public class UserObject
     {
 
         /// <summary>Your application's user identifier, which will be stored as an [`external_id`](https://workos.com/docs/authkit/metadata/external-identifiers). Used for upserting and deduplication.</summary>

@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a connection activated data domain.</summary>
-    public class ConnectionActivatedDataDomain : WorkOSEntity<ConnectionActivatedDataDomain>
+    public class ConnectionActivatedDataDomain
     {
 
         /// <summary>Distinguishes the connection domain object.</summary>

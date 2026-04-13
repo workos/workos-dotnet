@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class DsyncDeletedData : WorkOSEntity<DsyncDeletedData>
+    public class DsyncDeletedData
     {
 
         /// <summary>Distinguishes the directory object.</summary>

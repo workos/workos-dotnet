@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a user management login request.</summary>
-    public class UserManagementLoginRequest : WorkOSEntity<UserManagementLoginRequest>
+    public class UserManagementLoginRequest
     {
 
         /// <summary>Identifier provided when AuthKit redirected to your login page.</summary>

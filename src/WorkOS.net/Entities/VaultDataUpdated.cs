@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a vault data updated.</summary>
-    public class VaultDataUpdated : WorkOSEntity<VaultDataUpdated>
+    public class VaultDataUpdated
     {
 
         /// <summary>Unique identifier for the event.</summary>

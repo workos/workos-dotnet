@@ -8,7 +8,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The API Key object if the value is valid, or `null` if invalid.</summary>
-    public class ApiKey : WorkOSEntity<ApiKey>
+    public class ApiKey
     {
 
         /// <summary>Distinguishes the API Key object.</summary>

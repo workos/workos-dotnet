@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a organization domain verification failed.</summary>
-    public class OrganizationDomainVerificationFailed : WorkOSEntity<OrganizationDomainVerificationFailed>
+    public class OrganizationDomainVerificationFailed
     {
 
         /// <summary>Unique identifier for the event.</summary>

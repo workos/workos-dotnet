@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create application secret.</summary>
-    public class CreateApplicationSecret : WorkOSEntity<CreateApplicationSecret>
+    public class CreateApplicationSecret
     {
     }
 }

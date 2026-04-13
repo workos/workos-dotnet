@@ -8,7 +8,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a api key with value.</summary>
-    public class ApiKeyWithValue : WorkOSEntity<ApiKeyWithValue>
+    public class ApiKeyWithValue
     {
 
         /// <summary>Distinguishes the API Key object.</summary>

@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a radar standalone update radar attempt request.</summary>
-    public class RadarStandaloneUpdateRadarAttemptRequest : WorkOSEntity<RadarStandaloneUpdateRadarAttemptRequest>
+    public class RadarStandaloneUpdateRadarAttemptRequest
     {
 
         /// <summary>Set to `"success"` to mark the challenge as completed.</summary>

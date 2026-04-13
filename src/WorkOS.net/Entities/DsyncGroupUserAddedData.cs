@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class DsyncGroupUserAddedData : WorkOSEntity<DsyncGroupUserAddedData>
+    public class DsyncGroupUserAddedData
     {
 
         /// <summary>The ID of the directory.</summary>

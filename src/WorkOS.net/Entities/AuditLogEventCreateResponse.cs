@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a audit log event create response.</summary>
-    public class AuditLogEventCreateResponse : WorkOSEntity<AuditLogEventCreateResponse>
+    public class AuditLogEventCreateResponse
     {
 
         /// <summary>Whether the Audit Log event was created successfully.</summary>

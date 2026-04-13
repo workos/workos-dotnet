@@ -8,7 +8,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a connect application.</summary>
-    public class ConnectApplication : WorkOSEntity<ConnectApplication>
+    public class ConnectApplication
     {
 
         /// <summary>Distinguishes the connect application object.</summary>

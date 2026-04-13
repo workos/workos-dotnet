@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class ConnectionDeletedData : WorkOSEntity<ConnectionDeletedData>
+    public class ConnectionDeletedData
     {
 
         /// <summary>Distinguishes the connection object.</summary>

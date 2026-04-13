@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create authorization permission.</summary>
-    public class CreateAuthorizationPermission : WorkOSEntity<CreateAuthorizationPermission>
+    public class CreateAuthorizationPermission
     {
 
         /// <summary>A unique key to reference the permission. Must be lowercase and contain only letters, numbers, hyphens, underscores, colons, periods, and asterisks.</summary>

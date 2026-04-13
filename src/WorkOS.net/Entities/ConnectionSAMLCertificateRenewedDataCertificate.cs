@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The renewed SAML certificate details.</summary>
-    public class ConnectionSAMLCertificateRenewedDataCertificate : WorkOSEntity<ConnectionSAMLCertificateRenewedDataCertificate>
+    public class ConnectionSAMLCertificateRenewedDataCertificate
     {
 
         /// <summary>The type of the SAML certificate.</summary>

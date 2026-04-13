@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a sso intent options.</summary>
-    public class SSOIntentOptions : WorkOSEntity<SSOIntentOptions>
+    public class SSOIntentOptions
     {
 
         /// <summary>The bookmark slug to use for SSO.</summary>

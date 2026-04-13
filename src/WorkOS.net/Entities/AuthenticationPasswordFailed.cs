@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authentication password failed.</summary>
-    public class AuthenticationPasswordFailed : WorkOSEntity<AuthenticationPasswordFailed>
+    public class AuthenticationPasswordFailed
     {
 
         /// <summary>Unique identifier for the event.</summary>

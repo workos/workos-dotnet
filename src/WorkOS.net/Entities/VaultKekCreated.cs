@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a vault kek created.</summary>
-    public class VaultKekCreated : WorkOSEntity<VaultKekCreated>
+    public class VaultKekCreated
     {
 
         /// <summary>Unique identifier for the event.</summary>

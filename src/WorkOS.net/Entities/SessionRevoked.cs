@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a session revoked.</summary>
-    public class SessionRevoked : WorkOSEntity<SessionRevoked>
+    public class SessionRevoked
     {
 
         /// <summary>Unique identifier for the event.</summary>

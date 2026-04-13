@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a update audit logs retention.</summary>
-    public class UpdateAuditLogsRetention : WorkOSEntity<UpdateAuditLogsRetention>
+    public class UpdateAuditLogsRetention
     {
 
         /// <summary>The number of days Audit Log events will be retained. Valid values are `30` and `365`.</summary>

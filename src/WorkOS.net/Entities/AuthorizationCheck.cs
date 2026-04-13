@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authorization check.</summary>
-    public class AuthorizationCheck : WorkOSEntity<AuthorizationCheck>
+    public class AuthorizationCheck
     {
 
         /// <summary>Whether the organization membership has the specified permission on the resource.</summary>

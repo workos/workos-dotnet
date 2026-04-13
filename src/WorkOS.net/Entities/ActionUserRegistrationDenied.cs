@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a action user registration denied.</summary>
-    public class ActionUserRegistrationDenied : WorkOSEntity<ActionUserRegistrationDenied>
+    public class ActionUserRegistrationDenied
     {
 
         /// <summary>Unique identifier for the event.</summary>

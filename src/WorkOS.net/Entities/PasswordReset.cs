@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a password reset.</summary>
-    public class PasswordReset : WorkOSEntity<PasswordReset>
+    public class PasswordReset
     {
 
         /// <summary>Distinguishes the password reset object.</summary>

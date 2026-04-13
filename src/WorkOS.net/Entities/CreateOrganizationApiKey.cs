@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create organization api key.</summary>
-    public class CreateOrganizationApiKey : WorkOSEntity<CreateOrganizationApiKey>
+    public class CreateOrganizationApiKey
     {
 
         /// <summary>The name for the API key.</summary>

@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a flag created.</summary>
-    public class FlagCreated : WorkOSEntity<FlagCreated>
+    public class FlagCreated
     {
 
         /// <summary>Unique identifier for the event.</summary>

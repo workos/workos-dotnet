@@ -8,7 +8,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class DsyncActivatedData : WorkOSEntity<DsyncActivatedData>
+    public class DsyncActivatedData
     {
 
         /// <summary>Distinguishes the directory object.</summary>

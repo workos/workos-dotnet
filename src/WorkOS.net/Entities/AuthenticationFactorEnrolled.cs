@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authentication factor enrolled.</summary>
-    public class AuthenticationFactorEnrolled : WorkOSEntity<AuthenticationFactorEnrolled>
+    public class AuthenticationFactorEnrolled
     {
 
         /// <summary>Distinguishes the authentication factor object.</summary>

@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a data integrations get user token request.</summary>
-    public class DataIntegrationsGetUserTokenRequest : WorkOSEntity<DataIntegrationsGetUserTokenRequest>
+    public class DataIntegrationsGetUserTokenRequest
     {
 
         /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>

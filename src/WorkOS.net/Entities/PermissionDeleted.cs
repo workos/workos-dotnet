@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a permission deleted.</summary>
-    public class PermissionDeleted : WorkOSEntity<PermissionDeleted>
+    public class PermissionDeleted
     {
 
         /// <summary>Unique identifier for the event.</summary>

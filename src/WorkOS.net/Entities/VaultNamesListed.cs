@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a vault names listed.</summary>
-    public class VaultNamesListed : WorkOSEntity<VaultNamesListed>
+    public class VaultNamesListed
     {
 
         /// <summary>Unique identifier for the event.</summary>

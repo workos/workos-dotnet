@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a set role permissions.</summary>
-    public class SetRolePermissions : WorkOSEntity<SetRolePermissions>
+    public class SetRolePermissions
     {
 
         /// <summary>The permission slugs to assign to the role.</summary>

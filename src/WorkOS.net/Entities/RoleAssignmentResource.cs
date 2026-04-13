@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The resource to which the role is assigned.</summary>
-    public class RoleAssignmentResource : WorkOSEntity<RoleAssignmentResource>
+    public class RoleAssignmentResource
     {
 
         /// <summary>The unique ID of the Resource.</summary>

@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a update user organization membership.</summary>
-    public class UpdateUserOrganizationMembership : WorkOSEntity<UpdateUserOrganizationMembership>
+    public class UpdateUserOrganizationMembership
     {
 
         /// <summary>A single role identifier. Defaults to `member` or the explicit default role. Mutually exclusive with `role_slugs`.</summary>

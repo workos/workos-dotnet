@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class SessionRevokedData : WorkOSEntity<SessionRevokedData>
+    public class SessionRevokedData
     {
 
         /// <summary>Distinguishes the session object.</summary>

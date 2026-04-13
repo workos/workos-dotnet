@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a user sessions list item.</summary>
-    public class UserSessionsListItem : WorkOSEntity<UserSessionsListItem>
+    public class UserSessionsListItem
     {
 
         /// <summary>Distinguishes the session object.</summary>

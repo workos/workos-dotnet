@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a connection deactivated.</summary>
-    public class ConnectionDeactivated : WorkOSEntity<ConnectionDeactivated>
+    public class ConnectionDeactivated
     {
 
         /// <summary>Unique identifier for the event.</summary>

@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a flag rule updated.</summary>
-    public class FlagRuleUpdated : WorkOSEntity<FlagRuleUpdated>
+    public class FlagRuleUpdated
     {
 
         /// <summary>Unique identifier for the event.</summary>

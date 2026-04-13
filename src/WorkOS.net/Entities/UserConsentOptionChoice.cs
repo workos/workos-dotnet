@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a user consent option choice.</summary>
-    public class UserConsentOptionChoice : WorkOSEntity<UserConsentOptionChoice>
+    public class UserConsentOptionChoice
     {
 
         /// <summary>The value of this choice.</summary>

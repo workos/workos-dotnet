@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>SMS-based authentication factor details.</summary>
-    public class AuthenticationFactorEnrolledSms : WorkOSEntity<AuthenticationFactorEnrolledSms>
+    public class AuthenticationFactorEnrolledSms
     {
 
         /// <summary>The user's phone number for SMS-based authentication.</summary>

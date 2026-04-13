@@ -8,7 +8,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class FlagCreatedData : WorkOSEntity<FlagCreatedData>
+    public class FlagCreatedData
     {
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]

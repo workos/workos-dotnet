@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a organization role updated.</summary>
-    public class OrganizationRoleUpdated : WorkOSEntity<OrganizationRoleUpdated>
+    public class OrganizationRoleUpdated
     {
 
         /// <summary>Unique identifier for the event.</summary>

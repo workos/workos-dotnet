@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authorized connect application list data.</summary>
-    public class AuthorizedConnectApplicationListData : WorkOSEntity<AuthorizedConnectApplicationListData>
+    public class AuthorizedConnectApplicationListData
     {
 
         /// <summary>Distinguishes the authorized connect application object.</summary>

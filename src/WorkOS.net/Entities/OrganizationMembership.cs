@@ -8,7 +8,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a organization membership.</summary>
-    public class OrganizationMembership : WorkOSEntity<OrganizationMembership>
+    public class OrganizationMembership
     {
 
         /// <summary>Distinguishes the organization membership object.</summary>

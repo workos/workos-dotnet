@@ -8,7 +8,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a webhook endpoint json.</summary>
-    public class WebhookEndpointJson : WorkOSEntity<WebhookEndpointJson>
+    public class WebhookEndpointJson
     {
 
         /// <summary>Distinguishes the Webhook Endpoint object.</summary>

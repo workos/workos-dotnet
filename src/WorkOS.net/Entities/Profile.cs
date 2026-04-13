@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a profile.</summary>
-    public class Profile : WorkOSEntity<Profile>
+    public class Profile
     {
 
         /// <summary>Distinguishes the profile object.</summary>

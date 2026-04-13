@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a role assignment.</summary>
-    public class RoleAssignment : WorkOSEntity<RoleAssignment>
+    public class RoleAssignment
     {
 
         /// <summary>Distinguishes the role assignment object.</summary>

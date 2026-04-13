@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The actor who performed the action.</summary>
-    public class EventContextActor : WorkOSEntity<EventContextActor>
+    public class EventContextActor
     {
 
         /// <summary>Unique identifier of the actor.</summary>

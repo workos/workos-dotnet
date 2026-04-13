@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a organization created data domain.</summary>
-    public class OrganizationCreatedDataDomain : WorkOSEntity<OrganizationCreatedDataDomain>
+    public class OrganizationCreatedDataDomain
     {
 
         /// <summary>Distinguishes the organization domain object.</summary>

@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a radar standalone response.</summary>
-    public class RadarStandaloneResponse : WorkOSEntity<RadarStandaloneResponse>
+    public class RadarStandaloneResponse
     {
 
         /// <summary>The verdict of the risk assessment.</summary>

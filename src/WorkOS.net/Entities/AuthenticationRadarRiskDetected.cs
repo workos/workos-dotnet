@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authentication radar risk detected.</summary>
-    public class AuthenticationRadarRiskDetected : WorkOSEntity<AuthenticationRadarRiskDetected>
+    public class AuthenticationRadarRiskDetected
     {
 
         /// <summary>Unique identifier for the event.</summary>

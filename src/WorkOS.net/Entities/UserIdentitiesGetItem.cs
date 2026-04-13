@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a user identities get item.</summary>
-    public class UserIdentitiesGetItem : WorkOSEntity<UserIdentitiesGetItem>
+    public class UserIdentitiesGetItem
     {
 
         /// <summary>The unique ID of the user in the external identity provider.</summary>

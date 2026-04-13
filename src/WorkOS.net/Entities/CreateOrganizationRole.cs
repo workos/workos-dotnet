@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create organization role.</summary>
-    public class CreateOrganizationRole : WorkOSEntity<CreateOrganizationRole>
+    public class CreateOrganizationRole
     {
 
         /// <summary>A unique identifier for the role within the organization. When provided, must begin with 'org-' and contain only lowercase letters, numbers, hyphens, and underscores. When omitted, a slug is auto-generated from the role name and a random suffix.</summary>

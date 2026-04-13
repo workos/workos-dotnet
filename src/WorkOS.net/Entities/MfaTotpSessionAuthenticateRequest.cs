@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a urn workos o auth grant type mfa totp session authenticate request.</summary>
-    public class MfaTotpSessionAuthenticateRequest : WorkOSEntity<MfaTotpSessionAuthenticateRequest>
+    public class MfaTotpSessionAuthenticateRequest
     {
 
         /// <summary>The client ID of the application.</summary>

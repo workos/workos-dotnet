@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class ConnectionSAMLCertificateRenewedData : WorkOSEntity<ConnectionSAMLCertificateRenewedData>
+    public class ConnectionSAMLCertificateRenewedData
     {
 
         /// <summary>The connection with the renewed certificate.</summary>

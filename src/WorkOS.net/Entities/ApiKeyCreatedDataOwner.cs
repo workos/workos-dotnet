@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The owner of the API key.</summary>
-    public class ApiKeyCreatedDataOwner : WorkOSEntity<ApiKeyCreatedDataOwner>
+    public class ApiKeyCreatedDataOwner
     {
 
         /// <summary>The type of the API key owner.</summary>

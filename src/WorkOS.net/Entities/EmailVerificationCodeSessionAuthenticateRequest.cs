@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a urn workos o auth grant type email verification code session authenticate request.</summary>
-    public class EmailVerificationCodeSessionAuthenticateRequest : WorkOSEntity<EmailVerificationCodeSessionAuthenticateRequest>
+    public class EmailVerificationCodeSessionAuthenticateRequest
     {
 
         /// <summary>The client ID of the application.</summary>

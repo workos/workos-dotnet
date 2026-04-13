@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a invitation revoked.</summary>
-    public class InvitationRevoked : WorkOSEntity<InvitationRevoked>
+    public class InvitationRevoked
     {
 
         /// <summary>Unique identifier for the event.</summary>

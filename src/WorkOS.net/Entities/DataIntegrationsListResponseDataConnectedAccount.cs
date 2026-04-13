@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a data integrations list response data connected account.</summary>
-    public class DataIntegrationsListResponseDataConnectedAccount : WorkOSEntity<DataIntegrationsListResponseDataConnectedAccount>
+    public class DataIntegrationsListResponseDataConnectedAccount
     {
 
         /// <summary>Distinguishes the connected account object.</summary>

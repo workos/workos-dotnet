@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a urn workos o auth grant type organization selection session authenticate request.</summary>
-    public class OrganizationSelectionSessionAuthenticateRequest : WorkOSEntity<OrganizationSelectionSessionAuthenticateRequest>
+    public class OrganizationSelectionSessionAuthenticateRequest
     {
 
         /// <summary>The client ID of the application.</summary>

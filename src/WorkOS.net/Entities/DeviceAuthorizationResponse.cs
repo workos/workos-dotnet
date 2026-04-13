@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a device authorization response.</summary>
-    public class DeviceAuthorizationResponse : WorkOSEntity<DeviceAuthorizationResponse>
+    public class DeviceAuthorizationResponse
     {
 
         /// <summary>The device verification code.</summary>

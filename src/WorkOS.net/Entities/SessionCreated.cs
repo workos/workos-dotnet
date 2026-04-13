@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a session created.</summary>
-    public class SessionCreated : WorkOSEntity<SessionCreated>
+    public class SessionCreated
     {
 
         /// <summary>Unique identifier for the event.</summary>

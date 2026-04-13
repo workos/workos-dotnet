@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a audit log schema actor.</summary>
-    public class AuditLogSchemaActor : WorkOSEntity<AuditLogSchemaActor>
+    public class AuditLogSchemaActor
     {
 
         /// <summary>JSON schema for actor metadata.</summary>

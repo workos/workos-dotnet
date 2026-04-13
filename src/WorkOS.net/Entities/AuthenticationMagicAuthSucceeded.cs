@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authentication magic auth succeeded.</summary>
-    public class AuthenticationMagicAuthSucceeded : WorkOSEntity<AuthenticationMagicAuthSucceeded>
+    public class AuthenticationMagicAuthSucceeded
     {
 
         /// <summary>Unique identifier for the event.</summary>

@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Configuration options for SAML connections. Only present for SAML connection types.</summary>
-    public class ConnectionOption : WorkOSEntity<ConnectionOption>
+    public class ConnectionOption
     {
 
         /// <summary>The signing certificate of the SAML connection.</summary>

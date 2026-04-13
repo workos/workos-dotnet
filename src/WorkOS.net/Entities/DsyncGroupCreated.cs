@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a dsync group created.</summary>
-    public class DsyncGroupCreated : WorkOSEntity<DsyncGroupCreated>
+    public class DsyncGroupCreated
     {
 
         /// <summary>Unique identifier for the event.</summary>

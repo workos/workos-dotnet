@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The OAuth tokens from the identity provider, if applicable.</summary>
-    public class AuthenticateResponseOAuthToken : WorkOSEntity<AuthenticateResponseOAuthToken>
+    public class AuthenticateResponseOAuthToken
     {
 
         /// <summary>The OAuth provider used for authentication.</summary>

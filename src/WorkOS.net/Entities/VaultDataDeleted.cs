@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a vault data deleted.</summary>
-    public class VaultDataDeleted : WorkOSEntity<VaultDataDeleted>
+    public class VaultDataDeleted
     {
 
         /// <summary>Unique identifier for the event.</summary>

@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class OrganizationDomainVerificationFailedData : WorkOSEntity<OrganizationDomainVerificationFailedData>
+    public class OrganizationDomainVerificationFailedData
     {
 
         /// <summary>The reason the domain verification failed.</summary>

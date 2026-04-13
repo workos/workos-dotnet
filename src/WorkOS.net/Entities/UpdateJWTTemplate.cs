@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a update jwt template.</summary>
-    public class UpdateJWTTemplate : WorkOSEntity<UpdateJWTTemplate>
+    public class UpdateJWTTemplate
     {
 
         /// <summary>The JWT template content as a Liquid template string.</summary>

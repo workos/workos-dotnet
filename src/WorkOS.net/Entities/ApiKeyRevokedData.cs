@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class ApiKeyRevokedData : WorkOSEntity<ApiKeyRevokedData>
+    public class ApiKeyRevokedData
     {
 
         /// <summary>Distinguishes the API key object.</summary>

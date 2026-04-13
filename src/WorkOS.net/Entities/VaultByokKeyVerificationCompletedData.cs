@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class VaultByokKeyVerificationCompletedData : WorkOSEntity<VaultByokKeyVerificationCompletedData>
+    public class VaultByokKeyVerificationCompletedData
     {
 
         /// <summary>The unique identifier of the organization.</summary>

@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>TOTP-based authentication factor details. Includes enrollment secrets only available at creation time.</summary>
-    public class AuthenticationFactorEnrolledTotp : WorkOSEntity<AuthenticationFactorEnrolledTotp>
+    public class AuthenticationFactorEnrolledTotp
     {
 
         /// <summary>Your application or company name displayed in the user's authenticator app. Defaults to your WorkOS team name.</summary>

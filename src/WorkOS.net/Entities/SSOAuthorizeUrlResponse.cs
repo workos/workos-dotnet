@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a sso authorize url response.</summary>
-    public class SSOAuthorizeUrlResponse : WorkOSEntity<SSOAuthorizeUrlResponse>
+    public class SSOAuthorizeUrlResponse
     {
 
         /// <summary>An OAuth 2.0 authorization URL.</summary>

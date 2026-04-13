@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a audit log export creation.</summary>
-    public class AuditLogExportCreation : WorkOSEntity<AuditLogExportCreation>
+    public class AuditLogExportCreation
     {
 
         /// <summary>The unique ID of the Organization.</summary>

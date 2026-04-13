@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create user invite options.</summary>
-    public class CreateUserInviteOptions : WorkOSEntity<CreateUserInviteOptions>
+    public class CreateUserInviteOptions
     {
 
         /// <summary>The email address of the recipient.</summary>

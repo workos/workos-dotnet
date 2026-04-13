@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class PasswordResetCreatedData : WorkOSEntity<PasswordResetCreatedData>
+    public class PasswordResetCreatedData
     {
 
         /// <summary>Distinguishes the password reset object.</summary>

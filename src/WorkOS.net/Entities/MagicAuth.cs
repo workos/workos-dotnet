@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a magic auth.</summary>
-    public class MagicAuth : WorkOSEntity<MagicAuth>
+    public class MagicAuth
     {
 
         /// <summary>Distinguishes the Magic Auth object.</summary>

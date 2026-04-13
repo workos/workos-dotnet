@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a urn workos o auth grant type magic auth code session authenticate request.</summary>
-    public class MagicAuthCodeSessionAuthenticateRequest : WorkOSEntity<MagicAuthCodeSessionAuthenticateRequest>
+    public class MagicAuthCodeSessionAuthenticateRequest
     {
 
         /// <summary>The client ID of the application.</summary>

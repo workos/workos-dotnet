@@ -8,7 +8,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>An event emitted by WorkOS.</summary>
-    public class EventSchema : WorkOSEntity<EventSchema>
+    public class EventSchema
     {
 
         /// <summary>Distinguishes the Event object.</summary>

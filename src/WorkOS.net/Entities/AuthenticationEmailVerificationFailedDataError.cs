@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Details about the authentication error.</summary>
-    public class AuthenticationEmailVerificationFailedDataError : WorkOSEntity<AuthenticationEmailVerificationFailedDataError>
+    public class AuthenticationEmailVerificationFailedDataError
     {
 
         /// <summary>The error code.</summary>

@@ -8,7 +8,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a directory group.</summary>
-    public class DirectoryGroup : WorkOSEntity<DirectoryGroup>
+    public class DirectoryGroup
     {
 
         /// <summary>Distinguishes the Directory Group object.</summary>

@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The previous configured targets for the flag rule.</summary>
-    public class FlagRuleUpdatedContextPreviousAttributeContextConfiguredTarget : WorkOSEntity<FlagRuleUpdatedContextPreviousAttributeContextConfiguredTarget>
+    public class FlagRuleUpdatedContextPreviousAttributeContextConfiguredTarget
     {
 
         /// <summary>The organizations targeted by the flag rule.</summary>

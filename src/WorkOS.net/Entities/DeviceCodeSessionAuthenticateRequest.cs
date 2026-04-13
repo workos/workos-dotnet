@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a urn ietf params o auth grant type device code session authenticate request.</summary>
-    public class DeviceCodeSessionAuthenticateRequest : WorkOSEntity<DeviceCodeSessionAuthenticateRequest>
+    public class DeviceCodeSessionAuthenticateRequest
     {
 
         /// <summary>The client ID of the application.</summary>

@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a audit log event context.</summary>
-    public class AuditLogEventContext : WorkOSEntity<AuditLogEventContext>
+    public class AuditLogEventContext
     {
 
         /// <summary>IP Address or some other geolocation identifier.</summary>

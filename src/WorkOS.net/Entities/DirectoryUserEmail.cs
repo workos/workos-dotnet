@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a directory user email.</summary>
-    public class DirectoryUserEmail : WorkOSEntity<DirectoryUserEmail>
+    public class DirectoryUserEmail
     {
 
         /// <summary>Whether this is the primary email address.</summary>

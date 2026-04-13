@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>SSO connection details.</summary>
-    public class AuthenticationSSOFailedDataSSO : WorkOSEntity<AuthenticationSSOFailedDataSSO>
+    public class AuthenticationSSOFailedDataSSO
     {
 
         /// <summary>The ID of the organization.</summary>

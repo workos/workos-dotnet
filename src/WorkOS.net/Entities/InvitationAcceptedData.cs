@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class InvitationAcceptedData : WorkOSEntity<InvitationAcceptedData>
+    public class InvitationAcceptedData
     {
 
         /// <summary>Distinguishes the invitation object.</summary>

@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class VaultDekReadData : WorkOSEntity<VaultDekReadData>
+    public class VaultDekReadData
     {
 
         /// <summary>The unique identifier of the actor.</summary>

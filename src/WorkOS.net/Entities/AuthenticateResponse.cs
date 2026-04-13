@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authenticate response.</summary>
-    public class AuthenticateResponse : WorkOSEntity<AuthenticateResponse>
+    public class AuthenticateResponse
     {
 
         /// <summary>The corresponding [user](https://workos.com/docs/reference/authkit/user) object.</summary>

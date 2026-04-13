@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a jwks response.</summary>
-    public class JwksResponse : WorkOSEntity<JwksResponse>
+    public class JwksResponse
     {
 
         /// <summary>The public keys used for verifying access tokens.</summary>

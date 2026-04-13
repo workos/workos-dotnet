@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create user organization membership.</summary>
-    public class CreateUserOrganizationMembership : WorkOSEntity<CreateUserOrganizationMembership>
+    public class CreateUserOrganizationMembership
     {
 
         /// <summary>The ID of the [user](https://workos.com/docs/reference/authkit/user).</summary>

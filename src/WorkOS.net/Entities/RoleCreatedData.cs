@@ -8,7 +8,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class RoleCreatedData : WorkOSEntity<RoleCreatedData>
+    public class RoleCreatedData
     {
 
         /// <summary>Distinguishes the role object.</summary>

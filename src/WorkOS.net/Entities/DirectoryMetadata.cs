@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Aggregate counts of directory users and groups synced from the provider.</summary>
-    public class DirectoryMetadata : WorkOSEntity<DirectoryMetadata>
+    public class DirectoryMetadata
     {
 
         /// <summary>Counts of active and inactive directory users.</summary>

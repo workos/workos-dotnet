@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
-    public class PermissionCreatedData : WorkOSEntity<PermissionCreatedData>
+    public class PermissionCreatedData
     {
 
         /// <summary>Distinguishes the permission object.</summary>

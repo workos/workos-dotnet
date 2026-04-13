@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a redirect uri input.</summary>
-    public class RedirectUriInput : WorkOSEntity<RedirectUriInput>
+    public class RedirectUriInput
     {
 
         /// <summary>The redirect URI.</summary>

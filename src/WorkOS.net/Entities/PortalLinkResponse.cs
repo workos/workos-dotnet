@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a portal link response.</summary>
-    public class PortalLinkResponse : WorkOSEntity<PortalLinkResponse>
+    public class PortalLinkResponse
     {
 
         /// <summary>An ephemeral link to initiate the Admin Portal.</summary>

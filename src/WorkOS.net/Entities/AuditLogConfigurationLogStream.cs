@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>The Audit Log Stream currently configured for the organization, if any.</summary>
-    public class AuditLogConfigurationLogStream : WorkOSEntity<AuditLogConfigurationLogStream>
+    public class AuditLogConfigurationLogStream
     {
 
         /// <summary>Unique identifier of the Audit Log Stream.</summary>

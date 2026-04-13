@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authorization resource.</summary>
-    public class AuthorizationResource : WorkOSEntity<AuthorizationResource>
+    public class AuthorizationResource
     {
 
         /// <summary>Distinguishes the Resource object.</summary>

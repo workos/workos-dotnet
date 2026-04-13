@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create cors origin.</summary>
-    public class CreateCorsOrigin : WorkOSEntity<CreateCorsOrigin>
+    public class CreateCorsOrigin
     {
 
         /// <summary>The origin URL to allow for CORS requests.</summary>

@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Additional context about the event.</summary>
-    public class EventContext : WorkOSEntity<EventContext>
+    public class EventContext
     {
 
         /// <summary>The Google Analytics client ID.</summary>

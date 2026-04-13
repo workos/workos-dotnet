@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Attributes that changed from their previous values.</summary>
-    public class FlagUpdatedContextPreviousAttribute : WorkOSEntity<FlagUpdatedContextPreviousAttribute>
+    public class FlagUpdatedContextPreviousAttribute
     {
 
         /// <summary>The previous data attributes of the flag.</summary>

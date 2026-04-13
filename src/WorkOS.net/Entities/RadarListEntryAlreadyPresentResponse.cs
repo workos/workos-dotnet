@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a radar list entry already present response.</summary>
-    public class RadarListEntryAlreadyPresentResponse : WorkOSEntity<RadarListEntryAlreadyPresentResponse>
+    public class RadarListEntryAlreadyPresentResponse
     {
 
         /// <summary>A message indicating the entry already exists.</summary>

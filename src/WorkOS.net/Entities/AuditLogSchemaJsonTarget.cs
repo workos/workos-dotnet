@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a audit log schema json target.</summary>
-    public class AuditLogSchemaJsonTarget : WorkOSEntity<AuditLogSchemaJsonTarget>
+    public class AuditLogSchemaJsonTarget
     {
 
         /// <summary>The type of the target resource.</summary>

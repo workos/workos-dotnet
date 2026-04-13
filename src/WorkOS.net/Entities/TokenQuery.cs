@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a token query.</summary>
-    public class TokenQuery : WorkOSEntity<TokenQuery>
+    public class TokenQuery
     {
 
         /// <summary>The client ID of the WorkOS environment.</summary>

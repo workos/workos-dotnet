@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a authorization code session authenticate request.</summary>
-    public class AuthorizationCodeSessionAuthenticateRequest : WorkOSEntity<AuthorizationCodeSessionAuthenticateRequest>
+    public class AuthorizationCodeSessionAuthenticateRequest
     {
 
         /// <summary>The client ID of the application.</summary>

@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Additional context about the event.</summary>
-    public class FlagRuleUpdatedContext : WorkOSEntity<FlagRuleUpdatedContext>
+    public class FlagRuleUpdatedContext
     {
 
         /// <summary>The client ID associated with the flag event.</summary>

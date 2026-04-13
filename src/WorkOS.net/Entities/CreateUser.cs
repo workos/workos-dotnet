@@ -7,7 +7,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create user.</summary>
-    public class CreateUser : WorkOSEntity<CreateUser>
+    public class CreateUser
     {
 
         /// <summary>The email address of the user.</summary>

@@ -6,7 +6,7 @@ namespace WorkOS
     using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a api key validation response.</summary>
-    public class ApiKeyValidationResponse : WorkOSEntity<ApiKeyValidationResponse>
+    public class ApiKeyValidationResponse
     {
         [JsonProperty("api_key")]
         [STJS.JsonPropertyName("api_key")]
