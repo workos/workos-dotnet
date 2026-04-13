@@ -117,6 +117,26 @@ namespace WorkOSTests
                     ItExpr.IsAny<CancellationToken>());
         }
 
+        /// <summary>
+        /// Assert that every key/value in <paramref name="expectedQuery"/>
+        /// appears on the last captured request's URL query string with the
+        /// exact expected value. Extra keys on the captured request are
+        /// tolerated; mismatches throw.
+        /// </summary>
+        public void AssertQueryParams(IDictionary<string, string> expectedQuery)
+        {
+            var actual = this.GetLastRequestQuery();
+            foreach (var kv in expectedQuery)
+            {
+                var got = actual[kv.Key];
+                if (got != kv.Value)
+                {
+                    throw new Xunit.Sdk.XunitException(
+                        $"Query param '{kv.Key}': expected '{kv.Value}', got '{got ?? "<missing>"}'");
+                }
+            }
+        }
+
         public void MockResponse(
             HttpMethod method,
             string path,
@@ -138,6 +158,73 @@ namespace WorkOSTests
                     ItExpr.IsAny<CancellationToken>())
                 .Callback<HttpRequestMessage, CancellationToken>((req, _) => this.CapturedRequests.Add(req))
                 .ReturnsAsync(responseMessage);
+        }
+
+        /// <summary>
+        /// Strict variant of <see cref="MockResponse(HttpMethod,string,HttpStatusCode,string)"/>
+        /// that also requires exact match on query params and, when
+        /// <paramref name="bodyPredicate"/> is supplied, the request body.
+        /// A request that matches path but not query (or fails the body
+        /// predicate) will NOT match this setup, so Moq.Strict will fail
+        /// the test on SendAsync. Lets generated tests opt into full
+        /// request-shape matching without rewriting mock wiring.
+        /// </summary>
+        public void MockResponseExact(
+            HttpMethod method,
+            string path,
+            IDictionary<string, string>? expectedQuery,
+            System.Func<string, bool>? bodyPredicate,
+            HttpStatusCode status,
+            string response)
+        {
+            var responseMessage = new HttpResponseMessage
+            {
+                Content = new StringContent(response),
+                StatusCode = status,
+            };
+
+            this.MockHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.Is<HttpRequestMessage>(m =>
+                        m.Method == method &&
+                        m.RequestUri.AbsolutePath == path &&
+                        QueryMatches(m.RequestUri.Query, expectedQuery) &&
+                        BodyMatches(m.Content, bodyPredicate)),
+                    ItExpr.IsAny<CancellationToken>())
+                .Callback<HttpRequestMessage, CancellationToken>((req, _) => this.CapturedRequests.Add(req))
+                .ReturnsAsync(responseMessage);
+        }
+
+        private static bool QueryMatches(string actualQuery, IDictionary<string, string>? expected)
+        {
+            if (expected == null)
+            {
+                return true;
+            }
+
+            var parsed = System.Web.HttpUtility.ParseQueryString(actualQuery ?? string.Empty);
+            foreach (var kv in expected)
+            {
+                if (parsed[kv.Key] != kv.Value)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool BodyMatches(HttpContent? content, System.Func<string, bool>? predicate)
+        {
+            if (predicate == null)
+            {
+                return true;
+            }
+
+            // Matchers run synchronously under Moq; block briefly on content read.
+            var body = content == null ? string.Empty : content.ReadAsStringAsync().GetAwaiter().GetResult();
+            return predicate(body);
         }
 
         /// <summary>
