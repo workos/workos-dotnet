@@ -71,6 +71,29 @@ WorkOSConfiguration.WorkOSClient = client;
 Operations that require a Client ID throw `InvalidOperationException` if one was not
 configured, instead of silently sending an empty string to the API.
 
+## Services
+
+Most services on `WorkOSClient` are generated from the WorkOS OpenAPI
+specification (`Organizations`, `UserManagement`, `DirectorySync`, `SSO`,
+`AuditLogs`, `Events`, `Webhooks`, etc.). In addition, the SDK ships a handful
+of **hand-maintained** services that do not correspond to a single REST
+endpoint:
+
+| Service                      | Purpose                                                           |
+| ---------------------------- | ----------------------------------------------------------------- |
+| `client.Passwordless`        | Magic-link / passwordless session helpers.                        |
+| `client.Vault`               | Key-value storage and envelope encryption helpers.                |
+| `client.Actions`             | AuthKit Actions signing-secret verification and payload signing.  |
+| `client.Session`             | Sealed-session management, cookie helpers, and JWT validation.    |
+
+These services are fully supported and are accessed the same way as generated
+services:
+
+```c#
+var payload = client.Actions.VerifyAndParse(rawBody, signatureHeader);
+var session = client.Session.LoadSealedSession(cookieValue);
+```
+
 ## Error handling
 
 All non-2xx responses from the WorkOS API raise subclasses of `WorkOS.ApiError`.
