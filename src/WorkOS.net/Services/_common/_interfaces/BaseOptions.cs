@@ -6,5 +6,14 @@ namespace WorkOS
     /// </summary>
     public class BaseOptions
     {
+        /// <summary>
+        /// Returns a shallow copy of this options instance, preserving the
+        /// concrete subclass. Used by runtime helpers (e.g. pagination) so
+        /// they can mutate the copy without affecting caller-owned state.
+        /// </summary>
+        public virtual BaseOptions Clone()
+        {
+            return (BaseOptions)this.MemberwiseClone();
+        }
     }
 }

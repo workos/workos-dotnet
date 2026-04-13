@@ -261,15 +261,32 @@ namespace WorkOS
             WorkOSRequest request,
             [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
+            // Clone the caller's options up front so advancement never
+            // mutates state the caller still holds a reference to. The
+            // first request uses the untouched clone; subsequent pages
+            // update only our copy.
+            var workingOptions = request.Options?.Clone();
+            var workingRequest = new WorkOSRequest
+            {
+                Method = request.Method,
+                Path = request.Path,
+                AccessToken = request.AccessToken,
+                Options = workingOptions,
+                RequestOptions = request.RequestOptions,
+            };
+
             string? afterCursor = null;
             while (true)
             {
-                if (afterCursor != null && request.Options is ListOptions listOpts)
+                if (afterCursor != null && workingOptions is ListOptions listOpts)
                 {
+                    // Advancing with `after` — clear `before` so we don't send
+                    // both cursors (which the API treats as an invalid request).
                     listOpts.After = afterCursor;
+                    listOpts.Before = null;
                 }
 
-                var page = await this.MakeAPIRequest<WorkOSList<T>>(request, cancellationToken)
+                var page = await this.MakeAPIRequest<WorkOSList<T>>(workingRequest, cancellationToken)
                     .ConfigureAwait(false);
 
                 if (page?.Data == null)
