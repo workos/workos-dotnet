@@ -81,6 +81,37 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public void Stj_WorkOSList_DeserializesPaginatedShape()
+        {
+            var json =
+                "{\"data\":[{\"object\":\"organization\",\"id\":\"org_1\",\"name\":\"Acme\"," +
+                "\"domains\":[],\"created_at\":\"2026-01-01T00:00:00.000Z\"," +
+                "\"updated_at\":\"2026-01-01T00:00:00.000Z\"," +
+                "\"allow_profiles_outside_organization\":false}]," +
+                "\"list_metadata\":{\"before\":null,\"after\":\"cursor_xyz\"}}";
+
+            var page = JsonSerializer.Deserialize<WorkOSList<Organization>>(json)!;
+            Assert.NotNull(page.Data);
+            Assert.Single(page.Data!);
+            Assert.Equal("org_1", page.Data![0].Id);
+            Assert.NotNull(page.ListMetadata);
+            Assert.Equal("cursor_xyz", page.ListMetadata!.After);
+        }
+
+        [Fact]
+        public void Stj_ListOptions_RoundTripPaginationOrder()
+        {
+            var opts = new TestListOptions { Limit = 25, Order = PaginationOrder.Asc };
+            var json = JsonSerializer.Serialize(opts);
+            Assert.Contains("\"limit\":25", json);
+            Assert.Contains("\"order\":\"asc\"", json);
+
+            var parsed = JsonSerializer.Deserialize<TestListOptions>(json)!;
+            Assert.Equal(25, parsed.Limit);
+            Assert.Equal(PaginationOrder.Asc, parsed.Order);
+        }
+
+        [Fact]
         public void Stj_Webhook_DeserializesEnvelope()
         {
             var payload = "{\"id\":\"wh_01\",\"event\":\"dsync.user.created\"," +
@@ -93,5 +124,11 @@ namespace WorkOSTests
             Assert.Equal("2026-01-15T12:00:00.000Z", webhook.CreatedAt);
             Assert.NotNull(webhook.Data);
         }
+
+#pragma warning disable SA1402 // companion fixture type kept beside its tests
+        public class TestListOptions : ListOptions
+        {
+        }
+#pragma warning restore SA1402
     }
 }

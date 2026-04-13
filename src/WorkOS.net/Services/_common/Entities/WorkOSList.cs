@@ -3,6 +3,7 @@ namespace WorkOS
 {
     using System.Collections.Generic;
     using Newtonsoft.Json;
+    using STJS = System.Text.Json.Serialization;
 
     /// <summary>
     /// Represents a paginated list of WorkOS records.
@@ -15,12 +16,14 @@ namespace WorkOS
         /// List of WorkOS records.
         /// </summary>
         [JsonProperty("data")]
+        [STJS.JsonPropertyName("data")]
         public List<T>? Data { get; set; }
 
         /// <summary>
         /// Pagination cursor options.
         /// </summary>
         [JsonProperty("list_metadata")]
+        [STJS.JsonPropertyName("list_metadata")]
         public ListMetadata? ListMetadata { get; set; }
     }
 }
