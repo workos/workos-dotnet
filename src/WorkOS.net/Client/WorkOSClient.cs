@@ -296,12 +296,15 @@ namespace WorkOS
             }
         }
 
+        private static bool UsesQueryString(HttpMethod method) =>
+            method == HttpMethod.Get || method == HttpMethod.Delete;
+
         private HttpRequestMessage CreateHttpRequestMessage(WorkOSRequest request)
         {
             Uri uri = this.BuildUri(request);
             HttpContent? content = null;
 
-            if (request.Method != HttpMethod.Get)
+            if (!UsesQueryString(request.Method))
             {
                 content = RequestUtilities.CreateHttpContent(request);
             }
@@ -348,7 +351,7 @@ namespace WorkOS
             builder.Append(this.ApiBaseURL);
             builder.Append(request.Path);
 
-            if (request.Method == HttpMethod.Get && options != null)
+            if (UsesQueryString(request.Method) && options != null)
             {
                 var queryParameters = RequestUtilities.CreateQueryString(options);
                 if (queryParameters != null && queryParameters.Length > 0)

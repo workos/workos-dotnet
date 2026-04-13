@@ -124,6 +124,9 @@ namespace WorkOS
                     case Enum en:
                         result.Add(new KeyValuePair<string, string>(key, en.ToString()));
                         break;
+                    case bool b:
+                        result.Add(new KeyValuePair<string, string>(key, b ? "true" : "false"));
+                        break;
                     case long l:
                         result.Add(new KeyValuePair<string, string>(key, l.ToString()));
                         break;
