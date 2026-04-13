@@ -7,10 +7,6 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    public class UserManagementCreateAuthenticateOptions : BaseOptions
-    {
-    }
-
     public class UserManagementGetAuthorizationUrlOptions : BaseOptions
     {
         /// <summary>The only valid PKCE code challenge method is `"S256"`. Required when specifying a `code_challenge`.</summary>

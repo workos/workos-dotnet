@@ -30,23 +30,6 @@ namespace WorkOS
             return await this.Client.MakeAPIRequest<JwksResponse>(request, cancellationToken);
         }
 
-        /// <summary>Authenticate</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthenticateResponse"/> result.</returns>
-        public virtual async Task<AuthenticateResponse> CreateAuthenticate(UserManagementCreateAuthenticateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/authenticate",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthenticateResponse>(request, cancellationToken);
-        }
-
         /// <summary>Authenticate with password.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>

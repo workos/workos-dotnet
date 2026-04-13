@@ -37,18 +37,6 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestCreateAuthenticate()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/authenticate_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authenticate", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateAuthenticate(new UserManagementCreateAuthenticateOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.AccessToken);
-            Assert.NotEmpty(result.RefreshToken);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
-        }
-
-        [Fact]
         public async Task TestGetAuthorizationUrl()
         {
             this.httpMock.MockResponse(HttpMethod.Get, "/user_management/authorize", HttpStatusCode.OK, "");
