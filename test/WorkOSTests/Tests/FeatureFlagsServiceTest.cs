@@ -20,6 +20,7 @@ namespace WorkOSTests
             var client = new WorkOSClient(new WorkOSOptions
             {
                 ApiKey = "sk_test",
+                ClientId = "client_test",
                 HttpClient = this.httpMock.HttpClient,
             });
             this.service = new FeatureFlagsService(client);

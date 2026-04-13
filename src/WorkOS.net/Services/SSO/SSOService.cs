@@ -88,7 +88,7 @@ namespace WorkOS
         {
             options ??= new SSOGetAuthorizationUrlOptions();
             options.ResponseType = "code";
-            options.ClientId = this.Client.ClientId ?? string.Empty;
+            options.ClientId = this.Client.RequireClientId();
             var request = new WorkOSRequest
             {
                 Method = HttpMethod.Get,
@@ -157,7 +157,7 @@ namespace WorkOS
         public virtual async Task<SSOTokenResponse> GetProfileAndToken(SSOGetProfileAndTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "authorization_code";
-            options.ClientId = this.Client.ClientId ?? string.Empty;
+            options.ClientId = this.Client.RequireClientId();
             options.ClientSecret = this.Client.ApiKey ?? string.Empty;
             var request = new WorkOSRequest
             {

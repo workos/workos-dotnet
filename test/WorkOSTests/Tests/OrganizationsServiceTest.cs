@@ -20,6 +20,7 @@ namespace WorkOSTests
             var client = new WorkOSClient(new WorkOSOptions
             {
                 ApiKey = "sk_test",
+                ClientId = "client_test",
                 HttpClient = this.httpMock.HttpClient,
             });
             this.service = new OrganizationsService(client);
@@ -102,11 +103,11 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListAuditLogConfiguration()
+        public async Task TestGetAuditLogConfiguration()
         {
             var fixture = System.IO.File.ReadAllText("testdata/audit_log_configuration.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_id/audit_log_configuration", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListAuditLogConfiguration("test_id");
+            var result = await this.service.GetAuditLogConfiguration("test_id");
             Assert.NotNull(result);
             Assert.NotEmpty(result.OrganizationId);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_id/audit_log_configuration");

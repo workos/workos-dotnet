@@ -100,6 +100,12 @@ namespace WorkOS
         /// </summary>
         public string ApiKey { get; }
 
+        /// <summary>
+        /// The WorkOS Client ID (e.g., <c>client_01H...</c>) used for SSO and User Management
+        /// endpoints that require an OAuth client identifier. May be <see langword="null"/>
+        /// if the client was constructed without one; operations that require a Client ID will
+        /// throw via <see cref="RequireClientId"/>.
+        /// </summary>
         public string? ClientId { get; }
 
         // @oagen-start service-accessors (properties)
@@ -168,6 +174,24 @@ namespace WorkOS
             {
                 Timeout = DefaultTimeout,
             };
+        }
+
+        /// <summary>
+        /// Returns the configured <see cref="ClientId"/>, throwing an <see cref="InvalidOperationException"/>
+        /// with a descriptive message if it was not set. Used by generated services for endpoints
+        /// that require a <c>client_id</c> parameter (SSO, User Management authenticate-with-* flows).
+        /// </summary>
+        /// <returns>The non-empty Client ID.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the client was configured without a <see cref="ClientId"/>.</exception>
+        public string RequireClientId()
+        {
+            if (string.IsNullOrEmpty(this.ClientId))
+            {
+                throw new InvalidOperationException(
+                    "ClientId is required for this operation. Set WorkOSOptions.ClientId when constructing the WorkOSClient.");
+            }
+
+            return this.ClientId!;
         }
 
         /// <summary>

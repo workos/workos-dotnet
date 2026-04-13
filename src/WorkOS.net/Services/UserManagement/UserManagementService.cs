@@ -55,7 +55,7 @@ namespace WorkOS
         public async Task<AuthenticateResponse> AuthenticateWithPassword(AuthenticateWithPasswordOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "password";
-            options.ClientId = this.Client.ClientId ?? string.Empty;
+            options.ClientId = this.Client.RequireClientId();
             options.ClientSecret = this.Client.ApiKey ?? string.Empty;
             var request = new WorkOSRequest
             {
@@ -75,7 +75,7 @@ namespace WorkOS
         public async Task<AuthenticateResponse> AuthenticateWithCode(AuthenticateWithCodeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "authorization_code";
-            options.ClientId = this.Client.ClientId ?? string.Empty;
+            options.ClientId = this.Client.RequireClientId();
             options.ClientSecret = this.Client.ApiKey ?? string.Empty;
             var request = new WorkOSRequest
             {
@@ -95,7 +95,7 @@ namespace WorkOS
         public async Task<AuthenticateResponse> AuthenticateWithRefreshToken(AuthenticateWithRefreshTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "refresh_token";
-            options.ClientId = this.Client.ClientId ?? string.Empty;
+            options.ClientId = this.Client.RequireClientId();
             options.ClientSecret = this.Client.ApiKey ?? string.Empty;
             var request = new WorkOSRequest
             {
@@ -115,7 +115,7 @@ namespace WorkOS
         public async Task<AuthenticateResponse> AuthenticateWithMagicAuth(AuthenticateWithMagicAuthOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "urn:workos:oauth:grant-type:magic-auth:code";
-            options.ClientId = this.Client.ClientId ?? string.Empty;
+            options.ClientId = this.Client.RequireClientId();
             options.ClientSecret = this.Client.ApiKey ?? string.Empty;
             var request = new WorkOSRequest
             {
@@ -135,7 +135,7 @@ namespace WorkOS
         public async Task<AuthenticateResponse> AuthenticateWithEmailVerification(AuthenticateWithEmailVerificationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "urn:workos:oauth:grant-type:email-verification:code";
-            options.ClientId = this.Client.ClientId ?? string.Empty;
+            options.ClientId = this.Client.RequireClientId();
             options.ClientSecret = this.Client.ApiKey ?? string.Empty;
             var request = new WorkOSRequest
             {
@@ -155,7 +155,7 @@ namespace WorkOS
         public async Task<AuthenticateResponse> AuthenticateWithTotp(AuthenticateWithTotpOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "urn:workos:oauth:grant-type:mfa-totp";
-            options.ClientId = this.Client.ClientId ?? string.Empty;
+            options.ClientId = this.Client.RequireClientId();
             options.ClientSecret = this.Client.ApiKey ?? string.Empty;
             var request = new WorkOSRequest
             {
@@ -175,7 +175,7 @@ namespace WorkOS
         public async Task<AuthenticateResponse> AuthenticateWithOrganizationSelection(AuthenticateWithOrganizationSelectionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "urn:workos:oauth:grant-type:organization-selection";
-            options.ClientId = this.Client.ClientId ?? string.Empty;
+            options.ClientId = this.Client.RequireClientId();
             options.ClientSecret = this.Client.ApiKey ?? string.Empty;
             var request = new WorkOSRequest
             {
@@ -195,7 +195,7 @@ namespace WorkOS
         public async Task<AuthenticateResponse> AuthenticateWithDeviceCode(AuthenticateWithDeviceCodeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "urn:ietf:params:oauth:grant-type:device_code";
-            options.ClientId = this.Client.ClientId ?? string.Empty;
+            options.ClientId = this.Client.RequireClientId();
             var request = new WorkOSRequest
             {
                 Method = HttpMethod.Post,
@@ -214,7 +214,7 @@ namespace WorkOS
         {
             options ??= new UserManagementGetAuthorizationUrlOptions();
             options.ResponseType = "code";
-            options.ClientId = this.Client.ClientId ?? string.Empty;
+            options.ClientId = this.Client.RequireClientId();
             var request = new WorkOSRequest
             {
                 Method = HttpMethod.Get,

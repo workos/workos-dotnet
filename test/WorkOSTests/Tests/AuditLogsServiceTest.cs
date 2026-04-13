@@ -20,17 +20,18 @@ namespace WorkOSTests
             var client = new WorkOSClient(new WorkOSOptions
             {
                 ApiKey = "sk_test",
+                ClientId = "client_test",
                 HttpClient = this.httpMock.HttpClient,
             });
             this.service = new AuditLogsService(client);
         }
 
         [Fact]
-        public async Task TestListOrganizationAuditLogsRetention()
+        public async Task TestGetOrganizationAuditLogsRetention()
         {
             var fixture = System.IO.File.ReadAllText("testdata/audit_logs_retention_json.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_id/audit_logs_retention", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListOrganizationAuditLogsRetention("test_id");
+            var result = await this.service.GetOrganizationAuditLogsRetention("test_id");
             Assert.NotNull(result);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_id/audit_logs_retention");
         }
@@ -195,35 +196,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationError>(() => this.service.ListOrganizationAuditLogsRetention("test_id"));
+            await Assert.ThrowsAsync<AuthenticationError>(() => this.service.GetOrganizationAuditLogsRetention("test_id"));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundError>(() => this.service.ListOrganizationAuditLogsRetention("test_id"));
+            await Assert.ThrowsAsync<NotFoundError>(() => this.service.GetOrganizationAuditLogsRetention("test_id"));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.ListOrganizationAuditLogsRetention("test_id"));
+            await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.GetOrganizationAuditLogsRetention("test_id"));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.ListOrganizationAuditLogsRetention("test_id"));
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.GetOrganizationAuditLogsRetention("test_id"));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerError>(() => this.service.ListOrganizationAuditLogsRetention("test_id"));
+            await Assert.ThrowsAsync<ServerError>(() => this.service.GetOrganizationAuditLogsRetention("test_id"));
         }
     }
 }

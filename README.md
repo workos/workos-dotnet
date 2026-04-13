@@ -52,6 +52,25 @@ var client = new WorkOSClient(
 WorkOSConfiguration.WorkOSClient = client;
 ```
 
+### Client ID
+
+SSO and User Management endpoints that accept a `client_id` parameter (for example,
+`UserManagement.AuthenticateWithPassword` and `SSO.GetAuthorizationUrl`) require the
+WorkOS Client ID. Provide it via `WorkOSOptions.ClientId`:
+
+```c#
+var client = new WorkOSClient(
+    new WorkOSOptions
+    {
+        ApiKey = "sk_key123",
+        ClientId = "client_01H...",
+    });
+WorkOSConfiguration.WorkOSClient = client;
+```
+
+Operations that require a Client ID throw `InvalidOperationException` if one was not
+configured, instead of silently sending an empty string to the API.
+
 ## Development and Testing
 
 Run all tests with the following command:
