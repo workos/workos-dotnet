@@ -110,11 +110,11 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestCreatePasswordReset()
+        public async Task TestResetPassword()
         {
             var fixture = System.IO.File.ReadAllText("testdata/password_reset.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/password_reset", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreatePasswordReset(new UserManagementCreatePasswordResetOptions());
+            var result = await this.service.ResetPassword(new UserManagementResetPasswordOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Id);
             Assert.NotEmpty(result.UserId);
@@ -123,11 +123,11 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestResetPassword()
+        public async Task TestConfirmPasswordReset()
         {
             var fixture = System.IO.File.ReadAllText("testdata/reset_password_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/password_reset/confirm", HttpStatusCode.OK, fixture);
-            var result = await this.service.ResetPassword(new UserManagementResetPasswordOptions());
+            var result = await this.service.ConfirmPasswordReset(new UserManagementConfirmPasswordResetOptions());
             Assert.NotNull(result);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/password_reset/confirm");
         }

@@ -139,7 +139,7 @@ namespace WorkOS
 
     }
 
-    public class UserManagementCreatePasswordResetOptions : BaseOptions
+    public class UserManagementResetPasswordOptions : BaseOptions
     {
         /// <summary>The email address of the user requesting a password reset.</summary>
         [JsonProperty("email")]
@@ -148,7 +148,7 @@ namespace WorkOS
 
     }
 
-    public class UserManagementResetPasswordOptions : BaseOptions
+    public class UserManagementConfirmPasswordResetOptions : BaseOptions
     {
         /// <summary>The password reset token.</summary>
         [JsonProperty("token")]
