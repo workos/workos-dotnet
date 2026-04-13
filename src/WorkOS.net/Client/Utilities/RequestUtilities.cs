@@ -4,6 +4,7 @@ namespace WorkOS
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -54,8 +55,12 @@ namespace WorkOS
                 return content;
             }
 
-            var dictionaryOptions = JsonConvert.DeserializeObject<IDictionary<string, string>>(jsonOptions)!;
-            return new FormUrlEncodedContent(dictionaryOptions.ToList());
+            // Form-encode via the same object-based flattener the query-string
+            // path uses. An earlier implementation deserialized directly into
+            // IDictionary<string, string>, which threw on any bool/numeric field.
+            var dictionaryOptions = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonOptions)!;
+            var flattened = FlattenQueryParameters(dictionaryOptions);
+            return new FormUrlEncodedContent(flattened);
         }
 
         /// <summary>
@@ -119,7 +124,10 @@ namespace WorkOS
 
                         break;
                     case DateTime dt:
-                        result.Add(new KeyValuePair<string, string>(key, dt.ToString("yyyy-MM-ddTHH:mm:ssZ")));
+                        result.Add(new KeyValuePair<string, string>(key, dt.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)));
+                        break;
+                    case DateTimeOffset dto:
+                        result.Add(new KeyValuePair<string, string>(key, dto.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)));
                         break;
                     case Enum en:
                         result.Add(new KeyValuePair<string, string>(key, en.ToString()));
@@ -128,12 +136,28 @@ namespace WorkOS
                         result.Add(new KeyValuePair<string, string>(key, b ? "true" : "false"));
                         break;
                     case long l:
-                        result.Add(new KeyValuePair<string, string>(key, l.ToString()));
+                        result.Add(new KeyValuePair<string, string>(key, l.ToString(CultureInfo.InvariantCulture)));
                         break;
                     case int i:
-                        result.Add(new KeyValuePair<string, string>(key, i.ToString()));
+                        result.Add(new KeyValuePair<string, string>(key, i.ToString(CultureInfo.InvariantCulture)));
+                        break;
+                    case short sh:
+                        result.Add(new KeyValuePair<string, string>(key, sh.ToString(CultureInfo.InvariantCulture)));
+                        break;
+                    case double d:
+                        result.Add(new KeyValuePair<string, string>(key, d.ToString("R", CultureInfo.InvariantCulture)));
+                        break;
+                    case float f:
+                        result.Add(new KeyValuePair<string, string>(key, f.ToString("R", CultureInfo.InvariantCulture)));
+                        break;
+                    case decimal m:
+                        result.Add(new KeyValuePair<string, string>(key, m.ToString(CultureInfo.InvariantCulture)));
+                        break;
+                    case IConvertible c:
+                        result.Add(new KeyValuePair<string, string>(key, c.ToString(CultureInfo.InvariantCulture)));
                         break;
                     default:
+                        result.Add(new KeyValuePair<string, string>(key, value.ToString() ?? string.Empty));
                         break;
                 }
             }
