@@ -312,7 +312,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="PasswordReset"/> result.</returns>
-        public virtual async Task<PasswordReset> ResetPassword(UserManagementResetPasswordOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<PasswordReset> CreatePasswordReset(UserManagementCreatePasswordResetOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -329,7 +329,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ResetPasswordResponse"/> result.</returns>
-        public virtual async Task<ResetPasswordResponse> ConfirmPasswordReset(UserManagementConfirmPasswordResetOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<ResetPasswordResponse> ResetPassword(UserManagementResetPasswordOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
