@@ -71,6 +71,52 @@ WorkOSConfiguration.WorkOSClient = client;
 Operations that require a Client ID throw `InvalidOperationException` if one was not
 configured, instead of silently sending an empty string to the API.
 
+## Error handling
+
+All non-2xx responses from the WorkOS API raise subclasses of `WorkOS.ApiError`.
+The SDK maps well-known status codes to specific exception types so you can
+`catch` exactly what you care about:
+
+| HTTP status | Exception type              |
+| ----------- | --------------------------- |
+| 401         | `AuthenticationError`       |
+| 404         | `NotFoundError`             |
+| 422         | `UnprocessableEntityError`  |
+| 429         | `RateLimitExceededError`    |
+| 5xx         | `ServerError`               |
+| other       | `ApiError`                  |
+
+Every exception exposes a `StatusCode` property and carries the raw response
+body in `Exception.Message`.
+
+```c#
+try
+{
+    var org = await client.Organizations.GetOrganization("org_01H...");
+}
+catch (NotFoundError)
+{
+    // organization does not exist
+}
+catch (RateLimitExceededError)
+{
+    // back off per Retry-After and retry
+}
+catch (ApiError ex)
+{
+    Console.Error.WriteLine($"WorkOS API error {(int)ex.StatusCode}: {ex.Message}");
+    throw;
+}
+```
+
+### Retry behavior
+
+The SDK **does not** automatically retry failed requests. Rate limits (429) and
+transient server errors (5xx) surface as exceptions and must be handled by the
+caller. If you need resilience, wrap calls in a retry policy (for example using
+[Polly](https://github.com/App-vNext/Polly)) and honor the `Retry-After` header
+when present.
+
 ## Development and Testing
 
 Run all tests with the following command:

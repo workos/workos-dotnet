@@ -4,6 +4,12 @@ namespace WorkOS
     using System;
     using System.Net;
 
+    /// <summary>
+    /// Base exception type for all non-2xx HTTP responses from the WorkOS API.
+    /// The SDK maps known status codes to the specific subclasses below; any other
+    /// status code (e.g. 400, 403, 409) surfaces as an <see cref="ApiError"/> directly.
+    /// The <see cref="Exception.Message"/> contains the raw response body.
+    /// </summary>
     public class ApiError : Exception
     {
         public ApiError(string message, HttpStatusCode statusCode)
@@ -12,9 +18,11 @@ namespace WorkOS
             this.StatusCode = statusCode;
         }
 
+        /// <summary>The HTTP status code returned by the API.</summary>
         public HttpStatusCode StatusCode { get; }
     }
 
+    /// <summary>Thrown when the API rejects the provided credentials (HTTP 401).</summary>
     public class AuthenticationError : ApiError
     {
         public AuthenticationError(string message)
@@ -23,6 +31,7 @@ namespace WorkOS
         }
     }
 
+    /// <summary>Thrown when the requested resource does not exist (HTTP 404).</summary>
     public class NotFoundError : ApiError
     {
         public NotFoundError(string message)
@@ -31,6 +40,11 @@ namespace WorkOS
         }
     }
 
+    /// <summary>
+    /// Thrown when the request body is syntactically valid but semantically
+    /// unacceptable (HTTP 422) — e.g. a missing required field or a value that
+    /// fails server-side validation.
+    /// </summary>
     public class UnprocessableEntityError : ApiError
     {
         public UnprocessableEntityError(string message)
@@ -39,6 +53,11 @@ namespace WorkOS
         }
     }
 
+    /// <summary>
+    /// Thrown when the caller has exceeded the API rate limit (HTTP 429).
+    /// The SDK does not auto-retry; callers should back off and retry according
+    /// to the <c>Retry-After</c> header (if present) on the underlying response.
+    /// </summary>
     public class RateLimitExceededError : ApiError
     {
         public RateLimitExceededError(string message)
@@ -47,6 +66,11 @@ namespace WorkOS
         }
     }
 
+    /// <summary>
+    /// Thrown for HTTP 5xx responses from the WorkOS API. The SDK does not
+    /// auto-retry server errors; callers who want resilience should wrap calls
+    /// in their own retry policy (e.g. Polly).
+    /// </summary>
     public class ServerError : ApiError
     {
         public ServerError(string message)
