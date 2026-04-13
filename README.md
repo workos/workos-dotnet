@@ -71,6 +71,24 @@ WorkOSConfiguration.WorkOSClient = client;
 Operations that require a Client ID throw `InvalidOperationException` if one was not
 configured, instead of silently sending an empty string to the API.
 
+## JSON serialization
+
+The SDK ships JSON metadata for **both** [Newtonsoft.Json](https://www.newtonsoft.com/json)
+(used by the runtime to talk to the WorkOS API) and
+[`System.Text.Json`](https://learn.microsoft.com/dotnet/api/system.text.json)
+(STJ). All generated DTOs, enums, `AnyOf<T...>` values, and webhook envelopes
+work under either serializer:
+
+```c#
+// Both round-trip the same payload.
+var newtonsoft = JsonConvert.DeserializeObject<Organization>(json);
+var stj = System.Text.Json.JsonSerializer.Deserialize<Organization>(json);
+```
+
+Enum forward compatibility is identical on both stacks: an enum value the SDK
+hasn't seen before deserializes to the type's `Unknown` member instead of
+throwing.
+
 ## Services
 
 Most services on `WorkOSClient` are generated from the WorkOS OpenAPI
