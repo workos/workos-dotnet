@@ -7,176 +7,140 @@ namespace WorkOS
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>Handles DirectorySync operations.</summary>
+    /// <summary>Service that exposes the directory sync API operations on <see cref="WorkOSClient"/>.</summary>
     public class DirectorySyncService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DirectorySyncService"/> class for mocking. The service uses the singleton
+        /// client configured via <see cref="WorkOSConfiguration.WorkOSClient"/>.
+        /// </summary>
         public DirectorySyncService() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DirectorySyncService"/> class bound to the
+        /// supplied <paramref name="client"/>.
+        /// </summary>
+        /// <param name="client">The HTTP client used to make API requests.</param>
         public DirectorySyncService(WorkOSClient client) : base(client) { }
 
         /// <summary>List Directories</summary>
+        /// <remarks>
+        /// Get a list of all of your existing directories matching the criteria specified.
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="Directory"/> results.</returns>
-        public virtual async Task<WorkOSList<Directory>> List(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="DirectoryListItem"/> results.</returns>
+        public virtual async Task<WorkOSList<DirectoryListItem>> List(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/directories",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<Directory>>(request, cancellationToken);
+            return await this.GetAsync<WorkOSList<DirectoryListItem>>("/directories", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="List"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="Directory"/> items.</returns>
-        public virtual IAsyncEnumerable<Directory> ListAutoPagingAsync(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="DirectoryListItem"/> items.</returns>
+        public virtual IAsyncEnumerable<DirectoryListItem> ListAutoPagingAsync(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/directories",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<Directory>(request, cancellationToken);
+            return this.ListAutoPagingAsync<DirectoryListItem>("/directories", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a Directory</summary>
-        /// <param name="id">Unique identifier for the Directory.</param>
+        /// <remarks>
+        /// Get the details of an existing directory.
+        /// </remarks>
+        /// <param name="id">The id.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Directory"/> result.</returns>
-        public virtual async Task<Directory> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="DirectoryFindResponse"/> result.</returns>
+        public virtual async Task<DirectoryFindResponse> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/directories/{id}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Directory>(request, cancellationToken);
+            return await this.GetAsync<DirectoryFindResponse>($"/directories/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a Directory</summary>
-        /// <param name="id">Unique identifier for the Directory.</param>
+        /// <remarks>
+        /// Delete an existing directory.
+        /// </remarks>
+        /// <param name="id">The id.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/directories/{id}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            await this.DeleteAsync($"/directories/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>List Directory Groups</summary>
+        /// <remarks>
+        /// Get a list of all of existing directory groups matching the criteria specified
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="DirectoryGroup"/> results.</returns>
-        public virtual async Task<WorkOSList<DirectoryGroup>> ListGroups(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="DirectoryGroupsListItem"/> results.</returns>
+        public virtual async Task<WorkOSList<DirectoryGroupsListItem>> ListGroups(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/directory_groups",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<DirectoryGroup>>(request, cancellationToken);
+            return await this.GetAsync<WorkOSList<DirectoryGroupsListItem>>("/directory_groups", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListGroups"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="DirectoryGroup"/> items.</returns>
-        public virtual IAsyncEnumerable<DirectoryGroup> ListGroupsAutoPagingAsync(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="DirectoryGroupsListItem"/> items.</returns>
+        public virtual IAsyncEnumerable<DirectoryGroupsListItem> ListGroupsAutoPagingAsync(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/directory_groups",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<DirectoryGroup>(request, cancellationToken);
+            return this.ListAutoPagingAsync<DirectoryGroupsListItem>("/directory_groups", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a Directory Group</summary>
-        /// <param name="id">Unique identifier for the Directory Group.</param>
+        /// <remarks>
+        /// Get the details of an existing Directory Group
+        /// </remarks>
+        /// <param name="id">The id.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="DirectoryGroup"/> result.</returns>
-        public virtual async Task<DirectoryGroup> GetGroup(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="DirectoryGroupsFindResponse"/> result.</returns>
+        public virtual async Task<DirectoryGroupsFindResponse> GetGroup(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/directory_groups/{id}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<DirectoryGroup>(request, cancellationToken);
+            return await this.GetAsync<DirectoryGroupsFindResponse>($"/directory_groups/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>List Directory Users</summary>
+        /// <remarks>
+        /// Get a list of all of existing Directory Users matching the criteria specified
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="DirectoryUserWithGroups"/> results.</returns>
-        public virtual async Task<WorkOSList<DirectoryUserWithGroups>> ListUsers(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="DirectoryUsersListItem"/> results.</returns>
+        public virtual async Task<WorkOSList<DirectoryUsersListItem>> ListUsers(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/directory_users",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<DirectoryUserWithGroups>>(request, cancellationToken);
+            return await this.GetAsync<WorkOSList<DirectoryUsersListItem>>("/directory_users", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListUsers"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="DirectoryUserWithGroups"/> items.</returns>
-        public virtual IAsyncEnumerable<DirectoryUserWithGroups> ListUsersAutoPagingAsync(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="DirectoryUsersListItem"/> items.</returns>
+        public virtual IAsyncEnumerable<DirectoryUsersListItem> ListUsersAutoPagingAsync(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/directory_users",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<DirectoryUserWithGroups>(request, cancellationToken);
+            return this.ListAutoPagingAsync<DirectoryUsersListItem>("/directory_users", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Get a Directory User</summary>
-        /// <param name="id">Unique identifier for the Directory User.</param>
+        /// <summary>Get Directory User</summary>
+        /// <remarks>
+        /// Get the details of an existing Directory User
+        /// </remarks>
+        /// <param name="id">The id.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="DirectoryUserWithGroups"/> result.</returns>
-        public virtual async Task<DirectoryUserWithGroups> GetUser(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="DirectoryUsersFindResponse"/> result.</returns>
+        public virtual async Task<DirectoryUsersFindResponse> GetUser(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/directory_users/{id}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<DirectoryUserWithGroups>(request, cancellationToken);
+            return await this.GetAsync<DirectoryUsersFindResponse>($"/directory_users/{id}", null, requestOptions, cancellationToken);
         }
     }
 }

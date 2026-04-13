@@ -7,895 +7,135 @@ namespace WorkOS
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>Handles UserManagement operations.</summary>
+    /// <summary>Service that exposes the user management API operations on <see cref="WorkOSClient"/>.</summary>
     public class UserManagementService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserManagementService"/> class for mocking. The service uses the singleton
+        /// client configured via <see cref="WorkOSConfiguration.WorkOSClient"/>.
+        /// </summary>
         public UserManagementService() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserManagementService"/> class bound to the
+        /// supplied <paramref name="client"/>.
+        /// </summary>
+        /// <param name="client">The HTTP client used to make API requests.</param>
         public UserManagementService(WorkOSClient client) : base(client) { }
 
-        /// <summary>Get JWKS</summary>
-        /// <param name="clientId">Identifies the application making the request to the WorkOS server. You can obtain your client ID from the [API Keys](https://dashboard.workos.com/api-keys) page in the dashboard.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="JwksResponse"/> result.</returns>
-        public virtual async Task<JwksResponse> GetJwks(string clientId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/sso/jwks/{clientId}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<JwksResponse>(request, cancellationToken);
-        }
-
-        /// <summary>Authenticate with password.</summary>
-        public async Task<AuthenticateResponse> AuthenticateWithPassword(AuthenticateWithPasswordOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            options.GrantType = "password";
-            options.ClientId = this.Client.RequireClientId();
-            options.ClientSecret = this.Client.ApiKey;
-            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
-        }
-
-        /// <summary>Authenticate with an authorization code.</summary>
-        public async Task<AuthenticateResponse> AuthenticateWithCode(AuthenticateWithCodeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            options.GrantType = "authorization_code";
-            options.ClientId = this.Client.RequireClientId();
-            options.ClientSecret = this.Client.ApiKey;
-            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
-        }
-
-        /// <summary>Authenticate with a refresh token.</summary>
-        public async Task<AuthenticateResponse> AuthenticateWithRefreshToken(AuthenticateWithRefreshTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            options.GrantType = "refresh_token";
-            options.ClientId = this.Client.RequireClientId();
-            options.ClientSecret = this.Client.ApiKey;
-            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
-        }
-
-        /// <summary>Authenticate with a magic-auth code.</summary>
-        public async Task<AuthenticateResponse> AuthenticateWithMagicAuth(AuthenticateWithMagicAuthOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            options.GrantType = "urn:workos:oauth:grant-type:magic-auth:code";
-            options.ClientId = this.Client.RequireClientId();
-            options.ClientSecret = this.Client.ApiKey;
-            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
-        }
-
-        /// <summary>Authenticate with an email-verification code.</summary>
-        public async Task<AuthenticateResponse> AuthenticateWithEmailVerification(AuthenticateWithEmailVerificationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            options.GrantType = "urn:workos:oauth:grant-type:email-verification:code";
-            options.ClientId = this.Client.RequireClientId();
-            options.ClientSecret = this.Client.ApiKey;
-            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
-        }
-
-        /// <summary>Authenticate with a TOTP code.</summary>
-        public async Task<AuthenticateResponse> AuthenticateWithTotp(AuthenticateWithTotpOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            options.GrantType = "urn:workos:oauth:grant-type:mfa-totp";
-            options.ClientId = this.Client.RequireClientId();
-            options.ClientSecret = this.Client.ApiKey;
-            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
-        }
-
-        /// <summary>Authenticate by selecting an organization for a pending session.</summary>
-        public async Task<AuthenticateResponse> AuthenticateWithOrganizationSelection(AuthenticateWithOrganizationSelectionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            options.GrantType = "urn:workos:oauth:grant-type:organization-selection";
-            options.ClientId = this.Client.RequireClientId();
-            options.ClientSecret = this.Client.ApiKey;
-            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
-        }
-
-        /// <summary>
-        /// Authenticate with a device code. Note: this grant intentionally does
-        /// not include client_secret — public-client device flow only.
-        /// </summary>
-        public async Task<AuthenticateResponse> AuthenticateWithDeviceCode(AuthenticateWithDeviceCodeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            options.GrantType = "urn:ietf:params:oauth:grant-type:device_code";
-            options.ClientId = this.Client.RequireClientId();
-            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
-        }
-
-        /// <summary>
-        /// Builds the AuthKit authorization URL for the configured client. The caller
-        /// is expected to redirect the user's browser to the returned URL — the SDK
-        /// does not call the endpoint directly.
-        /// </summary>
-        /// <param name="options">Authorization parameters (provider, redirect_uri, state, code_challenge, etc.).</param>
-        /// <returns>The fully-qualified authorization URL.</returns>
-        public virtual string GetAuthorizationUrl(UserManagementGetAuthorizationUrlOptions? options = null)
-        {
-            options ??= new UserManagementGetAuthorizationUrlOptions();
-            options.ResponseType = "code";
-            options.ClientId = this.Client.RequireClientId();
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/user_management/authorize",
-                Options = options,
-            };
-            return this.Client.BuildRequestUri(request).ToString();
-        }
-
-        /// <summary>Get device authorization URL</summary>
+        /// <summary>Update app homepage URL</summary>
+        /// <remarks>
+        /// Update the app homepage URL for the environment
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="DeviceAuthorizationResponse"/> result.</returns>
-        public virtual async Task<DeviceAuthorizationResponse> CreateDevice(UserManagementCreateDeviceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="SettingUpdateAppHomepageUrlResponse"/> result.</returns>
+        public virtual async Task<SettingUpdateAppHomepageUrlResponse> UpdateAppHomepageUrl(UserManagementUpdateAppHomepageUrlOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/authorize/device",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<DeviceAuthorizationResponse>(request, cancellationToken);
+            return await this.PutAsync<SettingUpdateAppHomepageUrlResponse>("/user_management/app_homepage_url", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>
-        /// Builds the User Management logout URL. The caller is expected to redirect
-        /// the user's browser to the returned URL — the SDK does not call the
-        /// endpoint directly.
-        /// </summary>
-        /// <param name="options">Logout parameters (session_id, return_to, etc.).</param>
-        /// <returns>The fully-qualified logout URL.</returns>
-        public virtual string GetLogoutUrl(UserManagementGetLogoutUrlOptions? options = null)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/user_management/sessions/logout",
-                Options = options,
-            };
-            return this.Client.BuildRequestUri(request).ToString();
-        }
-
-        /// <summary>Revoke Session</summary>
+        /// <summary>Create a new authorization code</summary>
+        /// <remarks>
+        /// Given a valid refresh token, creates a new session and returns an authorization code that can be redeemed by another application.
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task RevokeSession(UserManagementRevokeSessionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuthorizationCodesCreateAuthenticateCodeResponse"/> result.</returns>
+        public virtual async Task<AuthorizationCodesCreateAuthenticateCodeResponse> CreateAuthorizationCode(UserManagementCreateAuthorizationCodeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/sessions/revoke",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            return await this.PostAsync<AuthorizationCodesCreateAuthenticateCodeResponse>("/user_management/authorization_codes", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Password reset</summary>
+        /// <remarks>
+        /// Send a password reset email and change the user’s password
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task SendPasswordReset(UserManagementSendPasswordResetOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.PostAsync<object>("/user_management/password_reset/send", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Migrate external session to WorkOS</summary>
+        /// <remarks>
+        /// Migrate a session from an external OIDC provider to WorkOS using JWT verification
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="UserManagementSessionMigrationMigrateSessionResponse"/> result.</returns>
+        public virtual async Task<UserManagementSessionMigrationMigrateSessionResponse> CreateMigrate(UserManagementCreateMigrateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<UserManagementSessionMigrationMigrateSessionResponse>("/user_management/sessions/migrate", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List enabled feature flags for a user</summary>
+        /// <remarks>
+        /// Get a list of all enabled feature flags for a user
+        /// </remarks>
+        /// <param name="userId">The user id.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="UserFeatureFlagsListItem"/> results.</returns>
+        public virtual async Task<WorkOSList<UserFeatureFlagsListItem>> ListFeatureFlags(string userId, UserManagementListFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<UserFeatureFlagsListItem>>($"/user_management/users/{userId}/feature-flags", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListFeatureFlags"/>. Yields individual items across all pages.</summary>
+        /// <param name="userId">The user id.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="UserFeatureFlagsListItem"/> items.</returns>
+        public virtual IAsyncEnumerable<UserFeatureFlagsListItem> ListFeatureFlagsAutoPagingAsync(string userId, UserManagementListFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<UserFeatureFlagsListItem>($"/user_management/users/{userId}/feature-flags", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Create a CORS origin</summary>
+        /// <remarks>
+        /// Creates a new CORS origin that allows cross-origin requests from the specified URL.
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="CorsOriginResponse"/> result.</returns>
-        public virtual async Task<CorsOriginResponse> CreateCorsOrigin(UserManagementCreateCorsOriginOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="CorsOriginsCreateCorsOriginResponse"/> result.</returns>
+        public virtual async Task<CorsOriginsCreateCorsOriginResponse> CreateCorsOrigin(UserManagementCreateCorsOriginOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/cors_origins",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<CorsOriginResponse>(request, cancellationToken);
-        }
-
-        /// <summary>Get an email verification code</summary>
-        /// <param name="id">The ID of the email verification code.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="EmailVerification"/> result.</returns>
-        public virtual async Task<EmailVerification> GetEmailVerification(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/email_verification/{id}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<EmailVerification>(request, cancellationToken);
-        }
-
-        /// <summary>Create a password reset token</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="PasswordReset"/> result.</returns>
-        public virtual async Task<PasswordReset> ResetPassword(UserManagementResetPasswordOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/password_reset",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<PasswordReset>(request, cancellationToken);
-        }
-
-        /// <summary>Reset the password</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ResetPasswordResponse"/> result.</returns>
-        public virtual async Task<ResetPasswordResponse> ConfirmPasswordReset(UserManagementConfirmPasswordResetOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/password_reset/confirm",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<ResetPasswordResponse>(request, cancellationToken);
-        }
-
-        /// <summary>Get a password reset token</summary>
-        /// <param name="id">The ID of the password reset token.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="PasswordReset"/> result.</returns>
-        public virtual async Task<PasswordReset> GetPasswordReset(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/password_reset/{id}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<PasswordReset>(request, cancellationToken);
-        }
-
-        /// <summary>List users</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="User"/> results.</returns>
-        public virtual async Task<WorkOSList<User>> List(UserManagementListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/user_management/users",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<User>>(request, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="List"/>. Yields individual items across all pages.</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="User"/> items.</returns>
-        public virtual IAsyncEnumerable<User> ListAutoPagingAsync(UserManagementListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/user_management/users",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<User>(request, cancellationToken);
-        }
-
-        /// <summary>Create a user</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="User"/> result.</returns>
-        public virtual async Task<User> Create(UserManagementCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/users",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
-        }
-
-        /// <summary>Get a user by external ID</summary>
-        /// <param name="externalId">The external ID of the user.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="User"/> result.</returns>
-        public virtual async Task<User> GetByExternalId(string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/users/external_id/{externalId}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
-        }
-
-        /// <summary>Get a user</summary>
-        /// <param name="id">The unique ID of the user.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="User"/> result.</returns>
-        public virtual async Task<User> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/users/{id}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
-        }
-
-        /// <summary>Update a user</summary>
-        /// <param name="id">The unique ID of the user.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="User"/> result.</returns>
-        public virtual async Task<User> Update(string id, UserManagementUpdateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Put,
-                Path = $"/user_management/users/{id}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
-        }
-
-        /// <summary>Delete a user</summary>
-        /// <param name="id">The unique ID of the user.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/user_management/users/{id}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
-        }
-
-        /// <summary>Confirm email change</summary>
-        /// <param name="id">The unique ID of the user.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="EmailChangeConfirmation"/> result.</returns>
-        public virtual async Task<EmailChangeConfirmation> ConfirmEmailChange(string id, UserManagementConfirmEmailChangeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/user_management/users/{id}/email_change/confirm",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<EmailChangeConfirmation>(request, cancellationToken);
-        }
-
-        /// <summary>Send email change code</summary>
-        /// <param name="id">The unique ID of the user.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="EmailChange"/> result.</returns>
-        public virtual async Task<EmailChange> SendEmailChange(string id, UserManagementSendEmailChangeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/user_management/users/{id}/email_change/send",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<EmailChange>(request, cancellationToken);
-        }
-
-        /// <summary>Verify email</summary>
-        /// <param name="id">The ID of the user.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="VerifyEmailResponse"/> result.</returns>
-        public virtual async Task<VerifyEmailResponse> VerifyEmail(string id, UserManagementVerifyEmailOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/user_management/users/{id}/email_verification/confirm",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<VerifyEmailResponse>(request, cancellationToken);
-        }
-
-        /// <summary>Send verification email</summary>
-        /// <param name="id">The ID of the user.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="SendVerificationEmailResponse"/> result.</returns>
-        public virtual async Task<SendVerificationEmailResponse> SendVerificationEmail(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/user_management/users/{id}/email_verification/send",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<SendVerificationEmailResponse>(request, cancellationToken);
-        }
-
-        /// <summary>Get user identities</summary>
-        /// <param name="id">The unique ID of the user.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserIdentitiesGetItem"/> result.</returns>
-        public virtual async Task<List<UserIdentitiesGetItem>> GetIdentities(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/users/{id}/identities",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<List<UserIdentitiesGetItem>>(request, cancellationToken);
-        }
-
-        /// <summary>List sessions</summary>
-        /// <param name="id">The ID of the user.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="UserSessionsListItem"/> results.</returns>
-        public virtual async Task<WorkOSList<UserSessionsListItem>> ListSessions(string id, UserManagementListSessionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/users/{id}/sessions",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<UserSessionsListItem>>(request, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="ListSessions"/>. Yields individual items across all pages.</summary>
-        /// <param name="id">The ID of the user.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="UserSessionsListItem"/> items.</returns>
-        public virtual IAsyncEnumerable<UserSessionsListItem> ListSessionsAutoPagingAsync(string id, UserManagementListSessionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/users/{id}/sessions",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<UserSessionsListItem>(request, cancellationToken);
-        }
-
-        /// <summary>List invitations</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="UserInvite"/> results.</returns>
-        public virtual async Task<WorkOSList<UserInvite>> ListInvitations(UserManagementListInvitationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/user_management/invitations",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<UserInvite>>(request, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="ListInvitations"/>. Yields individual items across all pages.</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="UserInvite"/> items.</returns>
-        public virtual IAsyncEnumerable<UserInvite> ListInvitationsAutoPagingAsync(UserManagementListInvitationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/user_management/invitations",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<UserInvite>(request, cancellationToken);
-        }
-
-        /// <summary>Send an invitation</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserInvite"/> result.</returns>
-        public virtual async Task<UserInvite> SendInvitation(UserManagementSendInvitationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/invitations",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<UserInvite>(request, cancellationToken);
-        }
-
-        /// <summary>Find an invitation by token</summary>
-        /// <param name="token">The token used to accept the invitation.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserInvite"/> result.</returns>
-        public virtual async Task<UserInvite> FindInvitationByToken(string token, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/invitations/by_token/{token}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<UserInvite>(request, cancellationToken);
-        }
-
-        /// <summary>Get an invitation</summary>
-        /// <param name="id">The unique ID of the invitation.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserInvite"/> result.</returns>
-        public virtual async Task<UserInvite> GetInvitation(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/invitations/{id}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<UserInvite>(request, cancellationToken);
-        }
-
-        /// <summary>Accept an invitation</summary>
-        /// <param name="id">The unique ID of the invitation.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Invitation"/> result.</returns>
-        public virtual async Task<Invitation> AcceptInvitation(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/user_management/invitations/{id}/accept",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Invitation>(request, cancellationToken);
-        }
-
-        /// <summary>Resend an invitation</summary>
-        /// <param name="id">The unique ID of the invitation.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserInvite"/> result.</returns>
-        public virtual async Task<UserInvite> ResendInvitation(string id, UserManagementResendInvitationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/user_management/invitations/{id}/resend",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<UserInvite>(request, cancellationToken);
-        }
-
-        /// <summary>Revoke an invitation</summary>
-        /// <param name="id">The unique ID of the invitation.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Invitation"/> result.</returns>
-        public virtual async Task<Invitation> RevokeInvitation(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/user_management/invitations/{id}/revoke",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Invitation>(request, cancellationToken);
+            return await this.PostAsync<CorsOriginsCreateCorsOriginResponse>("/user_management/cors_origins", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Update JWT template</summary>
+        /// <remarks>
+        /// Update the JWT template for the current environment
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="JWTTemplateResponse"/> result.</returns>
-        public virtual async Task<JWTTemplateResponse> UpdateJWTTemplate(UserManagementUpdateJWTTemplateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="JWTTemplatesUpdateJWTTemplateResponse"/> result.</returns>
+        public virtual async Task<JWTTemplatesUpdateJWTTemplateResponse> UpdateJWTTemplate(UserManagementUpdateJWTTemplateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Put,
-                Path = "/user_management/jwt_template",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<JWTTemplateResponse>(request, cancellationToken);
-        }
-
-        /// <summary>Create a Magic Auth code</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="MagicAuth"/> result.</returns>
-        public virtual async Task<MagicAuth> CreateMagicAuth(UserManagementCreateMagicAuthOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/magic_auth",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<MagicAuth>(request, cancellationToken);
-        }
-
-        /// <summary>Get Magic Auth code details</summary>
-        /// <param name="id">The unique ID of the Magic Auth code.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="MagicAuth"/> result.</returns>
-        public virtual async Task<MagicAuth> GetMagicAuth(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/magic_auth/{id}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<MagicAuth>(request, cancellationToken);
-        }
-
-        /// <summary>List organization memberships</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="UserOrganizationMembership"/> results.</returns>
-        public virtual async Task<WorkOSList<UserOrganizationMembership>> ListOrganizationMemberships(UserManagementListOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/user_management/organization_memberships",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<UserOrganizationMembership>>(request, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="ListOrganizationMemberships"/>. Yields individual items across all pages.</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="UserOrganizationMembership"/> items.</returns>
-        public virtual IAsyncEnumerable<UserOrganizationMembership> ListOrganizationMembershipsAutoPagingAsync(UserManagementListOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/user_management/organization_memberships",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<UserOrganizationMembership>(request, cancellationToken);
-        }
-
-        /// <summary>Create an organization membership</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="OrganizationMembership"/> result.</returns>
-        public virtual async Task<OrganizationMembership> CreateOrganizationMembership(UserManagementCreateOrganizationMembershipOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/organization_memberships",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<OrganizationMembership>(request, cancellationToken);
-        }
-
-        /// <summary>Get an organization membership</summary>
-        /// <param name="id">The unique ID of the organization membership.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserOrganizationMembership"/> result.</returns>
-        public virtual async Task<UserOrganizationMembership> GetOrganizationMembership(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/organization_memberships/{id}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<UserOrganizationMembership>(request, cancellationToken);
-        }
-
-        /// <summary>Update an organization membership</summary>
-        /// <param name="id">The unique ID of the organization membership.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserOrganizationMembership"/> result.</returns>
-        public virtual async Task<UserOrganizationMembership> UpdateOrganizationMembership(string id, UserManagementUpdateOrganizationMembershipOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Put,
-                Path = $"/user_management/organization_memberships/{id}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<UserOrganizationMembership>(request, cancellationToken);
-        }
-
-        /// <summary>Delete an organization membership</summary>
-        /// <param name="id">The unique ID of the organization membership.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteOrganizationMembership(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/user_management/organization_memberships/{id}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
-        }
-
-        /// <summary>Deactivate an organization membership</summary>
-        /// <param name="id">The unique ID of the organization membership.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="OrganizationMembership"/> result.</returns>
-        public virtual async Task<OrganizationMembership> DeactivateOrganizationMembership(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Put,
-                Path = $"/user_management/organization_memberships/{id}/deactivate",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<OrganizationMembership>(request, cancellationToken);
-        }
-
-        /// <summary>Reactivate an organization membership</summary>
-        /// <param name="id">The unique ID of the organization membership.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserOrganizationMembership"/> result.</returns>
-        public virtual async Task<UserOrganizationMembership> ReactivateOrganizationMembership(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Put,
-                Path = $"/user_management/organization_memberships/{id}/reactivate",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<UserOrganizationMembership>(request, cancellationToken);
+            return await this.PutAsync<JWTTemplatesUpdateJWTTemplateResponse>("/user_management/jwt_template", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Create a redirect URI</summary>
+        /// <remarks>
+        /// Creates a new redirect URI for an environment
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="RedirectUri"/> result.</returns>
-        public virtual async Task<RedirectUri> CreateRedirectUri(UserManagementCreateRedirectUriOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="RedirectUrisCreateResponse"/> result.</returns>
+        public virtual async Task<RedirectUrisCreateResponse> CreateRedirectUri(UserManagementCreateRedirectUriOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/redirect_uris",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<RedirectUri>(request, cancellationToken);
-        }
-
-        /// <summary>List authorized applications</summary>
-        /// <param name="userId">The ID of the user.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="AuthorizedConnectApplicationListData"/> results.</returns>
-        public virtual async Task<WorkOSList<AuthorizedConnectApplicationListData>> ListAuthorizedApplications(string userId, UserManagementListAuthorizedApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/users/{userId}/authorized_applications",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<AuthorizedConnectApplicationListData>>(request, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="ListAuthorizedApplications"/>. Yields individual items across all pages.</summary>
-        /// <param name="userId">The ID of the user.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="AuthorizedConnectApplicationListData"/> items.</returns>
-        public virtual IAsyncEnumerable<AuthorizedConnectApplicationListData> ListAuthorizedApplicationsAutoPagingAsync(string userId, UserManagementListAuthorizedApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/users/{userId}/authorized_applications",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<AuthorizedConnectApplicationListData>(request, cancellationToken);
-        }
-
-        /// <summary>Delete an authorized application</summary>
-        /// <param name="userId">The ID of the user.</param>
-        /// <param name="applicationId">The ID or client ID of the application.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteAuthorizedApplication(string userId, string applicationId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/user_management/users/{userId}/authorized_applications/{applicationId}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
-        }
-
-        /// <summary>
-        /// Shared transport for the eight AuthenticateWith* wrappers. Each
-        /// wrapper sets its grant_type and required client credentials, then
-        /// calls this helper, which POSTs to /user_management/authenticate.
-        /// </summary>
-        private async Task<AuthenticateResponse> SendAuthenticateAsync(BaseOptions options, RequestOptions? requestOptions, CancellationToken cancellationToken)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/authenticate",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthenticateResponse>(request, cancellationToken);
+            return await this.PostAsync<RedirectUrisCreateResponse>("/user_management/redirect_uris", options, requestOptions, cancellationToken);
         }
     }
 }

@@ -6,21 +6,21 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a user sessions list item.</summary>
+    /// <summary>Represents an user sessions list item.</summary>
     public class UserSessionsListItem
     {
 
-        /// <summary>Distinguishes the session object.</summary>
+        /// <summary>The type of object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; } = default!;
+        public string Object { get; internal set; } = "session";
 
         /// <summary>The unique ID of the session.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
-        /// <summary>Information about the impersonator if this session was created via impersonation.</summary>
+        /// <summary>Information about the admin impersonating the user, if applicable.</summary>
         [JsonProperty("impersonator")]
         [STJS.JsonPropertyName("impersonator")]
         public UserSessionsImpersonator? Impersonator { get; set; }
@@ -30,29 +30,31 @@ namespace WorkOS
         [STJS.JsonPropertyName("ip_address")]
         public string? IpAddress { get; set; }
 
-        /// <summary>The ID of the organization this session is associated with.</summary>
+        /// <summary>The identifier of the Organization the session is associated with.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
         public string? OrganizationId { get; set; }
 
-        /// <summary>The user agent string from the device that created the session.</summary>
+        /// <summary>The user agent string of the client that created the session.</summary>
         [JsonProperty("user_agent")]
         [STJS.JsonPropertyName("user_agent")]
         public string? UserAgent { get; set; }
 
-        /// <summary>The ID of the user this session belongs to.</summary>
+        /// <summary>The ID of the user the session belongs to.</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
         public string UserId { get; set; } = default!;
 
-        /// <summary>The authentication method used to create this session.</summary>
-        [JsonProperty("auth_method")]
+        /// <summary>The authentication method used to create the session.</summary>
+        [JsonProperty("auth_method", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonPropertyName("auth_method")]
+        [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public UserSessionsAuthMethod AuthMethod { get; set; }
 
         /// <summary>The current status of the session.</summary>
-        [JsonProperty("status")]
+        [JsonProperty("status", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonPropertyName("status")]
+        [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public UserSessionsStatus Status { get; set; }
 
         /// <summary>The timestamp when the session expires.</summary>
@@ -60,17 +62,17 @@ namespace WorkOS
         [STJS.JsonPropertyName("expires_at")]
         public DateTimeOffset ExpiresAt { get; set; }
 
-        /// <summary>The timestamp when the session ended.</summary>
+        /// <summary>The timestamp when the session ended, if it has been revoked or expired.</summary>
         [JsonProperty("ended_at")]
         [STJS.JsonPropertyName("ended_at")]
-        public DateTimeOffset? EndedAt { get; set; }
+        public object? EndedAt { get; set; }
 
-        /// <summary>An ISO 8601 timestamp.</summary>
+        /// <summary>The timestamp when the resource was created.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
-        /// <summary>An ISO 8601 timestamp.</summary>
+        /// <summary>The timestamp when the resource was last updated.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
         public DateTimeOffset UpdatedAt { get; set; }

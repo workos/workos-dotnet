@@ -9,24 +9,19 @@ namespace WorkOS
     public class CreateAuthorizationPermission
     {
 
-        /// <summary>A unique key to reference the permission. Must be lowercase and contain only letters, numbers, hyphens, underscores, colons, periods, and asterisks.</summary>
+        /// <summary>The URL-friendly slug of the permission. Must be lowercase and contain only letters, numbers, hyphens, underscores, colons, periods, and asterisks.</summary>
         [JsonProperty("slug")]
         [STJS.JsonPropertyName("slug")]
         public string Slug { get; set; } = default!;
 
-        /// <summary>A descriptive name for the Permission.</summary>
+        /// <summary>A human-readable name for the permission.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
-        /// <summary>An optional description of the Permission.</summary>
+        /// <summary>A description of what the permission allows.</summary>
         [JsonProperty("description")]
         [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }
-
-        /// <summary>The slug of the resource type this permission is scoped to.</summary>
-        [JsonProperty("resource_type_slug")]
-        [STJS.JsonPropertyName("resource_type_slug")]
-        public string? ResourceTypeSlug { get; set; }
     }
 }

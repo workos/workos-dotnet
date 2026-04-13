@@ -2,48 +2,61 @@
 
 namespace WorkOS
 {
-    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a audit log event.</summary>
+    /// <summary>Represents an audit log event.</summary>
     public class AuditLogEvent
     {
 
-        /// <summary>Identifier of what happened.</summary>
+        /// <summary>The action that occurred. Format is typically resource.action (e.g., user.created).</summary>
         [JsonProperty("action")]
         [STJS.JsonPropertyName("action")]
         public string Action { get; set; } = default!;
 
-        /// <summary>ISO-8601 value of when the action occurred.</summary>
+        /// <summary>The timestamp when the event occurred in ISO 8601 format (RFC 3339).</summary>
         [JsonProperty("occurred_at")]
         [STJS.JsonPropertyName("occurred_at")]
-        public DateTimeOffset OccurredAt { get; set; }
+        public string OccurredAt { get; set; } = default!;
 
-        /// <summary>The entity that performed the action.</summary>
+        /// <summary>Additional data that should be associated with the event or entity. There is a limit of 50 keys. Key names can be up to 40 characters long, and values can be up to 500 characters long.</summary>
+        [JsonProperty("metadata")]
+        [STJS.JsonPropertyName("metadata")]
+        public Dictionary<string, object>? Metadata { get; set; }
+
+        /// <summary>The schema version of the audit log event.</summary>
+        [JsonProperty("version")]
+        [STJS.JsonPropertyName("version")]
+        public double? Version { get; set; }
         [JsonProperty("actor")]
         [STJS.JsonPropertyName("actor")]
         public AuditLogEventActor Actor { get; set; } = default!;
-
-        /// <summary>The resources affected by the action.</summary>
         [JsonProperty("targets")]
         [STJS.JsonPropertyName("targets")]
         public List<AuditLogEventTarget> Targets { get; set; } = default!;
-
-        /// <summary>Additional context about where and how the action occurred.</summary>
         [JsonProperty("context")]
         [STJS.JsonPropertyName("context")]
         public AuditLogEventContext Context { get; set; } = default!;
 
-        /// <summary>Additional data associated with the event or entity.</summary>
-        [JsonProperty("metadata")]
-        [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, AnyOf<string, double, bool>>? Metadata { get; set; }
-
-        /// <summary>What schema version the event is associated with.</summary>
-        [JsonProperty("version")]
-        [STJS.JsonPropertyName("version")]
-        public long? Version { get; set; }
+        /// <summary>
+        /// Typed accessor for <see cref="Metadata"/>. Returns the value stored under
+        /// <paramref name="key"/> coerced to <typeparamref name="T"/>, or the default
+        /// value when the key is missing or the value is not convertible.
+        /// </summary>
+        /// <typeparam name="T">Expected value type.</typeparam>
+        /// <param name="key">The key to look up.</param>
+        public T? GetMetadataAttribute<T>(string key)
+        {
+            if (this.Metadata == null) return default;
+            if (!this.Metadata.TryGetValue(key, out var value)) return default;
+            if (value is T typed) return typed;
+            if (value is Newtonsoft.Json.Linq.JToken token) return token.ToObject<T>();
+            if (value is System.Text.Json.JsonElement element)
+            {
+                return System.Text.Json.JsonSerializer.Deserialize<T>(element.GetRawText());
+            }
+            return default;
+        }
     }
 }

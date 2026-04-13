@@ -5,18 +5,17 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a organization domain data.</summary>
+    /// <summary>Represents an organization domain data.</summary>
     public class OrganizationDomainData
     {
 
-        /// <summary>The domain value.</summary>
+        /// <summary>The domain to be added to the organization. This should be a domain owned by the organization, and not a common consumer domain like gmail.com.</summary>
         [JsonProperty("domain")]
         [STJS.JsonPropertyName("domain")]
         public string Domain { get; set; } = default!;
-
-        /// <summary>The verification state of the domain.</summary>
-        [JsonProperty("state")]
+        [JsonProperty("state", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonPropertyName("state")]
+        [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public OrganizationDomainDataState State { get; set; }
     }
 }

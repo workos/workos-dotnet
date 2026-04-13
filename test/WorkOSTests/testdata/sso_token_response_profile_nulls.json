@@ -1,0 +1,17 @@
+{
+  "object": "profile",
+  "id": "prof_01HRSF1G3DQWG4X8BPJMVK9Z5N",
+  "organization_id": null,
+  "connection_id": "conn_01HRSF1G3DQWG4X8BPJMVK9Z5N",
+  "connection_type": "Pending",
+  "idp_id": "idp_user_12345",
+  "email": "john.doe@example.com",
+  "first_name": null,
+  "last_name": null,
+  "role": null,
+  "groups": null,
+  "custom_attributes": null,
+  "raw_attributes": {
+    "key": {}
+  }
+}

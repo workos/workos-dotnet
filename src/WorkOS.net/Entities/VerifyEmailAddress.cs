@@ -2,6 +2,6 @@
 
 namespace WorkOS
 {
-    /// <summary>VerifyEmailAddress is structurally identical to AuthenticationChallengesVerifyRequest.</summary>
-    public class VerifyEmailAddress : AuthenticationChallengesVerifyRequest { }
+    /// <summary>VerifyEmailAddress is structurally identical to AuthorizationCodesCreateAuthenticateCodeResponse.</summary>
+    public class VerifyEmailAddress : AuthorizationCodesCreateAuthenticateCodeResponse { }
 }

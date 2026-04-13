@@ -27,24 +27,11 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestCompleteOAuth2()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/external_auth_complete_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/authkit/oauth2/complete", HttpStatusCode.OK, fixture);
-            var result = await this.service.CompleteOAuth2(new ConnectCompleteOAuth2Options());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.RedirectUri);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/authkit/oauth2/complete");
-        }
-
-        [Fact]
         public async Task TestListApplications()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_connect_application.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/connect/applications", HttpStatusCode.OK, fixture);
+            this.httpMock.MockResponse(HttpMethod.Get, "/connect/applications", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
             var result = await this.service.ListApplications(new ConnectListApplicationsOptions());
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/connect/applications");
         }
 
@@ -58,28 +45,44 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestCreateApplication()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/application_create_response.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/connect/applications", HttpStatusCode.OK, fixture);
+            var options = new ConnectCreateApplicationOptions();
+            options.Name = "test_name";
+            var result = await this.service.CreateApplication(options);
+            Assert.NotNull(result);
+            Assert.Equal("app_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
+            Assert.Equal("client_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.ClientId);
+            Assert.Equal("My Connect App", result.Name);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/connect/applications");
+            await this.httpMock.AssertRequestBodyContainsAsync("name", "test_name");
+        }
+
+        [Fact]
         public async Task TestGetApplication()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/connect_application.json");
+            var fixture = System.IO.File.ReadAllText("testdata/application_find_response.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/connect/applications/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.GetApplication("test_id");
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.ClientId);
-            Assert.NotEmpty(result.Name);
+            Assert.Equal("app_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
+            Assert.Equal("client_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.ClientId);
+            Assert.Equal("My Connect App", result.Name);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/connect/applications/test_id");
         }
 
         [Fact]
         public async Task TestUpdateApplication()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/connect_application.json");
+            var fixture = System.IO.File.ReadAllText("testdata/application_update_response.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/connect/applications/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.UpdateApplication("test_id", new ConnectUpdateApplicationOptions());
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.ClientId);
-            Assert.NotEmpty(result.Name);
+            Assert.Equal("app_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
+            Assert.Equal("client_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.ClientId);
+            Assert.Equal("My Connect App", result.Name);
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/connect/applications/test_id");
         }
 
@@ -92,121 +95,38 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListApplicationClientSecrets()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/application_credentials_list_item.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/connect/applications/test_id/client_secrets", HttpStatusCode.OK, "[" + fixture + "]");
-            var result = await this.service.ListApplicationClientSecrets("test_id");
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/connect/applications/test_id/client_secrets");
-        }
-
-        [Fact]
-        public async Task TestCreateApplicationClientSecrets()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/new_connect_application_secret.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/connect/applications/test_id/client_secrets", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateApplicationClientSecrets("test_id");
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.SecretHint);
-            Assert.NotEmpty(result.Secret);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/connect/applications/test_id/client_secrets");
-        }
-
-        [Fact]
-        public async Task TestDeleteClientSecret()
-        {
-            this.httpMock.MockResponse(HttpMethod.Delete, "/connect/client_secrets/test_id", HttpStatusCode.NoContent, "");
-            await this.service.DeleteClientSecret("test_id");
-            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/connect/client_secrets/test_id");
-        }
-
-        [Fact]
-        public async Task TestListApplicationsAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/connect_application.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/connect/applications", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<ConnectApplication>();
-            await foreach (var item in this.service.ListApplicationsAutoPagingAsync(new ConnectListApplicationsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestListApplicationsAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/connect/applications", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<ConnectApplication>();
-            await foreach (var item in this.service.ListApplicationsAutoPagingAsync(new ConnectListApplicationsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestCreateOAuthApplication()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/connect_application.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/connect/applications", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateOAuthApplication(new CreateOAuthApplicationOptions());
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/connect/applications");
-        }
-
-        [Fact]
-        public async Task TestCreateM2MApplication()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/connect_application.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/connect/applications", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateM2MApplication(new CreateM2MApplicationOptions());
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/connect/applications");
-        }
-
-        [Fact]
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationError>(() => this.service.CompleteOAuth2(new ConnectCompleteOAuth2Options()));
+            await Assert.ThrowsAsync<AuthenticationError>(() => this.service.ListApplications(new ConnectListApplicationsOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundError>(() => this.service.CompleteOAuth2(new ConnectCompleteOAuth2Options()));
+            await Assert.ThrowsAsync<NotFoundError>(() => this.service.ListApplications(new ConnectListApplicationsOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.CompleteOAuth2(new ConnectCompleteOAuth2Options()));
+            await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.ListApplications(new ConnectListApplicationsOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.CompleteOAuth2(new ConnectCompleteOAuth2Options()));
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.ListApplications(new ConnectListApplicationsOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerError>(() => this.service.CompleteOAuth2(new ConnectCompleteOAuth2Options()));
+            await Assert.ThrowsAsync<ServerError>(() => this.service.ListApplications(new ConnectListApplicationsOptions()));
         }
     }
 }

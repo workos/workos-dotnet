@@ -6,47 +6,36 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a audit log export creation.</summary>
+    /// <summary>Represents an audit log export creation.</summary>
     public class AuditLogExportCreation
     {
 
-        /// <summary>The unique ID of the Organization.</summary>
+        /// <summary>The identifier of the Organization to export audit logs for.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
         public string OrganizationId { get; set; } = default!;
 
-        /// <summary>ISO-8601 value for start of the export range.</summary>
+        /// <summary>The start of the date range for the export in ISO 8601 format.</summary>
         [JsonProperty("range_start")]
         [STJS.JsonPropertyName("range_start")]
         public string RangeStart { get; set; } = default!;
 
-        /// <summary>ISO-8601 value for end of the export range.</summary>
+        /// <summary>The end of the date range for the export in ISO 8601 format.</summary>
         [JsonProperty("range_end")]
         [STJS.JsonPropertyName("range_end")]
         public string RangeEnd { get; set; } = default!;
-
-        /// <summary>List of actions to filter against.</summary>
         [JsonProperty("actions")]
         [STJS.JsonPropertyName("actions")]
         public List<string>? Actions { get; set; }
-
-        /// <summary>Deprecated. Use `actor_names` instead.</summary>
-        [System.Obsolete("This field is deprecated.")]
         [JsonProperty("actors")]
         [STJS.JsonPropertyName("actors")]
         public List<string>? Actors { get; set; }
-
-        /// <summary>List of actor names to filter against.</summary>
         [JsonProperty("actor_names")]
         [STJS.JsonPropertyName("actor_names")]
         public List<string>? ActorNames { get; set; }
-
-        /// <summary>List of actor IDs to filter against.</summary>
         [JsonProperty("actor_ids")]
         [STJS.JsonPropertyName("actor_ids")]
         public List<string>? ActorIds { get; set; }
-
-        /// <summary>List of target types to filter against.</summary>
         [JsonProperty("targets")]
         [STJS.JsonPropertyName("targets")]
         public List<string>? Targets { get; set; }

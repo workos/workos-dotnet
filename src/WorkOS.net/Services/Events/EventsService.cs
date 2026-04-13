@@ -7,45 +7,43 @@ namespace WorkOS
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>Handles Events operations.</summary>
+    /// <summary>Service that exposes the events API operations on <see cref="WorkOSClient"/>.</summary>
     public class EventsService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventsService"/> class for mocking. The service uses the singleton
+        /// client configured via <see cref="WorkOSConfiguration.WorkOSClient"/>.
+        /// </summary>
         public EventsService() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventsService"/> class bound to the
+        /// supplied <paramref name="client"/>.
+        /// </summary>
+        /// <param name="client">The HTTP client used to make API requests.</param>
         public EventsService(WorkOSClient client) : base(client) { }
 
-        /// <summary>List events</summary>
+        /// <summary>List Events</summary>
+        /// <remarks>
+        /// List events for the current environment
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="EventSchema"/> results.</returns>
-        public virtual async Task<WorkOSList<EventSchema>> List(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="EventListItem"/> results.</returns>
+        public virtual async Task<WorkOSList<EventListItem>> List(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/events",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<EventSchema>>(request, cancellationToken);
+            return await this.GetAsync<WorkOSList<EventListItem>>("/events", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="List"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="EventSchema"/> items.</returns>
-        public virtual IAsyncEnumerable<EventSchema> ListAutoPagingAsync(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="EventListItem"/> items.</returns>
+        public virtual IAsyncEnumerable<EventListItem> ListAutoPagingAsync(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/events",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<EventSchema>(request, cancellationToken);
+            return this.ListAutoPagingAsync<EventListItem>("/events", options, requestOptions, cancellationToken);
         }
     }
 }

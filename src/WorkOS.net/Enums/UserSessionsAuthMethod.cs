@@ -14,8 +14,6 @@ namespace WorkOS
         [EnumMember(Value = "unknown")]
         Unknown,
 
-        [EnumMember(Value = "cross_app_auth")]
-        CrossAppAuth,
         [EnumMember(Value = "external_auth")]
         ExternalAuth,
         [EnumMember(Value = "impersonation")]

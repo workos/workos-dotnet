@@ -5,16 +5,14 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a audit log event ingestion.</summary>
+    /// <summary>Represents an audit log event ingestion.</summary>
     public class AuditLogEventIngestion
     {
 
-        /// <summary>The unique ID of the Organization.</summary>
+        /// <summary>The identifier of the Organization to log the audit event for.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
         public string OrganizationId { get; set; } = default!;
-
-        /// <summary>The audit log event to create.</summary>
         [JsonProperty("event")]
         [STJS.JsonPropertyName("event")]
         public AuditLogEvent Event { get; set; } = default!;

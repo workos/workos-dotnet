@@ -5,23 +5,24 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a user identities get item.</summary>
+    /// <summary>Represents an user identities get item.</summary>
     public class UserIdentitiesGetItem
     {
 
-        /// <summary>The unique ID of the user in the external identity provider.</summary>
+        /// <summary>The user identifier from the identity provider.</summary>
         [JsonProperty("idp_id")]
         [STJS.JsonPropertyName("idp_id")]
         public string IdpId { get; set; } = default!;
 
-        /// <summary>The type of the identity.</summary>
+        /// <summary>The type of the resource.</summary>
         [JsonProperty("type")]
         [STJS.JsonPropertyName("type")]
-        public string Type { get; set; } = default!;
+        public string Type { get; internal set; } = "OAuth";
 
-        /// <summary>The type of OAuth provider for the identity.</summary>
-        [JsonProperty("provider")]
+        /// <summary>The provider name.</summary>
+        [JsonProperty("provider", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonPropertyName("provider")]
+        [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public UserIdentitiesGetItemProvider Provider { get; set; }
     }
 }

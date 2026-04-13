@@ -2,36 +2,6 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
-
-    /// <summary>Represents a update authorization resource.</summary>
-    public class UpdateAuthorizationResource
-    {
-
-        /// <summary>A display name for the resource.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
-        public string? Name { get; set; }
-
-        /// <summary>An optional description of the resource.</summary>
-        [JsonProperty("description")]
-        [STJS.JsonPropertyName("description")]
-        public string? Description { get; set; }
-
-        /// <summary>The ID of the parent resource.</summary>
-        [JsonProperty("parent_resource_id")]
-        [STJS.JsonPropertyName("parent_resource_id")]
-        public string? ParentResourceId { get; set; }
-
-        /// <summary>The external ID of the parent resource.</summary>
-        [JsonProperty("parent_resource_external_id")]
-        [STJS.JsonPropertyName("parent_resource_external_id")]
-        public string? ParentResourceExternalId { get; set; }
-
-        /// <summary>The resource type slug of the parent resource.</summary>
-        [JsonProperty("parent_resource_type_slug")]
-        [STJS.JsonPropertyName("parent_resource_type_slug")]
-        public string? ParentResourceTypeSlug { get; set; }
-    }
+    /// <summary>UpdateAuthorizationResource is structurally identical to UpdateAuthorizationPermission.</summary>
+    public class UpdateAuthorizationResource : UpdateAuthorizationPermission { }
 }

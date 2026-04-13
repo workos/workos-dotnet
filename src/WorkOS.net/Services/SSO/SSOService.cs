@@ -7,85 +7,76 @@ namespace WorkOS
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>Handles SSO operations.</summary>
+    /// <summary>Service that exposes the SSO API operations on <see cref="WorkOSClient"/>.</summary>
     public class SSOService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SSOService"/> class for mocking. The service uses the singleton
+        /// client configured via <see cref="WorkOSConfiguration.WorkOSClient"/>.
+        /// </summary>
         public SSOService() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SSOService"/> class bound to the
+        /// supplied <paramref name="client"/>.
+        /// </summary>
+        /// <param name="client">The HTTP client used to make API requests.</param>
         public SSOService(WorkOSClient client) : base(client) { }
 
         /// <summary>List Connections</summary>
+        /// <remarks>
+        /// Get a list of all of your existing connections matching the criteria specified
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="Connection"/> results.</returns>
-        public virtual async Task<WorkOSList<Connection>> ListConnections(SSOListConnectionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="ConnectionListItem"/> results.</returns>
+        public virtual async Task<WorkOSList<ConnectionListItem>> ListConnections(SSOListConnectionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/connections",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<Connection>>(request, cancellationToken);
+            return await this.GetAsync<WorkOSList<ConnectionListItem>>("/connections", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListConnections"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="Connection"/> items.</returns>
-        public virtual IAsyncEnumerable<Connection> ListConnectionsAutoPagingAsync(SSOListConnectionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="ConnectionListItem"/> items.</returns>
+        public virtual IAsyncEnumerable<ConnectionListItem> ListConnectionsAutoPagingAsync(SSOListConnectionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/connections",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<Connection>(request, cancellationToken);
+            return this.ListAutoPagingAsync<ConnectionListItem>("/connections", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a Connection</summary>
-        /// <param name="id">Unique identifier for the Connection.</param>
+        /// <remarks>
+        /// Get the details of an existing connection
+        /// </remarks>
+        /// <param name="id">The id.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Connection"/> result.</returns>
-        public virtual async Task<Connection> GetConnection(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ConnectionFindResponse"/> result.</returns>
+        public virtual async Task<ConnectionFindResponse> GetConnection(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/connections/{id}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Connection>(request, cancellationToken);
+            return await this.GetAsync<ConnectionFindResponse>($"/connections/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a Connection</summary>
-        /// <param name="id">Unique identifier for the Connection.</param>
+        /// <remarks>
+        /// Delete an existing connection
+        /// </remarks>
+        /// <param name="id">The id.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task DeleteConnection(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/connections/{id}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            await this.DeleteAsync($"/connections/{id}", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>
-        /// Builds the SSO authorization URL for the configured client. The caller is
-        /// expected to redirect the user's browser to the returned URL — the SDK does
-        /// not call the endpoint directly.
-        /// </summary>
-        /// <param name="options">SSO parameters (connection, organization, redirect_uri, state, etc.).</param>
-        /// <returns>The fully-qualified authorization URL.</returns>
+        /// <summary>Get an authorization URL</summary>
+        /// <remarks>
+        /// Generates an OAuth 2.0 authorization URL to authenticate a user with SSO.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <returns>The fully-qualified URL for the caller to redirect to.</returns>
         public virtual string GetAuthorizationUrl(SSOGetAuthorizationUrlOptions? options = null)
         {
             options ??= new SSOGetAuthorizationUrlOptions();
@@ -100,58 +91,48 @@ namespace WorkOS
             return this.Client.BuildRequestUri(request).ToString();
         }
 
-        /// <summary>
-        /// Builds the SSO logout URL. The caller is expected to redirect the user's
-        /// browser to the returned URL — the SDK does not call the endpoint directly.
-        /// </summary>
-        /// <param name="options">Logout parameters.</param>
-        /// <returns>The fully-qualified logout URL.</returns>
-        public virtual string GetLogoutUrl(SSOGetLogoutUrlOptions? options = null)
+        /// <summary>Get JSON Web Key Set</summary>
+        /// <remarks>
+        /// Returns the JSON Web Key Set (JWKS) containing the public keys used to verify JWT signatures for the specified client.
+        /// </remarks>
+        /// <param name="clientId">The client ID of your WorkOS application.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="SSOJsonWebKeySetResponse"/> result.</returns>
+        public virtual async Task<SSOJsonWebKeySetResponse> GetJwks(string clientId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/sso/logout",
-                Options = options,
-            };
-            return this.Client.BuildRequestUri(request).ToString();
+            return await this.GetAsync<SSOJsonWebKeySetResponse>($"/sso/jwks/{clientId}", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>Logout Authorize</summary>
+        /// <summary>Get a logout URL</summary>
+        /// <remarks>
+        /// Generate a logout URL for terminating an SSO session. Only supported for GenericOIDC connections.
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="SSOLogoutAuthorizeResponse"/> result.</returns>
         public virtual async Task<SSOLogoutAuthorizeResponse> AuthorizeLogout(SSOAuthorizeLogoutOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/sso/logout/authorize",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<SSOLogoutAuthorizeResponse>(request, cancellationToken);
+            return await this.PostAsync<SSOLogoutAuthorizeResponse>("/sso/logout/authorize", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a User Profile</summary>
-        /// <param name="accessToken">The bearer token for authentication.</param>
+        /// <remarks>
+        /// Exchange an access token for a user’s Profile. Because this profile is returned in the Get a Profile and Token endpoint your application usually does not need to call this endpoint. It is available for any authentication flows that require an additional endpoint to retrieve a user’s profile.
+        /// </remarks>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Profile"/> result.</returns>
-        public virtual async Task<Profile> GetProfile(string accessToken, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="SSOGetProfileResponse"/> result.</returns>
+        public virtual async Task<SSOGetProfileResponse> GetProfile(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/sso/profile",
-                AccessToken = accessToken,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Profile>(request, cancellationToken);
+            return await this.GetAsync<SSOGetProfileResponse>("/sso/profile", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a Profile and Token</summary>
+        /// <remarks>
+        /// Get an access token along with the user Profile using the code passed to your Redirect URI
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -161,14 +142,7 @@ namespace WorkOS
             options.GrantType = "authorization_code";
             options.ClientId = this.Client.RequireClientId();
             options.ClientSecret = this.Client.ApiKey ?? string.Empty;
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/sso/token",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<SSOTokenResponse>(request, cancellationToken);
+            return await this.PostAsync<SSOTokenResponse>("/sso/token", options, requestOptions, cancellationToken);
         }
     }
 }

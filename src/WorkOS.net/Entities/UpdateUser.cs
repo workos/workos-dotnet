@@ -6,7 +6,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a update user.</summary>
+    /// <summary>Represents an update user.</summary>
     public class UpdateUser
     {
 
@@ -30,25 +30,15 @@ namespace WorkOS
         [STJS.JsonPropertyName("email_verified")]
         public bool? EmailVerified { get; set; }
 
-        /// <summary>The password to set for the user.</summary>
+        /// <summary>The password of the user.</summary>
         [JsonProperty("password")]
         [STJS.JsonPropertyName("password")]
         public string? Password { get; set; }
 
-        /// <summary>The hashed password to set for the user. Mutually exclusive with `password`.</summary>
+        /// <summary>The hashed password of the user. Requires password_hash_type to be set.</summary>
         [JsonProperty("password_hash")]
         [STJS.JsonPropertyName("password_hash")]
         public string? PasswordHash { get; set; }
-
-        /// <summary>The algorithm originally used to hash the password, used when providing a `password_hash`.</summary>
-        [JsonProperty("password_hash_type")]
-        [STJS.JsonPropertyName("password_hash_type")]
-        public UpdateUserPasswordHashType? PasswordHashType { get; set; }
-
-        /// <summary>Object containing metadata key/value pairs associated with the user.</summary>
-        [JsonProperty("metadata")]
-        [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, string>? Metadata { get; set; }
 
         /// <summary>The external ID of the user.</summary>
         [JsonProperty("external_id")]
@@ -59,5 +49,31 @@ namespace WorkOS
         [JsonProperty("locale")]
         [STJS.JsonPropertyName("locale")]
         public string? Locale { get; set; }
+        [JsonProperty("password_hash_type")]
+        [STJS.JsonPropertyName("password_hash_type")]
+        public CreateUserPasswordHashType? PasswordHashType { get; set; }
+        [JsonProperty("metadata")]
+        [STJS.JsonPropertyName("metadata")]
+        public Dictionary<string, object>? Metadata { get; set; }
+
+        /// <summary>
+        /// Typed accessor for <see cref="Metadata"/>. Returns the value stored under
+        /// <paramref name="key"/> coerced to <typeparamref name="T"/>, or the default
+        /// value when the key is missing or the value is not convertible.
+        /// </summary>
+        /// <typeparam name="T">Expected value type.</typeparam>
+        /// <param name="key">The key to look up.</param>
+        public T? GetMetadataAttribute<T>(string key)
+        {
+            if (this.Metadata == null) return default;
+            if (!this.Metadata.TryGetValue(key, out var value)) return default;
+            if (value is T typed) return typed;
+            if (value is Newtonsoft.Json.Linq.JToken token) return token.ToObject<T>();
+            if (value is System.Text.Json.JsonElement element)
+            {
+                return System.Text.Json.JsonSerializer.Deserialize<T>(element.GetRawText());
+            }
+            return default;
+        }
     }
 }

@@ -1,7 +1,7 @@
 {
-  "return_url": "https://example.com/admin-portal/return",
-  "success_url": "https://example.com/admin-portal/success",
-  "organization": "org_01EHZNVPK3SFK441A1RGBFSHRT",
+  "return_url": "https://example.com/return",
+  "success_url": "https://example.com/success",
+  "organization": "org_01HRSF1G3DQWG4X8BPJMVK9Z5N",
   "intent": "sso",
   "intent_options": {
     "sso": {

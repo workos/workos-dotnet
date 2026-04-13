@@ -10,14 +10,12 @@ namespace WorkOS
     public class CreateWebhookEndpoint
     {
 
-        /// <summary>The HTTPS URL where webhooks will be sent.</summary>
+        /// <summary>The URL where webhook events will be sent.</summary>
         [JsonProperty("endpoint_url")]
         [STJS.JsonPropertyName("endpoint_url")]
         public string EndpointUrl { get; set; } = default!;
-
-        /// <summary>The events that the Webhook Endpoint is subscribed to.</summary>
         [JsonProperty("events")]
         [STJS.JsonPropertyName("events")]
-        public List<CreateWebhookEndpointEvents> Events { get; set; } = default!;
+        public List<string> Events { get; set; } = default!;
     }
 }

@@ -1,0 +1,12 @@
+{
+  "object": "connected_account",
+  "id": "conn_acct_01HRSF1G3DQWG4X8BPJMVK9Z5N",
+  "userlandUserId": "user_01HRSF1G3DQWG4X8BPJMVK9Z5N",
+  "organizationId": "org_01EHQMYV6MBK39QC5PZXHY59C3",
+  "scopes": [
+    "test_scopes"
+  ],
+  "state": "connected",
+  "createdAt": "2024-01-15T10:30:00.000Z",
+  "updatedAt": "2024-01-15T10:30:00.000Z"
+}

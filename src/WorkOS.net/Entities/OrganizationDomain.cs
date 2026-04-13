@@ -2,6 +2,6 @@
 
 namespace WorkOS
 {
-    /// <summary>OrganizationDomain is structurally identical to OrganizationCreatedDataDomain.</summary>
-    public class OrganizationDomain : OrganizationCreatedDataDomain { }
+    /// <summary>OrganizationDomain is structurally identical to OrganizationCreateItem.</summary>
+    public class OrganizationDomain : OrganizationCreateItem { }
 }

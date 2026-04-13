@@ -6,36 +6,36 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a application credentials list item.</summary>
+    /// <summary>Represents an application credentials list item.</summary>
     public class ApplicationCredentialsListItem
     {
 
-        /// <summary>Distinguishes the connect application secret object.</summary>
+        /// <summary>The type of object.</summary>
         [JsonProperty("object")]
         [STJS.JsonPropertyName("object")]
-        public string Object { get; set; } = default!;
+        public string Object { get; internal set; } = "connect_application_secret";
 
-        /// <summary>The unique ID of the client secret.</summary>
+        /// <summary>The unique ID of the application secret.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
-        /// <summary>A hint showing the last few characters of the secret value.</summary>
+        /// <summary>A hint showing the last few characters of the secret.</summary>
         [JsonProperty("secret_hint")]
         [STJS.JsonPropertyName("secret_hint")]
         public string SecretHint { get; set; } = default!;
 
-        /// <summary>The timestamp when the client secret was last used, or null if never used.</summary>
+        /// <summary>The timestamp when the secret was last used.</summary>
         [JsonProperty("last_used_at")]
         [STJS.JsonPropertyName("last_used_at")]
         public string? LastUsedAt { get; set; }
 
-        /// <summary>An ISO 8601 timestamp.</summary>
+        /// <summary>The timestamp when the resource was created.</summary>
         [JsonProperty("created_at")]
         [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
-        /// <summary>An ISO 8601 timestamp.</summary>
+        /// <summary>The timestamp when the resource was last updated.</summary>
         [JsonProperty("updated_at")]
         [STJS.JsonPropertyName("updated_at")]
         public DateTimeOffset UpdatedAt { get; set; }

@@ -1,9 +1,9 @@
 {
-  "ip_address": "49.78.240.97",
-  "user_agent": "Mozilla/5.0",
+  "ip_address": "192.168.1.1",
+  "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
   "email": "user@example.com",
   "auth_method": "Password",
   "action": "login",
-  "device_fingerprint": "fp_abc123",
-  "bot_score": "0.1"
+  "device_fingerprint": "abc123xyz789",
+  "bot_score": "0.85"
 }

@@ -6,38 +6,52 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a organization input.</summary>
+    /// <summary>Represents an organization input.</summary>
     public class OrganizationInput
     {
 
-        /// <summary>The name of the organization.</summary>
+        /// <summary>A descriptive name for the Organization. This field does not need to be unique.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
-        /// <summary>Whether the organization allows profiles from outside the organization to sign in.</summary>
+        /// <summary>Whether the Organization allows profiles outside its domain to be associated with it.</summary>
         [JsonProperty("allow_profiles_outside_organization")]
         [STJS.JsonPropertyName("allow_profiles_outside_organization")]
         public bool? AllowProfilesOutsideOrganization { get; set; }
 
-        /// <summary>The domains associated with the organization. Deprecated in favor of `domain_data`.</summary>
-        [JsonProperty("domains")]
-        [STJS.JsonPropertyName("domains")]
-        public List<string>? Domains { get; set; }
-
-        /// <summary>The domains associated with the organization, including verification state.</summary>
-        [JsonProperty("domain_data")]
-        [STJS.JsonPropertyName("domain_data")]
-        public List<OrganizationDomainData>? DomainData { get; set; }
-
-        /// <summary>Object containing [metadata](https://workos.com/docs/authkit/metadata) key/value pairs associated with the Organization.</summary>
-        [JsonProperty("metadata")]
-        [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, string>? Metadata { get; set; }
-
-        /// <summary>An external identifier for the Organization.</summary>
+        /// <summary>The external ID of the Organization.</summary>
         [JsonProperty("external_id")]
         [STJS.JsonPropertyName("external_id")]
         public string? ExternalId { get; set; }
+        [JsonProperty("domains")]
+        [STJS.JsonPropertyName("domains")]
+        public List<string>? Domains { get; set; }
+        [JsonProperty("domain_data")]
+        [STJS.JsonPropertyName("domain_data")]
+        public List<OrganizationDomainData>? DomainData { get; set; }
+        [JsonProperty("metadata")]
+        [STJS.JsonPropertyName("metadata")]
+        public Dictionary<string, object>? Metadata { get; set; }
+
+        /// <summary>
+        /// Typed accessor for <see cref="Metadata"/>. Returns the value stored under
+        /// <paramref name="key"/> coerced to <typeparamref name="T"/>, or the default
+        /// value when the key is missing or the value is not convertible.
+        /// </summary>
+        /// <typeparam name="T">Expected value type.</typeparam>
+        /// <param name="key">The key to look up.</param>
+        public T? GetMetadataAttribute<T>(string key)
+        {
+            if (this.Metadata == null) return default;
+            if (!this.Metadata.TryGetValue(key, out var value)) return default;
+            if (value is T typed) return typed;
+            if (value is Newtonsoft.Json.Linq.JToken token) return token.ToObject<T>();
+            if (value is System.Text.Json.JsonElement element)
+            {
+                return System.Text.Json.JsonSerializer.Deserialize<T>(element.GetRawText());
+            }
+            return default;
+        }
     }
 }

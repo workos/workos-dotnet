@@ -10,17 +10,17 @@ namespace WorkOS
     public class WidgetSessionToken
     {
 
-        /// <summary>The ID of the organization to scope the widget session to.</summary>
+        /// <summary>The identifier of the Organization to create the widget session for.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
         public string OrganizationId { get; set; } = default!;
 
-        /// <summary>The ID of the user to issue the widget session token for.</summary>
+        /// <summary>The identifier of the user to create the widget session for. Required when using the users:manage scope.</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
         public string? UserId { get; set; }
 
-        /// <summary>The scopes to grant the widget session.</summary>
+        /// <summary>The scopes to grant to the widget session. Determines which widgets the session can access.</summary>
         [JsonProperty("scopes")]
         [STJS.JsonPropertyName("scopes")]
         public List<WidgetSessionTokenScopes>? Scopes { get; set; }

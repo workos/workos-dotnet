@@ -7,82 +7,69 @@ namespace WorkOS
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>Handles Radar operations.</summary>
+    /// <summary>Service that exposes the radar API operations on <see cref="WorkOSClient"/>.</summary>
     public class RadarService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RadarService"/> class for mocking. The service uses the singleton
+        /// client configured via <see cref="WorkOSConfiguration.WorkOSClient"/>.
+        /// </summary>
         public RadarService() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RadarService"/> class bound to the
+        /// supplied <paramref name="client"/>.
+        /// </summary>
+        /// <param name="client">The HTTP client used to make API requests.</param>
         public RadarService(WorkOSClient client) : base(client) { }
 
         /// <summary>Create an attempt</summary>
+        /// <remarks>
+        /// Evaluates an authentication attempt based on the parameters provided and returns a verdict.
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="RadarStandaloneResponse"/> result.</returns>
-        public virtual async Task<RadarStandaloneResponse> CreateAttempts(RadarCreateAttemptsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="RadarStandaloneAssessResponse"/> result.</returns>
+        public virtual async Task<RadarStandaloneAssessResponse> CreateAttempt(RadarCreateAttemptOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/radar/attempts",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<RadarStandaloneResponse>(request, cancellationToken);
+            return await this.PostAsync<RadarStandaloneAssessResponse>("/radar/attempts", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Update a Radar attempt</summary>
-        /// <param name="id">The unique identifier of the Radar attempt to update.</param>
+        /// <remarks>
+        /// Update a Radar attempt with the result of a challenge or authentication. This must be called within 10 minutes of the attempt being created.
+        /// </remarks>
+        /// <param name="id">The unique identifier of the Radar attempt to update</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task UpdateAttempt(string id, RadarUpdateAttemptOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Put,
-                Path = $"/radar/attempts/{id}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            await this.PutAsync<object>($"/radar/attempts/{id}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Add an entry to a Radar list</summary>
-        /// <param name="type">The type of the Radar list (e.g. ip_address, domain, email).</param>
-        /// <param name="action">The list action indicating whether to add the entry to the allow or block list.</param>
+        /// <param name="type">The type of entry to add to the list</param>
+        /// <param name="action">The action to take when the entry is matched</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="RadarListEntryAlreadyPresentResponse"/> result.</returns>
-        public virtual async Task<RadarListEntryAlreadyPresentResponse> AddListEntry(string type, string action, RadarAddListEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="RadarStandaloneUpdateRadarListResponse"/> result.</returns>
+        public virtual async Task<RadarStandaloneUpdateRadarListResponse> AddListEntry(string type, string action, RadarAddListEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/radar/lists/{type}/{action}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<RadarListEntryAlreadyPresentResponse>(request, cancellationToken);
+            return await this.PostAsync<RadarStandaloneUpdateRadarListResponse>($"/radar/lists/{type}/{action}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Remove an entry from a Radar list</summary>
-        /// <param name="type">The type of the Radar list (e.g. ip_address, domain, email).</param>
-        /// <param name="action">The list action indicating whether to remove the entry from the allow or block list.</param>
+        /// <param name="type">The type of entry to remove from the list</param>
+        /// <param name="action">The list action type to remove the entry from</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task RemoveListEntry(string type, string action, RadarRemoveListEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/radar/lists/{type}/{action}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            await this.DeleteAsync($"/radar/lists/{type}/{action}", options, requestOptions, cancellationToken);
         }
     }
 }

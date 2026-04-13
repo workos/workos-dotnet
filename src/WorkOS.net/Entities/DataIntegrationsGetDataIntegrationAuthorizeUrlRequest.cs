@@ -9,19 +9,14 @@ namespace WorkOS
     public class DataIntegrationsGetDataIntegrationAuthorizeUrlRequest
     {
 
-        /// <summary>The ID of the user to authorize.</summary>
+        /// <summary>The unique identifier of the user.</summary>
         [JsonProperty("user_id")]
         [STJS.JsonPropertyName("user_id")]
         public string UserId { get; set; } = default!;
 
-        /// <summary>An organization ID to scope the authorization to a specific organization.</summary>
+        /// <summary>The identifier of the Organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
         public string? OrganizationId { get; set; }
-
-        /// <summary>The URL to redirect the user to after authorization.</summary>
-        [JsonProperty("return_to")]
-        [STJS.JsonPropertyName("return_to")]
-        public string? ReturnTo { get; set; }
     }
 }

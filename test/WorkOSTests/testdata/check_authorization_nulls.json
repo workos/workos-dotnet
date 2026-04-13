@@ -1,5 +1,5 @@
 {
-  "permission_slug": "posts:create",
+  "permission_slug": "read",
   "resource_id": null,
   "resource_external_id": null,
   "resource_type_slug": null

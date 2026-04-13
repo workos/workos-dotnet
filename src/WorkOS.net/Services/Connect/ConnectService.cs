@@ -7,194 +7,95 @@ namespace WorkOS
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>Handles Connect operations.</summary>
+    /// <summary>Service that exposes the connect API operations on <see cref="WorkOSClient"/>.</summary>
     public class ConnectService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConnectService"/> class for mocking. The service uses the singleton
+        /// client configured via <see cref="WorkOSConfiguration.WorkOSClient"/>.
+        /// </summary>
         public ConnectService() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConnectService"/> class bound to the
+        /// supplied <paramref name="client"/>.
+        /// </summary>
+        /// <param name="client">The HTTP client used to make API requests.</param>
         public ConnectService(WorkOSClient client) : base(client) { }
 
-        /// <summary>Complete external authentication</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ExternalAuthCompleteResponse"/> result.</returns>
-        public virtual async Task<ExternalAuthCompleteResponse> CompleteOAuth2(ConnectCompleteOAuth2Options options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/authkit/oauth2/complete",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<ExternalAuthCompleteResponse>(request, cancellationToken);
-        }
-
         /// <summary>List Connect Applications</summary>
+        /// <remarks>
+        /// List Connect Applications in the current environment.
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="ConnectApplication"/> results.</returns>
-        public virtual async Task<WorkOSList<ConnectApplication>> ListApplications(ConnectListApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="string"/> results.</returns>
+        public virtual async Task<WorkOSList<string>> ListApplications(ConnectListApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/connect/applications",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<ConnectApplication>>(request, cancellationToken);
+            return await this.GetAsync<WorkOSList<string>>("/connect/applications", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListApplications"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="ConnectApplication"/> items.</returns>
-        public virtual IAsyncEnumerable<ConnectApplication> ListApplicationsAutoPagingAsync(ConnectListApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="string"/> items.</returns>
+        public virtual IAsyncEnumerable<string> ListApplicationsAutoPagingAsync(ConnectListApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/connect/applications",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<ConnectApplication>(request, cancellationToken);
+            return this.ListAutoPagingAsync<string>("/connect/applications", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Create oauth application.</summary>
+        /// <summary>Create a Connect Application</summary>
+        /// <remarks>
+        /// Create a new Connect Application
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ConnectApplication"/> result.</returns>
-        public async Task<ConnectApplication> CreateOAuthApplication(CreateOAuthApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ApplicationCreateResponse"/> result.</returns>
+        public virtual async Task<ApplicationCreateResponse> CreateApplication(ConnectCreateApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            options.ApplicationType = "oauth";
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/connect/applications",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<ConnectApplication>(request, cancellationToken);
-        }
-
-        /// <summary>Create m2m application.</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ConnectApplication"/> result.</returns>
-        public async Task<ConnectApplication> CreateM2MApplication(CreateM2MApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            options.ApplicationType = "m2m";
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/connect/applications",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<ConnectApplication>(request, cancellationToken);
+            return await this.PostAsync<ApplicationCreateResponse>("/connect/applications", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a Connect Application</summary>
-        /// <param name="id">The application ID or client ID of the Connect Application.</param>
+        /// <remarks>
+        /// Get the details of a Connect Application
+        /// </remarks>
+        /// <param name="id">The id.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ConnectApplication"/> result.</returns>
-        public virtual async Task<ConnectApplication> GetApplication(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ApplicationFindResponse"/> result.</returns>
+        public virtual async Task<ApplicationFindResponse> GetApplication(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/connect/applications/{id}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<ConnectApplication>(request, cancellationToken);
+            return await this.GetAsync<ApplicationFindResponse>($"/connect/applications/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Update a Connect Application</summary>
-        /// <param name="id">The application ID or client ID of the Connect Application.</param>
+        /// <remarks>
+        /// Update an existing Connect Application
+        /// </remarks>
+        /// <param name="id">The id.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ConnectApplication"/> result.</returns>
-        public virtual async Task<ConnectApplication> UpdateApplication(string id, ConnectUpdateApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ApplicationUpdateResponse"/> result.</returns>
+        public virtual async Task<ApplicationUpdateResponse> UpdateApplication(string id, ConnectUpdateApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Put,
-                Path = $"/connect/applications/{id}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<ConnectApplication>(request, cancellationToken);
+            return await this.PutAsync<ApplicationUpdateResponse>($"/connect/applications/{id}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a Connect Application</summary>
-        /// <param name="id">The application ID or client ID of the Connect Application.</param>
+        /// <remarks>
+        /// Delete an existing Connect Application
+        /// </remarks>
+        /// <param name="id">The id.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task DeleteApplication(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/connect/applications/{id}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
-        }
-
-        /// <summary>List Client Secrets for a Connect Application</summary>
-        /// <param name="id">The application ID or client ID of the Connect Application.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ApplicationCredentialsListItem"/> result.</returns>
-        public virtual async Task<List<ApplicationCredentialsListItem>> ListApplicationClientSecrets(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/connect/applications/{id}/client_secrets",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<List<ApplicationCredentialsListItem>>(request, cancellationToken);
-        }
-
-        /// <summary>Create a new client secret for a Connect Application</summary>
-        /// <param name="id">The application ID or client ID of the Connect Application.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="NewConnectApplicationSecret"/> result.</returns>
-        public virtual async Task<NewConnectApplicationSecret> CreateApplicationClientSecrets(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/connect/applications/{id}/client_secrets",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<NewConnectApplicationSecret>(request, cancellationToken);
-        }
-
-        /// <summary>Delete a Client Secret</summary>
-        /// <param name="id">The unique ID of the client secret.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteClientSecret(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/connect/client_secrets/{id}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            await this.DeleteAsync($"/connect/applications/{id}", null, requestOptions, cancellationToken);
         }
     }
 }

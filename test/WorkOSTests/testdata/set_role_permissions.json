@@ -1,8 +1,5 @@
 {
   "permissions": [
-    "billing:read",
-    "billing:write",
-    "invoices:manage",
-    "reports:view"
+    "test_permissions"
   ]
 }

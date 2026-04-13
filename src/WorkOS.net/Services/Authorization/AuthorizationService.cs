@@ -7,730 +7,539 @@ namespace WorkOS
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>Handles Authorization operations.</summary>
+    /// <summary>Service that exposes the authorization API operations on <see cref="WorkOSClient"/>.</summary>
     public class AuthorizationService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationService"/> class for mocking. The service uses the singleton
+        /// client configured via <see cref="WorkOSConfiguration.WorkOSClient"/>.
+        /// </summary>
         public AuthorizationService() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationService"/> class bound to the
+        /// supplied <paramref name="client"/>.
+        /// </summary>
+        /// <param name="client">The HTTP client used to make API requests.</param>
         public AuthorizationService(WorkOSClient client) : base(client) { }
 
         /// <summary>Check authorization</summary>
-        /// <param name="organizationMembershipId">The ID of the organization membership to check.</param>
+        /// <remarks>
+        /// Check if an organization membership has a specific permission on a resource. Supports identification by resource_id OR by resource_external_id + resource_type_slug.
+        /// </remarks>
+        /// <param name="organizationMembershipId">The organization membership id.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthorizationCheck"/> result.</returns>
-        public virtual async Task<AuthorizationCheck> Check(string organizationMembershipId, AuthorizationCheckOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuthorizationCheckResponse"/> result.</returns>
+        public virtual async Task<AuthorizationCheckResponse> Check(string organizationMembershipId, AuthorizationCheckOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/authorization/organization_memberships/{organizationMembershipId}/check",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthorizationCheck>(request, cancellationToken);
+            return await this.PostAsync<AuthorizationCheckResponse>($"/authorization/organization_memberships/{organizationMembershipId}/check", options, requestOptions, cancellationToken);
         }
 
         /// <summary>List resources for organization membership</summary>
-        /// <param name="organizationMembershipId">The ID of the organization membership.</param>
+        /// <remarks>
+        /// Returns all resources where the user has a permission from a given parent id
+        /// </remarks>
+        /// <param name="organizationMembershipId">The organization membership id.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="AuthorizationResource"/> results.</returns>
-        public virtual async Task<WorkOSList<AuthorizationResource>> ListOrganizationMembershipResources(string organizationMembershipId, AuthorizationListOrganizationMembershipResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="AuthorizationListResourcesForMembershipItem"/> results.</returns>
+        public virtual async Task<WorkOSList<AuthorizationListResourcesForMembershipItem>> ListOrganizationMembershipResources(string organizationMembershipId, AuthorizationListOrganizationMembershipResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/authorization/organization_memberships/{organizationMembershipId}/resources",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<AuthorizationResource>>(request, cancellationToken);
+            return await this.GetAsync<WorkOSList<AuthorizationListResourcesForMembershipItem>>($"/authorization/organization_memberships/{organizationMembershipId}/resources", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListOrganizationMembershipResources"/>. Yields individual items across all pages.</summary>
-        /// <param name="organizationMembershipId">The ID of the organization membership.</param>
+        /// <param name="organizationMembershipId">The organization membership id.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="AuthorizationResource"/> items.</returns>
-        public virtual IAsyncEnumerable<AuthorizationResource> ListOrganizationMembershipResourcesAutoPagingAsync(string organizationMembershipId, AuthorizationListOrganizationMembershipResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="AuthorizationListResourcesForMembershipItem"/> items.</returns>
+        public virtual IAsyncEnumerable<AuthorizationListResourcesForMembershipItem> ListOrganizationMembershipResourcesAutoPagingAsync(string organizationMembershipId, AuthorizationListOrganizationMembershipResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/authorization/organization_memberships/{organizationMembershipId}/resources",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<AuthorizationResource>(request, cancellationToken);
-        }
-
-        /// <summary>List role assignments</summary>
-        /// <param name="organizationMembershipId">The ID of the organization membership.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="RoleAssignment"/> results.</returns>
-        public virtual async Task<WorkOSList<RoleAssignment>> ListOrganizationMembershipRoleAssignments(string organizationMembershipId, AuthorizationListOrganizationMembershipRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/authorization/organization_memberships/{organizationMembershipId}/role_assignments",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<RoleAssignment>>(request, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="ListOrganizationMembershipRoleAssignments"/>. Yields individual items across all pages.</summary>
-        /// <param name="organizationMembershipId">The ID of the organization membership.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="RoleAssignment"/> items.</returns>
-        public virtual IAsyncEnumerable<RoleAssignment> ListOrganizationMembershipRoleAssignmentsAutoPagingAsync(string organizationMembershipId, AuthorizationListOrganizationMembershipRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/authorization/organization_memberships/{organizationMembershipId}/role_assignments",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<RoleAssignment>(request, cancellationToken);
-        }
-
-        /// <summary>Assign a role</summary>
-        /// <param name="organizationMembershipId">The ID of the organization membership.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="RoleAssignment"/> result.</returns>
-        public virtual async Task<RoleAssignment> AssignRole(string organizationMembershipId, AuthorizationAssignRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/authorization/organization_memberships/{organizationMembershipId}/role_assignments",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<RoleAssignment>(request, cancellationToken);
-        }
-
-        /// <summary>Remove a role assignment</summary>
-        /// <param name="organizationMembershipId">The ID of the organization membership.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task RemoveRole(string organizationMembershipId, AuthorizationRemoveRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/authorization/organization_memberships/{organizationMembershipId}/role_assignments",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
-        }
-
-        /// <summary>Remove a role assignment by ID</summary>
-        /// <param name="organizationMembershipId">The ID of the organization membership.</param>
-        /// <param name="roleAssignmentId">The ID of the role assignment to remove.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteOrganizationMembershipRoleAssignment(string organizationMembershipId, string roleAssignmentId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/authorization/organization_memberships/{organizationMembershipId}/role_assignments/{roleAssignmentId}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            return this.ListAutoPagingAsync<AuthorizationListResourcesForMembershipItem>($"/authorization/organization_memberships/{organizationMembershipId}/resources", options, requestOptions, cancellationToken);
         }
 
         /// <summary>List organization roles</summary>
-        /// <param name="organizationId">The ID of the organization.</param>
+        /// <remarks>
+        /// List all roles that apply to an organization, including environment roles, in priority order
+        /// </remarks>
+        /// <param name="organizationId">The organization id.</param>
+        /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="RoleList"/> result.</returns>
-        public virtual async Task<RoleList> ListOrganizationRoles(string organizationId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuthorizationOrganizationRolesListResponse"/> result.</returns>
+        public virtual async Task<AuthorizationOrganizationRolesListResponse> ListOrganizationRoles(string organizationId, AuthorizationListOrganizationRolesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/authorization/organizations/{organizationId}/roles",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<RoleList>(request, cancellationToken);
+            return await this.GetAsync<AuthorizationOrganizationRolesListResponse>($"/authorization/organizations/{organizationId}/roles", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Create a custom organization role</summary>
-        /// <param name="organizationId">The ID of the organization.</param>
+        /// <remarks>
+        /// Create a new custom organization role
+        /// </remarks>
+        /// <param name="organizationId">The organization id.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Role"/> result.</returns>
-        public virtual async Task<Role> CreateOrganizationRole(string organizationId, AuthorizationCreateOrganizationRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuthorizationOrganizationRolesCreateResponse"/> result.</returns>
+        public virtual async Task<AuthorizationOrganizationRolesCreateResponse> CreateOrganizationRole(string organizationId, AuthorizationCreateOrganizationRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/authorization/organizations/{organizationId}/roles",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Role>(request, cancellationToken);
+            return await this.PostAsync<AuthorizationOrganizationRolesCreateResponse>($"/authorization/organizations/{organizationId}/roles", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get an organization role</summary>
-        /// <param name="organizationId">The ID of the organization.</param>
-        /// <param name="slug">The slug of the role.</param>
+        /// <remarks>
+        /// Get a role that applies to an organization by its slug
+        /// </remarks>
+        /// <param name="organizationId">The organization id.</param>
+        /// <param name="slug">The slug.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Role"/> result.</returns>
-        public virtual async Task<Role> GetOrganizationRole(string organizationId, string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuthorizationOrganizationRolesGetResponse"/> result.</returns>
+        public virtual async Task<AuthorizationOrganizationRolesGetResponse> GetOrganizationRole(string organizationId, string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/authorization/organizations/{organizationId}/roles/{slug}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Role>(request, cancellationToken);
+            return await this.GetAsync<AuthorizationOrganizationRolesGetResponse>($"/authorization/organizations/{organizationId}/roles/{slug}", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>Update an organization role</summary>
-        /// <param name="organizationId">The ID of the organization.</param>
-        /// <param name="slug">The slug of the role.</param>
+        /// <summary>Update a custom organization role</summary>
+        /// <remarks>
+        /// Update an existing custom organization role
+        /// </remarks>
+        /// <param name="organizationId">The organization id.</param>
+        /// <param name="slug">The slug.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Role"/> result.</returns>
-        public virtual async Task<Role> UpdateOrganizationRole(string organizationId, string slug, AuthorizationUpdateOrganizationRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuthorizationOrganizationRolesUpdateResponse"/> result.</returns>
+        public virtual async Task<AuthorizationOrganizationRolesUpdateResponse> UpdateOrganizationRole(string organizationId, string slug, AuthorizationUpdateOrganizationRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Patch,
-                Path = $"/authorization/organizations/{organizationId}/roles/{slug}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Role>(request, cancellationToken);
+            return await this.PatchAsync<AuthorizationOrganizationRolesUpdateResponse>($"/authorization/organizations/{organizationId}/roles/{slug}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a custom organization role</summary>
-        /// <param name="organizationId">The ID of the organization.</param>
-        /// <param name="slug">The slug of the role.</param>
+        /// <remarks>
+        /// Delete an existing custom organization role
+        /// </remarks>
+        /// <param name="organizationId">The organization id.</param>
+        /// <param name="slug">The slug.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task DeleteOrganizationRole(string organizationId, string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/authorization/organizations/{organizationId}/roles/{slug}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            await this.DeleteAsync($"/authorization/organizations/{organizationId}/roles/{slug}", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>Add a permission to an organization role</summary>
-        /// <param name="organizationId">The ID of the organization.</param>
-        /// <param name="slug">The slug of the role.</param>
+        /// <summary>Add a permission to a role</summary>
+        /// <remarks>
+        /// Add a single permission to an organization role
+        /// </remarks>
+        /// <param name="organizationId">The organization id.</param>
+        /// <param name="slug">The slug.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Role"/> result.</returns>
-        public virtual async Task<Role> CreateRolePermissions(string organizationId, string slug, AuthorizationCreateRolePermissionsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuthorizationOrganizationRolePermissionsAddPermissionResponse"/> result.</returns>
+        public virtual async Task<AuthorizationOrganizationRolePermissionsAddPermissionResponse> CreateRolePermission(string organizationId, string slug, AuthorizationCreateRolePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/authorization/organizations/{organizationId}/roles/{slug}/permissions",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Role>(request, cancellationToken);
+            return await this.PostAsync<AuthorizationOrganizationRolePermissionsAddPermissionResponse>($"/authorization/organizations/{organizationId}/roles/{slug}/permissions", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Set permissions for a role</summary>
-        /// <param name="organizationId">The ID of the organization.</param>
-        /// <param name="slug">The slug of the role.</param>
+        /// <remarks>
+        /// Replace all permissions on a role with the provided list
+        /// </remarks>
+        /// <param name="organizationId">The organization id.</param>
+        /// <param name="slug">The slug.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Role"/> result.</returns>
-        public virtual async Task<Role> UpdateRolePermissions(string organizationId, string slug, AuthorizationUpdateRolePermissionsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuthorizationOrganizationRolePermissionsSetPermissionsResponse"/> result.</returns>
+        public virtual async Task<AuthorizationOrganizationRolePermissionsSetPermissionsResponse> UpdateRolePermissions(string organizationId, string slug, AuthorizationUpdateRolePermissionsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Put,
-                Path = $"/authorization/organizations/{organizationId}/roles/{slug}/permissions",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Role>(request, cancellationToken);
+            return await this.PutAsync<AuthorizationOrganizationRolePermissionsSetPermissionsResponse>($"/authorization/organizations/{organizationId}/roles/{slug}/permissions", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Remove a permission from an organization role</summary>
-        /// <param name="organizationId">The ID of the organization.</param>
-        /// <param name="slug">The slug of the role.</param>
-        /// <param name="permissionSlug">The slug of the permission to remove.</param>
+        /// <remarks>
+        /// Remove a single permission from an organization role by its slug
+        /// </remarks>
+        /// <param name="organizationId">The organization id.</param>
+        /// <param name="slug">The slug.</param>
+        /// <param name="permissionSlug">The permission slug.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task DeleteRolePermission(string organizationId, string slug, string permissionSlug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/authorization/organizations/{organizationId}/roles/{slug}/permissions/{permissionSlug}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            await this.DeleteAsync($"/authorization/organizations/{organizationId}/roles/{slug}/permissions/{permissionSlug}", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>Get a resource by external ID</summary>
-        /// <param name="organizationId">The ID of the organization that owns the resource.</param>
-        /// <param name="resourceTypeSlug">The slug of the resource type.</param>
-        /// <param name="externalId">An identifier you provide to reference the resource in your system.</param>
+        /// <summary>Get an authorization resource by external ID</summary>
+        /// <remarks>
+        /// Get the details of an authorization resource by organization, resource type, and external ID
+        /// </remarks>
+        /// <param name="organizationId">The organization id.</param>
+        /// <param name="resourceTypeSlug">The resource type slug.</param>
+        /// <param name="externalId">The external id.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
-        public virtual async Task<AuthorizationResource> GetOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuthorizationResourcesGetResponse"/> result.</returns>
+        public virtual async Task<AuthorizationResourcesGetResponse> GetOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/authorization/organizations/{organizationId}/resources/{resourceTypeSlug}/{externalId}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthorizationResource>(request, cancellationToken);
+            return await this.GetAsync<AuthorizationResourcesGetResponse>($"/authorization/organizations/{organizationId}/resources/{resourceTypeSlug}/{externalId}", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>Update a resource by external ID</summary>
-        /// <param name="organizationId">The ID of the organization that owns the resource.</param>
-        /// <param name="resourceTypeSlug">The slug of the resource type.</param>
-        /// <param name="externalId">An identifier you provide to reference the resource in your system.</param>
+        /// <summary>Update an authorization resource by external ID</summary>
+        /// <remarks>
+        /// Update an authorization resource by organization, resource type, and external ID
+        /// </remarks>
+        /// <param name="organizationId">The organization id.</param>
+        /// <param name="resourceTypeSlug">The resource type slug.</param>
+        /// <param name="externalId">The external id.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
-        public virtual async Task<AuthorizationResource> UpdateOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, AuthorizationUpdateOrganizationResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuthorizationResourcesUpdateResponse"/> result.</returns>
+        public virtual async Task<AuthorizationResourcesUpdateResponse> UpdateOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, AuthorizationUpdateOrganizationResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Patch,
-                Path = $"/authorization/organizations/{organizationId}/resources/{resourceTypeSlug}/{externalId}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthorizationResource>(request, cancellationToken);
+            return await this.PatchAsync<AuthorizationResourcesUpdateResponse>($"/authorization/organizations/{organizationId}/resources/{resourceTypeSlug}/{externalId}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete an authorization resource by external ID</summary>
-        /// <param name="organizationId">The ID of the organization that owns the resource.</param>
-        /// <param name="resourceTypeSlug">The slug of the resource type.</param>
-        /// <param name="externalId">An identifier you provide to reference the resource in your system.</param>
-        /// <param name="options">Request options.</param>
+        /// <remarks>
+        /// Delete an authorization resource by organization, resource type, and external ID. This also deletes all descendant resources.
+        /// </remarks>
+        /// <param name="organizationId">The organization id.</param>
+        /// <param name="resourceTypeSlug">The resource type slug.</param>
+        /// <param name="externalId">The external id.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, AuthorizationDeleteOrganizationResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/authorization/organizations/{organizationId}/resources/{resourceTypeSlug}/{externalId}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            await this.DeleteAsync($"/authorization/organizations/{organizationId}/resources/{resourceTypeSlug}/{externalId}", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>List memberships for a resource by external ID</summary>
-        /// <param name="organizationId">The ID of the organization that owns the resource.</param>
-        /// <param name="resourceTypeSlug">The slug of the resource type this resource belongs to.</param>
-        /// <param name="externalId">An identifier you provide to reference the resource in your system.</param>
+        /// <summary>List organization memberships for resource by external ID</summary>
+        /// <remarks>
+        /// Returns all users that have a permission on a resource instance, identified by external ID
+        /// </remarks>
+        /// <param name="organizationId">The organization id.</param>
+        /// <param name="resourceTypeSlug">The resource type slug.</param>
+        /// <param name="externalId">The external id.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="UserOrganizationMembershipBaseListData"/> results.</returns>
-        public virtual async Task<WorkOSList<UserOrganizationMembershipBaseListData>> ListResourceOrganizationMemberships(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListResourceOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="string"/> results.</returns>
+        public virtual async Task<WorkOSList<string>> ListResourceOrganizationMemberships(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListResourceOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/authorization/organizations/{organizationId}/resources/{resourceTypeSlug}/{externalId}/organization_memberships",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<UserOrganizationMembershipBaseListData>>(request, cancellationToken);
+            return await this.GetAsync<WorkOSList<string>>($"/authorization/organizations/{organizationId}/resources/{resourceTypeSlug}/{externalId}/organization_memberships", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListResourceOrganizationMemberships"/>. Yields individual items across all pages.</summary>
-        /// <param name="organizationId">The ID of the organization that owns the resource.</param>
-        /// <param name="resourceTypeSlug">The slug of the resource type this resource belongs to.</param>
-        /// <param name="externalId">An identifier you provide to reference the resource in your system.</param>
+        /// <param name="organizationId">The organization id.</param>
+        /// <param name="resourceTypeSlug">The resource type slug.</param>
+        /// <param name="externalId">The external id.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="UserOrganizationMembershipBaseListData"/> items.</returns>
-        public virtual IAsyncEnumerable<UserOrganizationMembershipBaseListData> ListResourceOrganizationMembershipsAutoPagingAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListResourceOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="string"/> items.</returns>
+        public virtual IAsyncEnumerable<string> ListResourceOrganizationMembershipsAutoPagingAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListResourceOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/authorization/organizations/{organizationId}/resources/{resourceTypeSlug}/{externalId}/organization_memberships",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<UserOrganizationMembershipBaseListData>(request, cancellationToken);
+            return this.ListAutoPagingAsync<string>($"/authorization/organizations/{organizationId}/resources/{resourceTypeSlug}/{externalId}/organization_memberships", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>List resources</summary>
+        /// <summary>List Permissions</summary>
+        /// <remarks>
+        /// List Permission in the current environment
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="AuthorizationResource"/> results.</returns>
-        public virtual async Task<WorkOSList<AuthorizationResource>> ListResources(AuthorizationListResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="AuthorizationPermissionsListItem"/> results.</returns>
+        public virtual async Task<WorkOSList<AuthorizationPermissionsListItem>> ListPermissions(AuthorizationListPermissionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/authorization/resources",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<AuthorizationResource>>(request, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="ListResources"/>. Yields individual items across all pages.</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="AuthorizationResource"/> items.</returns>
-        public virtual IAsyncEnumerable<AuthorizationResource> ListResourcesAutoPagingAsync(AuthorizationListResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/authorization/resources",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<AuthorizationResource>(request, cancellationToken);
-        }
-
-        /// <summary>Create an authorization resource</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
-        public virtual async Task<AuthorizationResource> CreateResource(AuthorizationCreateResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/authorization/resources",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthorizationResource>(request, cancellationToken);
-        }
-
-        /// <summary>Get a resource</summary>
-        /// <param name="resourceId">The ID of the authorization resource.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
-        public virtual async Task<AuthorizationResource> GetResource(string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/authorization/resources/{resourceId}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthorizationResource>(request, cancellationToken);
-        }
-
-        /// <summary>Update a resource</summary>
-        /// <param name="resourceId">The ID of the authorization resource.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
-        public virtual async Task<AuthorizationResource> UpdateResource(string resourceId, AuthorizationUpdateResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Patch,
-                Path = $"/authorization/resources/{resourceId}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthorizationResource>(request, cancellationToken);
-        }
-
-        /// <summary>Delete an authorization resource</summary>
-        /// <param name="resourceId">The ID of the authorization resource.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteResource(string resourceId, AuthorizationDeleteResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/authorization/resources/{resourceId}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
-        }
-
-        /// <summary>List organization memberships for resource</summary>
-        /// <param name="resourceId">The ID of the authorization resource.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="UserOrganizationMembershipBaseListData"/> results.</returns>
-        public virtual async Task<WorkOSList<UserOrganizationMembershipBaseListData>> ListMembershipsForResource(string resourceId, AuthorizationListMembershipsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/authorization/resources/{resourceId}/organization_memberships",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<UserOrganizationMembershipBaseListData>>(request, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="ListMembershipsForResource"/>. Yields individual items across all pages.</summary>
-        /// <param name="resourceId">The ID of the authorization resource.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="UserOrganizationMembershipBaseListData"/> items.</returns>
-        public virtual IAsyncEnumerable<UserOrganizationMembershipBaseListData> ListMembershipsForResourceAutoPagingAsync(string resourceId, AuthorizationListMembershipsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/authorization/resources/{resourceId}/organization_memberships",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<UserOrganizationMembershipBaseListData>(request, cancellationToken);
-        }
-
-        /// <summary>List environment roles</summary>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="RoleList"/> result.</returns>
-        public virtual async Task<RoleList> ListEnvironmentRoles(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/authorization/roles",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<RoleList>(request, cancellationToken);
-        }
-
-        /// <summary>Create an environment role</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Role"/> result.</returns>
-        public virtual async Task<Role> CreateEnvironmentRole(AuthorizationCreateEnvironmentRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/authorization/roles",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Role>(request, cancellationToken);
-        }
-
-        /// <summary>Get an environment role</summary>
-        /// <param name="slug">The slug of the environment role.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Role"/> result.</returns>
-        public virtual async Task<Role> GetEnvironmentRole(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/authorization/roles/{slug}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Role>(request, cancellationToken);
-        }
-
-        /// <summary>Update an environment role</summary>
-        /// <param name="slug">The slug of the environment role.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Role"/> result.</returns>
-        public virtual async Task<Role> UpdateEnvironmentRole(string slug, AuthorizationUpdateEnvironmentRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Patch,
-                Path = $"/authorization/roles/{slug}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Role>(request, cancellationToken);
-        }
-
-        /// <summary>Add a permission to an environment role</summary>
-        /// <param name="slug">The slug of the environment role.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Role"/> result.</returns>
-        public virtual async Task<Role> AddEnvironmentRolePermission(string slug, AuthorizationAddEnvironmentRolePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/authorization/roles/{slug}/permissions",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Role>(request, cancellationToken);
-        }
-
-        /// <summary>Set permissions for an environment role</summary>
-        /// <param name="slug">The slug of the environment role.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Role"/> result.</returns>
-        public virtual async Task<Role> SetEnvironmentRolePermissions(string slug, AuthorizationSetEnvironmentRolePermissionsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Put,
-                Path = $"/authorization/roles/{slug}/permissions",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Role>(request, cancellationToken);
-        }
-
-        /// <summary>List permissions</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="AuthorizationPermission"/> results.</returns>
-        public virtual async Task<WorkOSList<AuthorizationPermission>> ListPermissions(AuthorizationListPermissionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/authorization/permissions",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<AuthorizationPermission>>(request, cancellationToken);
+            return await this.GetAsync<WorkOSList<AuthorizationPermissionsListItem>>("/authorization/permissions", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListPermissions"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="AuthorizationPermission"/> items.</returns>
-        public virtual IAsyncEnumerable<AuthorizationPermission> ListPermissionsAutoPagingAsync(AuthorizationListPermissionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="AuthorizationPermissionsListItem"/> items.</returns>
+        public virtual IAsyncEnumerable<AuthorizationPermissionsListItem> ListPermissionsAutoPagingAsync(AuthorizationListPermissionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/authorization/permissions",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<AuthorizationPermission>(request, cancellationToken);
+            return this.ListAutoPagingAsync<AuthorizationPermissionsListItem>("/authorization/permissions", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Create a permission</summary>
+        /// <remarks>
+        /// Create a new permission
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Permission"/> result.</returns>
-        public virtual async Task<Permission> CreatePermission(AuthorizationCreatePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuthorizationPermissionsCreateResponse"/> result.</returns>
+        public virtual async Task<AuthorizationPermissionsCreateResponse> CreatePermission(AuthorizationCreatePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/authorization/permissions",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Permission>(request, cancellationToken);
+            return await this.PostAsync<AuthorizationPermissionsCreateResponse>("/authorization/permissions", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Get a permission</summary>
-        /// <param name="slug">A unique key to reference the permission. Must be lowercase and contain only letters, numbers, hyphens, underscores, colons, periods, and asterisks.</param>
+        /// <summary>Get a Permission</summary>
+        /// <remarks>
+        /// Get the details of a Permission
+        /// </remarks>
+        /// <param name="slug">The slug.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthorizationPermission"/> result.</returns>
-        public virtual async Task<AuthorizationPermission> GetPermission(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuthorizationPermissionsFindResponse"/> result.</returns>
+        public virtual async Task<AuthorizationPermissionsFindResponse> GetPermission(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/authorization/permissions/{slug}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthorizationPermission>(request, cancellationToken);
+            return await this.GetAsync<AuthorizationPermissionsFindResponse>($"/authorization/permissions/{slug}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Update a permission</summary>
-        /// <param name="slug">A unique key to reference the permission. Must be lowercase and contain only letters, numbers, hyphens, underscores, colons, periods, and asterisks.</param>
+        /// <remarks>
+        /// Update an existing permission
+        /// </remarks>
+        /// <param name="slug">The slug.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthorizationPermission"/> result.</returns>
-        public virtual async Task<AuthorizationPermission> UpdatePermission(string slug, AuthorizationUpdatePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuthorizationPermissionsUpdateResponse"/> result.</returns>
+        public virtual async Task<AuthorizationPermissionsUpdateResponse> UpdatePermission(string slug, AuthorizationUpdatePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Patch,
-                Path = $"/authorization/permissions/{slug}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthorizationPermission>(request, cancellationToken);
+            return await this.PatchAsync<AuthorizationPermissionsUpdateResponse>($"/authorization/permissions/{slug}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a permission</summary>
-        /// <param name="slug">A unique key to reference the permission. Must be lowercase and contain only letters, numbers, hyphens, underscores, colons, periods, and asterisks.</param>
+        /// <remarks>
+        /// Delete an existing permission
+        /// </remarks>
+        /// <param name="slug">The slug.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task DeletePermission(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/authorization/permissions/{slug}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            await this.DeleteAsync($"/authorization/permissions/{slug}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List authorization resource types</summary>
+        /// <remarks>
+        /// Get a list of all authorization resource types
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="AuthorizationResourceTypesListItem"/> results.</returns>
+        public virtual async Task<WorkOSList<AuthorizationResourceTypesListItem>> ListResourceTypes(AuthorizationListResourceTypesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<AuthorizationResourceTypesListItem>>("/authorization/resource-types", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListResourceTypes"/>. Yields individual items across all pages.</summary>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="AuthorizationResourceTypesListItem"/> items.</returns>
+        public virtual IAsyncEnumerable<AuthorizationResourceTypesListItem> ListResourceTypesAutoPagingAsync(AuthorizationListResourceTypesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<AuthorizationResourceTypesListItem>("/authorization/resource-types", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create an authorization resource type</summary>
+        /// <remarks>
+        /// Create a new authorization resource type
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AuthorizationResourceTypesCreateResponse"/> result.</returns>
+        public virtual async Task<AuthorizationResourceTypesCreateResponse> CreateResourceType(AuthorizationCreateResourceTypeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<AuthorizationResourceTypesCreateResponse>("/authorization/resource-types", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Get an authorization resource type</summary>
+        /// <remarks>
+        /// Get the details of an authorization resource type by slug
+        /// </remarks>
+        /// <param name="typeSlug">The type slug.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AuthorizationResourceTypesFindBySlugResponse"/> result.</returns>
+        public virtual async Task<AuthorizationResourceTypesFindBySlugResponse> GetResourceType(string typeSlug, AuthorizationGetResourceTypeOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<AuthorizationResourceTypesFindBySlugResponse>($"/authorization/resource-types/{typeSlug}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Delete an authorization resource type</summary>
+        /// <param name="typeSlug">The type slug.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteResourceType(string typeSlug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/authorization/resource-types/{typeSlug}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create an authorization resource</summary>
+        /// <remarks>
+        /// Create a new authorization resource
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AuthorizationResourcesCreateResponse"/> result.</returns>
+        public virtual async Task<AuthorizationResourcesCreateResponse> CreateResource(AuthorizationCreateResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<AuthorizationResourcesCreateResponse>("/authorization/resources", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Get an authorization resource</summary>
+        /// <remarks>
+        /// Get the details of an authorization resource by ID
+        /// </remarks>
+        /// <param name="resourceId">The resource id.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AuthorizationResourcesFindByIdResponse"/> result.</returns>
+        public virtual async Task<AuthorizationResourcesFindByIdResponse> GetResource(string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<AuthorizationResourcesFindByIdResponse>($"/authorization/resources/{resourceId}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Update an authorization resource</summary>
+        /// <remarks>
+        /// Update an existing authorization resource
+        /// </remarks>
+        /// <param name="resourceId">The resource id.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AuthorizationResourcesUpdateResponse"/> result.</returns>
+        public virtual async Task<AuthorizationResourcesUpdateResponse> UpdateResource(string resourceId, AuthorizationUpdateResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PatchAsync<AuthorizationResourcesUpdateResponse>($"/authorization/resources/{resourceId}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Delete an authorization resource</summary>
+        /// <remarks>
+        /// Delete an authorization resource and all its descendants
+        /// </remarks>
+        /// <param name="resourceId">The resource id.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteResource(string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/authorization/resources/{resourceId}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List organization memberships for resource</summary>
+        /// <remarks>
+        /// Returns all users that have a permission on a resource instance
+        /// </remarks>
+        /// <param name="resourceId">The resource id.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="string"/> results.</returns>
+        public virtual async Task<WorkOSList<string>> ListMembershipsForResource(string resourceId, AuthorizationListMembershipsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<string>>($"/authorization/resources/{resourceId}/organization_memberships", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListMembershipsForResource"/>. Yields individual items across all pages.</summary>
+        /// <param name="resourceId">The resource id.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="string"/> items.</returns>
+        public virtual IAsyncEnumerable<string> ListMembershipsForResourceAutoPagingAsync(string resourceId, AuthorizationListMembershipsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<string>($"/authorization/resources/{resourceId}/organization_memberships", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List environment roles</summary>
+        /// <remarks>
+        /// List all environment roles in priority order
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AuthorizationRolesListResponse"/> result.</returns>
+        public virtual async Task<AuthorizationRolesListResponse> ListEnvironmentRoles(AuthorizationListEnvironmentRolesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<AuthorizationRolesListResponse>("/authorization/roles", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create an environment role</summary>
+        /// <remarks>
+        /// Create a new environment role
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AuthorizationRolesCreateResponse"/> result.</returns>
+        public virtual async Task<AuthorizationRolesCreateResponse> CreateEnvironmentRole(AuthorizationCreateEnvironmentRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<AuthorizationRolesCreateResponse>("/authorization/roles", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Get an environment role</summary>
+        /// <remarks>
+        /// Get an environment role by its slug
+        /// </remarks>
+        /// <param name="slug">The slug.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AuthorizationRolesGetResponse"/> result.</returns>
+        public virtual async Task<AuthorizationRolesGetResponse> GetEnvironmentRole(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<AuthorizationRolesGetResponse>($"/authorization/roles/{slug}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Update an environment role</summary>
+        /// <remarks>
+        /// Update an existing environment role
+        /// </remarks>
+        /// <param name="slug">The slug.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AuthorizationRolesUpdateResponse"/> result.</returns>
+        public virtual async Task<AuthorizationRolesUpdateResponse> UpdateEnvironmentRole(string slug, AuthorizationUpdateEnvironmentRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PatchAsync<AuthorizationRolesUpdateResponse>($"/authorization/roles/{slug}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Add a permission to an environment role</summary>
+        /// <remarks>
+        /// Add a single permission to an environment role
+        /// </remarks>
+        /// <param name="slug">The slug.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AuthorizationRolePermissionsAddPermissionResponse"/> result.</returns>
+        public virtual async Task<AuthorizationRolePermissionsAddPermissionResponse> AddEnvironmentRolePermission(string slug, AuthorizationAddEnvironmentRolePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<AuthorizationRolePermissionsAddPermissionResponse>($"/authorization/roles/{slug}/permissions", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Set permissions for an environment role</summary>
+        /// <remarks>
+        /// Replace all permissions on an environment role with the provided list
+        /// </remarks>
+        /// <param name="slug">The slug.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AuthorizationRolePermissionsSetPermissionsResponse"/> result.</returns>
+        public virtual async Task<AuthorizationRolePermissionsSetPermissionsResponse> SetEnvironmentRolePermissions(string slug, AuthorizationSetEnvironmentRolePermissionsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PutAsync<AuthorizationRolePermissionsSetPermissionsResponse>($"/authorization/roles/{slug}/permissions", options, requestOptions, cancellationToken);
         }
     }
 }

@@ -7,102 +7,63 @@ namespace WorkOS
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>Handles Pipes operations.</summary>
+    /// <summary>Service that exposes the pipes API operations on <see cref="WorkOSClient"/>.</summary>
     public class PipesService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PipesService"/> class for mocking. The service uses the singleton
+        /// client configured via <see cref="WorkOSConfiguration.WorkOSClient"/>.
+        /// </summary>
         public PipesService() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PipesService"/> class bound to the
+        /// supplied <paramref name="client"/>.
+        /// </summary>
+        /// <param name="client">The HTTP client used to make API requests.</param>
         public PipesService(WorkOSClient client) : base(client) { }
 
-        /// <summary>Get authorization URL</summary>
-        /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="DataIntegrationAuthorizeUrlResponse"/> result.</returns>
-        public virtual async Task<DataIntegrationAuthorizeUrlResponse> AuthorizeDataIntegration(string slug, PipesAuthorizeDataIntegrationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/data-integrations/{slug}/authorize",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<DataIntegrationAuthorizeUrlResponse>(request, cancellationToken);
-        }
-
-        /// <summary>Get an access token for a connected account</summary>
-        /// <param name="slug">The identifier of the integration.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="DataIntegrationAccessTokenResponse"/> result.</returns>
-        public virtual async Task<DataIntegrationAccessTokenResponse> CreateDataIntegrationToken(string slug, PipesCreateDataIntegrationTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/data-integrations/{slug}/token",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<DataIntegrationAccessTokenResponse>(request, cancellationToken);
-        }
-
         /// <summary>Get a connected account</summary>
-        /// <param name="userId">A [User](https://workos.com/docs/reference/authkit/user) identifier.</param>
-        /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
+        /// <remarks>
+        /// Retrieves a user's connected account for a specific data provider by slug.
+        /// </remarks>
+        /// <param name="userId">The user id.</param>
+        /// <param name="slug">The slug.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
-        public virtual async Task<ConnectedAccount> GetUserConnectedAccount(string userId, string slug, PipesGetUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="DataIntegrationsUserManagementGetUserDataInstallationResponse"/> result.</returns>
+        public virtual async Task<DataIntegrationsUserManagementGetUserDataInstallationResponse> GetUserConnectedAccount(string userId, string slug, PipesGetUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/users/{userId}/connected_accounts/{slug}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<ConnectedAccount>(request, cancellationToken);
+            return await this.GetAsync<DataIntegrationsUserManagementGetUserDataInstallationResponse>($"/user_management/users/{userId}/connected_accounts/{slug}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a connected account</summary>
-        /// <param name="userId">A [User](https://workos.com/docs/reference/authkit/user) identifier.</param>
-        /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
+        /// <remarks>
+        /// Deletes a user's connected account for a specific data provider.
+        /// </remarks>
+        /// <param name="userId">The user id.</param>
+        /// <param name="slug">The slug.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task DeleteUserConnectedAccount(string userId, string slug, PipesDeleteUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/user_management/users/{userId}/connected_accounts/{slug}",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            await this.DeleteAsync($"/user_management/users/{userId}/connected_accounts/{slug}", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>List providers</summary>
-        /// <param name="userId">A [User](https://workos.com/docs/reference/authkit/user) identifier to list providers and connected accounts for.</param>
+        /// <summary>List data providers for a user</summary>
+        /// <remarks>
+        /// Lists all available data providers for a user, including their connected account status.
+        /// </remarks>
+        /// <param name="userId">The user id.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="DataIntegrationsListResponse"/> result.</returns>
-        public virtual async Task<DataIntegrationsListResponse> ListUserDataProviders(string userId, PipesListUserDataProvidersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="DataIntegrationsUserManagementGetUserDataIntegrationsResponse"/> result.</returns>
+        public virtual async Task<DataIntegrationsUserManagementGetUserDataIntegrationsResponse> ListUserDataProviders(string userId, PipesListUserDataProvidersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/users/{userId}/data_providers",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<DataIntegrationsListResponse>(request, cancellationToken);
+            return await this.GetAsync<DataIntegrationsUserManagementGetUserDataIntegrationsResponse>($"/user_management/users/{userId}/data_providers", options, requestOptions, cancellationToken);
         }
     }
 }

@@ -1,6 +1,6 @@
 {
-  "slug": "documents:read",
-  "name": "View Documents",
+  "slug": "read",
+  "name": "Read",
   "description": null,
   "resource_type_slug": null
 }

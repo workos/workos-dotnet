@@ -29,7 +29,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestList()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_feature_flags_list_item.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/feature-flags", HttpStatusCode.OK, fixture);
             var result = await this.service.List(new FeatureFlagsListOptions());
             Assert.NotNull(result);
@@ -49,107 +49,67 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGet()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/feature_flags_find_by_slug_response.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/feature-flags/test_slug", HttpStatusCode.OK, fixture);
             var result = await this.service.Get("test_slug");
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Slug);
-            Assert.NotEmpty(result.Name);
+            Assert.Equal("flag_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
+            Assert.Equal("new-dashboard", result.Slug);
+            Assert.Equal("New Dashboard", result.Name);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/feature-flags/test_slug");
         }
 
         [Fact]
         public async Task TestDisable()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/feature_flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/feature_flags_disable_flag_response.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/feature-flags/test_slug/disable", HttpStatusCode.OK, fixture);
-            var result = await this.service.Disable("test_slug");
+            var result = await this.service.Disable("test_slug", new FeatureFlagsDisableOptions());
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Slug);
-            Assert.NotEmpty(result.Name);
+            Assert.Equal("flag_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
+            Assert.Equal("new-dashboard", result.Slug);
+            Assert.Equal("New Dashboard", result.Name);
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/feature-flags/test_slug/disable");
         }
 
         [Fact]
         public async Task TestEnable()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/feature_flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/feature_flags_enable_flag_response.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/feature-flags/test_slug/enable", HttpStatusCode.OK, fixture);
-            var result = await this.service.Enable("test_slug");
+            var result = await this.service.Enable("test_slug", new FeatureFlagsEnableOptions());
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Slug);
-            Assert.NotEmpty(result.Name);
+            Assert.Equal("flag_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
+            Assert.Equal("new-dashboard", result.Slug);
+            Assert.Equal("New Dashboard", result.Name);
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/feature-flags/test_slug/enable");
         }
 
         [Fact]
-        public async Task TestAddFlagTarget()
+        public async Task TestCreateTarget()
         {
-            this.httpMock.MockResponse(HttpMethod.Post, "/feature-flags/test_slug/targets/test_resourceId", HttpStatusCode.OK, "");
-            await this.service.AddFlagTarget("test_slug", "test_resourceId");
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/feature-flags/test_slug/targets/test_resourceId");
+            this.httpMock.MockResponse(HttpMethod.Post, "/feature-flags/test_slug/targets/test_target_id", HttpStatusCode.OK, "");
+            await this.service.CreateTarget("test_slug", "test_target_id", new FeatureFlagsCreateTargetOptions());
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/feature-flags/test_slug/targets/test_target_id");
         }
 
         [Fact]
-        public async Task TestRemoveFlagTarget()
+        public async Task TestDeleteTarget()
         {
-            this.httpMock.MockResponse(HttpMethod.Delete, "/feature-flags/test_slug/targets/test_resourceId", HttpStatusCode.NoContent, "");
-            await this.service.RemoveFlagTarget("test_slug", "test_resourceId");
-            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/feature-flags/test_slug/targets/test_resourceId");
-        }
-
-        [Fact]
-        public async Task TestListOrganizationFeatureFlags()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/list_flag.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organizationId/feature-flags", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListOrganizationFeatureFlags("test_organizationId", new FeatureFlagsListOrganizationFeatureFlagsOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_organizationId/feature-flags");
-        }
-
-        [Fact]
-        public async Task TestListOrganizationFeatureFlagsEmpty()
-        {
-            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organizationId/feature-flags", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListOrganizationFeatureFlags("test_organizationId", new FeatureFlagsListOrganizationFeatureFlagsOptions());
-            Assert.NotNull(result);
-            Assert.Empty(result.Data);
-        }
-
-        [Fact]
-        public async Task TestListUserFeatureFlags()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/list_flag.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_userId/feature-flags", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListUserFeatureFlags("test_userId", new FeatureFlagsListUserFeatureFlagsOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/users/test_userId/feature-flags");
-        }
-
-        [Fact]
-        public async Task TestListUserFeatureFlagsEmpty()
-        {
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_userId/feature-flags", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListUserFeatureFlags("test_userId", new FeatureFlagsListUserFeatureFlagsOptions());
-            Assert.NotNull(result);
-            Assert.Empty(result.Data);
+            this.httpMock.MockResponse(HttpMethod.Delete, "/feature-flags/test_slug/targets/test_target_id", HttpStatusCode.NoContent, "");
+            await this.service.DeleteTarget("test_slug", "test_target_id");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/feature-flags/test_slug/targets/test_target_id");
         }
 
         [Fact]
         public async Task TestListAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/feature_flags_list_item.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/feature-flags", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<Flag>();
+            var items = new List<FeatureFlagsListItem>();
             await foreach (var item in this.service.ListAutoPagingAsync(new FeatureFlagsListOptions()))
             {
                 items.Add(item);
@@ -164,72 +124,8 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/feature-flags", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<Flag>();
+            var items = new List<FeatureFlagsListItem>();
             await foreach (var item in this.service.ListAutoPagingAsync(new FeatureFlagsListOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestListOrganizationFeatureFlagsAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/flag.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_organizationId/feature-flags", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<Flag>();
-            await foreach (var item in this.service.ListOrganizationFeatureFlagsAutoPagingAsync("test_organizationId", new FeatureFlagsListOrganizationFeatureFlagsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestListOrganizationFeatureFlagsAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_organizationId/feature-flags", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<Flag>();
-            await foreach (var item in this.service.ListOrganizationFeatureFlagsAutoPagingAsync("test_organizationId", new FeatureFlagsListOrganizationFeatureFlagsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestListUserFeatureFlagsAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/flag.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_userId/feature-flags", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<Flag>();
-            await foreach (var item in this.service.ListUserFeatureFlagsAutoPagingAsync("test_userId", new FeatureFlagsListUserFeatureFlagsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestListUserFeatureFlagsAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_userId/feature-flags", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<Flag>();
-            await foreach (var item in this.service.ListUserFeatureFlagsAutoPagingAsync("test_userId", new FeatureFlagsListUserFeatureFlagsOptions()))
             {
                 items.Add(item);
             }

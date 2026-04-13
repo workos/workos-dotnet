@@ -1,14 +1,15 @@
 {
-  "email": "marcelina.davis@example.com",
-  "first_name": "Marcelina",
-  "last_name": "Davis",
+  "email": "john.doe@example.com",
+  "first_name": "John",
+  "last_name": "Doe",
   "email_verified": true,
-  "password": "strong_password_123!",
-  "password_hash": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+  "password": "newSecureP@ssw0rd!",
+  "password_hash": "$2a$10$N9qo8uLOickgx2ZMRZoMye...",
   "password_hash_type": "bcrypt",
   "metadata": {
-    "timezone": "America/New_York"
+    "timezone": "America/New_York",
+    "key": {}
   },
-  "external_id": "f1ffa2b2-c20b-4d39-be5c-212726e11222",
+  "external_id": "external_12345",
   "locale": "en-US"
 }

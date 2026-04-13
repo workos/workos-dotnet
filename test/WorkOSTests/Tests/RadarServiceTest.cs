@@ -27,15 +27,20 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestCreateAttempts()
+        public async Task TestCreateAttempt()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/radar_standalone_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/radar_standalone_assess_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/radar/attempts", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateAttempts(new RadarCreateAttemptsOptions());
+            var options = new RadarCreateAttemptOptions();
+            options.IpAddress = "test_ip_address";
+            options.UserAgent = "test_user_agent";
+            var result = await this.service.CreateAttempt(options);
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Reason);
-            Assert.NotEmpty(result.AttemptId);
+            Assert.Equal("No risk detected.", result.Reason);
+            Assert.Equal("radar_attempt_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.AttemptId);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/radar/attempts");
+            await this.httpMock.AssertRequestBodyContainsAsync("ip_address", "test_ip_address");
+            await this.httpMock.AssertRequestBodyContainsAsync("user_agent", "test_user_agent");
         }
 
         [Fact]
@@ -49,12 +54,14 @@ namespace WorkOSTests
         [Fact]
         public async Task TestAddListEntry()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/radar_list_entry_already_present_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/radar_standalone_update_radar_list_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/radar/lists/test_type/test_action", HttpStatusCode.OK, fixture);
-            var result = await this.service.AddListEntry("test_type", "test_action", new RadarAddListEntryOptions());
+            var options = new RadarAddListEntryOptions();
+            options.Entry = "test_entry";
+            var result = await this.service.AddListEntry("test_type", "test_action", options);
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Message);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/radar/lists/test_type/test_action");
+            await this.httpMock.AssertRequestBodyContainsAsync("entry", "test_entry");
         }
 
         [Fact]
@@ -69,35 +76,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationError>(() => this.service.CreateAttempts(new RadarCreateAttemptsOptions()));
+            await Assert.ThrowsAsync<AuthenticationError>(() => this.service.CreateAttempt(new RadarCreateAttemptOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundError>(() => this.service.CreateAttempts(new RadarCreateAttemptsOptions()));
+            await Assert.ThrowsAsync<NotFoundError>(() => this.service.CreateAttempt(new RadarCreateAttemptOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.CreateAttempts(new RadarCreateAttemptsOptions()));
+            await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.CreateAttempt(new RadarCreateAttemptOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.CreateAttempts(new RadarCreateAttemptsOptions()));
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.CreateAttempt(new RadarCreateAttemptOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerError>(() => this.service.CreateAttempts(new RadarCreateAttemptsOptions()));
+            await Assert.ThrowsAsync<ServerError>(() => this.service.CreateAttempt(new RadarCreateAttemptOptions()));
         }
     }
 }

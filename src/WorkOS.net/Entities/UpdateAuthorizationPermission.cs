@@ -5,16 +5,16 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a update authorization permission.</summary>
+    /// <summary>Represents an update authorization permission.</summary>
     public class UpdateAuthorizationPermission
     {
 
-        /// <summary>A descriptive name for the Permission.</summary>
+        /// <summary>A human-readable name for the permission.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
         public string? Name { get; set; }
 
-        /// <summary>An optional description of the Permission.</summary>
+        /// <summary>A description of what the permission allows.</summary>
         [JsonProperty("description")]
         [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }

@@ -5,16 +5,16 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a audit log event context.</summary>
+    /// <summary>Represents an audit log event context.</summary>
     public class AuditLogEventContext
     {
 
-        /// <summary>IP Address or some other geolocation identifier.</summary>
+        /// <summary>The IP address or location where the event originated.</summary>
         [JsonProperty("location")]
         [STJS.JsonPropertyName("location")]
         public string Location { get; set; } = default!;
 
-        /// <summary>User agent string.</summary>
+        /// <summary>The user agent string of the client.</summary>
         [JsonProperty("user_agent")]
         [STJS.JsonPropertyName("user_agent")]
         public string? UserAgent { get; set; }

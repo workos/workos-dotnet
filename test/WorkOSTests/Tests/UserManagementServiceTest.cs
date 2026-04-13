@@ -27,539 +27,129 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestGetJwks()
+        public async Task TestUpdateAppHomepageUrl()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/jwks_response.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/sso/jwks/test_clientId", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetJwks("test_clientId");
+            var fixture = System.IO.File.ReadAllText("testdata/setting_update_app_homepage_url_response.json");
+            this.httpMock.MockResponse(HttpMethod.Put, "/user_management/app_homepage_url", HttpStatusCode.OK, fixture);
+            var options = new UserManagementUpdateAppHomepageUrlOptions();
+            options.Url = "test_url";
+            var result = await this.service.UpdateAppHomepageUrl(options);
             Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/sso/jwks/test_clientId");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/user_management/app_homepage_url");
+            await this.httpMock.AssertRequestBodyContainsAsync("url", "test_url");
         }
 
         [Fact]
-        public void TestGetAuthorizationUrl()
+        public async Task TestCreateAuthorizationCode()
         {
-            var url = this.service.GetAuthorizationUrl(new UserManagementGetAuthorizationUrlOptions());
-            Assert.Contains("/user_management/authorize", url);
-            Assert.Contains("client_id=client_test", url);
-            Assert.Contains("response_type=code", url);
-        }
-
-        [Fact]
-        public async Task TestCreateDevice()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/device_authorization_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authorize/device", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateDevice(new UserManagementCreateDeviceOptions());
+            var fixture = System.IO.File.ReadAllText("testdata/authorization_codes_create_authenticate_code_response.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authorization_codes", HttpStatusCode.OK, fixture);
+            var options = new UserManagementCreateAuthorizationCodeOptions();
+            options.RefreshToken = "test_refresh_token";
+            options.CodeChallenge = "test_code_challenge";
+            var result = await this.service.CreateAuthorizationCode(options);
             Assert.NotNull(result);
-            Assert.NotEmpty(result.DeviceCode);
-            Assert.NotEmpty(result.UserCode);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authorize/device");
+            Assert.Equal("auth_code_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Code);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authorization_codes");
+            await this.httpMock.AssertRequestBodyContainsAsync("refresh_token", "test_refresh_token");
+            await this.httpMock.AssertRequestBodyContainsAsync("code_challenge", "test_code_challenge");
         }
 
         [Fact]
-        public void TestGetLogoutUrl()
+        public async Task TestSendPasswordReset()
         {
-            var url = this.service.GetLogoutUrl(new UserManagementGetLogoutUrlOptions());
-            Assert.Contains("/user_management/sessions/logout", url);
+            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/password_reset/send", HttpStatusCode.OK, "");
+            await this.service.SendPasswordReset(new UserManagementSendPasswordResetOptions());
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/password_reset/send");
         }
 
         [Fact]
-        public async Task TestRevokeSession()
+        public async Task TestCreateMigrate()
         {
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/sessions/revoke", HttpStatusCode.OK, "");
-            await this.service.RevokeSession(new UserManagementRevokeSessionOptions());
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/sessions/revoke");
+            var fixture = System.IO.File.ReadAllText("testdata/user_management_session_migration_migrate_session_response.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/sessions/migrate", HttpStatusCode.OK, fixture);
+            var options = new UserManagementCreateMigrateOptions();
+            options.ExternalAccessToken = "test_external_access_token";
+            var result = await this.service.CreateMigrate(options);
+            Assert.NotNull(result);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/sessions/migrate");
+            await this.httpMock.AssertRequestBodyContainsAsync("external_access_token", "test_external_access_token");
+        }
+
+        [Fact]
+        public async Task TestListFeatureFlags()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/list_user_feature_flags_list_item.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_user_id/feature-flags", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListFeatureFlags("test_user_id", new UserManagementListFeatureFlagsOptions());
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/users/test_user_id/feature-flags");
+        }
+
+        [Fact]
+        public async Task TestListFeatureFlagsEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_user_id/feature-flags", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListFeatureFlags("test_user_id", new UserManagementListFeatureFlagsOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
         }
 
         [Fact]
         public async Task TestCreateCorsOrigin()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/cors_origin_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/cors_origins_create_cors_origin_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/cors_origins", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateCorsOrigin(new UserManagementCreateCorsOriginOptions());
+            var options = new UserManagementCreateCorsOriginOptions();
+            options.Origin = "test_origin";
+            var result = await this.service.CreateCorsOrigin(options);
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Origin);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/cors_origins");
-        }
-
-        [Fact]
-        public async Task TestGetEmailVerification()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/email_verification.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/email_verification/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetEmailVerification("test_id");
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.UserId);
-            Assert.NotEmpty(result.Email);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/email_verification/test_id");
-        }
-
-        [Fact]
-        public async Task TestResetPassword()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/password_reset.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/password_reset", HttpStatusCode.OK, fixture);
-            var result = await this.service.ResetPassword(new UserManagementResetPasswordOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.UserId);
-            Assert.NotEmpty(result.Email);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/password_reset");
-        }
-
-        [Fact]
-        public async Task TestConfirmPasswordReset()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/reset_password_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/password_reset/confirm", HttpStatusCode.OK, fixture);
-            var result = await this.service.ConfirmPasswordReset(new UserManagementConfirmPasswordResetOptions());
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/password_reset/confirm");
-        }
-
-        [Fact]
-        public async Task TestGetPasswordReset()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/password_reset.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/password_reset/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetPasswordReset("test_id");
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.UserId);
-            Assert.NotEmpty(result.Email);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/password_reset/test_id");
-        }
-
-        [Fact]
-        public async Task TestList()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/list_user.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users", HttpStatusCode.OK, fixture);
-            var result = await this.service.List(new UserManagementListOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/users");
-        }
-
-        [Fact]
-        public async Task TestListEmpty()
-        {
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.List(new UserManagementListOptions());
-            Assert.NotNull(result);
-            Assert.Empty(result.Data);
-        }
-
-        [Fact]
-        public async Task TestCreate()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/users", HttpStatusCode.OK, fixture);
-            var result = await this.service.Create(new UserManagementCreateOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Email);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users");
-        }
-
-        [Fact]
-        public async Task TestGetByExternalId()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/external_id/test_external_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetByExternalId("test_external_id");
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Email);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/users/external_id/test_external_id");
-        }
-
-        [Fact]
-        public async Task TestGet()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.Get("test_id");
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Email);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/users/test_id");
-        }
-
-        [Fact]
-        public async Task TestUpdate()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user.json");
-            this.httpMock.MockResponse(HttpMethod.Put, "/user_management/users/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.Update("test_id", new UserManagementUpdateOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Email);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/user_management/users/test_id");
-        }
-
-        [Fact]
-        public async Task TestDelete()
-        {
-            this.httpMock.MockResponse(HttpMethod.Delete, "/user_management/users/test_id", HttpStatusCode.NoContent, "");
-            await this.service.Delete("test_id");
-            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/user_management/users/test_id");
-        }
-
-        [Fact]
-        public async Task TestConfirmEmailChange()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/email_change_confirmation.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/users/test_id/email_change/confirm", HttpStatusCode.OK, fixture);
-            var result = await this.service.ConfirmEmailChange("test_id", new UserManagementConfirmEmailChangeOptions());
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users/test_id/email_change/confirm");
-        }
-
-        [Fact]
-        public async Task TestSendEmailChange()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/email_change.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/users/test_id/email_change/send", HttpStatusCode.OK, fixture);
-            var result = await this.service.SendEmailChange("test_id", new UserManagementSendEmailChangeOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.NewEmail);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users/test_id/email_change/send");
-        }
-
-        [Fact]
-        public async Task TestVerifyEmail()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/verify_email_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/users/test_id/email_verification/confirm", HttpStatusCode.OK, fixture);
-            var result = await this.service.VerifyEmail("test_id", new UserManagementVerifyEmailOptions());
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users/test_id/email_verification/confirm");
-        }
-
-        [Fact]
-        public async Task TestSendVerificationEmail()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/send_verification_email_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/users/test_id/email_verification/send", HttpStatusCode.OK, fixture);
-            var result = await this.service.SendVerificationEmail("test_id");
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users/test_id/email_verification/send");
-        }
-
-        [Fact]
-        public async Task TestGetIdentities()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user_identities_get_item.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_id/identities", HttpStatusCode.OK, "[" + fixture + "]");
-            var result = await this.service.GetIdentities("test_id");
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/users/test_id/identities");
-        }
-
-        [Fact]
-        public async Task TestListSessions()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/list_user_sessions_list_item.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_id/sessions", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListSessions("test_id", new UserManagementListSessionsOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/users/test_id/sessions");
-        }
-
-        [Fact]
-        public async Task TestListSessionsEmpty()
-        {
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_id/sessions", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListSessions("test_id", new UserManagementListSessionsOptions());
-            Assert.NotNull(result);
-            Assert.Empty(result.Data);
-        }
-
-        [Fact]
-        public async Task TestListInvitations()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/list_user_invite.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/invitations", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListInvitations(new UserManagementListInvitationsOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/invitations");
-        }
-
-        [Fact]
-        public async Task TestListInvitationsEmpty()
-        {
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/invitations", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListInvitations(new UserManagementListInvitationsOptions());
-            Assert.NotNull(result);
-            Assert.Empty(result.Data);
-        }
-
-        [Fact]
-        public async Task TestSendInvitation()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user_invite.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/invitations", HttpStatusCode.OK, fixture);
-            var result = await this.service.SendInvitation(new UserManagementSendInvitationOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Email);
-            Assert.NotEmpty(result.Token);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/invitations");
-        }
-
-        [Fact]
-        public async Task TestFindInvitationByToken()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user_invite.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/invitations/by_token/test_token", HttpStatusCode.OK, fixture);
-            var result = await this.service.FindInvitationByToken("test_token");
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Email);
-            Assert.NotEmpty(result.Token);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/invitations/by_token/test_token");
-        }
-
-        [Fact]
-        public async Task TestGetInvitation()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user_invite.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/invitations/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetInvitation("test_id");
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Email);
-            Assert.NotEmpty(result.Token);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/invitations/test_id");
-        }
-
-        [Fact]
-        public async Task TestAcceptInvitation()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/invitation.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/invitations/test_id/accept", HttpStatusCode.OK, fixture);
-            var result = await this.service.AcceptInvitation("test_id");
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Email);
-            Assert.NotEmpty(result.Token);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/invitations/test_id/accept");
-        }
-
-        [Fact]
-        public async Task TestResendInvitation()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user_invite.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/invitations/test_id/resend", HttpStatusCode.OK, fixture);
-            var result = await this.service.ResendInvitation("test_id", new UserManagementResendInvitationOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Email);
-            Assert.NotEmpty(result.Token);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/invitations/test_id/resend");
-        }
-
-        [Fact]
-        public async Task TestRevokeInvitation()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/invitation.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/invitations/test_id/revoke", HttpStatusCode.OK, fixture);
-            var result = await this.service.RevokeInvitation("test_id");
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Email);
-            Assert.NotEmpty(result.Token);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/invitations/test_id/revoke");
+            await this.httpMock.AssertRequestBodyContainsAsync("origin", "test_origin");
         }
 
         [Fact]
         public async Task TestUpdateJWTTemplate()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/jwt_template_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/jwt_templates_update_jwt_template_response.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/user_management/jwt_template", HttpStatusCode.OK, fixture);
-            var result = await this.service.UpdateJWTTemplate(new UserManagementUpdateJWTTemplateOptions());
+            var options = new UserManagementUpdateJWTTemplateOptions();
+            options.Content = "test_content";
+            var result = await this.service.UpdateJWTTemplate(options);
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Content);
-            Assert.NotEmpty(result.CreatedAt);
+            Assert.Equal("{ \"sub\": \"{{user.id}}\" }", result.Content);
+            Assert.Equal("2024-01-01T00:00:00.000Z", result.CreatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/user_management/jwt_template");
-        }
-
-        [Fact]
-        public async Task TestCreateMagicAuth()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/magic_auth.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/magic_auth", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateMagicAuth(new UserManagementCreateMagicAuthOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.UserId);
-            Assert.NotEmpty(result.Email);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/magic_auth");
-        }
-
-        [Fact]
-        public async Task TestGetMagicAuth()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/magic_auth.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/magic_auth/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetMagicAuth("test_id");
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.UserId);
-            Assert.NotEmpty(result.Email);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/magic_auth/test_id");
-        }
-
-        [Fact]
-        public async Task TestListOrganizationMemberships()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/list_user_organization_membership.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/organization_memberships", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListOrganizationMemberships(new UserManagementListOrganizationMembershipsOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/organization_memberships");
-        }
-
-        [Fact]
-        public async Task TestListOrganizationMembershipsEmpty()
-        {
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/organization_memberships", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListOrganizationMemberships(new UserManagementListOrganizationMembershipsOptions());
-            Assert.NotNull(result);
-            Assert.Empty(result.Data);
-        }
-
-        [Fact]
-        public async Task TestCreateOrganizationMembership()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_membership.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/organization_memberships", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateOrganizationMembership(new UserManagementCreateOrganizationMembershipOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.UserId);
-            Assert.NotEmpty(result.OrganizationId);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/organization_memberships");
-        }
-
-        [Fact]
-        public async Task TestGetOrganizationMembership()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user_organization_membership.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/organization_memberships/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetOrganizationMembership("test_id");
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.UserId);
-            Assert.NotEmpty(result.OrganizationId);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/organization_memberships/test_id");
-        }
-
-        [Fact]
-        public async Task TestUpdateOrganizationMembership()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user_organization_membership.json");
-            this.httpMock.MockResponse(HttpMethod.Put, "/user_management/organization_memberships/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.UpdateOrganizationMembership("test_id", new UserManagementUpdateOrganizationMembershipOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.UserId);
-            Assert.NotEmpty(result.OrganizationId);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/user_management/organization_memberships/test_id");
-        }
-
-        [Fact]
-        public async Task TestDeleteOrganizationMembership()
-        {
-            this.httpMock.MockResponse(HttpMethod.Delete, "/user_management/organization_memberships/test_id", HttpStatusCode.NoContent, "");
-            await this.service.DeleteOrganizationMembership("test_id");
-            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/user_management/organization_memberships/test_id");
-        }
-
-        [Fact]
-        public async Task TestDeactivateOrganizationMembership()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_membership.json");
-            this.httpMock.MockResponse(HttpMethod.Put, "/user_management/organization_memberships/test_id/deactivate", HttpStatusCode.OK, fixture);
-            var result = await this.service.DeactivateOrganizationMembership("test_id");
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.UserId);
-            Assert.NotEmpty(result.OrganizationId);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/user_management/organization_memberships/test_id/deactivate");
-        }
-
-        [Fact]
-        public async Task TestReactivateOrganizationMembership()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user_organization_membership.json");
-            this.httpMock.MockResponse(HttpMethod.Put, "/user_management/organization_memberships/test_id/reactivate", HttpStatusCode.OK, fixture);
-            var result = await this.service.ReactivateOrganizationMembership("test_id");
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.UserId);
-            Assert.NotEmpty(result.OrganizationId);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/user_management/organization_memberships/test_id/reactivate");
+            await this.httpMock.AssertRequestBodyContainsAsync("content", "test_content");
         }
 
         [Fact]
         public async Task TestCreateRedirectUri()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/redirect_uri.json");
+            var fixture = System.IO.File.ReadAllText("testdata/redirect_uris_create_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/redirect_uris", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateRedirectUri(new UserManagementCreateRedirectUriOptions());
+            var options = new UserManagementCreateRedirectUriOptions();
+            options.Uri = "test_uri";
+            var result = await this.service.CreateRedirectUri(options);
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.Uri);
-            Assert.NotEmpty(result.CreatedAt);
+            Assert.Equal("redirect_uri_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
+            Assert.Equal("https://example.com/callback", result.Uri);
+            Assert.Equal("2024-01-01T00:00:00.000Z", result.CreatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/redirect_uris");
+            await this.httpMock.AssertRequestBodyContainsAsync("uri", "test_uri");
         }
 
         [Fact]
-        public async Task TestListAuthorizedApplications()
+        public async Task TestListFeatureFlagsAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_authorized_connect_application_list_data.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_user_id/authorized_applications", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListAuthorizedApplications("test_user_id", new UserManagementListAuthorizedApplicationsOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/users/test_user_id/authorized_applications");
-        }
-
-        [Fact]
-        public async Task TestListAuthorizedApplicationsEmpty()
-        {
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_user_id/authorized_applications", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListAuthorizedApplications("test_user_id", new UserManagementListAuthorizedApplicationsOptions());
-            Assert.NotNull(result);
-            Assert.Empty(result.Data);
-        }
-
-        [Fact]
-        public async Task TestDeleteAuthorizedApplication()
-        {
-            this.httpMock.MockResponse(HttpMethod.Delete, "/user_management/users/test_user_id/authorized_applications/test_application_id", HttpStatusCode.NoContent, "");
-            await this.service.DeleteAuthorizedApplication("test_user_id", "test_application_id");
-            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/user_management/users/test_user_id/authorized_applications/test_application_id");
-        }
-
-        [Fact]
-        public async Task TestListAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user.json");
+            var fixture = System.IO.File.ReadAllText("testdata/user_feature_flags_list_item.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users", HttpStatusCode.OK, new[] { page1, page2 });
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_user_id/feature-flags", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<User>();
-            await foreach (var item in this.service.ListAutoPagingAsync(new UserManagementListOptions()))
+            var items = new List<UserFeatureFlagsListItem>();
+            await foreach (var item in this.service.ListFeatureFlagsAutoPagingAsync("test_user_id", new UserManagementListFeatureFlagsOptions()))
             {
                 items.Add(item);
             }
@@ -568,261 +158,53 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListAutoPagingAsyncEmpty()
+        public async Task TestListFeatureFlagsAutoPagingAsyncEmpty()
         {
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users", HttpStatusCode.OK, new[] { empty });
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_user_id/feature-flags", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<User>();
-            await foreach (var item in this.service.ListAutoPagingAsync(new UserManagementListOptions()))
+            var items = new List<UserFeatureFlagsListItem>();
+            await foreach (var item in this.service.ListFeatureFlagsAutoPagingAsync("test_user_id", new UserManagementListFeatureFlagsOptions()))
             {
                 items.Add(item);
             }
 
             Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestListSessionsAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user_sessions_list_item.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_id/sessions", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<UserSessionsListItem>();
-            await foreach (var item in this.service.ListSessionsAutoPagingAsync("test_id", new UserManagementListSessionsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestListSessionsAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_id/sessions", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<UserSessionsListItem>();
-            await foreach (var item in this.service.ListSessionsAutoPagingAsync("test_id", new UserManagementListSessionsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestListInvitationsAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user_invite.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/invitations", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<UserInvite>();
-            await foreach (var item in this.service.ListInvitationsAutoPagingAsync(new UserManagementListInvitationsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestListInvitationsAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/invitations", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<UserInvite>();
-            await foreach (var item in this.service.ListInvitationsAutoPagingAsync(new UserManagementListInvitationsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestListOrganizationMembershipsAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/user_organization_membership.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/organization_memberships", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<UserOrganizationMembership>();
-            await foreach (var item in this.service.ListOrganizationMembershipsAutoPagingAsync(new UserManagementListOrganizationMembershipsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestListOrganizationMembershipsAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/organization_memberships", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<UserOrganizationMembership>();
-            await foreach (var item in this.service.ListOrganizationMembershipsAutoPagingAsync(new UserManagementListOrganizationMembershipsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestListAuthorizedApplicationsAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/authorized_connect_application_list_data.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_user_id/authorized_applications", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<AuthorizedConnectApplicationListData>();
-            await foreach (var item in this.service.ListAuthorizedApplicationsAutoPagingAsync("test_user_id", new UserManagementListAuthorizedApplicationsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestListAuthorizedApplicationsAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_user_id/authorized_applications", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<AuthorizedConnectApplicationListData>();
-            await foreach (var item in this.service.ListAuthorizedApplicationsAutoPagingAsync("test_user_id", new UserManagementListAuthorizedApplicationsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestAuthenticateWithPassword()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/authenticate_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authenticate", HttpStatusCode.OK, fixture);
-            var result = await this.service.AuthenticateWithPassword(new AuthenticateWithPasswordOptions());
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
-        }
-
-        [Fact]
-        public async Task TestAuthenticateWithCode()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/authenticate_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authenticate", HttpStatusCode.OK, fixture);
-            var result = await this.service.AuthenticateWithCode(new AuthenticateWithCodeOptions());
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
-        }
-
-        [Fact]
-        public async Task TestAuthenticateWithRefreshToken()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/authenticate_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authenticate", HttpStatusCode.OK, fixture);
-            var result = await this.service.AuthenticateWithRefreshToken(new AuthenticateWithRefreshTokenOptions());
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
-        }
-
-        [Fact]
-        public async Task TestAuthenticateWithMagicAuth()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/authenticate_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authenticate", HttpStatusCode.OK, fixture);
-            var result = await this.service.AuthenticateWithMagicAuth(new AuthenticateWithMagicAuthOptions());
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
-        }
-
-        [Fact]
-        public async Task TestAuthenticateWithEmailVerification()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/authenticate_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authenticate", HttpStatusCode.OK, fixture);
-            var result = await this.service.AuthenticateWithEmailVerification(new AuthenticateWithEmailVerificationOptions());
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
-        }
-
-        [Fact]
-        public async Task TestAuthenticateWithTotp()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/authenticate_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authenticate", HttpStatusCode.OK, fixture);
-            var result = await this.service.AuthenticateWithTotp(new AuthenticateWithTotpOptions());
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
-        }
-
-        [Fact]
-        public async Task TestAuthenticateWithOrganizationSelection()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/authenticate_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authenticate", HttpStatusCode.OK, fixture);
-            var result = await this.service.AuthenticateWithOrganizationSelection(new AuthenticateWithOrganizationSelectionOptions());
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
-        }
-
-        [Fact]
-        public async Task TestAuthenticateWithDeviceCode()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/authenticate_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authenticate", HttpStatusCode.OK, fixture);
-            var result = await this.service.AuthenticateWithDeviceCode(new AuthenticateWithDeviceCodeOptions());
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
         }
 
         [Fact]
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationError>(() => this.service.GetJwks("test_clientId"));
+            await Assert.ThrowsAsync<AuthenticationError>(() => this.service.UpdateAppHomepageUrl(new UserManagementUpdateAppHomepageUrlOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundError>(() => this.service.GetJwks("test_clientId"));
+            await Assert.ThrowsAsync<NotFoundError>(() => this.service.UpdateAppHomepageUrl(new UserManagementUpdateAppHomepageUrlOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.GetJwks("test_clientId"));
+            await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.UpdateAppHomepageUrl(new UserManagementUpdateAppHomepageUrlOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.GetJwks("test_clientId"));
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.UpdateAppHomepageUrl(new UserManagementUpdateAppHomepageUrlOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerError>(() => this.service.GetJwks("test_clientId"));
+            await Assert.ThrowsAsync<ServerError>(() => this.service.UpdateAppHomepageUrl(new UserManagementUpdateAppHomepageUrlOptions()));
         }
     }
 }

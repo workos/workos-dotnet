@@ -7,75 +7,72 @@ namespace WorkOS
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>Handles OrganizationDomains operations.</summary>
+    /// <summary>Service that exposes the organization domains API operations on <see cref="WorkOSClient"/>.</summary>
     public class OrganizationDomainsService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OrganizationDomainsService"/> class for mocking. The service uses the singleton
+        /// client configured via <see cref="WorkOSConfiguration.WorkOSClient"/>.
+        /// </summary>
         public OrganizationDomainsService() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OrganizationDomainsService"/> class bound to the
+        /// supplied <paramref name="client"/>.
+        /// </summary>
+        /// <param name="client">The HTTP client used to make API requests.</param>
         public OrganizationDomainsService(WorkOSClient client) : base(client) { }
 
         /// <summary>Create an Organization Domain</summary>
+        /// <remarks>
+        /// Creates a new Organization Domain
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="OrganizationDomain"/> result.</returns>
-        public virtual async Task<OrganizationDomain> Create(OrganizationDomainsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="OrganizationDomainsCreateResponse"/> result.</returns>
+        public virtual async Task<OrganizationDomainsCreateResponse> Create(OrganizationDomainsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/organization_domains",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<OrganizationDomain>(request, cancellationToken);
+            return await this.PostAsync<OrganizationDomainsCreateResponse>("/organization_domains", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get an Organization Domain</summary>
-        /// <param name="id">Unique identifier of the organization domain.</param>
+        /// <remarks>
+        /// Get the details of an existing organization
+        /// </remarks>
+        /// <param name="id">The id.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="OrganizationDomainStandAlone"/> result.</returns>
-        public virtual async Task<OrganizationDomainStandAlone> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="OrganizationDomainsGetResponse"/> result.</returns>
+        public virtual async Task<OrganizationDomainsGetResponse> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/organization_domains/{id}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<OrganizationDomainStandAlone>(request, cancellationToken);
+            return await this.GetAsync<OrganizationDomainsGetResponse>($"/organization_domains/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete an Organization Domain</summary>
-        /// <param name="id">Unique identifier of the organization domain.</param>
+        /// <remarks>
+        /// Deletes an existing organization domain
+        /// </remarks>
+        /// <param name="id">The id.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/organization_domains/{id}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
+            await this.DeleteAsync($"/organization_domains/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Verify an Organization Domain</summary>
-        /// <param name="id">Unique identifier of the organization domain.</param>
+        /// <remarks>
+        /// Initiates verification process for an Organization Domain
+        /// </remarks>
+        /// <param name="id">The id.</param>
+        /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="OrganizationDomainStandAlone"/> result.</returns>
-        public virtual async Task<OrganizationDomainStandAlone> Verify(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="OrganizationDomainsVerifyResponse"/> result.</returns>
+        public virtual async Task<OrganizationDomainsVerifyResponse> Verify(string id, OrganizationDomainsVerifyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/organization_domains/{id}/verify",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<OrganizationDomainStandAlone>(request, cancellationToken);
+            return await this.PostAsync<OrganizationDomainsVerifyResponse>($"/organization_domains/{id}/verify", options, requestOptions, cancellationToken);
         }
     }
 }

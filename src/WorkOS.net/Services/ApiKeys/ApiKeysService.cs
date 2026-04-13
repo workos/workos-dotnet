@@ -7,97 +7,45 @@ namespace WorkOS
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>Handles ApiKeys operations.</summary>
+    /// <summary>Service that exposes the api keys API operations on <see cref="WorkOSClient"/>.</summary>
     public class ApiKeysService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApiKeysService"/> class for mocking. The service uses the singleton
+        /// client configured via <see cref="WorkOSConfiguration.WorkOSClient"/>.
+        /// </summary>
         public ApiKeysService() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApiKeysService"/> class bound to the
+        /// supplied <paramref name="client"/>.
+        /// </summary>
+        /// <param name="client">The HTTP client used to make API requests.</param>
         public ApiKeysService(WorkOSClient client) : base(client) { }
 
         /// <summary>Validate API key</summary>
+        /// <remarks>
+        /// Validate an API key value and return the API key object if valid
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ApiKeyValidationResponse"/> result.</returns>
-        public virtual async Task<ApiKeyValidationResponse> CreateValidations(ApiKeysCreateValidationsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ApiKeysValidateApiKey"/> result.</returns>
+        public virtual async Task<ApiKeysValidateApiKey> CreateValidation(ApiKeysCreateValidationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/api_keys/validations",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<ApiKeyValidationResponse>(request, cancellationToken);
+            return await this.PostAsync<ApiKeysValidateApiKey>("/api_keys/validations", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete an API key</summary>
-        /// <param name="id">The unique ID of the API key.</param>
+        /// <remarks>
+        /// Delete an API key by ID
+        /// </remarks>
+        /// <param name="id">The id.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/api_keys/{id}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
-        }
-
-        /// <summary>List API keys for an organization</summary>
-        /// <param name="organizationId">Unique identifier of the Organization.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="ApiKey"/> results.</returns>
-        public virtual async Task<WorkOSList<ApiKey>> ListOrganizationApiKeys(string organizationId, ApiKeysListOrganizationApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/organizations/{organizationId}/api_keys",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<ApiKey>>(request, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="ListOrganizationApiKeys"/>. Yields individual items across all pages.</summary>
-        /// <param name="organizationId">Unique identifier of the Organization.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="ApiKey"/> items.</returns>
-        public virtual IAsyncEnumerable<ApiKey> ListOrganizationApiKeysAutoPagingAsync(string organizationId, ApiKeysListOrganizationApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/organizations/{organizationId}/api_keys",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<ApiKey>(request, cancellationToken);
-        }
-
-        /// <summary>Create an API key for an organization</summary>
-        /// <param name="organizationId">Unique identifier of the Organization.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ApiKeyWithValue"/> result.</returns>
-        public virtual async Task<ApiKeyWithValue> CreateOrganizationApiKeys(string organizationId, ApiKeysCreateOrganizationApiKeysOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/organizations/{organizationId}/api_keys",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<ApiKeyWithValue>(request, cancellationToken);
+            await this.DeleteAsync($"/api_keys/{id}", null, requestOptions, cancellationToken);
         }
     }
 }

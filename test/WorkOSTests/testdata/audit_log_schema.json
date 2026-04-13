@@ -6,19 +6,15 @@
         "role": {
           "type": "string"
         }
-      }
+      },
+      "key": {}
     }
   },
   "targets": [
     {
-      "type": "invoice",
+      "type": "document",
       "metadata": {
-        "type": "object",
-        "properties": {
-          "cost": {
-            "type": "number"
-          }
-        }
+        "key": {}
       }
     }
   ],
@@ -28,6 +24,7 @@
       "transactionId": {
         "type": "string"
       }
-    }
+    },
+    "key": {}
   }
 }

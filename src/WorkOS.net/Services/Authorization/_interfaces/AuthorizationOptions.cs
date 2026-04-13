@@ -7,6 +7,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
+    /// <summary>Request options for <see cref="AuthorizationService.Check"/>: Check authorization</summary>
     public class AuthorizationCheckOptions : BaseOptions
     {
         /// <summary>The slug of the permission to check.</summary>
@@ -14,138 +15,90 @@ namespace WorkOS
         [STJS.JsonPropertyName("permission_slug")]
         public string PermissionSlug { get; set; } = default!;
 
-        /// <summary>The ID of the resource.</summary>
+        /// <summary>The identifier of the resource to check permissions for. Either resource_id or resource_external_id + resource_type_slug must be provided.</summary>
         [JsonProperty("resource_id")]
         [STJS.JsonPropertyName("resource_id")]
         public string? ResourceId { get; set; }
 
-        /// <summary>The external ID of the resource.</summary>
+        /// <summary>The external identifier of the resource to check permissions for. Must be used with resource_type_slug.</summary>
         [JsonProperty("resource_external_id")]
         [STJS.JsonPropertyName("resource_external_id")]
         public string? ResourceExternalId { get; set; }
 
-        /// <summary>The slug of the resource type.</summary>
+        /// <summary>The slug of the resource type. Must be used with resource_external_id.</summary>
         [JsonProperty("resource_type_slug")]
         [STJS.JsonPropertyName("resource_type_slug")]
         public string? ResourceTypeSlug { get; set; }
 
     }
 
+    /// <summary>Request options for <see cref="AuthorizationService.ListOrganizationMembershipResources"/>: List resources for organization membership</summary>
     public class AuthorizationListOrganizationMembershipResourcesOptions : ListOptions
     {
-        /// <summary>The permission slug to filter by. Only child resources where the organization membership has this permission are returned.</summary>
         [JsonProperty("permission_slug")]
         [STJS.JsonPropertyName("permission_slug")]
         public string PermissionSlug { get; set; } = default!;
 
-        /// <summary>The WorkOS ID of the parent resource. Provide this or both `parent_resource_external_id` and `parent_resource_type_slug`, but not both.</summary>
         [JsonProperty("parent_resource_id")]
         [STJS.JsonPropertyName("parent_resource_id")]
         public string? ParentResourceId { get; set; }
 
-        /// <summary>The slug of the parent resource type. Must be provided together with `parent_resource_external_id`.</summary>
         [JsonProperty("parent_resource_type_slug")]
         [STJS.JsonPropertyName("parent_resource_type_slug")]
         public string? ParentResourceTypeSlug { get; set; }
 
-        /// <summary>The application-specific external identifier of the parent resource. Must be provided together with `parent_resource_type_slug`.</summary>
         [JsonProperty("parent_resource_external_id")]
         [STJS.JsonPropertyName("parent_resource_external_id")]
         public string? ParentResourceExternalId { get; set; }
 
     }
 
-    public class AuthorizationListOrganizationMembershipRoleAssignmentsOptions : ListOptions
+    /// <summary>Request options for <see cref="AuthorizationService.ListOrganizationRoles"/>: List organization roles</summary>
+    public class AuthorizationListOrganizationRolesOptions : BaseOptions
     {
-    }
-
-    public class AuthorizationAssignRoleOptions : BaseOptions
-    {
-        /// <summary>The slug of the role to assign.</summary>
-        [JsonProperty("role_slug")]
-        [STJS.JsonPropertyName("role_slug")]
-        public string RoleSlug { get; set; } = default!;
-
-        /// <summary>The ID of the resource. Use either this or `resource_external_id` and `resource_type_slug`.</summary>
-        [JsonProperty("resource_id")]
-        [STJS.JsonPropertyName("resource_id")]
-        public string? ResourceId { get; set; }
-
-        /// <summary>The external ID of the resource. Requires `resource_type_slug`.</summary>
-        [JsonProperty("resource_external_id")]
-        [STJS.JsonPropertyName("resource_external_id")]
-        public string? ResourceExternalId { get; set; }
-
-        /// <summary>The resource type slug. Required with `resource_external_id`.</summary>
-        [JsonProperty("resource_type_slug")]
-        [STJS.JsonPropertyName("resource_type_slug")]
-        public string? ResourceTypeSlug { get; set; }
+        [JsonProperty("expand")]
+        [STJS.JsonPropertyName("expand")]
+        public string? Expand { get; set; }
 
     }
 
-    public class AuthorizationRemoveRoleOptions : BaseOptions
-    {
-        /// <summary>The slug of the role to remove.</summary>
-        [JsonProperty("role_slug")]
-        [STJS.JsonPropertyName("role_slug")]
-        public string RoleSlug { get; set; } = default!;
-
-        /// <summary>The ID of the resource. Use either this or `resource_external_id` and `resource_type_slug`.</summary>
-        [JsonProperty("resource_id")]
-        [STJS.JsonPropertyName("resource_id")]
-        public string? ResourceId { get; set; }
-
-        /// <summary>The external ID of the resource. Requires `resource_type_slug`.</summary>
-        [JsonProperty("resource_external_id")]
-        [STJS.JsonPropertyName("resource_external_id")]
-        public string? ResourceExternalId { get; set; }
-
-        /// <summary>The resource type slug. Required with `resource_external_id`.</summary>
-        [JsonProperty("resource_type_slug")]
-        [STJS.JsonPropertyName("resource_type_slug")]
-        public string? ResourceTypeSlug { get; set; }
-
-    }
-
+    /// <summary>Request options for <see cref="AuthorizationService.CreateOrganizationRole"/>: Create a custom organization role</summary>
     public class AuthorizationCreateOrganizationRoleOptions : BaseOptions
     {
-        /// <summary>A unique identifier for the role within the organization. When provided, must begin with 'org-' and contain only lowercase letters, numbers, hyphens, and underscores. When omitted, a slug is auto-generated from the role name and a random suffix.</summary>
+        /// <summary>The URL-friendly slug of the organization role. Must be prefixed with 'org-' and contain only lowercase letters, numbers, hyphens, and underscores.</summary>
         [JsonProperty("slug")]
         [STJS.JsonPropertyName("slug")]
-        public string? Slug { get; set; }
+        public string Slug { get; set; } = default!;
 
-        /// <summary>A descriptive name for the role.</summary>
+        /// <summary>A human-readable name for the organization role.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
-        /// <summary>An optional description of the role's purpose.</summary>
+        /// <summary>A description of the organization role and its permissions.</summary>
         [JsonProperty("description")]
         [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }
 
-        /// <summary>The slug of the resource type the role is scoped to.</summary>
-        [JsonProperty("resource_type_slug")]
-        [STJS.JsonPropertyName("resource_type_slug")]
-        public string? ResourceTypeSlug { get; set; }
-
     }
 
+    /// <summary>Request options for <see cref="AuthorizationService.UpdateOrganizationRole"/>: Update a custom organization role</summary>
     public class AuthorizationUpdateOrganizationRoleOptions : BaseOptions
     {
-        /// <summary>A descriptive name for the role.</summary>
+        /// <summary>A human-readable name for the organization role.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
         public string? Name { get; set; }
 
-        /// <summary>An optional description of the role's purpose.</summary>
+        /// <summary>A description of the organization role and its permissions.</summary>
         [JsonProperty("description")]
         [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }
 
     }
 
-    public class AuthorizationCreateRolePermissionsOptions : BaseOptions
+    /// <summary>Request options for <see cref="AuthorizationService.CreateRolePermission"/>: Add a permission to a role</summary>
+    public class AuthorizationCreateRolePermissionOptions : BaseOptions
     {
         /// <summary>The slug of the permission to add to the role.</summary>
         [JsonProperty("slug")]
@@ -154,235 +107,233 @@ namespace WorkOS
 
     }
 
+    /// <summary>Request options for <see cref="AuthorizationService.UpdateRolePermissions"/>: Set permissions for a role</summary>
     public class AuthorizationUpdateRolePermissionsOptions : BaseOptions
     {
-        /// <summary>The permission slugs to assign to the role.</summary>
         [JsonProperty("permissions")]
         [STJS.JsonPropertyName("permissions")]
         public List<string> Permissions { get; set; } = default!;
 
     }
 
+    /// <summary>Request options for <see cref="AuthorizationService.UpdateOrganizationResource"/>: Update an authorization resource by external ID</summary>
     public class AuthorizationUpdateOrganizationResourceOptions : BaseOptions
     {
-        /// <summary>A display name for the resource.</summary>
+        /// <summary>A human-readable name for the resource.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
         public string? Name { get; set; }
 
-        /// <summary>An optional description of the resource.</summary>
+        /// <summary>A description of the resource.</summary>
         [JsonProperty("description")]
         [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }
 
-        /// <summary>The ID of the parent resource.</summary>
-        [JsonProperty("parent_resource_id")]
-        [STJS.JsonPropertyName("parent_resource_id")]
-        public string? ParentResourceId { get; set; }
-
-        /// <summary>The external ID of the parent resource.</summary>
-        [JsonProperty("parent_resource_external_id")]
-        [STJS.JsonPropertyName("parent_resource_external_id")]
-        public string? ParentResourceExternalId { get; set; }
-
-        /// <summary>The resource type slug of the parent resource.</summary>
-        [JsonProperty("parent_resource_type_slug")]
-        [STJS.JsonPropertyName("parent_resource_type_slug")]
-        public string? ParentResourceTypeSlug { get; set; }
-
     }
 
-    public class AuthorizationDeleteOrganizationResourceOptions : BaseOptions
-    {
-        /// <summary>If true, deletes all descendant resources and role assignments. If not set and the resource has children or assignments, the request will fail.</summary>
-        [JsonProperty("cascade_delete")]
-        [STJS.JsonPropertyName("cascade_delete")]
-        public bool? CascadeDelete { get; set; }
-
-    }
-
+    /// <summary>Request options for <see cref="AuthorizationService.ListResourceOrganizationMemberships"/>: List organization memberships for resource by external ID</summary>
     public class AuthorizationListResourceOrganizationMembershipsOptions : ListOptions
     {
-        /// <summary>The permission slug to filter by. Only users with this permission on the resource are returned.</summary>
         [JsonProperty("permission_slug")]
         [STJS.JsonPropertyName("permission_slug")]
         public string PermissionSlug { get; set; } = default!;
 
-        /// <summary>Filter by assignment type. Use "direct" for direct assignments only, or "indirect" to include inherited assignments.</summary>
         [JsonProperty("assignment")]
         [STJS.JsonPropertyName("assignment")]
         public AuthorizationAssignment? Assignment { get; set; }
 
     }
 
-    public class AuthorizationListResourcesOptions : ListOptions
+    /// <summary>Request options for <see cref="AuthorizationService.ListPermissions"/>: List Permissions</summary>
+    public class AuthorizationListPermissionsOptions : ListOptions
     {
-        /// <summary>Filter resources by organization ID.</summary>
-        [JsonProperty("organization_id")]
-        [STJS.JsonPropertyName("organization_id")]
-        public string? OrganizationId { get; set; }
-
-        /// <summary>Filter resources by resource type slug.</summary>
-        [JsonProperty("resource_type_slug")]
-        [STJS.JsonPropertyName("resource_type_slug")]
-        public string? ResourceTypeSlug { get; set; }
-
-        /// <summary>Filter resources by parent resource ID.</summary>
-        [JsonProperty("parent_resource_id")]
-        [STJS.JsonPropertyName("parent_resource_id")]
-        public string? ParentResourceId { get; set; }
-
-        /// <summary>Filter resources by parent resource type slug.</summary>
-        [JsonProperty("parent_resource_type_slug")]
-        [STJS.JsonPropertyName("parent_resource_type_slug")]
-        public string? ParentResourceTypeSlug { get; set; }
-
-        /// <summary>Filter resources by parent external ID.</summary>
-        [JsonProperty("parent_external_id")]
-        [STJS.JsonPropertyName("parent_external_id")]
-        public string? ParentExternalId { get; set; }
-
-        /// <summary>Search resources by name.</summary>
-        [JsonProperty("search")]
-        [STJS.JsonPropertyName("search")]
-        public string? Search { get; set; }
-
     }
 
-    public class AuthorizationCreateResourceOptions : BaseOptions
+    /// <summary>Request options for <see cref="AuthorizationService.CreatePermission"/>: Create a permission</summary>
+    public class AuthorizationCreatePermissionOptions : BaseOptions
     {
-        /// <summary>An external identifier for the resource.</summary>
-        [JsonProperty("external_id")]
-        [STJS.JsonPropertyName("external_id")]
-        public string ExternalId { get; set; } = default!;
-
-        /// <summary>A display name for the resource.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
-        public string Name { get; set; } = default!;
-
-        /// <summary>An optional description of the resource.</summary>
-        [JsonProperty("description")]
-        [STJS.JsonPropertyName("description")]
-        public string? Description { get; set; }
-
-        /// <summary>The slug of the resource type.</summary>
-        [JsonProperty("resource_type_slug")]
-        [STJS.JsonPropertyName("resource_type_slug")]
-        public string ResourceTypeSlug { get; set; } = default!;
-
-        /// <summary>The ID of the organization this resource belongs to.</summary>
-        [JsonProperty("organization_id")]
-        [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; } = default!;
-
-        /// <summary>The ID of the parent resource.</summary>
-        [JsonProperty("parent_resource_id")]
-        [STJS.JsonPropertyName("parent_resource_id")]
-        public string? ParentResourceId { get; set; }
-
-        /// <summary>The external ID of the parent resource.</summary>
-        [JsonProperty("parent_resource_external_id")]
-        [STJS.JsonPropertyName("parent_resource_external_id")]
-        public string? ParentResourceExternalId { get; set; }
-
-        /// <summary>The resource type slug of the parent resource.</summary>
-        [JsonProperty("parent_resource_type_slug")]
-        [STJS.JsonPropertyName("parent_resource_type_slug")]
-        public string? ParentResourceTypeSlug { get; set; }
-
-    }
-
-    public class AuthorizationUpdateResourceOptions : BaseOptions
-    {
-        /// <summary>A display name for the resource.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
-        public string? Name { get; set; }
-
-        /// <summary>An optional description of the resource.</summary>
-        [JsonProperty("description")]
-        [STJS.JsonPropertyName("description")]
-        public string? Description { get; set; }
-
-        /// <summary>The ID of the parent resource.</summary>
-        [JsonProperty("parent_resource_id")]
-        [STJS.JsonPropertyName("parent_resource_id")]
-        public string? ParentResourceId { get; set; }
-
-        /// <summary>The external ID of the parent resource.</summary>
-        [JsonProperty("parent_resource_external_id")]
-        [STJS.JsonPropertyName("parent_resource_external_id")]
-        public string? ParentResourceExternalId { get; set; }
-
-        /// <summary>The resource type slug of the parent resource.</summary>
-        [JsonProperty("parent_resource_type_slug")]
-        [STJS.JsonPropertyName("parent_resource_type_slug")]
-        public string? ParentResourceTypeSlug { get; set; }
-
-    }
-
-    public class AuthorizationDeleteResourceOptions : BaseOptions
-    {
-        /// <summary>If true, deletes all descendant resources and role assignments. If not set and the resource has children or assignments, the request will fail.</summary>
-        [JsonProperty("cascade_delete")]
-        [STJS.JsonPropertyName("cascade_delete")]
-        public bool? CascadeDelete { get; set; }
-
-    }
-
-    public class AuthorizationListMembershipsForResourceOptions : ListOptions
-    {
-        /// <summary>The permission slug to filter by. Only users with this permission on the resource are returned.</summary>
-        [JsonProperty("permission_slug")]
-        [STJS.JsonPropertyName("permission_slug")]
-        public string PermissionSlug { get; set; } = default!;
-
-        /// <summary>Filter by assignment type. Use `direct` for direct assignments only, or `indirect` to include inherited assignments.</summary>
-        [JsonProperty("assignment")]
-        [STJS.JsonPropertyName("assignment")]
-        public AuthorizationAssignment? Assignment { get; set; }
-
-    }
-
-    public class AuthorizationCreateEnvironmentRoleOptions : BaseOptions
-    {
-        /// <summary>A unique slug for the role.</summary>
+        /// <summary>The URL-friendly slug of the permission. Must be lowercase and contain only letters, numbers, hyphens, underscores, colons, periods, and asterisks.</summary>
         [JsonProperty("slug")]
         [STJS.JsonPropertyName("slug")]
         public string Slug { get; set; } = default!;
 
-        /// <summary>A descriptive name for the role.</summary>
+        /// <summary>A human-readable name for the permission.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
-        /// <summary>An optional description of the role.</summary>
+        /// <summary>A description of what the permission allows.</summary>
         [JsonProperty("description")]
         [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }
 
-        /// <summary>The slug of the resource type the role is scoped to.</summary>
-        [JsonProperty("resource_type_slug")]
-        [STJS.JsonPropertyName("resource_type_slug")]
-        public string? ResourceTypeSlug { get; set; }
-
     }
 
-    public class AuthorizationUpdateEnvironmentRoleOptions : BaseOptions
+    /// <summary>Request options for <see cref="AuthorizationService.UpdatePermission"/>: Update a permission</summary>
+    public class AuthorizationUpdatePermissionOptions : BaseOptions
     {
-        /// <summary>A descriptive name for the role.</summary>
+        /// <summary>A human-readable name for the permission.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
         public string? Name { get; set; }
 
-        /// <summary>An optional description of the role.</summary>
+        /// <summary>A description of what the permission allows.</summary>
         [JsonProperty("description")]
         [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }
 
     }
 
+    /// <summary>Request options for <see cref="AuthorizationService.ListResourceTypes"/>: List authorization resource types</summary>
+    public class AuthorizationListResourceTypesOptions : ListOptions
+    {
+        [JsonProperty("load_topologies")]
+        [STJS.JsonPropertyName("load_topologies")]
+        public bool? LoadTopologies { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="AuthorizationService.CreateResourceType"/>: Create an authorization resource type</summary>
+    public class AuthorizationCreateResourceTypeOptions : BaseOptions
+    {
+        /// <summary>A human-readable name for the resource type.</summary>
+        [JsonProperty("name")]
+        [STJS.JsonPropertyName("name")]
+        public string Name { get; set; } = default!;
+
+        /// <summary>The URL-friendly slug of the resource type.</summary>
+        [JsonProperty("slug")]
+        [STJS.JsonPropertyName("slug")]
+        public string Slug { get; set; } = default!;
+
+        /// <summary>A description of the resource type.</summary>
+        [JsonProperty("description")]
+        [STJS.JsonPropertyName("description")]
+        public string? Description { get; set; }
+
+        [JsonProperty("parent_type_slugs")]
+        [STJS.JsonPropertyName("parent_type_slugs")]
+        public List<string> ParentTypeSlugs { get; set; } = default!;
+
+    }
+
+    /// <summary>Request options for <see cref="AuthorizationService.GetResourceType"/>: Get an authorization resource type</summary>
+    public class AuthorizationGetResourceTypeOptions : BaseOptions
+    {
+        [JsonProperty("load_topologies")]
+        [STJS.JsonPropertyName("load_topologies")]
+        public bool? LoadTopologies { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="AuthorizationService.CreateResource"/>: Create an authorization resource</summary>
+    public class AuthorizationCreateResourceOptions : BaseOptions
+    {
+        /// <summary>The external identifier of the resource from your application.</summary>
+        [JsonProperty("external_id")]
+        [STJS.JsonPropertyName("external_id")]
+        public string ExternalId { get; set; } = default!;
+
+        /// <summary>A human-readable name for the resource.</summary>
+        [JsonProperty("name")]
+        [STJS.JsonPropertyName("name")]
+        public string Name { get; set; } = default!;
+
+        /// <summary>A description of the resource.</summary>
+        [JsonProperty("description")]
+        [STJS.JsonPropertyName("description")]
+        public string? Description { get; set; }
+
+        /// <summary>The slug of the resource type this resource belongs to.</summary>
+        [JsonProperty("resource_type_slug")]
+        [STJS.JsonPropertyName("resource_type_slug")]
+        public string ResourceTypeSlug { get; set; } = default!;
+
+        /// <summary>The identifier of the Organization the resource belongs to.</summary>
+        [JsonProperty("organization_id")]
+        [STJS.JsonPropertyName("organization_id")]
+        public string OrganizationId { get; set; } = default!;
+
+        /// <summary>The identifier of the parent resource, if this resource is nested.</summary>
+        [JsonProperty("parent_resource_id")]
+        [STJS.JsonPropertyName("parent_resource_id")]
+        public string? ParentResourceId { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="AuthorizationService.UpdateResource"/>: Update an authorization resource</summary>
+    public class AuthorizationUpdateResourceOptions : BaseOptions
+    {
+        /// <summary>A human-readable name for the resource.</summary>
+        [JsonProperty("name")]
+        [STJS.JsonPropertyName("name")]
+        public string? Name { get; set; }
+
+        /// <summary>A description of the resource.</summary>
+        [JsonProperty("description")]
+        [STJS.JsonPropertyName("description")]
+        public string? Description { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="AuthorizationService.ListMembershipsForResource"/>: List organization memberships for resource</summary>
+    public class AuthorizationListMembershipsForResourceOptions : ListOptions
+    {
+        [JsonProperty("permission_slug")]
+        [STJS.JsonPropertyName("permission_slug")]
+        public string PermissionSlug { get; set; } = default!;
+
+        [JsonProperty("assignment")]
+        [STJS.JsonPropertyName("assignment")]
+        public AuthorizationAssignment? Assignment { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="AuthorizationService.ListEnvironmentRoles"/>: List environment roles</summary>
+    public class AuthorizationListEnvironmentRolesOptions : BaseOptions
+    {
+        [JsonProperty("expand")]
+        [STJS.JsonPropertyName("expand")]
+        public string? Expand { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="AuthorizationService.CreateEnvironmentRole"/>: Create an environment role</summary>
+    public class AuthorizationCreateEnvironmentRoleOptions : BaseOptions
+    {
+        /// <summary>The URL-friendly slug of the role. Must be lowercase and contain only letters, numbers, hyphens, and underscores.</summary>
+        [JsonProperty("slug")]
+        [STJS.JsonPropertyName("slug")]
+        public string Slug { get; set; } = default!;
+
+        /// <summary>A human-readable name for the role.</summary>
+        [JsonProperty("name")]
+        [STJS.JsonPropertyName("name")]
+        public string Name { get; set; } = default!;
+
+        /// <summary>A description of the role and its permissions.</summary>
+        [JsonProperty("description")]
+        [STJS.JsonPropertyName("description")]
+        public string? Description { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="AuthorizationService.UpdateEnvironmentRole"/>: Update an environment role</summary>
+    public class AuthorizationUpdateEnvironmentRoleOptions : BaseOptions
+    {
+        /// <summary>A human-readable name for the role.</summary>
+        [JsonProperty("name")]
+        [STJS.JsonPropertyName("name")]
+        public string? Name { get; set; }
+
+        /// <summary>A description of the role and its permissions.</summary>
+        [JsonProperty("description")]
+        [STJS.JsonPropertyName("description")]
+        public string? Description { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="AuthorizationService.AddEnvironmentRolePermission"/>: Add a permission to an environment role</summary>
     public class AuthorizationAddEnvironmentRolePermissionOptions : BaseOptions
     {
         /// <summary>The slug of the permission to add to the role.</summary>
@@ -392,54 +343,12 @@ namespace WorkOS
 
     }
 
+    /// <summary>Request options for <see cref="AuthorizationService.SetEnvironmentRolePermissions"/>: Set permissions for an environment role</summary>
     public class AuthorizationSetEnvironmentRolePermissionsOptions : BaseOptions
     {
-        /// <summary>The permission slugs to assign to the role.</summary>
         [JsonProperty("permissions")]
         [STJS.JsonPropertyName("permissions")]
         public List<string> Permissions { get; set; } = default!;
-
-    }
-
-    public class AuthorizationListPermissionsOptions : ListOptions
-    {
-    }
-
-    public class AuthorizationCreatePermissionOptions : BaseOptions
-    {
-        /// <summary>A unique key to reference the permission. Must be lowercase and contain only letters, numbers, hyphens, underscores, colons, periods, and asterisks.</summary>
-        [JsonProperty("slug")]
-        [STJS.JsonPropertyName("slug")]
-        public string Slug { get; set; } = default!;
-
-        /// <summary>A descriptive name for the Permission.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
-        public string Name { get; set; } = default!;
-
-        /// <summary>An optional description of the Permission.</summary>
-        [JsonProperty("description")]
-        [STJS.JsonPropertyName("description")]
-        public string? Description { get; set; }
-
-        /// <summary>The slug of the resource type this permission is scoped to.</summary>
-        [JsonProperty("resource_type_slug")]
-        [STJS.JsonPropertyName("resource_type_slug")]
-        public string? ResourceTypeSlug { get; set; }
-
-    }
-
-    public class AuthorizationUpdatePermissionOptions : BaseOptions
-    {
-        /// <summary>A descriptive name for the Permission.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
-        public string? Name { get; set; }
-
-        /// <summary>An optional description of the Permission.</summary>
-        [JsonProperty("description")]
-        [STJS.JsonPropertyName("description")]
-        public string? Description { get; set; }
 
     }
 }

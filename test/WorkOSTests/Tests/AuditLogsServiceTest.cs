@@ -29,7 +29,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGetOrganizationAuditLogsRetention()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_logs_retention_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_logs_retention_audit_logs_retention_response.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_id/audit_logs_retention", HttpStatusCode.OK, fixture);
             var result = await this.service.GetOrganizationAuditLogsRetention("test_id");
             Assert.NotNull(result);
@@ -39,7 +39,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestUpdateOrganizationAuditLogsRetention()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_logs_retention_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_logs_retention_update_audit_logs_retention_response.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/organizations/test_id/audit_logs_retention", HttpStatusCode.OK, fixture);
             var result = await this.service.UpdateOrganizationAuditLogsRetention("test_id", new AuditLogsUpdateOrganizationAuditLogsRetentionOptions());
             Assert.NotNull(result);
@@ -49,11 +49,9 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListActions()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_audit_log_action_json.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions", HttpStatusCode.OK, fixture);
+            this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
             var result = await this.service.ListActions(new AuditLogsListActionsOptions());
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/audit_logs/actions");
         }
 
@@ -69,7 +67,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListActionSchemas()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_audit_log_schema_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_audit_log_validator_versions_schemas_item.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, fixture);
             var result = await this.service.ListActionSchemas("test_actionName", new AuditLogsListActionSchemasOptions());
             Assert.NotNull(result);
@@ -89,86 +87,72 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateSchema()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_log_schema_json.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, fixture);
+            var fixture = System.IO.File.ReadAllText("testdata/list_audit_log_validator_versions_create_item.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, fixture);
             var result = await this.service.CreateSchema("test_actionName", new AuditLogsCreateSchemaOptions());
             Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/audit_logs/actions/test_actionName/schemas");
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas");
+        }
+
+        [Fact]
+        public async Task TestCreateSchemaEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.CreateSchema("test_actionName", new AuditLogsCreateSchemaOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
         }
 
         [Fact]
         public async Task TestCreateEvent()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_log_event_create_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_events_create_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/audit_logs/events", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateEvent(new AuditLogsCreateEventOptions());
+            var options = new AuditLogsCreateEventOptions();
+            options.OrganizationId = "test_organization_id";
+            var result = await this.service.CreateEvent(options);
             Assert.NotNull(result);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/audit_logs/events");
+            await this.httpMock.AssertRequestBodyContainsAsync("organization_id", "test_organization_id");
         }
 
         [Fact]
         public async Task TestCreateExport()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_log_export_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_exports_exports_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/audit_logs/exports", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateExport(new AuditLogsCreateExportOptions());
+            var options = new AuditLogsCreateExportOptions();
+            options.OrganizationId = "test_organization_id";
+            options.RangeStart = "test_range_start";
+            var result = await this.service.CreateExport(options);
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
+            Assert.Equal("obj_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/audit_logs/exports");
+            await this.httpMock.AssertRequestBodyContainsAsync("organization_id", "test_organization_id");
+            await this.httpMock.AssertRequestBodyContainsAsync("range_start", "test_range_start");
         }
 
         [Fact]
         public async Task TestGetExport()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_log_export_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_exports_export_response.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/exports/test_auditLogExportId", HttpStatusCode.OK, fixture);
             var result = await this.service.GetExport("test_auditLogExportId");
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
+            Assert.Equal("obj_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/audit_logs/exports/test_auditLogExportId");
-        }
-
-        [Fact]
-        public async Task TestListActionsAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_log_action_json.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/audit_logs/actions", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<AuditLogActionJson>();
-            await foreach (var item in this.service.ListActionsAutoPagingAsync(new AuditLogsListActionsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestListActionsAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/audit_logs/actions", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<AuditLogActionJson>();
-            await foreach (var item in this.service.ListActionsAutoPagingAsync(new AuditLogsListActionsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
         }
 
         [Fact]
         public async Task TestListActionSchemasAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_log_schema_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_validator_versions_schemas_item.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<AuditLogSchemaJson>();
+            var items = new List<AuditLogValidatorVersionsSchemasItem>();
             await foreach (var item in this.service.ListActionSchemasAutoPagingAsync("test_actionName", new AuditLogsListActionSchemasOptions()))
             {
                 items.Add(item);
@@ -183,8 +167,40 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<AuditLogSchemaJson>();
+            var items = new List<AuditLogValidatorVersionsSchemasItem>();
             await foreach (var item in this.service.ListActionSchemasAutoPagingAsync("test_actionName", new AuditLogsListActionSchemasOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
+        public async Task TestCreateSchemaAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_validator_versions_create_item.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<AuditLogValidatorVersionsCreateItem>();
+            await foreach (var item in this.service.CreateSchemaAutoPagingAsync("test_actionName", new AuditLogsCreateSchemaOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestCreateSchemaAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<AuditLogValidatorVersionsCreateItem>();
+            await foreach (var item in this.service.CreateSchemaAutoPagingAsync("test_actionName", new AuditLogsCreateSchemaOptions()))
             {
                 items.Add(item);
             }

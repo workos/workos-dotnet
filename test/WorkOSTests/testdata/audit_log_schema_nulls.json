@@ -2,14 +2,9 @@
   "actor": null,
   "targets": [
     {
-      "type": "invoice",
+      "type": "document",
       "metadata": {
-        "type": "object",
-        "properties": {
-          "cost": {
-            "type": "number"
-          }
-        }
+        "key": {}
       }
     }
   ],

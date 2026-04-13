@@ -7,90 +7,107 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
+    /// <summary>Request options for <see cref="OrganizationsService.List"/>: List Organizations</summary>
     public class OrganizationsListOptions : ListOptions
     {
-        /// <summary>The domains of an Organization. Any Organization with a matching domain will be returned.</summary>
         [JsonProperty("domains")]
         [STJS.JsonPropertyName("domains")]
         public List<string>? Domains { get; set; }
 
-        /// <summary>Searchable text for an Organization. Matches against the organization name.</summary>
-        [JsonProperty("search")]
-        [STJS.JsonPropertyName("search")]
-        public string? Search { get; set; }
-
     }
 
-    public class OrganizationsCreateOptions : BaseOptions
+    /// <summary>Request options for <see cref="OrganizationsService.Create"/>: Create an Organization</summary>
+    public class OrganizationsCreateOptions : ListOptions
     {
-        /// <summary>The name of the organization.</summary>
+        /// <summary>A descriptive name for the Organization. This field does not need to be unique.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
-        /// <summary>Whether the organization allows profiles from outside the organization to sign in.</summary>
+        /// <summary>Whether the Organization allows profiles outside its domain to be associated with it.</summary>
         [JsonProperty("allow_profiles_outside_organization")]
         [STJS.JsonPropertyName("allow_profiles_outside_organization")]
         public bool? AllowProfilesOutsideOrganization { get; set; }
 
-        /// <summary>The domains associated with the organization. Deprecated in favor of `domain_data`.</summary>
-        [JsonProperty("domains")]
-        [STJS.JsonPropertyName("domains")]
-        public List<string>? Domains { get; set; }
-
-        /// <summary>The domains associated with the organization, including verification state.</summary>
-        [JsonProperty("domain_data")]
-        [STJS.JsonPropertyName("domain_data")]
-        public List<OrganizationDomainData>? DomainData { get; set; }
-
-        /// <summary>Object containing [metadata](https://workos.com/docs/authkit/metadata) key/value pairs associated with the Organization.</summary>
-        [JsonProperty("metadata")]
-        [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, string>? Metadata { get; set; }
-
-        /// <summary>An external identifier for the Organization.</summary>
+        /// <summary>The external ID of the Organization.</summary>
         [JsonProperty("external_id")]
         [STJS.JsonPropertyName("external_id")]
         public string? ExternalId { get; set; }
 
+        [JsonProperty("domains")]
+        [STJS.JsonPropertyName("domains")]
+        public List<string>? Domains { get; set; }
+
+        [JsonProperty("domain_data")]
+        [STJS.JsonPropertyName("domain_data")]
+        public List<OrganizationDomainData>? DomainData { get; set; }
+
+        [JsonProperty("metadata")]
+        [STJS.JsonPropertyName("metadata")]
+        public Dictionary<string, object>? Metadata { get; set; }
+
     }
 
-    public class OrganizationsUpdateOptions : BaseOptions
+    /// <summary>Request options for <see cref="OrganizationsService.Update"/>: Update an Organization</summary>
+    public class OrganizationsUpdateOptions : ListOptions
     {
-        /// <summary>The name of the organization.</summary>
+        /// <summary>A descriptive name for the Organization. This field does not need to be unique.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
         public string? Name { get; set; }
 
-        /// <summary>Whether the organization allows profiles from outside the organization to sign in.</summary>
+        /// <summary>Whether the Organization allows profiles outside its domain to be associated with it.</summary>
         [JsonProperty("allow_profiles_outside_organization")]
         [STJS.JsonPropertyName("allow_profiles_outside_organization")]
         public bool? AllowProfilesOutsideOrganization { get; set; }
 
-        /// <summary>The domains associated with the organization. Deprecated in favor of `domain_data`.</summary>
+        /// <summary>List of domains associated with this Organization. This should be domains owned by the organization.</summary>
         [JsonProperty("domains")]
         [STJS.JsonPropertyName("domains")]
         public List<string>? Domains { get; set; }
 
-        /// <summary>The domains associated with the organization, including verification state.</summary>
-        [JsonProperty("domain_data")]
-        [STJS.JsonPropertyName("domain_data")]
-        public List<OrganizationDomainData>? DomainData { get; set; }
-
-        /// <summary>The Stripe customer ID associated with the organization.</summary>
+        /// <summary>The Stripe customer ID associated with this organization.</summary>
         [JsonProperty("stripe_customer_id")]
         [STJS.JsonPropertyName("stripe_customer_id")]
         public string? StripeCustomerId { get; set; }
 
-        /// <summary>Object containing [metadata](https://workos.com/docs/authkit/metadata) key/value pairs associated with the Organization.</summary>
-        [JsonProperty("metadata")]
-        [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, string>? Metadata { get; set; }
-
-        /// <summary>An external identifier for the Organization.</summary>
+        /// <summary>The external ID of the Organization.</summary>
         [JsonProperty("external_id")]
         [STJS.JsonPropertyName("external_id")]
         public string? ExternalId { get; set; }
 
+        [JsonProperty("domain_data")]
+        [STJS.JsonPropertyName("domain_data")]
+        public List<OrganizationDomainData>? DomainData { get; set; }
+
+        [JsonProperty("metadata")]
+        [STJS.JsonPropertyName("metadata")]
+        public Dictionary<string, object>? Metadata { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="OrganizationsService.ListApiKeys"/>: List API keys for an organization</summary>
+    public class OrganizationsListApiKeysOptions : ListOptions
+    {
+    }
+
+    /// <summary>Request options for <see cref="OrganizationsService.CreateApiKey"/>: Create an API key for an organization</summary>
+    public class OrganizationsCreateApiKeyOptions : BaseOptions
+    {
+        /// <summary>The name for the API key</summary>
+        [JsonProperty("name")]
+        [STJS.JsonPropertyName("name")]
+        public string Name { get; set; } = default!;
+
+        /// <summary>The permission slugs to assign to the API key</summary>
+        [JsonProperty("permissions")]
+        [STJS.JsonPropertyName("permissions")]
+        public List<string>? Permissions { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="OrganizationsService.ListFeatureFlags"/>: List enabled feature flags for an organization</summary>
+    public class OrganizationsListFeatureFlagsOptions : ListOptions
+    {
     }
 }

@@ -7,28 +7,33 @@ namespace WorkOS
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>Handles Widgets operations.</summary>
+    /// <summary>Service that exposes the widgets API operations on <see cref="WorkOSClient"/>.</summary>
     public class WidgetsService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WidgetsService"/> class for mocking. The service uses the singleton
+        /// client configured via <see cref="WorkOSConfiguration.WorkOSClient"/>.
+        /// </summary>
         public WidgetsService() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WidgetsService"/> class bound to the
+        /// supplied <paramref name="client"/>.
+        /// </summary>
+        /// <param name="client">The HTTP client used to make API requests.</param>
         public WidgetsService(WorkOSClient client) : base(client) { }
 
-        /// <summary>Generate a widget token</summary>
+        /// <summary>Generate a Widget token.</summary>
+        /// <remarks>
+        /// Generate a widget token scoped to an organization and user with the specified scopes.
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="WidgetSessionTokenResponse"/> result.</returns>
-        public virtual async Task<WidgetSessionTokenResponse> CreateToken(WidgetsCreateTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="WidgetPublicIssueWidgetSessionTokenResponse"/> result.</returns>
+        public virtual async Task<WidgetPublicIssueWidgetSessionTokenResponse> CreateToken(WidgetsCreateTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/widgets/token",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WidgetSessionTokenResponse>(request, cancellationToken);
+            return await this.PostAsync<WidgetPublicIssueWidgetSessionTokenResponse>("/widgets/token", options, requestOptions, cancellationToken);
         }
     }
 }

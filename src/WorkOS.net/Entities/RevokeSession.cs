@@ -9,12 +9,12 @@ namespace WorkOS
     public class RevokeSession
     {
 
-        /// <summary>The ID of the session to revoke. This can be extracted from the `sid` claim of the access token.</summary>
+        /// <summary>The identifier of the session to revoke.</summary>
         [JsonProperty("session_id")]
         [STJS.JsonPropertyName("session_id")]
         public string SessionId { get; set; } = default!;
 
-        /// <summary>The URL to redirect the user to after session revocation.</summary>
+        /// <summary>The URL to redirect the user to after the session is revoked.</summary>
         [JsonProperty("return_to")]
         [STJS.JsonPropertyName("return_to")]
         public string? ReturnTo { get; set; }

@@ -1,6 +1,6 @@
 {
-  "slug": null,
-  "name": "Billing Administrator",
+  "slug": "org-admin",
+  "name": "Admin",
   "description": null,
   "resource_type_slug": null
 }

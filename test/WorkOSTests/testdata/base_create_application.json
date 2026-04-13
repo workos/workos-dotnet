@@ -1,0 +1,8 @@
+{
+  "name": "My Application",
+  "description": "An OAuth application for user login",
+  "application_type": "oauth",
+  "scopes": [
+    "test_scopes"
+  ]
+}

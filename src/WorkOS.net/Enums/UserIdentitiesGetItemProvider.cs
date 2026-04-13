@@ -20,8 +20,8 @@ namespace WorkOS
         BitbucketOAuth,
         [EnumMember(Value = "DiscordOAuth")]
         DiscordOAuth,
-        [EnumMember(Value = "GithubOAuth")]
-        GithubOAuth,
+        [EnumMember(Value = "GitHubOAuth")]
+        GitHubOAuth,
         [EnumMember(Value = "GitLabOAuth")]
         GitLabOAuth,
         [EnumMember(Value = "GoogleOAuth")]

@@ -7,6 +7,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
+    /// <summary>Request options for <see cref="AdminPortalService.GenerateLink"/>: Generate a Portal Link</summary>
     public class AdminPortalGenerateLinkOptions : BaseOptions
     {
         /// <summary>The URL to go to when an admin clicks on your logo in the Admin Portal. If not specified, the return URL configured on the [Redirects](https://dashboard.workos.com/redirects) page will be used.</summary>
@@ -25,19 +26,21 @@ namespace WorkOS
         public string Organization { get; set; } = default!;
 
         /// <summary>The intent of the Admin Portal.</summary>
+        /// <remarks>
+        /// - `sso` - Launch Admin Portal for creating SSO connections
+        /// - `dsync` - Launch Admin Portal for creating Directory Sync connections
+        /// - `audit_logs` - Launch Admin Portal for viewing Audit Logs
+        /// - `log_streams` - Launch Admin Portal for creating Log Streams
+        /// - `domain_verification` - Launch Admin Portal for Domain Verification
+        /// - `certificate_renewal` - Launch Admin Portal for renewing SAML Certificates
+        /// </remarks>
         [JsonProperty("intent")]
         [STJS.JsonPropertyName("intent")]
-        public GenerateLinkIntent? Intent { get; set; }
+        public string Intent { get; set; } = default!;
 
-        /// <summary>Options to configure the Admin Portal based on the intent.</summary>
         [JsonProperty("intent_options")]
         [STJS.JsonPropertyName("intent_options")]
         public IntentOptions? IntentOptions { get; set; }
-
-        /// <summary>The email addresses of the IT admins to grant access to the Admin Portal for the given organization. Accepts up to 20 emails.</summary>
-        [JsonProperty("admin_emails")]
-        [STJS.JsonPropertyName("admin_emails")]
-        public List<string>? AdminEmails { get; set; }
 
     }
 }

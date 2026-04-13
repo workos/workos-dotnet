@@ -7,71 +7,75 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    public class RadarCreateAttemptsOptions : BaseOptions
+    /// <summary>Request options for <see cref="RadarService.CreateAttempt"/>: Create an attempt</summary>
+    public class RadarCreateAttemptOptions : BaseOptions
     {
-        /// <summary>The IP address of the request to assess.</summary>
+        /// <summary>The IP address of the client</summary>
         [JsonProperty("ip_address")]
         [STJS.JsonPropertyName("ip_address")]
         public string IpAddress { get; set; } = default!;
 
-        /// <summary>The user agent string of the request to assess.</summary>
+        /// <summary>The user agent of the client</summary>
         [JsonProperty("user_agent")]
         [STJS.JsonPropertyName("user_agent")]
         public string UserAgent { get; set; } = default!;
 
-        /// <summary>The email address of the user making the request.</summary>
+        /// <summary>The email address of the user making the attempt</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
         public string Email { get; set; } = default!;
 
-        /// <summary>The authentication method being used.</summary>
-        [JsonProperty("auth_method")]
+        [JsonProperty("auth_method", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonPropertyName("auth_method")]
+        [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public RadarStandaloneAssessRequestAuthMethod AuthMethod { get; set; }
 
-        /// <summary>The action being performed.</summary>
-        [JsonProperty("action")]
+        [JsonProperty("action", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonPropertyName("action")]
+        [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public RadarStandaloneAssessRequestAction Action { get; set; }
 
-        /// <summary>An optional device fingerprint for the request.</summary>
+        /// <summary>A unique identifier for the device making the attempt</summary>
         [JsonProperty("device_fingerprint")]
         [STJS.JsonPropertyName("device_fingerprint")]
         public string? DeviceFingerprint { get; set; }
 
-        /// <summary>An optional bot detection score for the request.</summary>
+        /// <summary>A score indicating the likelihood that the request is from a bot</summary>
         [JsonProperty("bot_score")]
         [STJS.JsonPropertyName("bot_score")]
         public string? BotScore { get; set; }
 
     }
 
+    /// <summary>Request options for <see cref="RadarService.UpdateAttempt"/>: Update a Radar attempt</summary>
     public class RadarUpdateAttemptOptions : BaseOptions
     {
-        /// <summary>Set to `"success"` to mark the challenge as completed.</summary>
+        /// <summary>The status of the challenge. Set to "success" when the user successfully completes a challenge.</summary>
         [JsonProperty("challenge_status")]
         [STJS.JsonPropertyName("challenge_status")]
         public string? ChallengeStatus { get; set; }
 
-        /// <summary>Set to `"success"` to mark the authentication attempt as successful.</summary>
+        /// <summary>The status of the authentication attempt. Set to "success" when the user successfully authenticates.</summary>
         [JsonProperty("attempt_status")]
         [STJS.JsonPropertyName("attempt_status")]
         public string? AttemptStatus { get; set; }
 
     }
 
+    /// <summary>Request options for <see cref="RadarService.AddListEntry"/>: Add an entry to a Radar list</summary>
     public class RadarAddListEntryOptions : BaseOptions
     {
-        /// <summary>The value to add to the list. Must match the format of the list type (e.g. a valid IP address for `ip_address`, a valid email for `email`).</summary>
+        /// <summary>The entry to add to the list.</summary>
         [JsonProperty("entry")]
         [STJS.JsonPropertyName("entry")]
         public string Entry { get; set; } = default!;
 
     }
 
+    /// <summary>Request options for <see cref="RadarService.RemoveListEntry"/>: Remove an entry from a Radar list</summary>
     public class RadarRemoveListEntryOptions : BaseOptions
     {
-        /// <summary>The value to remove from the list. Must match an existing entry.</summary>
+        /// <summary>The entry to remove from the list.</summary>
         [JsonProperty("entry")]
         [STJS.JsonPropertyName("entry")]
         public string Entry { get; set; } = default!;

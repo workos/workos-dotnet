@@ -10,12 +10,12 @@ namespace WorkOS
     public class CreateOrganizationApiKey
     {
 
-        /// <summary>The name for the API key.</summary>
+        /// <summary>The name for the API key</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
-        /// <summary>The permission slugs to assign to the API key.</summary>
+        /// <summary>The permission slugs to assign to the API key</summary>
         [JsonProperty("permissions")]
         [STJS.JsonPropertyName("permissions")]
         public List<string>? Permissions { get; set; }

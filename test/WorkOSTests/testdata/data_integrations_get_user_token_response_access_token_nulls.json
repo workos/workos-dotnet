@@ -1,0 +1,11 @@
+{
+  "object": "access_token",
+  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expires_at": null,
+  "scopes": [
+    "test_scopes"
+  ],
+  "missing_scopes": [
+    "test_missing_scopes"
+  ]
+}

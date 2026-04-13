@@ -1,8 +1,8 @@
 {
-  "external_id": "my-workspace-01",
-  "name": "Acme Workspace",
+  "external_id": "resource_external_12345",
+  "name": "My Resource",
   "description": null,
-  "resource_type_slug": "workspace",
+  "resource_type_slug": "document",
   "organization_id": "org_01EHQMYV6MBK39QC5PZXHY59C3",
   "parent_resource_id": null,
   "parent_resource_external_id": null,

@@ -7,197 +7,111 @@ namespace WorkOS
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>Handles FeatureFlags operations.</summary>
+    /// <summary>Service that exposes the feature flags API operations on <see cref="WorkOSClient"/>.</summary>
     public class FeatureFlagsService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FeatureFlagsService"/> class for mocking. The service uses the singleton
+        /// client configured via <see cref="WorkOSConfiguration.WorkOSClient"/>.
+        /// </summary>
         public FeatureFlagsService() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FeatureFlagsService"/> class bound to the
+        /// supplied <paramref name="client"/>.
+        /// </summary>
+        /// <param name="client">The HTTP client used to make API requests.</param>
         public FeatureFlagsService(WorkOSClient client) : base(client) { }
 
-        /// <summary>List feature flags</summary>
+        /// <summary>List Feature Flags</summary>
+        /// <remarks>
+        /// Get a list of all of your existing feature flags matching the criteria specified
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="Flag"/> results.</returns>
-        public virtual async Task<WorkOSList<Flag>> List(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="FeatureFlagsListItem"/> results.</returns>
+        public virtual async Task<WorkOSList<FeatureFlagsListItem>> List(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/feature-flags",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<Flag>>(request, cancellationToken);
+            return await this.GetAsync<WorkOSList<FeatureFlagsListItem>>("/feature-flags", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="List"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="Flag"/> items.</returns>
-        public virtual IAsyncEnumerable<Flag> ListAutoPagingAsync(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="FeatureFlagsListItem"/> items.</returns>
+        public virtual IAsyncEnumerable<FeatureFlagsListItem> ListAutoPagingAsync(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "/feature-flags",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<Flag>(request, cancellationToken);
+            return this.ListAutoPagingAsync<FeatureFlagsListItem>("/feature-flags", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Get a feature flag</summary>
-        /// <param name="slug">A unique key to reference the Feature Flag.</param>
+        /// <summary>Get a Feature Flag</summary>
+        /// <remarks>
+        /// Get the details of an existing feature flag by its slug
+        /// </remarks>
+        /// <param name="slug">The slug.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Flag"/> result.</returns>
-        public virtual async Task<Flag> Get(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="FeatureFlagsFindBySlugResponse"/> result.</returns>
+        public virtual async Task<FeatureFlagsFindBySlugResponse> Get(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/feature-flags/{slug}",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<Flag>(request, cancellationToken);
+            return await this.GetAsync<FeatureFlagsFindBySlugResponse>($"/feature-flags/{slug}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Disable a feature flag</summary>
-        /// <param name="slug">A unique key to reference the Feature Flag.</param>
+        /// <remarks>
+        /// Disables a feature flag in the current environment
+        /// </remarks>
+        /// <param name="slug">The slug.</param>
+        /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="FeatureFlag"/> result.</returns>
-        public virtual async Task<FeatureFlag> Disable(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="FeatureFlagsDisableFlagResponse"/> result.</returns>
+        public virtual async Task<FeatureFlagsDisableFlagResponse> Disable(string slug, FeatureFlagsDisableOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Put,
-                Path = $"/feature-flags/{slug}/disable",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<FeatureFlag>(request, cancellationToken);
+            return await this.PutAsync<FeatureFlagsDisableFlagResponse>($"/feature-flags/{slug}/disable", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Enable a feature flag</summary>
-        /// <param name="slug">A unique key to reference the Feature Flag.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="FeatureFlag"/> result.</returns>
-        public virtual async Task<FeatureFlag> Enable(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Put,
-                Path = $"/feature-flags/{slug}/enable",
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<FeatureFlag>(request, cancellationToken);
-        }
-
-        /// <summary>Add a feature flag target</summary>
-        /// <param name="slug">The unique slug identifier of the feature flag.</param>
-        /// <param name="resourceId">The resource ID in format "user_&lt;id&gt;" or "org_&lt;id&gt;".</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task AddFlagTarget(string slug, string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"/feature-flags/{slug}/targets/{resourceId}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
-        }
-
-        /// <summary>Remove a feature flag target</summary>
-        /// <param name="slug">The unique slug identifier of the feature flag.</param>
-        /// <param name="resourceId">The resource ID in format "user_&lt;id&gt;" or "org_&lt;id&gt;".</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task RemoveFlagTarget(string slug, string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Delete,
-                Path = $"/feature-flags/{slug}/targets/{resourceId}",
-                RequestOptions = requestOptions,
-            };
-            await this.Client.MakeRawAPIRequest(request, cancellationToken);
-        }
-
-        /// <summary>List enabled feature flags for an organization</summary>
-        /// <param name="organizationId">Unique identifier of the Organization.</param>
+        /// <remarks>
+        /// Enables a feature flag in the current environment
+        /// </remarks>
+        /// <param name="slug">The slug.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="Flag"/> results.</returns>
-        public virtual async Task<WorkOSList<Flag>> ListOrganizationFeatureFlags(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="FeatureFlagsEnableFlagResponse"/> result.</returns>
+        public virtual async Task<FeatureFlagsEnableFlagResponse> Enable(string slug, FeatureFlagsEnableOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/organizations/{organizationId}/feature-flags",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<Flag>>(request, cancellationToken);
+            return await this.PutAsync<FeatureFlagsEnableFlagResponse>($"/feature-flags/{slug}/enable", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="ListOrganizationFeatureFlags"/>. Yields individual items across all pages.</summary>
-        /// <param name="organizationId">Unique identifier of the Organization.</param>
+        /// <summary>Create or update a feature flag target</summary>
+        /// <remarks>
+        /// Creates or updates a target for a feature flag in the current environment. The target will be enabled for the flag.
+        /// </remarks>
+        /// <param name="slug">The unique slug identifier of the feature flag</param>
+        /// <param name="targetId">The target ID in format "user_&lt;id&gt;" or "org_&lt;id&gt;"</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="Flag"/> items.</returns>
-        public virtual IAsyncEnumerable<Flag> ListOrganizationFeatureFlagsAutoPagingAsync(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task CreateTarget(string slug, string targetId, FeatureFlagsCreateTargetOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/organizations/{organizationId}/feature-flags",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<Flag>(request, cancellationToken);
+            await this.PostAsync<object>($"/feature-flags/{slug}/targets/{targetId}", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>List enabled feature flags for a user</summary>
-        /// <param name="userId">The ID of the user.</param>
-        /// <param name="options">Request options.</param>
+        /// <summary>Delete a feature flag target</summary>
+        /// <remarks>
+        /// Removes a target from a feature flag in the current environment.
+        /// </remarks>
+        /// <param name="slug">The unique slug identifier of the feature flag</param>
+        /// <param name="targetId">The target ID in format "user_&lt;id&gt;" or "org_&lt;id&gt;"</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="Flag"/> results.</returns>
-        public virtual async Task<WorkOSList<Flag>> ListUserFeatureFlags(string userId, FeatureFlagsListUserFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteTarget(string slug, string targetId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/users/{userId}/feature-flags",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<WorkOSList<Flag>>(request, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="ListUserFeatureFlags"/>. Yields individual items across all pages.</summary>
-        /// <param name="userId">The ID of the user.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="Flag"/> items.</returns>
-        public virtual IAsyncEnumerable<Flag> ListUserFeatureFlagsAutoPagingAsync(string userId, FeatureFlagsListUserFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Get,
-                Path = $"/user_management/users/{userId}/feature-flags",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return this.Client.ListAutoPagingAsync<Flag>(request, cancellationToken);
+            await this.DeleteAsync($"/feature-flags/{slug}/targets/{targetId}", null, requestOptions, cancellationToken);
         }
     }
 }

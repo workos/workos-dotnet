@@ -29,12 +29,15 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateToken()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/widget_session_token_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/widget_public_issue_widget_session_token_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/widgets/token", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateToken(new WidgetsCreateTokenOptions());
+            var options = new WidgetsCreateTokenOptions();
+            options.OrganizationId = "test_organization_id";
+            var result = await this.service.CreateToken(options);
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Token);
+            Assert.Equal("widget_token_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Token);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/widgets/token");
+            await this.httpMock.AssertRequestBodyContainsAsync("organization_id", "test_organization_id");
         }
 
         [Fact]

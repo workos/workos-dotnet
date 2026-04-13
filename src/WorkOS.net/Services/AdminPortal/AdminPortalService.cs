@@ -7,28 +7,33 @@ namespace WorkOS
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>Handles AdminPortal operations.</summary>
+    /// <summary>Service that exposes the admin portal API operations on <see cref="WorkOSClient"/>.</summary>
     public class AdminPortalService : Service
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdminPortalService"/> class for mocking. The service uses the singleton
+        /// client configured via <see cref="WorkOSConfiguration.WorkOSClient"/>.
+        /// </summary>
         public AdminPortalService() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdminPortalService"/> class bound to the
+        /// supplied <paramref name="client"/>.
+        /// </summary>
+        /// <param name="client">The HTTP client used to make API requests.</param>
         public AdminPortalService(WorkOSClient client) : base(client) { }
 
         /// <summary>Generate a Portal Link</summary>
+        /// <remarks>
+        /// Generate a Portal Link scoped to an Organization
+        /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="PortalLinkResponse"/> result.</returns>
-        public virtual async Task<PortalLinkResponse> GenerateLink(AdminPortalGenerateLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="PortalSessionsCreateResponse"/> result.</returns>
+        public virtual async Task<PortalSessionsCreateResponse> GenerateLink(AdminPortalGenerateLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/portal/generate_link",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<PortalLinkResponse>(request, cancellationToken);
+            return await this.PostAsync<PortalSessionsCreateResponse>("/portal/generate_link", options, requestOptions, cancellationToken);
         }
     }
 }

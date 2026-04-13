@@ -5,7 +5,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a add role permission.</summary>
+    /// <summary>Represents an add role permission.</summary>
     public class AddRolePermission
     {
 

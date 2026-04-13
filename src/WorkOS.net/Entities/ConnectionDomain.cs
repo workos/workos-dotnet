@@ -2,6 +2,26 @@
 
 namespace WorkOS
 {
-    /// <summary>ConnectionDomain is structurally identical to ConnectionActivatedDataDomain.</summary>
-    public class ConnectionDomain : ConnectionActivatedDataDomain { }
+    using Newtonsoft.Json;
+    using STJS = System.Text.Json.Serialization;
+
+    /// <summary>Represents a connection domain.</summary>
+    public class ConnectionDomain
+    {
+
+        /// <summary>The unique ID of the connection domain.</summary>
+        [JsonProperty("id")]
+        [STJS.JsonPropertyName("id")]
+        public string Id { get; set; } = default!;
+
+        /// <summary>The type of object.</summary>
+        [JsonProperty("object")]
+        [STJS.JsonPropertyName("object")]
+        public string Object { get; internal set; } = "connection_domain";
+
+        /// <summary>The domain associated with the connection.</summary>
+        [JsonProperty("domain")]
+        [STJS.JsonPropertyName("domain")]
+        public string Domain { get; set; } = default!;
+    }
 }

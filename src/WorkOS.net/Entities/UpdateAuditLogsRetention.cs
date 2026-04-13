@@ -5,13 +5,13 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a update audit logs retention.</summary>
+    /// <summary>Represents an update audit logs retention.</summary>
     public class UpdateAuditLogsRetention
     {
 
-        /// <summary>The number of days Audit Log events will be retained. Valid values are `30` and `365`.</summary>
+        /// <summary>The number of days to retain audit logs. Valid values are 30 or 365.</summary>
         [JsonProperty("retention_period_in_days")]
         [STJS.JsonPropertyName("retention_period_in_days")]
-        public long RetentionPeriodInDays { get; set; }
+        public double RetentionPeriodInDays { get; set; }
     }
 }

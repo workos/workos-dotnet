@@ -1,6 +1,6 @@
 {
-  "slug": "editor",
-  "name": "Editor",
-  "description": "Can edit resources",
+  "slug": "admin",
+  "name": "Admin",
+  "description": "Administrator role with full access",
   "resource_type_slug": "organization"
 }

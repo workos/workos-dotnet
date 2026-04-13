@@ -2,6 +2,40 @@
 
 namespace WorkOS
 {
-    /// <summary>AuditLogSchemaTarget is structurally identical to AuditLogSchemaJsonTarget.</summary>
-    public class AuditLogSchemaTarget : AuditLogSchemaJsonTarget { }
+    using System.Collections.Generic;
+    using Newtonsoft.Json;
+    using STJS = System.Text.Json.Serialization;
+
+    /// <summary>Represents an audit log schema target.</summary>
+    public class AuditLogSchemaTarget
+    {
+
+        /// <summary>The type of target for the audit log event.</summary>
+        [JsonProperty("type")]
+        [STJS.JsonPropertyName("type")]
+        public string Type { get; set; } = default!;
+        [JsonProperty("metadata")]
+        [STJS.JsonPropertyName("metadata")]
+        public Dictionary<string, object>? Metadata { get; set; }
+
+        /// <summary>
+        /// Typed accessor for <see cref="Metadata"/>. Returns the value stored under
+        /// <paramref name="key"/> coerced to <typeparamref name="T"/>, or the default
+        /// value when the key is missing or the value is not convertible.
+        /// </summary>
+        /// <typeparam name="T">Expected value type.</typeparam>
+        /// <param name="key">The key to look up.</param>
+        public T? GetMetadataAttribute<T>(string key)
+        {
+            if (this.Metadata == null) return default;
+            if (!this.Metadata.TryGetValue(key, out var value)) return default;
+            if (value is T typed) return typed;
+            if (value is Newtonsoft.Json.Linq.JToken token) return token.ToObject<T>();
+            if (value is System.Text.Json.JsonElement element)
+            {
+                return System.Text.Json.JsonSerializer.Deserialize<T>(element.GetRawText());
+            }
+            return default;
+        }
+    }
 }

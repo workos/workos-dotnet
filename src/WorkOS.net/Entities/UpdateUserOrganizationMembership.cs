@@ -6,16 +6,14 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a update user organization membership.</summary>
+    /// <summary>Represents an update user organization membership.</summary>
     public class UpdateUserOrganizationMembership
     {
 
-        /// <summary>A single role identifier. Defaults to `member` or the explicit default role. Mutually exclusive with `role_slugs`.</summary>
+        /// <summary>The slug of the role to assign to the user in the organization.</summary>
         [JsonProperty("role_slug")]
         [STJS.JsonPropertyName("role_slug")]
         public string? RoleSlug { get; set; }
-
-        /// <summary>An array of role identifiers. Limited to one role when Multiple Roles is disabled. Mutually exclusive with `role_slug`.</summary>
         [JsonProperty("role_slugs")]
         [STJS.JsonPropertyName("role_slugs")]
         public List<string>? RoleSlugs { get; set; }

@@ -1,27 +1,28 @@
 {
-  "action": "user.signed_in",
-  "occurred_at": "2026-02-02T16:35:39.317Z",
+  "action": "user.created",
+  "occurred_at": "2024-01-15T10:30:00.000Z",
   "actor": {
-    "id": "user_TF4C5938",
+    "id": "user_01HRSF1G3DQWG4X8BPJMVK9Z5N",
     "type": "user",
-    "name": "Jon Smith",
+    "name": "John Doe",
     "metadata": {
-      "owner": "user_01GBTCQ2"
+      "owner": "user_01GBTCQ2",
+      "role": "admin"
     }
   },
   "targets": [
     {
-      "id": "user_TF4C5938",
+      "id": "user_01HRSF1G3DQWG4X8BPJMVK9Z5N",
       "type": "user",
-      "name": "Jon Smith",
+      "name": "John Doe",
       "metadata": {
-        "owner": "user_01GBTCQ2"
+        "role": "admin"
       }
     }
   ],
   "context": {
-    "location": "123.123.123.123",
-    "user_agent": "Chrome/104.0.0.0"
+    "location": "192.168.1.1",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
   },
   "metadata": null,
   "version": null

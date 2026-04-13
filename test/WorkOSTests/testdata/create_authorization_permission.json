@@ -1,6 +1,6 @@
 {
-  "slug": "documents:read",
-  "name": "View Documents",
-  "description": "Allows viewing document contents",
+  "slug": "read",
+  "name": "Read",
+  "description": "Permission to read resources",
   "resource_type_slug": "document"
 }
