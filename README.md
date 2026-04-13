@@ -37,7 +37,7 @@ Install-Package WorkOS.net
 To use the WorkOS client, you must provide an API key from the WorkOS dashboard.
 
 ```c#
-WorkOS.SetApiKey("sk_key123");
+WorkOSConfiguration.SetApiKey("sk_key123");
 ```
 
 You can also optionally provide a custom [HttpClient](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient).
@@ -49,7 +49,7 @@ var client = new WorkOSClient(
         ApiKey = "sk_key123",
         HttpClient = ...,
     });
-WorkOS.WorkOSClient = client;
+WorkOSConfiguration.WorkOSClient = client;
 ```
 
 ## Development and Testing
