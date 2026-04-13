@@ -1,11 +1,16 @@
 // @oagen-ignore-file
 namespace WorkOS
 {
+    using Newtonsoft.Json;
+    using STJS = System.Text.Json.Serialization;
+
     /// <summary>
     /// Represents a value that can be one of two types.
     /// </summary>
     /// <typeparam name="T1">The first possible type.</typeparam>
     /// <typeparam name="T2">The second possible type.</typeparam>
+    [JsonConverter(typeof(AnyOfJsonConverter))]
+    [STJS.JsonConverter(typeof(AnyOfJsonConverterFactory))]
     public class AnyOf<T1, T2>
     {
         private readonly object? value;
@@ -27,6 +32,8 @@ namespace WorkOS
     /// <typeparam name="T1">The first possible type.</typeparam>
     /// <typeparam name="T2">The second possible type.</typeparam>
     /// <typeparam name="T3">The third possible type.</typeparam>
+    [JsonConverter(typeof(AnyOfJsonConverter))]
+    [STJS.JsonConverter(typeof(AnyOfJsonConverterFactory))]
     public class AnyOf<T1, T2, T3>
     {
         private readonly object? value;
