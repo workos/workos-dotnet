@@ -65,23 +65,6 @@ namespace WorkOS
             return this.Client.ListAutoPagingAsync<ConnectApplication>(request, cancellationToken);
         }
 
-        /// <summary>Create a Connect Application</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ConnectApplication"/> result.</returns>
-        public virtual async Task<ConnectApplication> CreateApplications(ConnectCreateApplicationsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/connect/applications",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<ConnectApplication>(request, cancellationToken);
-        }
-
         /// <summary>Create oauth application.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>

@@ -58,19 +58,6 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestCreateApplications()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/connect_application.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/connect/applications", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateApplications(new ConnectCreateApplicationsOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Id);
-            Assert.NotEmpty(result.ClientId);
-            Assert.NotEmpty(result.Name);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/connect/applications");
-        }
-
-        [Fact]
         public async Task TestGetApplication()
         {
             var fixture = System.IO.File.ReadAllText("testdata/connect_application.json");

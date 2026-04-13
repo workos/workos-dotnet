@@ -35,10 +35,6 @@ namespace WorkOS
 
     }
 
-    public class ConnectCreateApplicationsOptions : BaseOptions
-    {
-    }
-
     public class ConnectUpdateApplicationOptions : BaseOptions
     {
         /// <summary>The name of the application.</summary>

@@ -47,11 +47,11 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestCreateEndpoints()
+        public async Task TestCreateEndpoint()
         {
             var fixture = System.IO.File.ReadAllText("testdata/webhook_endpoint_json.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/webhook_endpoints", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateEndpoints(new WebhooksCreateEndpointsOptions());
+            var result = await this.service.CreateEndpoint(new WebhooksCreateEndpointOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Id);
             Assert.NotEmpty(result.EndpointUrl);

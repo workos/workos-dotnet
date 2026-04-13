@@ -53,7 +53,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="WebhookEndpointJson"/> result.</returns>
-        public virtual async Task<WebhookEndpointJson> CreateEndpoints(WebhooksCreateEndpointsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WebhookEndpointJson> CreateEndpoint(WebhooksCreateEndpointOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {

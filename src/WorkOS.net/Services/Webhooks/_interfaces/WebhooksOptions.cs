@@ -11,7 +11,7 @@ namespace WorkOS
     {
     }
 
-    public class WebhooksCreateEndpointsOptions : BaseOptions
+    public class WebhooksCreateEndpointOptions : BaseOptions
     {
         /// <summary>The HTTPS URL where webhooks will be sent.</summary>
         [JsonProperty("endpoint_url")]
