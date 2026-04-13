@@ -31,162 +31,77 @@ namespace WorkOS
         }
 
         /// <summary>Authenticate with password.</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthenticateResponse"/> result.</returns>
         public async Task<AuthenticateResponse> AuthenticateWithPassword(AuthenticateWithPasswordOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "password";
             options.ClientId = this.Client.RequireClientId();
-            options.ClientSecret = this.Client.ApiKey ?? string.Empty;
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/authenticate",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthenticateResponse>(request, cancellationToken);
+            options.ClientSecret = this.Client.ApiKey;
+            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Authenticate with code.</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthenticateResponse"/> result.</returns>
+        /// <summary>Authenticate with an authorization code.</summary>
         public async Task<AuthenticateResponse> AuthenticateWithCode(AuthenticateWithCodeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "authorization_code";
             options.ClientId = this.Client.RequireClientId();
-            options.ClientSecret = this.Client.ApiKey ?? string.Empty;
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/authenticate",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthenticateResponse>(request, cancellationToken);
+            options.ClientSecret = this.Client.ApiKey;
+            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Authenticate with refresh token.</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthenticateResponse"/> result.</returns>
+        /// <summary>Authenticate with a refresh token.</summary>
         public async Task<AuthenticateResponse> AuthenticateWithRefreshToken(AuthenticateWithRefreshTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "refresh_token";
             options.ClientId = this.Client.RequireClientId();
-            options.ClientSecret = this.Client.ApiKey ?? string.Empty;
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/authenticate",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthenticateResponse>(request, cancellationToken);
+            options.ClientSecret = this.Client.ApiKey;
+            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Authenticate with magic auth.</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthenticateResponse"/> result.</returns>
+        /// <summary>Authenticate with a magic-auth code.</summary>
         public async Task<AuthenticateResponse> AuthenticateWithMagicAuth(AuthenticateWithMagicAuthOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "urn:workos:oauth:grant-type:magic-auth:code";
             options.ClientId = this.Client.RequireClientId();
-            options.ClientSecret = this.Client.ApiKey ?? string.Empty;
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/authenticate",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthenticateResponse>(request, cancellationToken);
+            options.ClientSecret = this.Client.ApiKey;
+            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Authenticate with email verification.</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthenticateResponse"/> result.</returns>
+        /// <summary>Authenticate with an email-verification code.</summary>
         public async Task<AuthenticateResponse> AuthenticateWithEmailVerification(AuthenticateWithEmailVerificationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "urn:workos:oauth:grant-type:email-verification:code";
             options.ClientId = this.Client.RequireClientId();
-            options.ClientSecret = this.Client.ApiKey ?? string.Empty;
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/authenticate",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthenticateResponse>(request, cancellationToken);
+            options.ClientSecret = this.Client.ApiKey;
+            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Authenticate with totp.</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthenticateResponse"/> result.</returns>
+        /// <summary>Authenticate with a TOTP code.</summary>
         public async Task<AuthenticateResponse> AuthenticateWithTotp(AuthenticateWithTotpOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "urn:workos:oauth:grant-type:mfa-totp";
             options.ClientId = this.Client.RequireClientId();
-            options.ClientSecret = this.Client.ApiKey ?? string.Empty;
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/authenticate",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthenticateResponse>(request, cancellationToken);
+            options.ClientSecret = this.Client.ApiKey;
+            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Authenticate with organization selection.</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthenticateResponse"/> result.</returns>
+        /// <summary>Authenticate by selecting an organization for a pending session.</summary>
         public async Task<AuthenticateResponse> AuthenticateWithOrganizationSelection(AuthenticateWithOrganizationSelectionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "urn:workos:oauth:grant-type:organization-selection";
             options.ClientId = this.Client.RequireClientId();
-            options.ClientSecret = this.Client.ApiKey ?? string.Empty;
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/authenticate",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthenticateResponse>(request, cancellationToken);
+            options.ClientSecret = this.Client.ApiKey;
+            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Authenticate with device code.</summary>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuthenticateResponse"/> result.</returns>
+        /// <summary>
+        /// Authenticate with a device code. Note: this grant intentionally does
+        /// not include client_secret — public-client device flow only.
+        /// </summary>
         public async Task<AuthenticateResponse> AuthenticateWithDeviceCode(AuthenticateWithDeviceCodeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "urn:ietf:params:oauth:grant-type:device_code";
             options.ClientId = this.Client.RequireClientId();
-            var request = new WorkOSRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "/user_management/authenticate",
-                Options = options,
-                RequestOptions = requestOptions,
-            };
-            return await this.Client.MakeAPIRequest<AuthenticateResponse>(request, cancellationToken);
+            return await this.SendAuthenticateAsync(options, requestOptions, cancellationToken);
         }
 
         /// <summary>
@@ -964,6 +879,23 @@ namespace WorkOS
                 RequestOptions = requestOptions,
             };
             await this.Client.MakeRawAPIRequest(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Shared transport for the eight AuthenticateWith* wrappers. Each
+        /// wrapper sets its grant_type and required client credentials, then
+        /// calls this helper, which POSTs to /user_management/authenticate.
+        /// </summary>
+        private async Task<AuthenticateResponse> SendAuthenticateAsync(BaseOptions options, RequestOptions? requestOptions, CancellationToken cancellationToken)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/user_management/authenticate",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+            return await this.Client.MakeAPIRequest<AuthenticateResponse>(request, cancellationToken);
         }
     }
 }
