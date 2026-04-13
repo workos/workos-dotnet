@@ -4,12 +4,14 @@ namespace WorkOS
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Reflection;
     using System.Text;
     using Newtonsoft.Json;
 
@@ -25,12 +27,10 @@ namespace WorkOS
         /// <returns>The encoded query string.</returns>
         public static string CreateQueryString(BaseOptions options)
         {
-            var jsonOptions = ToJsonString(options);
-            var dictionaryOptions = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonOptions)!;
-            var flattenedQuery = FlattenQueryParameters(dictionaryOptions);
+            var flattened = FlattenOptions(options);
             return string.Join(
                 "&",
-                flattenedQuery.Select(kvp => $"{UrlEncodeAndClean(kvp.Key)}={UrlEncodeAndClean(kvp.Value)}"));
+                flattened.Select(kvp => $"{UrlEncodeAndClean(kvp.Key)}={UrlEncodeAndClean(kvp.Value)}"));
         }
 
         /// <summary>
@@ -46,20 +46,19 @@ namespace WorkOS
                 options = new BaseOptions { };
             }
 
-            var jsonOptions = ToJsonString(options);
-
             if (request.IsJsonContentType)
             {
+                var jsonOptions = ToJsonString(options);
                 var content = new StringContent(jsonOptions, Encoding.UTF8);
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return content;
             }
 
-            // Form-encode via the same object-based flattener the query-string
-            // path uses. An earlier implementation deserialized directly into
-            // IDictionary<string, string>, which threw on any bool/numeric field.
-            var dictionaryOptions = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonOptions)!;
-            var flattened = FlattenQueryParameters(dictionaryOptions);
+            // Form-encode via the same object-graph walker the query-string
+            // path uses. Prior implementation round-tripped through JSON,
+            // which erased int/short/decimal/date type info and mangled
+            // nested objects into ToString() soup.
+            var flattened = FlattenOptions(options);
             return new FormUrlEncodedContent(flattened);
         }
 
@@ -101,68 +100,211 @@ namespace WorkOS
                 .Replace("%5D", "]");
         }
 
-        private static List<KeyValuePair<string, string>> FlattenQueryParameters(
-            IDictionary<string, object> options)
+        /// <summary>
+        /// Walk the options object graph directly (no JSON round-trip) and
+        /// emit wire-name=value pairs. Respects Newtonsoft's
+        /// [JsonProperty] for name/ignore/default-value handling and
+        /// [JsonIgnore] for full exclusion. Nested objects flatten with
+        /// bracket notation (`parent[child]=v`); lists/arrays repeat the
+        /// key with `[]` per element; dictionaries keyed by string flatten
+        /// as `parent[key]=v`.
+        /// </summary>
+        private static List<KeyValuePair<string, string>> FlattenOptions(object options)
         {
-            List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>>();
-            foreach (var kv in options)
-            {
-                var key = kv.Key;
-                var value = kv.Value;
-                switch (value)
-                {
-                    case null:
-                        break;
-                    case string s:
-                        result.Add(new KeyValuePair<string, string>(key, s));
-                        break;
-                    case IEnumerable e:
-                        foreach (object elem in e)
-                        {
-                            result.Add(new KeyValuePair<string, string>($"{key}[]", elem.ToString() ?? string.Empty));
-                        }
+            var result = new List<KeyValuePair<string, string>>();
+            FlattenObject(options, string.Empty, result);
+            return result;
+        }
 
-                        break;
-                    case DateTime dt:
-                        result.Add(new KeyValuePair<string, string>(key, dt.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)));
-                        break;
-                    case DateTimeOffset dto:
-                        result.Add(new KeyValuePair<string, string>(key, dto.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)));
-                        break;
-                    case Enum en:
-                        result.Add(new KeyValuePair<string, string>(key, en.ToString()));
-                        break;
-                    case bool b:
-                        result.Add(new KeyValuePair<string, string>(key, b ? "true" : "false"));
-                        break;
-                    case long l:
-                        result.Add(new KeyValuePair<string, string>(key, l.ToString(CultureInfo.InvariantCulture)));
-                        break;
-                    case int i:
-                        result.Add(new KeyValuePair<string, string>(key, i.ToString(CultureInfo.InvariantCulture)));
-                        break;
-                    case short sh:
-                        result.Add(new KeyValuePair<string, string>(key, sh.ToString(CultureInfo.InvariantCulture)));
-                        break;
-                    case double d:
-                        result.Add(new KeyValuePair<string, string>(key, d.ToString("R", CultureInfo.InvariantCulture)));
-                        break;
-                    case float f:
-                        result.Add(new KeyValuePair<string, string>(key, f.ToString("R", CultureInfo.InvariantCulture)));
-                        break;
-                    case decimal m:
-                        result.Add(new KeyValuePair<string, string>(key, m.ToString(CultureInfo.InvariantCulture)));
-                        break;
-                    case IConvertible c:
-                        result.Add(new KeyValuePair<string, string>(key, c.ToString(CultureInfo.InvariantCulture)));
-                        break;
-                    default:
-                        result.Add(new KeyValuePair<string, string>(key, value.ToString() ?? string.Empty));
-                        break;
+        private static void FlattenObject(object? value, string prefix, List<KeyValuePair<string, string>> result)
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            var type = value.GetType();
+            if (IsScalar(type))
+            {
+                AddScalar(prefix, value, result);
+                return;
+            }
+
+            // IDictionary<string, _>: flatten as prefix[key]=value
+            if (value is IDictionary dict)
+            {
+                foreach (DictionaryEntry entry in dict)
+                {
+                    var key = entry.Key?.ToString() ?? string.Empty;
+                    var childKey = string.IsNullOrEmpty(prefix) ? key : $"{prefix}[{key}]";
+                    FlattenObject(entry.Value, childKey, result);
+                }
+
+                return;
+            }
+
+            // Any other IEnumerable (but not string, already handled in scalars)
+            if (value is IEnumerable enumerable)
+            {
+                foreach (var elem in enumerable)
+                {
+                    var childKey = string.IsNullOrEmpty(prefix) ? "[]" : $"{prefix}[]";
+                    if (elem != null && !IsScalar(elem.GetType()))
+                    {
+                        // Nested object inside a list — rare, but flatten anyway.
+                        FlattenObject(elem, childKey, result);
+                    }
+                    else
+                    {
+                        AddScalar(childKey, elem, result);
+                    }
+                }
+
+                return;
+            }
+
+            // Plain object: walk public properties.
+            foreach (var prop in GetSerializableProperties(type))
+            {
+                if (!prop.CanRead)
+                {
+                    continue;
+                }
+
+                var wireName = ResolveWireName(prop);
+                if (wireName == null)
+                {
+                    continue; // JsonIgnore
+                }
+
+                object? propValue;
+                try
+                {
+                    propValue = prop.GetValue(value);
+                }
+                catch
+                {
+                    continue;
+                }
+
+                if (ShouldSkip(prop, propValue))
+                {
+                    continue;
+                }
+
+                var childKey = string.IsNullOrEmpty(prefix) ? wireName : $"{prefix}[{wireName}]";
+                FlattenObject(propValue, childKey, result);
+            }
+        }
+
+        private static IEnumerable<PropertyInfo> GetSerializableProperties(Type type)
+        {
+            return type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        }
+
+        /// <summary>
+        /// Return the wire name for a property, or null if the property is
+        /// ignored entirely. Respects Newtonsoft [JsonProperty]/[JsonIgnore].
+        /// </summary>
+        private static string? ResolveWireName(PropertyInfo prop)
+        {
+            if (prop.GetCustomAttribute<JsonIgnoreAttribute>() != null)
+            {
+                return null;
+            }
+
+            var jp = prop.GetCustomAttribute<JsonPropertyAttribute>();
+            if (jp != null && !string.IsNullOrEmpty(jp.PropertyName))
+            {
+                return jp.PropertyName;
+            }
+
+            return prop.Name;
+        }
+
+        /// <summary>
+        /// Skip values that would be omitted by NullValueHandling.Ignore
+        /// (null) or DefaultValueHandling.Ignore (== type default).
+        /// </summary>
+        private static bool ShouldSkip(PropertyInfo prop, object? value)
+        {
+            if (value == null)
+            {
+                return true; // NullValueHandling.Ignore matches the JSON path
+            }
+
+            var jp = prop.GetCustomAttribute<JsonPropertyAttribute>();
+            if (jp != null && jp.DefaultValueHandling == DefaultValueHandling.Ignore)
+            {
+                var defaultValue = GetTypeDefault(prop.PropertyType);
+                if (object.Equals(value, defaultValue))
+                {
+                    return true;
                 }
             }
 
-            return result;
+            return false;
+        }
+
+        private static object? GetTypeDefault(Type type)
+        {
+            return type.IsValueType ? Activator.CreateInstance(type) : null;
+        }
+
+        private static bool IsScalar(Type type)
+        {
+            if (type.IsPrimitive) return true;
+            if (type == typeof(string)) return true;
+            if (type == typeof(decimal)) return true;
+            if (type == typeof(DateTime) || type == typeof(DateTimeOffset)) return true;
+            if (type == typeof(TimeSpan)) return true;
+            if (type == typeof(Guid)) return true;
+            if (type.IsEnum) return true;
+            var underlying = Nullable.GetUnderlyingType(type);
+            if (underlying != null) return IsScalar(underlying);
+            return false;
+        }
+
+        private static void AddScalar(string key, object? value, List<KeyValuePair<string, string>> result)
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            string rendered;
+            switch (value)
+            {
+                case string s:
+                    rendered = s;
+                    break;
+                case bool b:
+                    rendered = b ? "true" : "false";
+                    break;
+                case DateTime dt:
+                    rendered = dt.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+                    break;
+                case DateTimeOffset dto:
+                    rendered = dto.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+                    break;
+                case Enum en:
+                    rendered = en.ToString();
+                    break;
+                case double d:
+                    rendered = d.ToString("R", CultureInfo.InvariantCulture);
+                    break;
+                case float f:
+                    rendered = f.ToString("R", CultureInfo.InvariantCulture);
+                    break;
+                case IFormattable fmt:
+                    rendered = fmt.ToString(null, CultureInfo.InvariantCulture);
+                    break;
+                default:
+                    rendered = value.ToString() ?? string.Empty;
+                    break;
+            }
+
+            result.Add(new KeyValuePair<string, string>(key, rendered));
         }
     }
 }
