@@ -14,17 +14,17 @@ namespace WorkOS
         [STJS.JsonPropertyName("permission_slug")]
         public string PermissionSlug { get; set; } = default!;
 
-        /// <summary>The identifier of the resource to check permissions for. Either resource_id or resource_external_id + resource_type_slug must be provided.</summary>
+        /// <summary>The ID of the resource.</summary>
         [JsonProperty("resource_id")]
         [STJS.JsonPropertyName("resource_id")]
         public string? ResourceId { get; set; }
 
-        /// <summary>The external identifier of the resource to check permissions for. Must be used with resource_type_slug.</summary>
+        /// <summary>The external ID of the resource.</summary>
         [JsonProperty("resource_external_id")]
         [STJS.JsonPropertyName("resource_external_id")]
         public string? ResourceExternalId { get; set; }
 
-        /// <summary>The slug of the resource type. Must be used with resource_external_id.</summary>
+        /// <summary>The slug of the resource type.</summary>
         [JsonProperty("resource_type_slug")]
         [STJS.JsonPropertyName("resource_type_slug")]
         public string? ResourceTypeSlug { get; set; }

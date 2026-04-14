@@ -29,7 +29,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListConnections()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_connection_list_item.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_connection.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/connections", HttpStatusCode.OK, fixture);
             var result = await this.service.ListConnections(new SSOListConnectionsOptions());
             Assert.NotNull(result);
@@ -49,12 +49,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGetConnection()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/connection_find_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/connection.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/connections/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.GetConnection("test_id");
             Assert.NotNull(result);
-            Assert.Equal("conn_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
-            Assert.Equal("My SSO Connection", result.Name);
+            Assert.Equal("conn_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
+            Assert.Equal("Foo Corp", result.Name);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/connections/test_id");
         }
 
@@ -76,13 +76,12 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestGetJwks()
+        public void TestGetLogoutUrl()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/sso_json_web_key_set_response.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/sso/jwks/test_clientId", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetJwks("test_clientId");
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/sso/jwks/test_clientId");
+            var url = this.service.GetLogoutUrl(new SSOGetLogoutUrlOptions());
+            Assert.NotNull(url);
+            Assert.Contains("/sso/logout", url);
+            Assert.Empty(this.httpMock.CapturedRequests);
         }
 
         [Fact]
@@ -94,8 +93,8 @@ namespace WorkOSTests
             options.ProfileId = "test_profile_id";
             var result = await this.service.AuthorizeLogout(options);
             Assert.NotNull(result);
-            Assert.Equal("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", result.LogoutToken);
-            Assert.Equal("https://auth.example.com/sso/logout?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", result.LogoutUrl);
+            Assert.Equal("https://auth.workos.com/sso/logout?token=eyJhbGciOiJSUzI1NiJ9", result.LogoutUrl);
+            Assert.Equal("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlX2lkIjoicHJvZl8wMUdXUTFHMEgyRk02QVNFRjBIUzEzSENXOS0zMDRrZzAzZyIsImV4cCI6IjE1MTYyMzkwMjIifQ.Wru9Qlnf5DpohtGCKhZU4cVOd3zpiu7QQ-XEX--5A_4", result.LogoutToken);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/sso/logout/authorize");
             await this.httpMock.AssertRequestBodyContainsAsync("profile_id", "test_profile_id");
         }
@@ -103,13 +102,13 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGetProfile()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/sso_get_profile_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/profile.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/sso/profile", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetProfile();
+            var result = await this.service.GetProfile("test_access_token");
             Assert.NotNull(result);
-            Assert.Equal("prof_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
-            Assert.Equal("conn_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.ConnectionId);
-            Assert.Equal("idp_user_12345", result.IdpId);
+            Assert.Equal("prof_01DMC79VCBZ0NY2099737PSVF1", result.Id);
+            Assert.Equal("conn_01E4ZCR3C56J083X43JQXF3JK5", result.ConnectionId);
+            Assert.Equal("103456789012345678901", result.IdpId);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/sso/profile");
         }
 
@@ -120,24 +119,22 @@ namespace WorkOSTests
             this.httpMock.MockResponse(HttpMethod.Post, "/sso/token", HttpStatusCode.OK, fixture);
             var options = new SSOGetProfileAndTokenOptions();
             options.Code = "test_code";
-            options.Code = "test_code";
             var result = await this.service.GetProfileAndToken(options);
             Assert.NotNull(result);
-            Assert.Equal("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...", result.AccessToken);
+            Assert.Equal("eyJhbGciOiJSUzI1NiIsImtpZCI6InNzby...", result.AccessToken);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/sso/token");
             await this.httpMock.AssertRequestBodyContainsAsync("code", "test_code");
-            this.httpMock.AssertQueryParam("code", "test_code");
         }
 
         [Fact]
         public async Task TestListConnectionsAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/connection_list_item.json");
+            var fixture = System.IO.File.ReadAllText("testdata/connection.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/connections", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<ConnectionListItem>();
+            var items = new List<Connection>();
             await foreach (var item in this.service.ListConnectionsAutoPagingAsync(new SSOListConnectionsOptions()))
             {
                 items.Add(item);
@@ -152,7 +149,7 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/connections", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<ConnectionListItem>();
+            var items = new List<Connection>();
             await foreach (var item in this.service.ListConnectionsAutoPagingAsync(new SSOListConnectionsOptions()))
             {
                 items.Add(item);

@@ -8,6 +8,8 @@ namespace WorkOS
     /// <summary>Represents an intent options.</summary>
     public class IntentOptions
     {
+
+        /// <summary>SSO-specific options for the Admin Portal.</summary>
         [JsonProperty("sso")]
         [STJS.JsonPropertyName("sso")]
         public SSOIntentOptions SSO { get; set; } = default!;

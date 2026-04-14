@@ -1,9 +1,11 @@
 {
   "provider": "GoogleOAuth",
-  "refresh_token": "refresh_token_abc123",
-  "access_token": "access_token_xyz789",
-  "expires_at": 1705326600,
+  "refresh_token": "1//04g...",
+  "access_token": "ya29.a0ARrdaM...",
+  "expires_at": 1735141800,
   "scopes": [
-    "test_scopes"
+    "profile",
+    "email",
+    "openid"
   ]
 }

@@ -30,40 +30,40 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="DirectoryListItem"/> results.</returns>
-        public virtual async Task<WorkOSList<DirectoryListItem>> List(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="Directory"/> results.</returns>
+        public virtual async Task<WorkOSList<Directory>> List(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<DirectoryListItem>>("/directories", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<Directory>>("/directories", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="List"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="DirectoryListItem"/> items.</returns>
-        public virtual IAsyncEnumerable<DirectoryListItem> ListAutoPagingAsync(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="Directory"/> items.</returns>
+        public virtual IAsyncEnumerable<Directory> ListAutoPagingAsync(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<DirectoryListItem>("/directories", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<Directory>("/directories", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a Directory</summary>
         /// <remarks>
         /// Get the details of an existing directory.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">Unique identifier for the Directory.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="DirectoryFindResponse"/> result.</returns>
-        public virtual async Task<DirectoryFindResponse> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="Directory"/> result.</returns>
+        public virtual async Task<Directory> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<DirectoryFindResponse>($"/directories/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<Directory>($"/directories/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a Directory</summary>
         /// <remarks>
-        /// Delete an existing directory.
+        /// Permanently deletes an existing directory. It cannot be undone.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">Unique identifier for the Directory.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
@@ -73,74 +73,74 @@ namespace WorkOS
 
         /// <summary>List Directory Groups</summary>
         /// <remarks>
-        /// Get a list of all of existing directory groups matching the criteria specified
+        /// Get a list of all of existing directory groups matching the criteria specified.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="DirectoryGroupsListItem"/> results.</returns>
-        public virtual async Task<WorkOSList<DirectoryGroupsListItem>> ListGroups(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="DirectoryGroup"/> results.</returns>
+        public virtual async Task<WorkOSList<DirectoryGroup>> ListGroups(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<DirectoryGroupsListItem>>("/directory_groups", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<DirectoryGroup>>("/directory_groups", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListGroups"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="DirectoryGroupsListItem"/> items.</returns>
-        public virtual IAsyncEnumerable<DirectoryGroupsListItem> ListGroupsAutoPagingAsync(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="DirectoryGroup"/> items.</returns>
+        public virtual IAsyncEnumerable<DirectoryGroup> ListGroupsAutoPagingAsync(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<DirectoryGroupsListItem>("/directory_groups", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<DirectoryGroup>("/directory_groups", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a Directory Group</summary>
         /// <remarks>
-        /// Get the details of an existing Directory Group
+        /// Get the details of an existing Directory Group.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">Unique identifier for the Directory Group.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="DirectoryGroupsFindResponse"/> result.</returns>
-        public virtual async Task<DirectoryGroupsFindResponse> GetGroup(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="DirectoryGroup"/> result.</returns>
+        public virtual async Task<DirectoryGroup> GetGroup(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<DirectoryGroupsFindResponse>($"/directory_groups/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<DirectoryGroup>($"/directory_groups/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>List Directory Users</summary>
         /// <remarks>
-        /// Get a list of all of existing Directory Users matching the criteria specified
+        /// Get a list of all of existing Directory Users matching the criteria specified.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="DirectoryUsersListItem"/> results.</returns>
-        public virtual async Task<WorkOSList<DirectoryUsersListItem>> ListUsers(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="DirectoryUserWithGroups"/> results.</returns>
+        public virtual async Task<WorkOSList<DirectoryUserWithGroups>> ListUsers(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<DirectoryUsersListItem>>("/directory_users", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<DirectoryUserWithGroups>>("/directory_users", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListUsers"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="DirectoryUsersListItem"/> items.</returns>
-        public virtual IAsyncEnumerable<DirectoryUsersListItem> ListUsersAutoPagingAsync(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="DirectoryUserWithGroups"/> items.</returns>
+        public virtual IAsyncEnumerable<DirectoryUserWithGroups> ListUsersAutoPagingAsync(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<DirectoryUsersListItem>("/directory_users", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<DirectoryUserWithGroups>("/directory_users", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Get Directory User</summary>
+        /// <summary>Get a Directory User</summary>
         /// <remarks>
-        /// Get the details of an existing Directory User
+        /// Get the details of an existing Directory User.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">Unique identifier for the Directory User.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="DirectoryUsersFindResponse"/> result.</returns>
-        public virtual async Task<DirectoryUsersFindResponse> GetUser(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="DirectoryUserWithGroups"/> result.</returns>
+        public virtual async Task<DirectoryUserWithGroups> GetUser(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<DirectoryUsersFindResponse>($"/directory_users/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<DirectoryUserWithGroups>($"/directory_users/{id}", null, requestOptions, cancellationToken);
         }
     }
 }

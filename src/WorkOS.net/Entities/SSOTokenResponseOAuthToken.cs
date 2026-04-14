@@ -2,37 +2,6 @@
 
 namespace WorkOS
 {
-    using System.Collections.Generic;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
-
-    /// <summary>OAuth tokens from the identity provider, if available.</summary>
-    public class SSOTokenResponseOAuthToken
-    {
-
-        /// <summary>The OAuth provider that issued the tokens.</summary>
-        [JsonProperty("provider")]
-        [STJS.JsonPropertyName("provider")]
-        public string Provider { get; set; } = default!;
-
-        /// <summary>The refresh token used to obtain new access tokens.</summary>
-        [JsonProperty("refresh_token")]
-        [STJS.JsonPropertyName("refresh_token")]
-        public string RefreshToken { get; set; } = default!;
-
-        /// <summary>The access token used to authenticate API requests.</summary>
-        [JsonProperty("access_token")]
-        [STJS.JsonPropertyName("access_token")]
-        public string AccessToken { get; set; } = default!;
-
-        /// <summary>The Unix timestamp when the access token expires.</summary>
-        [JsonProperty("expires_at")]
-        [STJS.JsonPropertyName("expires_at")]
-        public double ExpiresAt { get; set; }
-
-        /// <summary>The OAuth scopes granted to the access token.</summary>
-        [JsonProperty("scopes")]
-        [STJS.JsonPropertyName("scopes")]
-        public List<string> Scopes { get; set; } = default!;
-    }
+    /// <summary>SSOTokenResponseOAuthToken is structurally identical to AuthenticateResponseOAuthToken.</summary>
+    public class SSOTokenResponseOAuthToken : AuthenticateResponseOAuthToken { }
 }

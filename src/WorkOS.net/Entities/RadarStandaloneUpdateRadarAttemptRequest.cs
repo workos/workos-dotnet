@@ -9,12 +9,12 @@ namespace WorkOS
     public class RadarStandaloneUpdateRadarAttemptRequest
     {
 
-        /// <summary>The status of the challenge. Set to "success" when the user successfully completes a challenge.</summary>
+        /// <summary>Set to `"success"` to mark the challenge as completed.</summary>
         [JsonProperty("challenge_status")]
         [STJS.JsonPropertyName("challenge_status")]
         public string ChallengeStatus { get; internal set; } = "success";
 
-        /// <summary>The status of the authentication attempt. Set to "success" when the user successfully authenticates.</summary>
+        /// <summary>Set to `"success"` to mark the authentication attempt as successful.</summary>
         [JsonProperty("attempt_status")]
         [STJS.JsonPropertyName("attempt_status")]
         public string AttemptStatus { get; internal set; } = "success";

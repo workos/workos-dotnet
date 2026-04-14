@@ -23,27 +23,55 @@ namespace WorkOS
         /// <param name="client">The HTTP client used to make API requests.</param>
         public PipesService(WorkOSClient client) : base(client) { }
 
-        /// <summary>Get a connected account</summary>
+        /// <summary>Get authorization URL</summary>
         /// <remarks>
-        /// Retrieves a user's connected account for a specific data provider by slug.
+        /// Generates an OAuth authorization URL to initiate the connection flow for a user. Redirect the user to the returned URL to begin the OAuth flow with the third-party provider.
         /// </remarks>
-        /// <param name="userId">The user id.</param>
-        /// <param name="slug">The slug.</param>
+        /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="DataIntegrationsUserManagementGetUserDataInstallationResponse"/> result.</returns>
-        public virtual async Task<DataIntegrationsUserManagementGetUserDataInstallationResponse> GetUserConnectedAccount(string userId, string slug, PipesGetUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="DataIntegrationAuthorizeUrlResponse"/> result.</returns>
+        public virtual async Task<DataIntegrationAuthorizeUrlResponse> AuthorizeDataIntegration(string slug, PipesAuthorizeDataIntegrationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<DataIntegrationsUserManagementGetUserDataInstallationResponse>($"/user_management/users/{userId}/connected_accounts/{slug}", options, requestOptions, cancellationToken);
+            return await this.PostAsync<DataIntegrationAuthorizeUrlResponse>($"/data-integrations/{slug}/authorize", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Get an access token for a connected account</summary>
+        /// <remarks>
+        /// Fetches a valid OAuth access token for a user's connected account. WorkOS automatically handles token refresh, ensuring you always receive a valid, non-expired token.
+        /// </remarks>
+        /// <param name="slug">The identifier of the integration.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="DataIntegrationAccessTokenResponse"/> result.</returns>
+        public virtual async Task<DataIntegrationAccessTokenResponse> CreateDataIntegrationToken(string slug, PipesCreateDataIntegrationTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<DataIntegrationAccessTokenResponse>($"/data-integrations/{slug}/token", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Get a connected account</summary>
+        /// <remarks>
+        /// Retrieves a user's [connected account](https://workos.com/docs/reference/pipes/connected-account) for a specific provider.
+        /// </remarks>
+        /// <param name="userId">A [User](https://workos.com/docs/reference/authkit/user) identifier.</param>
+        /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
+        public virtual async Task<ConnectedAccount> GetUserConnectedAccount(string userId, string slug, PipesGetUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<ConnectedAccount>($"/user_management/users/{userId}/connected_accounts/{slug}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a connected account</summary>
         /// <remarks>
-        /// Deletes a user's connected account for a specific data provider.
+        /// Disconnects WorkOS's account for the user, including removing any stored access and refresh tokens. The user will need to reauthorize if they want to reconnect. This does not revoke access on the provider side.
         /// </remarks>
-        /// <param name="userId">The user id.</param>
-        /// <param name="slug">The slug.</param>
+        /// <param name="userId">A [User](https://workos.com/docs/reference/authkit/user) identifier.</param>
+        /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -52,18 +80,18 @@ namespace WorkOS
             await this.DeleteAsync($"/user_management/users/{userId}/connected_accounts/{slug}", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>List data providers for a user</summary>
+        /// <summary>List providers</summary>
         /// <remarks>
-        /// Lists all available data providers for a user, including their connected account status.
+        /// Retrieves a list of available providers and the user's connection status for each. Returns all providers configured for your environment, along with the user's [connected account](https://workos.com/docs/reference/pipes/connected-account) information where applicable.
         /// </remarks>
-        /// <param name="userId">The user id.</param>
+        /// <param name="userId">A [User](https://workos.com/docs/reference/authkit/user) identifier to list providers and connected accounts for.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="DataIntegrationsUserManagementGetUserDataIntegrationsResponse"/> result.</returns>
-        public virtual async Task<DataIntegrationsUserManagementGetUserDataIntegrationsResponse> ListUserDataProviders(string userId, PipesListUserDataProvidersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="DataIntegrationsListResponse"/> result.</returns>
+        public virtual async Task<DataIntegrationsListResponse> ListUserDataProviders(string userId, PipesListUserDataProvidersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<DataIntegrationsUserManagementGetUserDataIntegrationsResponse>($"/user_management/users/{userId}/data_providers", options, requestOptions, cancellationToken);
+            return await this.GetAsync<DataIntegrationsListResponse>($"/user_management/users/{userId}/data_providers", options, requestOptions, cancellationToken);
         }
     }
 }

@@ -2,6 +2,21 @@
 
 namespace WorkOS
 {
-    /// <summary>DataIntegrationsGetUserTokenRequest is structurally identical to DataIntegrationsGetDataIntegrationAuthorizeUrlRequest.</summary>
-    public class DataIntegrationsGetUserTokenRequest : DataIntegrationsGetDataIntegrationAuthorizeUrlRequest { }
+    using Newtonsoft.Json;
+    using STJS = System.Text.Json.Serialization;
+
+    /// <summary>Represents a data integrations get user token request.</summary>
+    public class DataIntegrationsGetUserTokenRequest
+    {
+
+        /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>
+        [JsonProperty("user_id")]
+        [STJS.JsonPropertyName("user_id")]
+        public string UserId { get; set; } = default!;
+
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization.</summary>
+        [JsonProperty("organization_id")]
+        [STJS.JsonPropertyName("organization_id")]
+        public string? OrganizationId { get; set; }
+    }
 }

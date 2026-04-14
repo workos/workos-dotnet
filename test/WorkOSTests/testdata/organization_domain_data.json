@@ -1,4 +1,4 @@
 {
-  "domain": "example.com",
-  "state": "pending"
+  "domain": "foo-corp.com",
+  "state": "verified"
 }

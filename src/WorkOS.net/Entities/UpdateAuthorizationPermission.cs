@@ -9,12 +9,12 @@ namespace WorkOS
     public class UpdateAuthorizationPermission
     {
 
-        /// <summary>A human-readable name for the permission.</summary>
+        /// <summary>A descriptive name for the Permission.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
         public string? Name { get; set; }
 
-        /// <summary>A description of what the permission allows.</summary>
+        /// <summary>An optional description of the Permission.</summary>
         [JsonProperty("description")]
         [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }

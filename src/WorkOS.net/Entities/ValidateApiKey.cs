@@ -9,7 +9,7 @@ namespace WorkOS
     public class ValidateApiKey
     {
 
-        /// <summary>The value for an API key</summary>
+        /// <summary>The value for an API key.</summary>
         [JsonProperty("value")]
         [STJS.JsonPropertyName("value")]
         public string Value { get; set; } = default!;

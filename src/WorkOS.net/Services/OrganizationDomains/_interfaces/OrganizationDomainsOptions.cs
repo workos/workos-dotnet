@@ -10,20 +10,15 @@ namespace WorkOS
     /// <summary>Request options for <see cref="OrganizationDomainsService.Create"/>: Create an Organization Domain</summary>
     public class OrganizationDomainsCreateOptions : BaseOptions
     {
-        /// <summary>The domain to be added to the organization. This should be a domain owned by the organization, and not a common consumer domain like gmail.com.</summary>
+        /// <summary>The domain to add to the organization.</summary>
         [JsonProperty("domain")]
         [STJS.JsonPropertyName("domain")]
         public string Domain { get; set; } = default!;
 
-        /// <summary>The identifier of the Organization to add the domain to.</summary>
+        /// <summary>The ID of the organization to add the domain to.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
         public string OrganizationId { get; set; } = default!;
 
-    }
-
-    /// <summary>Request options for <see cref="OrganizationDomainsService.Verify"/>: Verify an Organization Domain</summary>
-    public class OrganizationDomainsVerifyOptions : BaseOptions
-    {
     }
 }

@@ -9,10 +9,12 @@ namespace WorkOS
     public class OrganizationDomainData
     {
 
-        /// <summary>The domain to be added to the organization. This should be a domain owned by the organization, and not a common consumer domain like gmail.com.</summary>
+        /// <summary>The domain value.</summary>
         [JsonProperty("domain")]
         [STJS.JsonPropertyName("domain")]
         public string Domain { get; set; } = default!;
+
+        /// <summary>The verification state of the domain.</summary>
         [JsonProperty("state", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonPropertyName("state")]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]

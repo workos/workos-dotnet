@@ -9,7 +9,7 @@ namespace WorkOS
     public class RadarStandaloneDeleteRadarListEntryRequest
     {
 
-        /// <summary>The entry to remove from the list.</summary>
+        /// <summary>The value to remove from the list. Must match an existing entry.</summary>
         [JsonProperty("entry")]
         [STJS.JsonPropertyName("entry")]
         public string Entry { get; set; } = default!;

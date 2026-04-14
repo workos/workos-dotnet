@@ -9,12 +9,18 @@ namespace WorkOS
     /// <summary>Represents an audit log schema.</summary>
     public class AuditLogSchema
     {
+
+        /// <summary>The metadata schema for the actor.</summary>
         [JsonProperty("actor")]
         [STJS.JsonPropertyName("actor")]
         public AuditLogSchemaActor? Actor { get; set; }
+
+        /// <summary>The list of targets for the schema.</summary>
         [JsonProperty("targets")]
         [STJS.JsonPropertyName("targets")]
         public List<AuditLogSchemaTarget> Targets { get; set; } = default!;
+
+        /// <summary>Optional JSON schema for event metadata.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
         public Dictionary<string, object>? Metadata { get; set; }
@@ -28,14 +34,31 @@ namespace WorkOS
         /// <param name="key">The key to look up.</param>
         public T? GetMetadataAttribute<T>(string key)
         {
-            if (this.Metadata == null) return default;
-            if (!this.Metadata.TryGetValue(key, out var value)) return default;
-            if (value is T typed) return typed;
-            if (value is Newtonsoft.Json.Linq.JToken token) return token.ToObject<T>();
+            if (this.Metadata == null)
+            {
+                return default;
+            }
+
+            if (!this.Metadata.TryGetValue(key, out var value))
+            {
+                return default;
+            }
+
+            if (value is T typed)
+            {
+                return typed;
+            }
+
+            if (value is Newtonsoft.Json.Linq.JToken token)
+            {
+                return token.ToObject<T>();
+            }
+
             if (value is System.Text.Json.JsonElement element)
             {
                 return System.Text.Json.JsonSerializer.Deserialize<T>(element.GetRawText());
             }
+
             return default;
         }
     }

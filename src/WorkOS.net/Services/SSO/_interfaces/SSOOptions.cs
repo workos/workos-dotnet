@@ -10,73 +10,92 @@ namespace WorkOS
     /// <summary>Request options for <see cref="SSOService.ListConnections"/>: List Connections</summary>
     public class SSOListConnectionsOptions : ListOptions
     {
-        /// <summary>Filter connections by their type.</summary>
+        /// <summary>Filter Connections by their type.</summary>
         [JsonProperty("connection_type")]
         [STJS.JsonPropertyName("connection_type")]
-        public SSOConnectionType? ConnectionType { get; set; }
+        public ConnectionsConnectionType? ConnectionType { get; set; }
 
-        /// <summary>Filter connections by their associated domain.</summary>
+        /// <summary>Filter Connections by their associated domain.</summary>
         [JsonProperty("domain")]
         [STJS.JsonPropertyName("domain")]
         public string? Domain { get; set; }
 
-        /// <summary>Filter connections by the organization they belong to.</summary>
+        /// <summary>Filter Connections by their associated organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
         public string? OrganizationId { get; set; }
 
+        /// <summary>Searchable text to match against Connection names.</summary>
+        [JsonProperty("search")]
+        [STJS.JsonPropertyName("search")]
+        public string? Search { get; set; }
+
     }
 
-    /// <summary>Request options for <see cref="SSOService.GetAuthorizationUrl"/>: Get an authorization URL</summary>
+    /// <summary>Request options for <see cref="SSOService.GetAuthorizationUrl"/>: Initiate SSO</summary>
     public class SSOGetAuthorizationUrlOptions : BaseOptions
     {
+        /// <summary>Additional OAuth scopes to request from the identity provider. Only applicable when using OAuth connections.</summary>
+        [JsonProperty("provider_scopes")]
+        [STJS.JsonPropertyName("provider_scopes")]
+        public List<string>? ProviderScopes { get; set; }
+
+        /// <summary>Key/value pairs of query parameters to pass to the OAuth provider. Only applicable when using OAuth connections.</summary>
+        [JsonProperty("provider_query_params")]
+        [STJS.JsonPropertyName("provider_query_params")]
+        public Dictionary<string, string>? ProviderQueryParams { get; set; }
+
+        /// <summary>Deprecated. Use `connection` or `organization` instead. Used to initiate SSO for a connection by domain. The domain must be associated with a connection in your WorkOS environment.</summary>
+        [System.Obsolete("Deprecated. Use `connection` or `organization` instead.")]
         [JsonProperty("domain")]
         [STJS.JsonPropertyName("domain")]
         public string? Domain { get; set; }
 
+        /// <summary>Used to initiate OAuth authentication with Google, Microsoft, GitHub, or Apple.</summary>
         [JsonProperty("provider")]
         [STJS.JsonPropertyName("provider")]
-        public string? Provider { get; set; }
+        public SSOProvider? Provider { get; set; }
 
+        /// <summary>Where to redirect the user after they complete the authentication process. You must use one of the redirect URIs configured via the [Redirects](https://dashboard.workos.com/redirects) page on the dashboard.</summary>
         [JsonProperty("redirect_uri")]
         [STJS.JsonPropertyName("redirect_uri")]
         public string RedirectUri { get; set; } = default!;
 
+        /// <summary>An optional parameter that can be used to encode arbitrary information to help restore application state between redirects. If included, the redirect URI received from WorkOS will contain the exact `state` that was passed.</summary>
         [JsonProperty("state")]
         [STJS.JsonPropertyName("state")]
         public string? State { get; set; }
 
+        /// <summary>Used to initiate SSO for a connection. The value should be a WorkOS connection ID.</summary>
+        /// <remarks>
+        /// You can persist the WorkOS connection ID with application user or team identifiers. WorkOS will use the connection indicated by the connection parameter to direct the user to the corresponding IdP for authentication.
+        /// </remarks>
         [JsonProperty("connection")]
         [STJS.JsonPropertyName("connection")]
         public string? Connection { get; set; }
 
+        /// <summary>Used to initiate SSO for an organization. The value should be a WorkOS organization ID.</summary>
+        /// <remarks>
+        /// You can persist the WorkOS organization ID with application user or team identifiers. WorkOS will use the organization ID to determine the appropriate connection and the IdP to direct the user to for authentication.
+        /// </remarks>
         [JsonProperty("organization")]
         [STJS.JsonPropertyName("organization")]
         public string? Organization { get; set; }
 
+        /// <summary>Can be used to pre-fill the domain field when initiating authentication with Microsoft OAuth or with a Google SAML connection type.</summary>
         [JsonProperty("domain_hint")]
         [STJS.JsonPropertyName("domain_hint")]
         public string? DomainHint { get; set; }
 
+        /// <summary>Can be used to pre-fill the username/email address field of the IdP sign-in page for the user, if you know their username ahead of time. Currently supported for OAuth, OpenID Connect, Okta, and Entra ID connections.</summary>
         [JsonProperty("login_hint")]
         [STJS.JsonPropertyName("login_hint")]
         public string? LoginHint { get; set; }
 
+        /// <summary>A random string generated by the client that is used to mitigate replay attacks.</summary>
         [JsonProperty("nonce")]
         [STJS.JsonPropertyName("nonce")]
         public string? Nonce { get; set; }
-
-        [JsonProperty("code_challenge")]
-        [STJS.JsonPropertyName("code_challenge")]
-        public string? CodeChallenge { get; set; }
-
-        [JsonProperty("code_challenge_method")]
-        [STJS.JsonPropertyName("code_challenge_method")]
-        public string? CodeChallengeMethod { get; set; }
-
-        [JsonProperty("selector_strategy")]
-        [STJS.JsonPropertyName("selector_strategy")]
-        public string? SelectorStrategy { get; set; }
 
         [JsonProperty("response_type")]
         [STJS.JsonPropertyName("response_type")]
@@ -88,10 +107,20 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="SSOService.AuthorizeLogout"/>: Get a logout URL</summary>
+    /// <summary>Request options for <see cref="SSOService.GetLogoutUrl"/>: Logout Redirect</summary>
+    public class SSOGetLogoutUrlOptions : BaseOptions
+    {
+        /// <summary>The logout token returned from the [Logout Authorize](https://workos.com/docs/reference/sso/logout/authorize) endpoint.</summary>
+        [JsonProperty("token")]
+        [STJS.JsonPropertyName("token")]
+        public string Token { get; set; } = default!;
+
+    }
+
+    /// <summary>Request options for <see cref="SSOService.AuthorizeLogout"/>: Logout Authorize</summary>
     public class SSOAuthorizeLogoutOptions : BaseOptions
     {
-        /// <summary>The ID of the profile to generate a logout URL for</summary>
+        /// <summary>The unique ID of the profile to log out.</summary>
         [JsonProperty("profile_id")]
         [STJS.JsonPropertyName("profile_id")]
         public string ProfileId { get; set; } = default!;
@@ -101,7 +130,7 @@ namespace WorkOS
     /// <summary>Request options for <see cref="SSOService.GetProfileAndToken"/>: Get a Profile and Token</summary>
     public class SSOGetProfileAndTokenOptions : BaseOptions
     {
-        /// <summary>The authorization code received from the authorization server.</summary>
+        /// <summary>The authorization code received from the authorization callback.</summary>
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
         public string Code { get; set; } = default!;

@@ -1,6 +1,6 @@
 {
-  "slug": "admin",
-  "name": "Admin",
+  "slug": "editor",
+  "name": "Editor",
   "description": null,
   "resource_type_slug": null
 }

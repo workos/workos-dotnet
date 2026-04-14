@@ -12,9 +12,14 @@
   },
   "targets": [
     {
-      "type": "document",
+      "type": "invoice",
       "metadata": {
-        "key": {}
+        "type": "object",
+        "properties": {
+          "cost": {
+            "type": "number"
+          }
+        }
       }
     }
   ],

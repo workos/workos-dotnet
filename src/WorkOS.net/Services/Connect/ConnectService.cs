@@ -23,79 +23,144 @@ namespace WorkOS
         /// <param name="client">The HTTP client used to make API requests.</param>
         public ConnectService(WorkOSClient client) : base(client) { }
 
-        /// <summary>List Connect Applications</summary>
+        /// <summary>Complete external authentication</summary>
         /// <remarks>
-        /// List Connect Applications in the current environment.
+        /// Completes an external authentication flow and returns control to AuthKit. This endpoint is used with [Standalone Connect](https://workos.com/docs/authkit/connect/standalone) to bridge your existing authentication system with the Connect OAuth API infrastructure.
+        /// After successfully authenticating a user in your application, calling this endpoint will:
+        /// - Create or update the user in AuthKit, using the given `id` as its `external_id`.
+        /// - Return a `redirect_uri` your application should redirect to in order for AuthKit to complete the flow
+        /// Users are automatically created or updated based on the `id` and `email` provided. If a user with the same `id` exists, their information is updated. Otherwise, a new user is created.
+        /// If you provide a new `id` with an `email` that already belongs to an existing user, the request will fail with an error as email addresses are unique to a user.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="string"/> results.</returns>
-        public virtual async Task<WorkOSList<string>> ListApplications(ConnectListApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ExternalAuthCompleteResponse"/> result.</returns>
+        public virtual async Task<ExternalAuthCompleteResponse> CompleteOAuth2(ConnectCompleteOAuth2Options options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<string>>("/connect/applications", options, requestOptions, cancellationToken);
+            return await this.PostAsync<ExternalAuthCompleteResponse>("/authkit/oauth2/complete", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List Connect Applications</summary>
+        /// <remarks>
+        /// List all Connect Applications in the current environment with optional filtering.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="ConnectApplication"/> results.</returns>
+        public virtual async Task<WorkOSList<ConnectApplication>> ListApplications(ConnectListApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<ConnectApplication>>("/connect/applications", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListApplications"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="string"/> items.</returns>
-        public virtual IAsyncEnumerable<string> ListApplicationsAutoPagingAsync(ConnectListApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="ConnectApplication"/> items.</returns>
+        public virtual IAsyncEnumerable<ConnectApplication> ListApplicationsAutoPagingAsync(ConnectListApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<string>("/connect/applications", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<ConnectApplication>("/connect/applications", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Create a Connect Application</summary>
-        /// <remarks>
-        /// Create a new Connect Application
-        /// </remarks>
+        /// <summary>Create oauth application.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ApplicationCreateResponse"/> result.</returns>
-        public virtual async Task<ApplicationCreateResponse> CreateApplication(ConnectCreateApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ConnectApplication"/> result.</returns>
+        public async Task<ConnectApplication> CreateOAuthApplication(CreateOAuthApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<ApplicationCreateResponse>("/connect/applications", options, requestOptions, cancellationToken);
+            options.ApplicationType = "oauth";
+            return await this.PostAsync<ConnectApplication>("/connect/applications", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create m2m application.</summary>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ConnectApplication"/> result.</returns>
+        public async Task<ConnectApplication> CreateM2MApplication(CreateM2MApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            options.ApplicationType = "m2m";
+            return await this.PostAsync<ConnectApplication>("/connect/applications", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a Connect Application</summary>
         /// <remarks>
-        /// Get the details of a Connect Application
+        /// Retrieve details for a specific Connect Application by ID or client ID.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">The application ID or client ID of the Connect Application.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ApplicationFindResponse"/> result.</returns>
-        public virtual async Task<ApplicationFindResponse> GetApplication(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ConnectApplication"/> result.</returns>
+        public virtual async Task<ConnectApplication> GetApplication(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<ApplicationFindResponse>($"/connect/applications/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<ConnectApplication>($"/connect/applications/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Update a Connect Application</summary>
         /// <remarks>
-        /// Update an existing Connect Application
+        /// Update an existing Connect Application. For OAuth applications, you can update redirect URIs. For all applications, you can update the name, description, and scopes.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">The application ID or client ID of the Connect Application.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ApplicationUpdateResponse"/> result.</returns>
-        public virtual async Task<ApplicationUpdateResponse> UpdateApplication(string id, ConnectUpdateApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ConnectApplication"/> result.</returns>
+        public virtual async Task<ConnectApplication> UpdateApplication(string id, ConnectUpdateApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<ApplicationUpdateResponse>($"/connect/applications/{id}", options, requestOptions, cancellationToken);
+            return await this.PutAsync<ConnectApplication>($"/connect/applications/{id}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a Connect Application</summary>
         /// <remarks>
-        /// Delete an existing Connect Application
+        /// Delete an existing Connect Application.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">The application ID or client ID of the Connect Application.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task DeleteApplication(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             await this.DeleteAsync($"/connect/applications/{id}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List Client Secrets for a Connect Application</summary>
+        /// <remarks>
+        /// List all client secrets associated with a Connect Application.
+        /// </remarks>
+        /// <param name="id">The application ID or client ID of the Connect Application.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ApplicationCredentialsListItem"/> result.</returns>
+        public virtual async Task<List<ApplicationCredentialsListItem>> ListApplicationClientSecrets(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<List<ApplicationCredentialsListItem>>($"/connect/applications/{id}/client_secrets", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create a new client secret for a Connect Application</summary>
+        /// <remarks>
+        /// Create new secrets for a Connect Application.
+        /// </remarks>
+        /// <param name="id">The application ID or client ID of the Connect Application.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="NewConnectApplicationSecret"/> result.</returns>
+        public virtual async Task<NewConnectApplicationSecret> CreateApplicationClientSecret(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<NewConnectApplicationSecret>($"/connect/applications/{id}/client_secrets", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Delete a Client Secret</summary>
+        /// <remarks>
+        /// Delete (revoke) an existing client secret.
+        /// </remarks>
+        /// <param name="id">The unique ID of the client secret.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteClientSecret(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/connect/client_secrets/{id}", null, requestOptions, cancellationToken);
         }
     }
 }

@@ -27,19 +27,43 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestAuthorizeDataIntegration()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/data_integration_authorize_url_response.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/data-integrations/test_slug/authorize", HttpStatusCode.OK, fixture);
+            var options = new PipesAuthorizeDataIntegrationOptions();
+            options.UserId = "test_user_id";
+            var result = await this.service.AuthorizeDataIntegration("test_slug", options);
+            Assert.NotNull(result);
+            Assert.Equal("https://api.workos.com/data-integrations/q2czJKmVAraSBg8xFpT7M9uR/authorize-redirect", result.Url);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/data-integrations/test_slug/authorize");
+            await this.httpMock.AssertRequestBodyContainsAsync("user_id", "test_user_id");
+        }
+
+        [Fact]
+        public async Task TestCreateDataIntegrationToken()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/data_integration_access_token_response.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/data-integrations/test_slug/token", HttpStatusCode.OK, fixture);
+            var options = new PipesCreateDataIntegrationTokenOptions();
+            options.UserId = "test_user_id";
+            var result = await this.service.CreateDataIntegrationToken("test_slug", options);
+            Assert.NotNull(result);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/data-integrations/test_slug/token");
+            await this.httpMock.AssertRequestBodyContainsAsync("user_id", "test_user_id");
+        }
+
+        [Fact]
         public async Task TestGetUserConnectedAccount()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/data_integrations_user_management_get_user_data_installation_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_user_id/connected_accounts/test_slug", HttpStatusCode.OK, fixture);
-            var options = new PipesGetUserConnectedAccountOptions();
-            options.OrganizationId = "test_organization_id";
-            var result = await this.service.GetUserConnectedAccount("test_user_id", "test_slug", options);
+            var result = await this.service.GetUserConnectedAccount("test_user_id", "test_slug", new PipesGetUserConnectedAccountOptions());
             Assert.NotNull(result);
-            Assert.Equal("conn_acct_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
-            Assert.Equal("2024-01-15T10:30:00.000Z", result.CreatedAt);
-            Assert.Equal("2024-01-15T10:30:00.000Z", result.UpdatedAt);
+            Assert.Equal("data_installation_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.CreatedAt);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.UpdatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/users/test_user_id/connected_accounts/test_slug");
-            this.httpMock.AssertQueryParam("organization_id", "test_organization_id");
         }
 
         [Fact]
@@ -53,49 +77,46 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListUserDataProviders()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/data_integrations_user_management_get_user_data_integrations_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/data_integrations_list_response.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_user_id/data_providers", HttpStatusCode.OK, fixture);
-            var options = new PipesListUserDataProvidersOptions();
-            options.OrganizationId = "test_organization_id";
-            var result = await this.service.ListUserDataProviders("test_user_id", options);
+            var result = await this.service.ListUserDataProviders("test_user_id", new PipesListUserDataProvidersOptions());
             Assert.NotNull(result);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/users/test_user_id/data_providers");
-            this.httpMock.AssertQueryParam("organization_id", "test_organization_id");
         }
 
         [Fact]
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationError>(() => this.service.GetUserConnectedAccount("test_user_id", "test_slug", new PipesGetUserConnectedAccountOptions()));
+            await Assert.ThrowsAsync<AuthenticationError>(() => this.service.AuthorizeDataIntegration("test_slug", new PipesAuthorizeDataIntegrationOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundError>(() => this.service.GetUserConnectedAccount("test_user_id", "test_slug", new PipesGetUserConnectedAccountOptions()));
+            await Assert.ThrowsAsync<NotFoundError>(() => this.service.AuthorizeDataIntegration("test_slug", new PipesAuthorizeDataIntegrationOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.GetUserConnectedAccount("test_user_id", "test_slug", new PipesGetUserConnectedAccountOptions()));
+            await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.AuthorizeDataIntegration("test_slug", new PipesAuthorizeDataIntegrationOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.GetUserConnectedAccount("test_user_id", "test_slug", new PipesGetUserConnectedAccountOptions()));
+            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.AuthorizeDataIntegration("test_slug", new PipesAuthorizeDataIntegrationOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerError>(() => this.service.GetUserConnectedAccount("test_user_id", "test_slug", new PipesGetUserConnectedAccountOptions()));
+            await Assert.ThrowsAsync<ServerError>(() => this.service.AuthorizeDataIntegration("test_slug", new PipesAuthorizeDataIntegrationOptions()));
         }
     }
 }

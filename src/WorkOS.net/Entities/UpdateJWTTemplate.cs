@@ -9,7 +9,7 @@ namespace WorkOS
     public class UpdateJWTTemplate
     {
 
-        /// <summary>The content of the JWT template. Supports Liquid template syntax with user and organization variables.</summary>
+        /// <summary>The JWT template content as a Liquid template string.</summary>
         [JsonProperty("content")]
         [STJS.JsonPropertyName("content")]
         public string Content { get; set; } = default!;

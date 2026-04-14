@@ -29,7 +29,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestList()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_event_list_item.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_event_schema.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/events", HttpStatusCode.OK, fixture);
             var result = await this.service.List(new EventsListOptions());
             Assert.NotNull(result);
@@ -49,12 +49,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/event_list_item.json");
+            var fixture = System.IO.File.ReadAllText("testdata/event_schema.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/events", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<EventListItem>();
+            var items = new List<EventSchema>();
             await foreach (var item in this.service.ListAutoPagingAsync(new EventsListOptions()))
             {
                 items.Add(item);
@@ -69,7 +69,7 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/events", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<EventListItem>();
+            var items = new List<EventSchema>();
             await foreach (var item in this.service.ListAutoPagingAsync(new EventsListOptions()))
             {
                 items.Add(item);

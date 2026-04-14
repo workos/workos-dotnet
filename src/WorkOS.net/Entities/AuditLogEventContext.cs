@@ -9,12 +9,12 @@ namespace WorkOS
     public class AuditLogEventContext
     {
 
-        /// <summary>The IP address or location where the event originated.</summary>
+        /// <summary>IP Address or some other geolocation identifier.</summary>
         [JsonProperty("location")]
         [STJS.JsonPropertyName("location")]
         public string Location { get; set; } = default!;
 
-        /// <summary>The user agent string of the client.</summary>
+        /// <summary>User agent string.</summary>
         [JsonProperty("user_agent")]
         [STJS.JsonPropertyName("user_agent")]
         public string? UserAgent { get; set; }

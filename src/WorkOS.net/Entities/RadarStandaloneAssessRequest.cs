@@ -9,35 +9,39 @@ namespace WorkOS
     public class RadarStandaloneAssessRequest
     {
 
-        /// <summary>The IP address of the client</summary>
+        /// <summary>The IP address of the request to assess.</summary>
         [JsonProperty("ip_address")]
         [STJS.JsonPropertyName("ip_address")]
         public string IpAddress { get; set; } = default!;
 
-        /// <summary>The user agent of the client</summary>
+        /// <summary>The user agent string of the request to assess.</summary>
         [JsonProperty("user_agent")]
         [STJS.JsonPropertyName("user_agent")]
         public string UserAgent { get; set; } = default!;
 
-        /// <summary>The email address of the user making the attempt</summary>
+        /// <summary>The email address of the user making the request.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
         public string Email { get; set; } = default!;
+
+        /// <summary>The authentication method being used.</summary>
         [JsonProperty("auth_method", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonPropertyName("auth_method")]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public RadarStandaloneAssessRequestAuthMethod AuthMethod { get; set; }
+
+        /// <summary>The action being performed.</summary>
         [JsonProperty("action", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonPropertyName("action")]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public RadarStandaloneAssessRequestAction Action { get; set; }
 
-        /// <summary>A unique identifier for the device making the attempt</summary>
+        /// <summary>An optional device fingerprint for the request.</summary>
         [JsonProperty("device_fingerprint")]
         [STJS.JsonPropertyName("device_fingerprint")]
         public string? DeviceFingerprint { get; set; }
 
-        /// <summary>A score indicating the likelihood that the request is from a bot</summary>
+        /// <summary>An optional bot detection score for the request.</summary>
         [JsonProperty("bot_score")]
         [STJS.JsonPropertyName("bot_score")]
         public string? BotScore { get; set; }

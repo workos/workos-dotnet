@@ -1,5 +1,5 @@
 {
-  "id": "conn_domain_01HRSF1G3DQWG4X8BPJMVK9Z5N",
+  "id": "org_domain_01EHZNVPK2QXHMVWCEDQEKY69A",
   "object": "connection_domain",
-  "domain": "example.com"
+  "domain": "foo-corp.com"
 }

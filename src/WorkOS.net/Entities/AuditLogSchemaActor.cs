@@ -9,6 +9,8 @@ namespace WorkOS
     /// <summary>Represents an audit log schema actor.</summary>
     public class AuditLogSchemaActor
     {
+
+        /// <summary>JSON schema for actor metadata.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
         public Dictionary<string, object> Metadata { get; set; } = default!;
@@ -22,14 +24,31 @@ namespace WorkOS
         /// <param name="key">The key to look up.</param>
         public T? GetMetadataAttribute<T>(string key)
         {
-            if (this.Metadata == null) return default;
-            if (!this.Metadata.TryGetValue(key, out var value)) return default;
-            if (value is T typed) return typed;
-            if (value is Newtonsoft.Json.Linq.JToken token) return token.ToObject<T>();
+            if (this.Metadata == null)
+            {
+                return default;
+            }
+
+            if (!this.Metadata.TryGetValue(key, out var value))
+            {
+                return default;
+            }
+
+            if (value is T typed)
+            {
+                return typed;
+            }
+
+            if (value is Newtonsoft.Json.Linq.JToken token)
+            {
+                return token.ToObject<T>();
+            }
+
             if (value is System.Text.Json.JsonElement element)
             {
                 return System.Text.Json.JsonSerializer.Deserialize<T>(element.GetRawText());
             }
+
             return default;
         }
     }

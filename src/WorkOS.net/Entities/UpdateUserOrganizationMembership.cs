@@ -10,10 +10,12 @@ namespace WorkOS
     public class UpdateUserOrganizationMembership
     {
 
-        /// <summary>The slug of the role to assign to the user in the organization.</summary>
+        /// <summary>A single role identifier. Defaults to `member` or the explicit default role. Mutually exclusive with `role_slugs`.</summary>
         [JsonProperty("role_slug")]
         [STJS.JsonPropertyName("role_slug")]
         public string? RoleSlug { get; set; }
+
+        /// <summary>An array of role identifiers. Limited to one role when Multiple Roles is disabled. Mutually exclusive with `role_slug`.</summary>
         [JsonProperty("role_slugs")]
         [STJS.JsonPropertyName("role_slugs")]
         public List<string>? RoleSlugs { get; set; }

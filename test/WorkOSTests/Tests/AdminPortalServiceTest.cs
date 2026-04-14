@@ -29,17 +29,15 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGenerateLink()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/portal_sessions_create_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/portal_link_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/portal/generate_link", HttpStatusCode.OK, fixture);
             var options = new AdminPortalGenerateLinkOptions();
             options.Organization = "test_organization";
-            options.Intent = "test_intent";
             var result = await this.service.GenerateLink(options);
             Assert.NotNull(result);
             Assert.Equal("https://setup.workos.com?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", result.Link);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/portal/generate_link");
             await this.httpMock.AssertRequestBodyContainsAsync("organization", "test_organization");
-            await this.httpMock.AssertRequestBodyContainsAsync("intent", "test_intent");
         }
 
         [Fact]

@@ -25,27 +25,66 @@ namespace WorkOS
 
         /// <summary>Validate API key</summary>
         /// <remarks>
-        /// Validate an API key value and return the API key object if valid
+        /// Validate an API key value and return the API key object if valid.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ApiKeysValidateApiKey"/> result.</returns>
-        public virtual async Task<ApiKeysValidateApiKey> CreateValidation(ApiKeysCreateValidationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ApiKeyValidationResponse"/> result.</returns>
+        public virtual async Task<ApiKeyValidationResponse> CreateValidation(ApiKeysCreateValidationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<ApiKeysValidateApiKey>("/api_keys/validations", options, requestOptions, cancellationToken);
+            return await this.PostAsync<ApiKeyValidationResponse>("/api_keys/validations", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete an API key</summary>
         /// <remarks>
-        /// Delete an API key by ID
+        /// Permanently deletes an API key. This action cannot be undone. Once deleted, any requests using this API key will fail authentication.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">The unique ID of the API key.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             await this.DeleteAsync($"/api_keys/{id}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List API keys for an organization</summary>
+        /// <remarks>
+        /// Get a list of all API keys for an organization.
+        /// </remarks>
+        /// <param name="organizationId">Unique identifier of the Organization.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="ApiKey"/> results.</returns>
+        public virtual async Task<WorkOSList<ApiKey>> ListOrganizationApiKeys(string organizationId, ApiKeysListOrganizationApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<ApiKey>>($"/organizations/{organizationId}/api_keys", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListOrganizationApiKeys"/>. Yields individual items across all pages.</summary>
+        /// <param name="organizationId">Unique identifier of the Organization.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="ApiKey"/> items.</returns>
+        public virtual IAsyncEnumerable<ApiKey> ListOrganizationApiKeysAutoPagingAsync(string organizationId, ApiKeysListOrganizationApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<ApiKey>($"/organizations/{organizationId}/api_keys", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create an API key for an organization</summary>
+        /// <remarks>
+        /// Create a new API key for an organization.
+        /// </remarks>
+        /// <param name="organizationId">Unique identifier of the Organization.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ApiKeyWithValue"/> result.</returns>
+        public virtual async Task<ApiKeyWithValue> CreateOrganizationApiKey(string organizationId, ApiKeysCreateOrganizationApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<ApiKeyWithValue>($"/organizations/{organizationId}/api_keys", options, requestOptions, cancellationToken);
         }
     }
 }

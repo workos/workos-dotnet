@@ -9,29 +9,34 @@ namespace WorkOS
     public class CreateUserInviteOptions
     {
 
-        /// <summary>The email address of the user being invited.</summary>
+        /// <summary>The email address of the recipient.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
         public string Email { get; set; } = default!;
 
-        /// <summary>The identifier of the Organization to invite the user to. If omitted, the invitation will be sent without an organization.</summary>
+        /// <summary>The ID of the [organization](https://workos.com/docs/reference/organization) that the recipient will join.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
         public string? OrganizationId { get; set; }
 
-        /// <summary>The slug of the role to assign to the user when they accept the invitation.</summary>
+        /// <summary>The [role](https://workos.com/docs/authkit/roles) that the recipient will receive when they join the organization in the invitation.</summary>
         [JsonProperty("role_slug")]
         [STJS.JsonPropertyName("role_slug")]
         public string? RoleSlug { get; set; }
 
-        /// <summary>The number of days the invitation is valid for. Defaults to 7 if not specified.</summary>
+        /// <summary>How many days the invitations will be valid for. Must be between 1 and 30 days. Defaults to 7 days if not specified.</summary>
         [JsonProperty("expires_in_days")]
         [STJS.JsonPropertyName("expires_in_days")]
-        public double? ExpiresInDays { get; set; }
+        public long? ExpiresInDays { get; set; }
 
-        /// <summary>The identifier of the user who is sending the invitation.</summary>
+        /// <summary>The ID of the [user](https://workos.com/docs/reference/authkit/user) who invites the recipient. The invitation email will mention the name of this user.</summary>
         [JsonProperty("inviter_user_id")]
         [STJS.JsonPropertyName("inviter_user_id")]
         public string? InviterUserId { get; set; }
+
+        /// <summary>The locale to use when rendering the invitation email. See [supported locales](https://workos.com/docs/authkit/hosted-ui/localization).</summary>
+        [JsonProperty("locale")]
+        [STJS.JsonPropertyName("locale")]
+        public CreateUserInviteOptionsLocale? Locale { get; set; }
     }
 }

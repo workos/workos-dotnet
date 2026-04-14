@@ -25,15 +25,15 @@ namespace WorkOS
 
         /// <summary>Generate a Portal Link</summary>
         /// <remarks>
-        /// Generate a Portal Link scoped to an Organization
+        /// Generate a Portal Link scoped to an Organization.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="PortalSessionsCreateResponse"/> result.</returns>
-        public virtual async Task<PortalSessionsCreateResponse> GenerateLink(AdminPortalGenerateLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="PortalLinkResponse"/> result.</returns>
+        public virtual async Task<PortalLinkResponse> GenerateLink(AdminPortalGenerateLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<PortalSessionsCreateResponse>("/portal/generate_link", options, requestOptions, cancellationToken);
+            return await this.PostAsync<PortalLinkResponse>("/portal/generate_link", options, requestOptions, cancellationToken);
         }
     }
 }

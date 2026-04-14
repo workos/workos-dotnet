@@ -1,17 +1,17 @@
 {
   "token_type": "Bearer",
-  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "expires_in": 3600,
+  "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6InNzby...",
+  "expires_in": 600,
   "profile": {
     "object": "profile",
-    "id": "prof_01HRSF1G3DQWG4X8BPJMVK9Z5N",
+    "id": "prof_01DMC79VCBZ0NY2099737PSVF1",
     "organization_id": "org_01EHQMYV6MBK39QC5PZXHY59C3",
-    "connection_id": "conn_01HRSF1G3DQWG4X8BPJMVK9Z5N",
-    "connection_type": "Pending",
-    "idp_id": "idp_user_12345",
-    "email": "john.doe@example.com",
-    "first_name": "John",
-    "last_name": "Doe",
+    "connection_id": "conn_01E4ZCR3C56J083X43JQXF3JK5",
+    "connection_type": "GoogleOAuth",
+    "idp_id": "103456789012345678901",
+    "email": "todd@example.com",
+    "first_name": "Todd",
+    "last_name": "Rundgren",
     "role": {
       "slug": "admin"
     },
@@ -21,7 +21,8 @@
       }
     ],
     "groups": [
-      "test_groups"
+      "Engineering",
+      "Admins"
     ],
     "custom_attributes": {
       "key": {}
@@ -32,11 +33,13 @@
   },
   "oauth_tokens": {
     "provider": "GoogleOAuth",
-    "refresh_token": "refresh_token_abc123",
-    "access_token": "access_token_xyz789",
-    "expires_at": 1705326600,
+    "refresh_token": "1//04g...",
+    "access_token": "ya29.a0ARrdaM...",
+    "expires_at": 1735141800,
     "scopes": [
-      "test_scopes"
+      "profile",
+      "email",
+      "openid"
     ]
   }
 }

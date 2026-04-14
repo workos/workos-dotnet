@@ -29,7 +29,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestList()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_organization_list_item.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_organization.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations", HttpStatusCode.OK, fixture);
             var result = await this.service.List(new OrganizationsListOptions());
             Assert.NotNull(result);
@@ -49,81 +49,52 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreate()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_organization_create_item.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/organizations", HttpStatusCode.OK, fixture);
-            var result = await this.service.Create(new OrganizationsCreateOptions());
+            var fixture = System.IO.File.ReadAllText("testdata/organization.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/organizations", HttpStatusCode.OK, fixture);
+            var options = new OrganizationsCreateOptions();
+            options.Name = "test_name";
+            var result = await this.service.Create(options);
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations");
-        }
-
-        [Fact]
-        public async Task TestCreateEmpty()
-        {
-            this.httpMock.MockResponse(HttpMethod.Get, "/organizations", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.Create(new OrganizationsCreateOptions());
-            Assert.NotNull(result);
-            Assert.Empty(result.Data);
+            Assert.Equal("org_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
+            Assert.Equal("Acme Inc.", result.Name);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations");
+            await this.httpMock.AssertRequestBodyContainsAsync("name", "test_name");
         }
 
         [Fact]
         public async Task TestGetByExternalId()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_organization_get_item.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/external_id/test_external_id", HttpStatusCode.OK, fixture);
             var result = await this.service.GetByExternalId("test_external_id");
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
+            Assert.Equal("org_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
+            Assert.Equal("Acme Inc.", result.Name);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/external_id/test_external_id");
-        }
-
-        [Fact]
-        public async Task TestGetByExternalIdEmpty()
-        {
-            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/external_id/test_external_id", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.GetByExternalId("test_external_id");
-            Assert.NotNull(result);
-            Assert.Empty(result.Data);
         }
 
         [Fact]
         public async Task TestGet()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_organization_find_item.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.Get("test_id");
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
+            Assert.Equal("org_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
+            Assert.Equal("Acme Inc.", result.Name);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_id");
-        }
-
-        [Fact]
-        public async Task TestGetEmpty()
-        {
-            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_id", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.Get("test_id");
-            Assert.NotNull(result);
-            Assert.Empty(result.Data);
         }
 
         [Fact]
         public async Task TestUpdate()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_organization_update_organization_item.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_id", HttpStatusCode.OK, fixture);
+            var fixture = System.IO.File.ReadAllText("testdata/organization.json");
+            this.httpMock.MockResponse(HttpMethod.Put, "/organizations/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.Update("test_id", new OrganizationsUpdateOptions());
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_id");
-        }
-
-        [Fact]
-        public async Task TestUpdateEmpty()
-        {
-            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_id", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.Update("test_id", new OrganizationsUpdateOptions());
-            Assert.NotNull(result);
-            Assert.Empty(result.Data);
+            Assert.Equal("org_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
+            Assert.Equal("Acme Inc.", result.Name);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/organizations/test_id");
         }
 
         [Fact]
@@ -135,91 +106,25 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListApiKeys()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/list_organization_api_keys_list_item.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListApiKeys("test_organizationId", new OrganizationsListApiKeysOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_organizationId/api_keys");
-        }
-
-        [Fact]
-        public async Task TestListApiKeysEmpty()
-        {
-            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListApiKeys("test_organizationId", new OrganizationsListApiKeysOptions());
-            Assert.NotNull(result);
-            Assert.Empty(result.Data);
-        }
-
-        [Fact]
-        public async Task TestCreateApiKey()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_api_keys_create_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, fixture);
-            var options = new OrganizationsCreateApiKeyOptions();
-            options.Name = "test_name";
-            var result = await this.service.CreateApiKey("test_organizationId", options);
-            Assert.NotNull(result);
-            Assert.Equal("api_key_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
-            Assert.Equal("My API Key", result.Name);
-            Assert.Equal("key_live_...ABCD", result.ObfuscatedValue);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations/test_organizationId/api_keys");
-            await this.httpMock.AssertRequestBodyContainsAsync("name", "test_name");
-        }
-
-        [Fact]
         public async Task TestGetAuditLogConfiguration()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_get_audit_log_configuration_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_configuration.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_id/audit_log_configuration", HttpStatusCode.OK, fixture);
             var result = await this.service.GetAuditLogConfiguration("test_id");
             Assert.NotNull(result);
-            Assert.Equal("org_01EHQMYV6MBK39QC5PZXHY59C3", result.OrganizationId);
+            Assert.Equal("org_01EHZNVPK3SFK441A1RGBFSHRT", result.OrganizationId);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_id/audit_log_configuration");
-        }
-
-        [Fact]
-        public async Task TestListFeatureFlags()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/list_organization_feature_flags_list_item.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/{organizationId}/feature-flags", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListFeatureFlags("test_organization_id", new OrganizationsListFeatureFlagsOptions());
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/{organizationId}/feature-flags");
-        }
-
-        [Fact]
-        public async Task TestListFeatureFlagsEmpty()
-        {
-            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/{organizationId}/feature-flags", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListFeatureFlags("test_organization_id", new OrganizationsListFeatureFlagsOptions());
-            Assert.NotNull(result);
-            Assert.Empty(result.Data);
-        }
-
-        [Fact]
-        public async Task TestListRoles()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_roles_list_response.json");
-            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organizationId/roles", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListRoles("test_organizationId");
-            Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_organizationId/roles");
         }
 
         [Fact]
         public async Task TestListAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_list_item.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<OrganizationListItem>();
+            var items = new List<Organization>();
             await foreach (var item in this.service.ListAutoPagingAsync(new OrganizationsListOptions()))
             {
                 items.Add(item);
@@ -234,200 +139,8 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<OrganizationListItem>();
+            var items = new List<Organization>();
             await foreach (var item in this.service.ListAutoPagingAsync(new OrganizationsListOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestCreateAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_create_item.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<OrganizationCreateItem>();
-            await foreach (var item in this.service.CreateAutoPagingAsync(new OrganizationsCreateOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestCreateAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<OrganizationCreateItem>();
-            await foreach (var item in this.service.CreateAutoPagingAsync(new OrganizationsCreateOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestGetByExternalIdAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_get_item.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/external_id/test_external_id", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<OrganizationGetItem>();
-            await foreach (var item in this.service.GetByExternalIdAutoPagingAsync("test_external_id"))
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestGetByExternalIdAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/external_id/test_external_id", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<OrganizationGetItem>();
-            await foreach (var item in this.service.GetByExternalIdAutoPagingAsync("test_external_id"))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestGetAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_find_item.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_id", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<OrganizationFindItem>();
-            await foreach (var item in this.service.GetAutoPagingAsync("test_id"))
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestGetAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_id", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<OrganizationFindItem>();
-            await foreach (var item in this.service.GetAutoPagingAsync("test_id"))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestUpdateAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_update_organization_item.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_id", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<OrganizationUpdateOrganizationItem>();
-            await foreach (var item in this.service.UpdateAutoPagingAsync("test_id", new OrganizationsUpdateOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestUpdateAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_id", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<OrganizationUpdateOrganizationItem>();
-            await foreach (var item in this.service.UpdateAutoPagingAsync("test_id", new OrganizationsUpdateOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestListApiKeysAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_api_keys_list_item.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<OrganizationApiKeysListItem>();
-            await foreach (var item in this.service.ListApiKeysAutoPagingAsync("test_organizationId", new OrganizationsListApiKeysOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestListApiKeysAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<OrganizationApiKeysListItem>();
-            await foreach (var item in this.service.ListApiKeysAutoPagingAsync("test_organizationId", new OrganizationsListApiKeysOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestListFeatureFlagsAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_feature_flags_list_item.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/{organizationId}/feature-flags", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<OrganizationFeatureFlagsListItem>();
-            await foreach (var item in this.service.ListFeatureFlagsAutoPagingAsync("test_organization_id", new OrganizationsListFeatureFlagsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestListFeatureFlagsAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/{organizationId}/feature-flags", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<OrganizationFeatureFlagsListItem>();
-            await foreach (var item in this.service.ListFeatureFlagsAutoPagingAsync("test_organization_id", new OrganizationsListFeatureFlagsOptions()))
             {
                 items.Add(item);
             }

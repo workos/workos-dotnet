@@ -29,15 +29,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateValidation()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/api_keys_validate_api_key.json");
+            var fixture = System.IO.File.ReadAllText("testdata/api_key_validation_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/api_keys/validations", HttpStatusCode.OK, fixture);
             var options = new ApiKeysCreateValidationOptions();
             options.Value = "test_value";
             var result = await this.service.CreateValidation(options);
             Assert.NotNull(result);
-            Assert.Equal("api_key_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
-            Assert.Equal("My API Key", result.Name);
-            Assert.Equal("key_live_...ABCD", result.ObfuscatedValue);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/api_keys/validations");
             await this.httpMock.AssertRequestBodyContainsAsync("value", "test_value");
         }
@@ -48,6 +45,74 @@ namespace WorkOSTests
             this.httpMock.MockResponse(HttpMethod.Delete, "/api_keys/test_id", HttpStatusCode.NoContent, "");
             await this.service.Delete("test_id");
             this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/api_keys/test_id");
+        }
+
+        [Fact]
+        public async Task TestListOrganizationApiKeys()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/list_api_key.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListOrganizationApiKeys("test_organizationId", new ApiKeysListOrganizationApiKeysOptions());
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_organizationId/api_keys");
+        }
+
+        [Fact]
+        public async Task TestListOrganizationApiKeysEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListOrganizationApiKeys("test_organizationId", new ApiKeysListOrganizationApiKeysOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
+        public async Task TestCreateOrganizationApiKey()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/api_key_with_value.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, fixture);
+            var options = new ApiKeysCreateOrganizationApiKeyOptions();
+            options.Name = "test_name";
+            var result = await this.service.CreateOrganizationApiKey("test_organizationId", options);
+            Assert.NotNull(result);
+            Assert.Equal("api_key_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("Production API Key", result.Name);
+            Assert.Equal("sk_...3456", result.ObfuscatedValue);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations/test_organizationId/api_keys");
+            await this.httpMock.AssertRequestBodyContainsAsync("name", "test_name");
+        }
+
+        [Fact]
+        public async Task TestListOrganizationApiKeysAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/api_key.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<ApiKey>();
+            await foreach (var item in this.service.ListOrganizationApiKeysAutoPagingAsync("test_organizationId", new ApiKeysListOrganizationApiKeysOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListOrganizationApiKeysAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<ApiKey>();
+            await foreach (var item in this.service.ListOrganizationApiKeysAutoPagingAsync("test_organizationId", new ApiKeysListOrganizationApiKeysOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
         }
 
         [Fact]

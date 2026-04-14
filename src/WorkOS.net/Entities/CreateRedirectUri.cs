@@ -9,7 +9,7 @@ namespace WorkOS
     public class CreateRedirectUri
     {
 
-        /// <summary>The redirect URI where users will be sent after authentication.</summary>
+        /// <summary>The redirect URI to create.</summary>
         [JsonProperty("uri")]
         [STJS.JsonPropertyName("uri")]
         public string Uri { get; set; } = default!;

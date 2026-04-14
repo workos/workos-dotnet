@@ -2,6 +2,21 @@
 
 namespace WorkOS
 {
-    /// <summary>DirectoryMetadataUser is structurally identical to DirectoryFindResponseMetadataUser.</summary>
-    public class DirectoryMetadataUser : DirectoryFindResponseMetadataUser { }
+    using Newtonsoft.Json;
+    using STJS = System.Text.Json.Serialization;
+
+    /// <summary>Counts of active and inactive directory users.</summary>
+    public class DirectoryMetadataUser
+    {
+
+        /// <summary>Count of active directory users.</summary>
+        [JsonProperty("active")]
+        [STJS.JsonPropertyName("active")]
+        public long Active { get; set; }
+
+        /// <summary>Count of inactive directory users.</summary>
+        [JsonProperty("inactive")]
+        [STJS.JsonPropertyName("inactive")]
+        public long Inactive { get; set; }
+    }
 }

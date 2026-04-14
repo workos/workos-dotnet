@@ -29,15 +29,15 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateAttempt()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/radar_standalone_assess_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/radar_standalone_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/radar/attempts", HttpStatusCode.OK, fixture);
             var options = new RadarCreateAttemptOptions();
             options.IpAddress = "test_ip_address";
             options.UserAgent = "test_user_agent";
             var result = await this.service.CreateAttempt(options);
             Assert.NotNull(result);
-            Assert.Equal("No risk detected.", result.Reason);
-            Assert.Equal("radar_attempt_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.AttemptId);
+            Assert.Equal("Detected enabled Radar control", result.Reason);
+            Assert.Equal("radar_att_01HZBC6N1EB1ZY7KG32X", result.AttemptId);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/radar/attempts");
             await this.httpMock.AssertRequestBodyContainsAsync("ip_address", "test_ip_address");
             await this.httpMock.AssertRequestBodyContainsAsync("user_agent", "test_user_agent");
@@ -54,12 +54,13 @@ namespace WorkOSTests
         [Fact]
         public async Task TestAddListEntry()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/radar_standalone_update_radar_list_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/radar_list_entry_already_present_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/radar/lists/test_type/test_action", HttpStatusCode.OK, fixture);
             var options = new RadarAddListEntryOptions();
             options.Entry = "test_entry";
             var result = await this.service.AddListEntry("test_type", "test_action", options);
             Assert.NotNull(result);
+            Assert.Equal("Entry already present in list", result.Message);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/radar/lists/test_type/test_action");
             await this.httpMock.AssertRequestBodyContainsAsync("entry", "test_entry");
         }

@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -32,12 +33,20 @@ namespace WorkOS
         /// - `log_streams` - Launch Admin Portal for creating Log Streams
         /// - `domain_verification` - Launch Admin Portal for Domain Verification
         /// - `certificate_renewal` - Launch Admin Portal for renewing SAML Certificates
+        /// - `bring_your_own_key` - Launch Admin Portal for configuring Bring Your Own Key
         /// </remarks>
         [JsonProperty("intent")]
         [STJS.JsonPropertyName("intent")]
-        public string Intent { get; set; } = default!;
+        public GenerateLinkIntent? Intent { get; set; }
+
+        /// <summary>Options to configure the Admin Portal based on the intent.</summary>
         [JsonProperty("intent_options")]
         [STJS.JsonPropertyName("intent_options")]
         public IntentOptions? IntentOptions { get; set; }
+
+        /// <summary>The email addresses of the IT admins to grant access to the Admin Portal for the given organization. Accepts up to 20 emails.</summary>
+        [JsonProperty("admin_emails")]
+        [STJS.JsonPropertyName("admin_emails")]
+        public List<string>? AdminEmails { get; set; }
     }
 }

@@ -1,18 +1,18 @@
 {
-  "name": "Acme Corporation",
-  "allow_profiles_outside_organization": true,
+  "name": "Foo Corp",
+  "allow_profiles_outside_organization": false,
   "domains": [
-    "test_domains"
+    "example.com"
   ],
   "domain_data": [
     {
-      "domain": "example.com",
-      "state": "pending"
+      "domain": "foo-corp.com",
+      "state": "verified"
     }
   ],
   "metadata": {
     "tier": "diamond",
     "key": {}
   },
-  "external_id": "external_12345"
+  "external_id": "ext_12345"
 }

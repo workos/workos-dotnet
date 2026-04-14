@@ -23,17 +23,17 @@ namespace WorkOS
         /// <param name="client">The HTTP client used to make API requests.</param>
         public WidgetsService(WorkOSClient client) : base(client) { }
 
-        /// <summary>Generate a Widget token.</summary>
+        /// <summary>Generate a widget token</summary>
         /// <remarks>
         /// Generate a widget token scoped to an organization and user with the specified scopes.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="WidgetPublicIssueWidgetSessionTokenResponse"/> result.</returns>
-        public virtual async Task<WidgetPublicIssueWidgetSessionTokenResponse> CreateToken(WidgetsCreateTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="WidgetSessionTokenResponse"/> result.</returns>
+        public virtual async Task<WidgetSessionTokenResponse> CreateToken(WidgetsCreateTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<WidgetPublicIssueWidgetSessionTokenResponse>("/widgets/token", options, requestOptions, cancellationToken);
+            return await this.PostAsync<WidgetSessionTokenResponse>("/widgets/token", options, requestOptions, cancellationToken);
         }
     }
 }

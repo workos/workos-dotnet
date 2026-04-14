@@ -9,24 +9,24 @@ namespace WorkOS
     public class TokenQuery
     {
 
-        /// <summary>The client identifier for the application.</summary>
+        /// <summary>The client ID of the WorkOS environment.</summary>
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
         public string ClientId { get; set; } = default!;
 
-        /// <summary>The secret associated with the client. Used to authenticate the token request.</summary>
+        /// <summary>The client secret of the WorkOS environment.</summary>
         [JsonProperty("client_secret")]
         [STJS.JsonPropertyName("client_secret")]
         public string ClientSecret { get; set; } = default!;
 
-        /// <summary>The authorization code received from the authorization server.</summary>
+        /// <summary>The authorization code received from the authorization callback.</summary>
         [JsonProperty("code")]
         [STJS.JsonPropertyName("code")]
         public string Code { get; set; } = default!;
 
-        /// <summary>The grant type of the token request. Must be "authorization_code".</summary>
+        /// <summary>The grant type for the token request.</summary>
         [JsonProperty("grant_type")]
         [STJS.JsonPropertyName("grant_type")]
-        public string GrantType { get; set; } = default!;
+        public string GrantType { get; internal set; } = "authorization_code";
     }
 }

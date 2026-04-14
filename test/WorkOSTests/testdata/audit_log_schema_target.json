@@ -1,5 +1,5 @@
 {
-  "type": "document",
+  "type": "invoice",
   "metadata": {
     "type": "object",
     "properties": {

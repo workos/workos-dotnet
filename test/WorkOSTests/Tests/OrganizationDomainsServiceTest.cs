@@ -29,16 +29,16 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreate()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_domains_create_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization_domain.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/organization_domains", HttpStatusCode.OK, fixture);
             var options = new OrganizationDomainsCreateOptions();
             options.Domain = "test_domain";
             options.OrganizationId = "test_organization_id";
             var result = await this.service.Create(options);
             Assert.NotNull(result);
-            Assert.Equal("org_domain_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
-            Assert.Equal("org_01EHQMYV6MBK39QC5PZXHY59C3", result.OrganizationId);
-            Assert.Equal("example.com", result.Domain);
+            Assert.Equal("org_domain_01EHZNVPK2QXHMVWCEDQEKY69A", result.Id);
+            Assert.Equal("org_01HE8GSH8FQPASKSY27THRKRBP", result.OrganizationId);
+            Assert.Equal("foo-corp.com", result.Domain);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organization_domains");
             await this.httpMock.AssertRequestBodyContainsAsync("domain", "test_domain");
             await this.httpMock.AssertRequestBodyContainsAsync("organization_id", "test_organization_id");
@@ -47,13 +47,13 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGet()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_domains_get_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization_domain_stand_alone.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organization_domains/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.Get("test_id");
             Assert.NotNull(result);
-            Assert.Equal("org_domain_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
-            Assert.Equal("org_01EHQMYV6MBK39QC5PZXHY59C3", result.OrganizationId);
-            Assert.Equal("example.com", result.Domain);
+            Assert.Equal("org_domain_01EHZNVPK2QXHMVWCEDQEKY69A", result.Id);
+            Assert.Equal("org_01HE8GSH8FQPASKSY27THRKRBP", result.OrganizationId);
+            Assert.Equal("foo-corp.com", result.Domain);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organization_domains/test_id");
         }
 
@@ -68,13 +68,13 @@ namespace WorkOSTests
         [Fact]
         public async Task TestVerify()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_domains_verify_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization_domain_stand_alone.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/organization_domains/test_id/verify", HttpStatusCode.OK, fixture);
-            var result = await this.service.Verify("test_id", new OrganizationDomainsVerifyOptions());
+            var result = await this.service.Verify("test_id");
             Assert.NotNull(result);
-            Assert.Equal("org_domain_01HRSF1G3DQWG4X8BPJMVK9Z5N", result.Id);
-            Assert.Equal("org_01EHQMYV6MBK39QC5PZXHY59C3", result.OrganizationId);
-            Assert.Equal("example.com", result.Domain);
+            Assert.Equal("org_domain_01EHZNVPK2QXHMVWCEDQEKY69A", result.Id);
+            Assert.Equal("org_01HE8GSH8FQPASKSY27THRKRBP", result.OrganizationId);
+            Assert.Equal("foo-corp.com", result.Domain);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organization_domains/test_id/verify");
         }
 

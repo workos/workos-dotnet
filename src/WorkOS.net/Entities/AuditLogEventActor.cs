@@ -10,44 +10,24 @@ namespace WorkOS
     public class AuditLogEventActor
     {
 
-        /// <summary>The unique identifier of the actor performing the action.</summary>
+        /// <summary>Actor identifier.</summary>
         [JsonProperty("id")]
         [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
-        /// <summary>The type of actor (e.g., user, system, api_key, admin_user).</summary>
+        /// <summary>Actor type.</summary>
         [JsonProperty("type")]
         [STJS.JsonPropertyName("type")]
         public string Type { get; set; } = default!;
 
-        /// <summary>The name of the actor.</summary>
+        /// <summary>Optional actor name.</summary>
         [JsonProperty("name")]
         [STJS.JsonPropertyName("name")]
         public string? Name { get; set; }
 
-        /// <summary>Additional data that should be associated with the actor. There is a limit of 50 keys. Key names can be up to 40 characters long, and values can be up to 500 characters long.</summary>
+        /// <summary>Additional data associated with the event or entity.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
-        public Dictionary<string, object>? Metadata { get; set; }
-
-        /// <summary>
-        /// Typed accessor for <see cref="Metadata"/>. Returns the value stored under
-        /// <paramref name="key"/> coerced to <typeparamref name="T"/>, or the default
-        /// value when the key is missing or the value is not convertible.
-        /// </summary>
-        /// <typeparam name="T">Expected value type.</typeparam>
-        /// <param name="key">The key to look up.</param>
-        public T? GetMetadataAttribute<T>(string key)
-        {
-            if (this.Metadata == null) return default;
-            if (!this.Metadata.TryGetValue(key, out var value)) return default;
-            if (value is T typed) return typed;
-            if (value is Newtonsoft.Json.Linq.JToken token) return token.ToObject<T>();
-            if (value is System.Text.Json.JsonElement element)
-            {
-                return System.Text.Json.JsonSerializer.Deserialize<T>(element.GetRawText());
-            }
-            return default;
-        }
+        public Dictionary<string, AnyOf<string, double, bool>>? Metadata { get; set; }
     }
 }

@@ -2,21 +2,6 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
-
-    /// <summary>Information about the admin impersonating the user, if applicable.</summary>
-    public class UserSessionsImpersonator
-    {
-
-        /// <summary>The email address of the admin impersonating the user.</summary>
-        [JsonProperty("email")]
-        [STJS.JsonPropertyName("email")]
-        public string Email { get; set; } = default!;
-
-        /// <summary>The reason provided for the impersonation.</summary>
-        [JsonProperty("reason")]
-        [STJS.JsonPropertyName("reason")]
-        public string? Reason { get; set; }
-    }
+    /// <summary>UserSessionsImpersonator is structurally identical to AuthenticateResponseImpersonator.</summary>
+    public class UserSessionsImpersonator : AuthenticateResponseImpersonator { }
 }

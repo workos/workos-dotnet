@@ -7,25 +7,25 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="EventsService.List"/>: List Events</summary>
+    /// <summary>Request options for <see cref="EventsService.List"/>: List events</summary>
     public class EventsListOptions : ListOptions
     {
-        /// <summary>Filter to only return events of particular types. Provide as a comma-separated list or as separate query parameters.</summary>
+        /// <summary>Filter events by one or more event types (e.g. `dsync.user.created`).</summary>
         [JsonProperty("events")]
         [STJS.JsonPropertyName("events")]
-        public List<string> Events { get; set; } = default!;
+        public List<string>? Events { get; set; }
 
-        /// <summary>Filter to only return events created after this ISO 8601 timestamp.</summary>
+        /// <summary>ISO-8601 date string to filter events created after this date.</summary>
         [JsonProperty("range_start")]
         [STJS.JsonPropertyName("range_start")]
         public string? RangeStart { get; set; }
 
-        /// <summary>Filter to only return events created before this ISO 8601 timestamp.</summary>
+        /// <summary>ISO-8601 date string to filter events created before this date.</summary>
         [JsonProperty("range_end")]
         [STJS.JsonPropertyName("range_end")]
         public string? RangeEnd { get; set; }
 
-        /// <summary>Filter events by the organization they belong to.</summary>
+        /// <summary>Filter events by the [Organization](https://workos.com/docs/reference/organization) that the event is associated with.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
         public string? OrganizationId { get; set; }

@@ -23,27 +23,27 @@ namespace WorkOS
         /// <param name="client">The HTTP client used to make API requests.</param>
         public EventsService(WorkOSClient client) : base(client) { }
 
-        /// <summary>List Events</summary>
+        /// <summary>List events</summary>
         /// <remarks>
-        /// List events for the current environment
+        /// List events for the current environment.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="EventListItem"/> results.</returns>
-        public virtual async Task<WorkOSList<EventListItem>> List(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="EventSchema"/> results.</returns>
+        public virtual async Task<WorkOSList<EventSchema>> List(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<EventListItem>>("/events", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<EventSchema>>("/events", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="List"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="EventListItem"/> items.</returns>
-        public virtual IAsyncEnumerable<EventListItem> ListAutoPagingAsync(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="EventSchema"/> items.</returns>
+        public virtual IAsyncEnumerable<EventSchema> ListAutoPagingAsync(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<EventListItem>("/events", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<EventSchema>("/events", options, requestOptions, cancellationToken);
         }
     }
 }

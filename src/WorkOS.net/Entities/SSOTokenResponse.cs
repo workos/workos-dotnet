@@ -14,22 +14,22 @@ namespace WorkOS
         [STJS.JsonPropertyName("token_type")]
         public string TokenType { get; internal set; } = "Bearer";
 
-        /// <summary>The access token used for authenticated requests.</summary>
+        /// <summary>An access token that can be exchanged for a user profile. Access tokens are short-lived — see the `expires_in` field for the exact lifetime.</summary>
         [JsonProperty("access_token")]
         [STJS.JsonPropertyName("access_token")]
         public string AccessToken { get; set; } = default!;
 
-        /// <summary>The number of seconds until the token expires.</summary>
+        /// <summary>The lifetime of the access token in seconds.</summary>
         [JsonProperty("expires_in")]
         [STJS.JsonPropertyName("expires_in")]
-        public double ExpiresIn { get; set; }
+        public long ExpiresIn { get; set; }
 
-        /// <summary>The user profile returned from SSO authentication.</summary>
+        /// <summary>The user profile returned by the identity provider.</summary>
         [JsonProperty("profile")]
         [STJS.JsonPropertyName("profile")]
-        public SSOTokenResponseProfile Profile { get; set; } = default!;
+        public Profile Profile { get; set; } = default!;
 
-        /// <summary>OAuth tokens from the identity provider, if available.</summary>
+        /// <summary>OAuth tokens issued by the identity provider, if available.</summary>
         [JsonProperty("oauth_tokens")]
         [STJS.JsonPropertyName("oauth_tokens")]
         public SSOTokenResponseOAuthToken? OAuthTokens { get; set; }

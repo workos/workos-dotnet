@@ -14,7 +14,7 @@ namespace WorkOS
         [STJS.JsonPropertyName("email")]
         public string Email { get; set; } = default!;
 
-        /// <summary>The invitation token if the magic code is for an invited user.</summary>
+        /// <summary>The invitation token to associate with this magic code.</summary>
         [JsonProperty("invitation_token")]
         [STJS.JsonPropertyName("invitation_token")]
         public string? InvitationToken { get; set; }

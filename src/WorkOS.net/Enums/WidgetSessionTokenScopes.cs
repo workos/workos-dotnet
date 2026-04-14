@@ -22,5 +22,9 @@ namespace WorkOS
         WidgetsSSOManage,
         [EnumMember(Value = "widgets:api-keys:manage")]
         WidgetsApiKeysManage,
+        [EnumMember(Value = "widgets:dsync:manage")]
+        WidgetsDsyncManage,
+        [EnumMember(Value = "widgets:audit-log-streaming:manage")]
+        WidgetsAuditLogStreamingManage,
     }
 }

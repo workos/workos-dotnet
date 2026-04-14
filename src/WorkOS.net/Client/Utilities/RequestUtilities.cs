@@ -253,15 +253,47 @@ namespace WorkOS
 
         private static bool IsScalar(Type type)
         {
-            if (type.IsPrimitive) return true;
-            if (type == typeof(string)) return true;
-            if (type == typeof(decimal)) return true;
-            if (type == typeof(DateTime) || type == typeof(DateTimeOffset)) return true;
-            if (type == typeof(TimeSpan)) return true;
-            if (type == typeof(Guid)) return true;
-            if (type.IsEnum) return true;
+            if (type.IsPrimitive)
+            {
+                return true;
+            }
+
+            if (type == typeof(string))
+            {
+                return true;
+            }
+
+            if (type == typeof(decimal))
+            {
+                return true;
+            }
+
+            if (type == typeof(DateTime) || type == typeof(DateTimeOffset))
+            {
+                return true;
+            }
+
+            if (type == typeof(TimeSpan))
+            {
+                return true;
+            }
+
+            if (type == typeof(Guid))
+            {
+                return true;
+            }
+
+            if (type.IsEnum)
+            {
+                return true;
+            }
+
             var underlying = Nullable.GetUnderlyingType(type);
-            if (underlying != null) return IsScalar(underlying);
+            if (underlying != null)
+            {
+                return IsScalar(underlying);
+            }
+
             return false;
         }
 

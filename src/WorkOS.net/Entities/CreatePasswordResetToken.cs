@@ -9,7 +9,7 @@ namespace WorkOS
     public class CreatePasswordResetToken
     {
 
-        /// <summary>The email address of the user to create a password reset token for.</summary>
+        /// <summary>The email address of the user requesting a password reset.</summary>
         [JsonProperty("email")]
         [STJS.JsonPropertyName("email")]
         public string Email { get; set; } = default!;

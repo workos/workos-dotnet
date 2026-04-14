@@ -25,35 +25,35 @@ namespace WorkOS
 
         /// <summary>Create an Organization Domain</summary>
         /// <remarks>
-        /// Creates a new Organization Domain
+        /// Creates a new Organization Domain.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="OrganizationDomainsCreateResponse"/> result.</returns>
-        public virtual async Task<OrganizationDomainsCreateResponse> Create(OrganizationDomainsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="OrganizationDomain"/> result.</returns>
+        public virtual async Task<OrganizationDomain> Create(OrganizationDomainsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<OrganizationDomainsCreateResponse>("/organization_domains", options, requestOptions, cancellationToken);
+            return await this.PostAsync<OrganizationDomain>("/organization_domains", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get an Organization Domain</summary>
         /// <remarks>
-        /// Get the details of an existing organization
+        /// Get the details of an existing organization domain.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">Unique identifier of the organization domain.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="OrganizationDomainsGetResponse"/> result.</returns>
-        public virtual async Task<OrganizationDomainsGetResponse> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="OrganizationDomainStandAlone"/> result.</returns>
+        public virtual async Task<OrganizationDomainStandAlone> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<OrganizationDomainsGetResponse>($"/organization_domains/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<OrganizationDomainStandAlone>($"/organization_domains/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete an Organization Domain</summary>
         /// <remarks>
-        /// Deletes an existing organization domain
+        /// Permanently deletes an organization domain. It cannot be undone.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">Unique identifier of the organization domain.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
@@ -63,16 +63,15 @@ namespace WorkOS
 
         /// <summary>Verify an Organization Domain</summary>
         /// <remarks>
-        /// Initiates verification process for an Organization Domain
+        /// Initiates verification process for an Organization Domain.
         /// </remarks>
-        /// <param name="id">The id.</param>
-        /// <param name="options">Request options.</param>
+        /// <param name="id">Unique identifier of the organization domain.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="OrganizationDomainsVerifyResponse"/> result.</returns>
-        public virtual async Task<OrganizationDomainsVerifyResponse> Verify(string id, OrganizationDomainsVerifyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="OrganizationDomainStandAlone"/> result.</returns>
+        public virtual async Task<OrganizationDomainStandAlone> Verify(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<OrganizationDomainsVerifyResponse>($"/organization_domains/{id}/verify", options, requestOptions, cancellationToken);
+            return await this.PostAsync<OrganizationDomainStandAlone>($"/organization_domains/{id}/verify", null, requestOptions, cancellationToken);
         }
     }
 }

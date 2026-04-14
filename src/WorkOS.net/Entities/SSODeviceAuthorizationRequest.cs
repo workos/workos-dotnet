@@ -9,14 +9,9 @@ namespace WorkOS
     public class SSODeviceAuthorizationRequest
     {
 
-        /// <summary>The OAuth client ID of your WorkOS application.</summary>
+        /// <summary>The WorkOS client ID for your application.</summary>
         [JsonProperty("client_id")]
         [STJS.JsonPropertyName("client_id")]
         public string ClientId { get; set; } = default!;
-
-        /// <summary>Space-separated list of requested scopes.</summary>
-        [JsonProperty("scope")]
-        [STJS.JsonPropertyName("scope")]
-        public string? Scope { get; set; }
     }
 }

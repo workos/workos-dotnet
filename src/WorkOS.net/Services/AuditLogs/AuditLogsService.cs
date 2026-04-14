@@ -25,141 +25,133 @@ namespace WorkOS
 
         /// <summary>Get Retention</summary>
         /// <remarks>
-        /// Get the configured event retention period for the given Organization
+        /// Get the configured event retention period for the given Organization.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">Unique identifier of the Organization.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuditLogsRetentionAuditLogsRetentionResponse"/> result.</returns>
-        public virtual async Task<AuditLogsRetentionAuditLogsRetentionResponse> GetOrganizationAuditLogsRetention(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuditLogsRetentionJson"/> result.</returns>
+        public virtual async Task<AuditLogsRetentionJson> GetOrganizationAuditLogsRetention(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<AuditLogsRetentionAuditLogsRetentionResponse>($"/organizations/{id}/audit_logs_retention", null, requestOptions, cancellationToken);
+            return await this.GetAsync<AuditLogsRetentionJson>($"/organizations/{id}/audit_logs_retention", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Set Retention</summary>
         /// <remarks>
-        /// Set the event retention period for the given Organization
+        /// Set the event retention period for the given Organization.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">Unique identifier of the Organization.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuditLogsRetentionUpdateAuditLogsRetentionResponse"/> result.</returns>
-        public virtual async Task<AuditLogsRetentionUpdateAuditLogsRetentionResponse> UpdateOrganizationAuditLogsRetention(string id, AuditLogsUpdateOrganizationAuditLogsRetentionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuditLogsRetentionJson"/> result.</returns>
+        public virtual async Task<AuditLogsRetentionJson> UpdateOrganizationAuditLogsRetention(string id, AuditLogsUpdateOrganizationAuditLogsRetentionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<AuditLogsRetentionUpdateAuditLogsRetentionResponse>($"/organizations/{id}/audit_logs_retention", options, requestOptions, cancellationToken);
+            return await this.PutAsync<AuditLogsRetentionJson>($"/organizations/{id}/audit_logs_retention", options, requestOptions, cancellationToken);
         }
 
         /// <summary>List Actions</summary>
         /// <remarks>
-        /// Get a list of all Audit Log actions in the current environment
+        /// Get a list of all Audit Log actions in the current environment.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="string"/> results.</returns>
-        public virtual async Task<WorkOSList<string>> ListActions(AuditLogsListActionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="AuditLogActionJson"/> results.</returns>
+        public virtual async Task<WorkOSList<AuditLogActionJson>> ListActions(AuditLogsListActionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<string>>("/audit_logs/actions", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<AuditLogActionJson>>("/audit_logs/actions", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListActions"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="string"/> items.</returns>
-        public virtual IAsyncEnumerable<string> ListActionsAutoPagingAsync(AuditLogsListActionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="AuditLogActionJson"/> items.</returns>
+        public virtual IAsyncEnumerable<AuditLogActionJson> ListActionsAutoPagingAsync(AuditLogsListActionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<string>("/audit_logs/actions", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<AuditLogActionJson>("/audit_logs/actions", options, requestOptions, cancellationToken);
         }
 
         /// <summary>List Schemas</summary>
         /// <remarks>
-        /// Get a list of all schemas for the Audit Logs action identified by name
+        /// Get a list of all schemas for the Audit Logs action identified by `:name`.
         /// </remarks>
-        /// <param name="actionName">The action name.</param>
+        /// <param name="actionName">The name of the Audit Log action.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="AuditLogValidatorVersionsSchemasItem"/> results.</returns>
-        public virtual async Task<WorkOSList<AuditLogValidatorVersionsSchemasItem>> ListActionSchemas(string actionName, AuditLogsListActionSchemasOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="AuditLogSchemaJson"/> results.</returns>
+        public virtual async Task<WorkOSList<AuditLogSchemaJson>> ListActionSchemas(string actionName, AuditLogsListActionSchemasOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<AuditLogValidatorVersionsSchemasItem>>($"/audit_logs/actions/{actionName}/schemas", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<AuditLogSchemaJson>>($"/audit_logs/actions/{actionName}/schemas", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListActionSchemas"/>. Yields individual items across all pages.</summary>
-        /// <param name="actionName">The action name.</param>
+        /// <param name="actionName">The name of the Audit Log action.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="AuditLogValidatorVersionsSchemasItem"/> items.</returns>
-        public virtual IAsyncEnumerable<AuditLogValidatorVersionsSchemasItem> ListActionSchemasAutoPagingAsync(string actionName, AuditLogsListActionSchemasOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="AuditLogSchemaJson"/> items.</returns>
+        public virtual IAsyncEnumerable<AuditLogSchemaJson> ListActionSchemasAutoPagingAsync(string actionName, AuditLogsListActionSchemasOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<AuditLogValidatorVersionsSchemasItem>($"/audit_logs/actions/{actionName}/schemas", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<AuditLogSchemaJson>($"/audit_logs/actions/{actionName}/schemas", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Create Schema</summary>
         /// <remarks>
-        /// Creates a new Audit Log schema used to validate the payload of incoming Audit Log Events. If the action does not exist, it will also be created
+        /// Creates a new Audit Log schema used to validate the payload of incoming Audit Log Events. If the `action` does not exist, it will also be created.
         /// </remarks>
-        /// <param name="actionName">The action name.</param>
+        /// <param name="actionName">The name of the Audit Log action.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="AuditLogValidatorVersionsCreateItem"/> results.</returns>
-        public virtual async Task<WorkOSList<AuditLogValidatorVersionsCreateItem>> CreateSchema(string actionName, AuditLogsCreateSchemaOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuditLogSchemaJson"/> result.</returns>
+        public virtual async Task<AuditLogSchemaJson> CreateSchema(string actionName, AuditLogsCreateSchemaOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<WorkOSList<AuditLogValidatorVersionsCreateItem>>($"/audit_logs/actions/{actionName}/schemas", options, requestOptions, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="CreateSchema"/>. Yields individual items across all pages.</summary>
-        /// <param name="actionName">The action name.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="AuditLogValidatorVersionsCreateItem"/> items.</returns>
-        public virtual IAsyncEnumerable<AuditLogValidatorVersionsCreateItem> CreateSchemaAutoPagingAsync(string actionName, AuditLogsCreateSchemaOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            return this.ListAutoPagingAsync<AuditLogValidatorVersionsCreateItem>($"/audit_logs/actions/{actionName}/schemas", options, requestOptions, cancellationToken);
+            return await this.PostAsync<AuditLogSchemaJson>($"/audit_logs/actions/{actionName}/schemas", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Create Event</summary>
         /// <remarks>
-        /// Emits an Audit Log Event
+        /// Create an Audit Log Event.
+        /// This API supports idempotency which guarantees that performing the same operation multiple times will have the same result as if the operation were performed only once. This is handy in situations where you may need to retry a request due to a failure or prevent accidental duplicate requests from creating more than one resource.
+        /// To achieve idempotency, you can add `Idempotency-Key` request header to a Create Event request with a unique string as the value. Each subsequent request matching this unique string will return the same response. We suggest using [v4 UUIDs](https://en.wikipedia.org/wiki/Universally_unique_identifier) for idempotency keys to avoid collisions.
+        /// Idempotency keys expire after 24 hours. The API will generate a new response if you submit a request with an expired key.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuditLogEventsCreateResponse"/> result.</returns>
-        public virtual async Task<AuditLogEventsCreateResponse> CreateEvent(AuditLogsCreateEventOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuditLogEventCreateResponse"/> result.</returns>
+        public virtual async Task<AuditLogEventCreateResponse> CreateEvent(AuditLogsCreateEventOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<AuditLogEventsCreateResponse>("/audit_logs/events", options, requestOptions, cancellationToken);
+            return await this.PostAsync<AuditLogEventCreateResponse>("/audit_logs/events", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Create Export</summary>
         /// <remarks>
-        /// Create an Audit Log Export
+        /// Create an Audit Log Export. Exports are scoped to a single organization within a specified date range.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuditLogExportsExportsResponse"/> result.</returns>
-        public virtual async Task<AuditLogExportsExportsResponse> CreateExport(AuditLogsCreateExportOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuditLogExportJson"/> result.</returns>
+        public virtual async Task<AuditLogExportJson> CreateExport(AuditLogsCreateExportOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<AuditLogExportsExportsResponse>("/audit_logs/exports", options, requestOptions, cancellationToken);
+            return await this.PostAsync<AuditLogExportJson>("/audit_logs/exports", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get Export</summary>
         /// <remarks>
-        /// Get an Audit Log Export
+        /// Get an Audit Log Export. The URL will expire after 10 minutes. If the export is needed again at a later time, refetching the export will regenerate the URL.
         /// </remarks>
-        /// <param name="auditLogExportId">The audit log export id.</param>
+        /// <param name="auditLogExportId">The unique ID of the Audit Log Export.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuditLogExportsExportResponse"/> result.</returns>
-        public virtual async Task<AuditLogExportsExportResponse> GetExport(string auditLogExportId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuditLogExportJson"/> result.</returns>
+        public virtual async Task<AuditLogExportJson> GetExport(string auditLogExportId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<AuditLogExportsExportResponse>($"/audit_logs/exports/{auditLogExportId}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<AuditLogExportJson>($"/audit_logs/exports/{auditLogExportId}", null, requestOptions, cancellationToken);
         }
     }
 }

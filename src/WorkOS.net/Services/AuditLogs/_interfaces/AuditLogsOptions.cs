@@ -10,10 +10,10 @@ namespace WorkOS
     /// <summary>Request options for <see cref="AuditLogsService.UpdateOrganizationAuditLogsRetention"/>: Set Retention</summary>
     public class AuditLogsUpdateOrganizationAuditLogsRetentionOptions : BaseOptions
     {
-        /// <summary>The number of days to retain audit logs. Valid values are 30 or 365.</summary>
+        /// <summary>The number of days Audit Log events will be retained. Valid values are `30` and `365`.</summary>
         [JsonProperty("retention_period_in_days")]
         [STJS.JsonPropertyName("retention_period_in_days")]
-        public double RetentionPeriodInDays { get; set; }
+        public long RetentionPeriodInDays { get; set; }
 
     }
 
@@ -28,16 +28,19 @@ namespace WorkOS
     }
 
     /// <summary>Request options for <see cref="AuditLogsService.CreateSchema"/>: Create Schema</summary>
-    public class AuditLogsCreateSchemaOptions : ListOptions
+    public class AuditLogsCreateSchemaOptions : BaseOptions
     {
+        /// <summary>The metadata schema for the actor.</summary>
         [JsonProperty("actor")]
         [STJS.JsonPropertyName("actor")]
         public AuditLogSchemaActor? Actor { get; set; }
 
+        /// <summary>The list of targets for the schema.</summary>
         [JsonProperty("targets")]
         [STJS.JsonPropertyName("targets")]
         public List<AuditLogSchemaTarget> Targets { get; set; } = default!;
 
+        /// <summary>Optional JSON schema for event metadata.</summary>
         [JsonProperty("metadata")]
         [STJS.JsonPropertyName("metadata")]
         public Dictionary<string, object>? Metadata { get; set; }
@@ -47,11 +50,12 @@ namespace WorkOS
     /// <summary>Request options for <see cref="AuditLogsService.CreateEvent"/>: Create Event</summary>
     public class AuditLogsCreateEventOptions : BaseOptions
     {
-        /// <summary>The identifier of the Organization to log the audit event for.</summary>
+        /// <summary>The unique ID of the Organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
         public string OrganizationId { get; set; } = default!;
 
+        /// <summary>The audit log event to create.</summary>
         [JsonProperty("event")]
         [STJS.JsonPropertyName("event")]
         public AuditLogEvent Event { get; set; } = default!;
@@ -61,37 +65,42 @@ namespace WorkOS
     /// <summary>Request options for <see cref="AuditLogsService.CreateExport"/>: Create Export</summary>
     public class AuditLogsCreateExportOptions : BaseOptions
     {
-        /// <summary>The identifier of the Organization to export audit logs for.</summary>
+        /// <summary>The unique ID of the Organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
         public string OrganizationId { get; set; } = default!;
 
-        /// <summary>The start of the date range for the export in ISO 8601 format.</summary>
+        /// <summary>ISO-8601 value for start of the export range.</summary>
         [JsonProperty("range_start")]
         [STJS.JsonPropertyName("range_start")]
         public string RangeStart { get; set; } = default!;
 
-        /// <summary>The end of the date range for the export in ISO 8601 format.</summary>
+        /// <summary>ISO-8601 value for end of the export range.</summary>
         [JsonProperty("range_end")]
         [STJS.JsonPropertyName("range_end")]
         public string RangeEnd { get; set; } = default!;
 
+        /// <summary>List of actions to filter against.</summary>
         [JsonProperty("actions")]
         [STJS.JsonPropertyName("actions")]
         public List<string>? Actions { get; set; }
 
+        /// <summary>Deprecated. Use `actor_names` instead.</summary>
         [JsonProperty("actors")]
         [STJS.JsonPropertyName("actors")]
         public List<string>? Actors { get; set; }
 
+        /// <summary>List of actor names to filter against.</summary>
         [JsonProperty("actor_names")]
         [STJS.JsonPropertyName("actor_names")]
         public List<string>? ActorNames { get; set; }
 
+        /// <summary>List of actor IDs to filter against.</summary>
         [JsonProperty("actor_ids")]
         [STJS.JsonPropertyName("actor_ids")]
         public List<string>? ActorIds { get; set; }
 
+        /// <summary>List of target types to filter against.</summary>
         [JsonProperty("targets")]
         [STJS.JsonPropertyName("targets")]
         public List<string>? Targets { get; set; }

@@ -7,30 +7,68 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
+    /// <summary>Request options for <see cref="PipesService.AuthorizeDataIntegration"/>: Get authorization URL</summary>
+    public class PipesAuthorizeDataIntegrationOptions : BaseOptions
+    {
+        /// <summary>The ID of the user to authorize.</summary>
+        [JsonProperty("user_id")]
+        [STJS.JsonPropertyName("user_id")]
+        public string UserId { get; set; } = default!;
+
+        /// <summary>An organization ID to scope the authorization to a specific organization.</summary>
+        [JsonProperty("organization_id")]
+        [STJS.JsonPropertyName("organization_id")]
+        public string? OrganizationId { get; set; }
+
+        /// <summary>The URL to redirect the user to after authorization.</summary>
+        [JsonProperty("return_to")]
+        [STJS.JsonPropertyName("return_to")]
+        public string? ReturnTo { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="PipesService.CreateDataIntegrationToken"/>: Get an access token for a connected account</summary>
+    public class PipesCreateDataIntegrationTokenOptions : BaseOptions
+    {
+        /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>
+        [JsonProperty("user_id")]
+        [STJS.JsonPropertyName("user_id")]
+        public string UserId { get; set; } = default!;
+
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization.</summary>
+        [JsonProperty("organization_id")]
+        [STJS.JsonPropertyName("organization_id")]
+        public string? OrganizationId { get; set; }
+
+    }
+
     /// <summary>Request options for <see cref="PipesService.GetUserConnectedAccount"/>: Get a connected account</summary>
     public class PipesGetUserConnectedAccountOptions : BaseOptions
     {
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; } = default!;
+        public string? OrganizationId { get; set; }
 
     }
 
     /// <summary>Request options for <see cref="PipesService.DeleteUserConnectedAccount"/>: Delete a connected account</summary>
     public class PipesDeleteUserConnectedAccountOptions : BaseOptions
     {
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; } = default!;
+        public string? OrganizationId { get; set; }
 
     }
 
-    /// <summary>Request options for <see cref="PipesService.ListUserDataProviders"/>: List data providers for a user</summary>
+    /// <summary>Request options for <see cref="PipesService.ListUserDataProviders"/>: List providers</summary>
     public class PipesListUserDataProvidersOptions : BaseOptions
     {
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to filter connections for a specific organization.</summary>
         [JsonProperty("organization_id")]
         [STJS.JsonPropertyName("organization_id")]
-        public string OrganizationId { get; set; } = default!;
+        public string? OrganizationId { get; set; }
 
     }
 }

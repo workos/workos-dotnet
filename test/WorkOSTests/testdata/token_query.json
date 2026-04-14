@@ -1,6 +1,6 @@
 {
-  "client_id": "client_01HRSF1G3DQWG4X8BPJMVK9Z5N",
-  "client_secret": "key_live_example_secret",
-  "code": "auth_code_01HRSF1G3DQWG4X8BPJMVK9Z5N",
+  "client_id": "client_01HZBC6N1EB1ZY7KG32X",
+  "client_secret": "sk_example_123456789",
+  "code": "authorization_code_value",
   "grant_type": "authorization_code"
 }

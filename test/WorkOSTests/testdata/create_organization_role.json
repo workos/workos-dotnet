@@ -1,6 +1,6 @@
 {
-  "slug": "org-admin",
-  "name": "Admin",
-  "description": "Administrator role with full access",
+  "slug": "org-billing-admin",
+  "name": "Billing Administrator",
+  "description": "Can manage billing and invoices",
   "resource_type_slug": "organization"
 }

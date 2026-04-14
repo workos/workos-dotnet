@@ -10,10 +10,30 @@ namespace WorkOS
     /// <summary>Request options for <see cref="ApiKeysService.CreateValidation"/>: Validate API key</summary>
     public class ApiKeysCreateValidationOptions : BaseOptions
     {
-        /// <summary>The value for an API key</summary>
+        /// <summary>The value for an API key.</summary>
         [JsonProperty("value")]
         [STJS.JsonPropertyName("value")]
         public string Value { get; set; } = default!;
+
+    }
+
+    /// <summary>Request options for <see cref="ApiKeysService.ListOrganizationApiKeys"/>: List API keys for an organization</summary>
+    public class ApiKeysListOrganizationApiKeysOptions : ListOptions
+    {
+    }
+
+    /// <summary>Request options for <see cref="ApiKeysService.CreateOrganizationApiKey"/>: Create an API key for an organization</summary>
+    public class ApiKeysCreateOrganizationApiKeyOptions : BaseOptions
+    {
+        /// <summary>The name for the API key.</summary>
+        [JsonProperty("name")]
+        [STJS.JsonPropertyName("name")]
+        public string Name { get; set; } = default!;
+
+        /// <summary>The permission slugs to assign to the API key.</summary>
+        [JsonProperty("permissions")]
+        [STJS.JsonPropertyName("permissions")]
+        public List<string>? Permissions { get; set; }
 
     }
 }

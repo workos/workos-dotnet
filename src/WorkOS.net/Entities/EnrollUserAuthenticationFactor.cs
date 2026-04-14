@@ -9,22 +9,24 @@ namespace WorkOS
     public class EnrollUserAuthenticationFactor
     {
 
-        /// <summary>The name of the application shown to the user in their authenticator app. Defaults to the organization name.</summary>
+        /// <summary>The type of the factor to enroll.</summary>
+        [JsonProperty("type")]
+        [STJS.JsonPropertyName("type")]
+        public string Type { get; internal set; } = "totp";
+
+        /// <summary>Your application or company name displayed in the user's authenticator app.</summary>
         [JsonProperty("totp_issuer")]
         [STJS.JsonPropertyName("totp_issuer")]
         public string? TotpIssuer { get; set; }
 
-        /// <summary>The identifier for the user shown in their authenticator app. Defaults to the user's email.</summary>
+        /// <summary>The user's account name displayed in their authenticator app.</summary>
         [JsonProperty("totp_user")]
         [STJS.JsonPropertyName("totp_user")]
         public string? TotpUser { get; set; }
 
-        /// <summary>A base32-encoded secret for the TOTP authenticator. If not provided, a new secret will be generated.</summary>
+        /// <summary>The Base32-encoded shared secret for TOTP factors. This can be provided when creating the auth factor, otherwise it will be generated. The algorithm used to derive TOTP codes is SHA-1, the code length is 6 digits, and the timestep is 30 seconds – the secret must be compatible with these parameters.</summary>
         [JsonProperty("totp_secret")]
         [STJS.JsonPropertyName("totp_secret")]
         public string? TotpSecret { get; set; }
-        [JsonProperty("type")]
-        [STJS.JsonPropertyName("type")]
-        public string Type { get; internal set; } = "totp";
     }
 }

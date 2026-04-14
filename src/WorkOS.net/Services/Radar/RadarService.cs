@@ -25,22 +25,22 @@ namespace WorkOS
 
         /// <summary>Create an attempt</summary>
         /// <remarks>
-        /// Evaluates an authentication attempt based on the parameters provided and returns a verdict.
+        /// Assess a request for risk using the Radar engine and receive a verdict.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="RadarStandaloneAssessResponse"/> result.</returns>
-        public virtual async Task<RadarStandaloneAssessResponse> CreateAttempt(RadarCreateAttemptOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="RadarStandaloneResponse"/> result.</returns>
+        public virtual async Task<RadarStandaloneResponse> CreateAttempt(RadarCreateAttemptOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<RadarStandaloneAssessResponse>("/radar/attempts", options, requestOptions, cancellationToken);
+            return await this.PostAsync<RadarStandaloneResponse>("/radar/attempts", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Update a Radar attempt</summary>
         /// <remarks>
-        /// Update a Radar attempt with the result of a challenge or authentication. This must be called within 10 minutes of the attempt being created.
+        /// You may optionally inform Radar that an authentication attempt or challenge was successful using this endpoint. Some Radar controls depend on tracking recent successful attempts, such as impossible travel.
         /// </remarks>
-        /// <param name="id">The unique identifier of the Radar attempt to update</param>
+        /// <param name="id">The unique identifier of the Radar attempt to update.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -50,20 +50,26 @@ namespace WorkOS
         }
 
         /// <summary>Add an entry to a Radar list</summary>
-        /// <param name="type">The type of entry to add to the list</param>
-        /// <param name="action">The action to take when the entry is matched</param>
+        /// <remarks>
+        /// Add an entry to a Radar list.
+        /// </remarks>
+        /// <param name="type">The type of the Radar list (e.g. ip_address, domain, email).</param>
+        /// <param name="action">The list action indicating whether to add the entry to the allow or block list.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="RadarStandaloneUpdateRadarListResponse"/> result.</returns>
-        public virtual async Task<RadarStandaloneUpdateRadarListResponse> AddListEntry(string type, string action, RadarAddListEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="RadarListEntryAlreadyPresentResponse"/> result.</returns>
+        public virtual async Task<RadarListEntryAlreadyPresentResponse> AddListEntry(string type, string action, RadarAddListEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<RadarStandaloneUpdateRadarListResponse>($"/radar/lists/{type}/{action}", options, requestOptions, cancellationToken);
+            return await this.PostAsync<RadarListEntryAlreadyPresentResponse>($"/radar/lists/{type}/{action}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Remove an entry from a Radar list</summary>
-        /// <param name="type">The type of entry to remove from the list</param>
-        /// <param name="action">The list action type to remove the entry from</param>
+        /// <remarks>
+        /// Remove an entry from a Radar list.
+        /// </remarks>
+        /// <param name="type">The type of the Radar list (e.g. ip_address, domain, email).</param>
+        /// <param name="action">The list action indicating whether to remove the entry from the allow or block list.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>

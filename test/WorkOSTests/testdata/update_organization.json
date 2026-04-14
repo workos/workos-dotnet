@@ -1,20 +1,19 @@
 {
-  "name": "Updated Organization Name",
-  "allow_profiles_outside_organization": true,
+  "name": "Foo Corp",
+  "allow_profiles_outside_organization": false,
   "domains": [
-    "example.com",
-    "test.com"
+    "foo-corp.com"
   ],
   "domain_data": [
     {
-      "domain": "example.com",
-      "state": "pending"
+      "domain": "foo-corp.com",
+      "state": "verified"
     }
   ],
-  "stripe_customer_id": "cus_01HRSF1G3DQWG4X8BPJMVK9Z5N",
+  "stripe_customer_id": "cus_R9qWAGMQ6nGE7V",
   "metadata": {
     "tier": "diamond",
     "key": {}
   },
-  "external_id": "external_id_123"
+  "external_id": "2fe01467-f7ea-4dd2-8b79-c2b4f56d0191"
 }

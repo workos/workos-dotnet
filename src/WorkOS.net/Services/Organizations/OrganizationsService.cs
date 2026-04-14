@@ -25,126 +25,85 @@ namespace WorkOS
 
         /// <summary>List Organizations</summary>
         /// <remarks>
-        /// Get a list of all of your existing organizations matching the criteria specified
+        /// Get a list of all of your existing organizations matching the criteria specified.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="OrganizationListItem"/> results.</returns>
-        public virtual async Task<WorkOSList<OrganizationListItem>> List(OrganizationsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="Organization"/> results.</returns>
+        public virtual async Task<WorkOSList<Organization>> List(OrganizationsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<OrganizationListItem>>("/organizations", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<Organization>>("/organizations", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="List"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="OrganizationListItem"/> items.</returns>
-        public virtual IAsyncEnumerable<OrganizationListItem> ListAutoPagingAsync(OrganizationsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="Organization"/> items.</returns>
+        public virtual IAsyncEnumerable<Organization> ListAutoPagingAsync(OrganizationsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<OrganizationListItem>("/organizations", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<Organization>("/organizations", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Create an Organization</summary>
         /// <remarks>
-        /// Creates a new organization in the current environment
+        /// Creates a new organization in the current environment.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="OrganizationCreateItem"/> results.</returns>
-        public virtual async Task<WorkOSList<OrganizationCreateItem>> Create(OrganizationsCreateOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="Organization"/> result.</returns>
+        public virtual async Task<Organization> Create(OrganizationsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<WorkOSList<OrganizationCreateItem>>("/organizations", options, requestOptions, cancellationToken);
+            return await this.PostAsync<Organization>("/organizations", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="Create"/>. Yields individual items across all pages.</summary>
-        /// <param name="options">Request options.</param>
+        /// <summary>Get an Organization by External ID</summary>
+        /// <remarks>
+        /// Get the details of an existing organization by an [external identifier](https://workos.com/docs/authkit/metadata/external-identifiers).
+        /// </remarks>
+        /// <param name="externalId">The external ID of the Organization.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="OrganizationCreateItem"/> items.</returns>
-        public virtual IAsyncEnumerable<OrganizationCreateItem> CreateAutoPagingAsync(OrganizationsCreateOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="Organization"/> result.</returns>
+        public virtual async Task<Organization> GetByExternalId(string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<OrganizationCreateItem>("/organizations", options, requestOptions, cancellationToken);
+            return await this.GetAsync<Organization>($"/organizations/external_id/{externalId}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Get an Organization</summary>
         /// <remarks>
-        /// Get the details of an existing organization
+        /// Get the details of an existing organization.
         /// </remarks>
-        /// <param name="externalId">The external id.</param>
+        /// <param name="id">Unique identifier of the Organization.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="OrganizationGetItem"/> results.</returns>
-        public virtual async Task<WorkOSList<OrganizationGetItem>> GetByExternalId(string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="Organization"/> result.</returns>
+        public virtual async Task<Organization> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<OrganizationGetItem>>($"/organizations/external_id/{externalId}", null, requestOptions, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="GetByExternalId"/>. Yields individual items across all pages.</summary>
-        /// <param name="externalId">The external id.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="OrganizationGetItem"/> items.</returns>
-        public virtual IAsyncEnumerable<OrganizationGetItem> GetByExternalIdAutoPagingAsync(string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            return this.ListAutoPagingAsync<OrganizationGetItem>($"/organizations/external_id/{externalId}", null, requestOptions, cancellationToken);
-        }
-
-        /// <summary>Get an Organization</summary>
-        /// <remarks>
-        /// Get the details of an existing organization
-        /// </remarks>
-        /// <param name="id">The id.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="OrganizationFindItem"/> results.</returns>
-        public virtual async Task<WorkOSList<OrganizationFindItem>> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            return await this.GetAsync<WorkOSList<OrganizationFindItem>>($"/organizations/{id}", null, requestOptions, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="Get"/>. Yields individual items across all pages.</summary>
-        /// <param name="id">The id.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="OrganizationFindItem"/> items.</returns>
-        public virtual IAsyncEnumerable<OrganizationFindItem> GetAutoPagingAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            return this.ListAutoPagingAsync<OrganizationFindItem>($"/organizations/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<Organization>($"/organizations/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Update an Organization</summary>
         /// <remarks>
-        /// Updates an organization in the current environment
+        /// Updates an organization in the current environment.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">Unique identifier of the Organization.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="OrganizationUpdateOrganizationItem"/> results.</returns>
-        public virtual async Task<WorkOSList<OrganizationUpdateOrganizationItem>> Update(string id, OrganizationsUpdateOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="Organization"/> result.</returns>
+        public virtual async Task<Organization> Update(string id, OrganizationsUpdateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<WorkOSList<OrganizationUpdateOrganizationItem>>($"/organizations/{id}", options, requestOptions, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="Update"/>. Yields individual items across all pages.</summary>
-        /// <param name="id">The id.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="OrganizationUpdateOrganizationItem"/> items.</returns>
-        public virtual IAsyncEnumerable<OrganizationUpdateOrganizationItem> UpdateAutoPagingAsync(string id, OrganizationsUpdateOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            return this.ListAutoPagingAsync<OrganizationUpdateOrganizationItem>($"/organizations/{id}", options, requestOptions, cancellationToken);
+            return await this.PutAsync<Organization>($"/organizations/{id}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete an Organization</summary>
         /// <remarks>
-        /// Deletes an organization in the current environment
+        /// Permanently deletes an organization in the current environment. It cannot be undone.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">Unique identifier of the Organization.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
@@ -152,94 +111,17 @@ namespace WorkOS
             await this.DeleteAsync($"/organizations/{id}", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>List API keys for an organization</summary>
-        /// <remarks>
-        /// Get a list of all API keys for an organization
-        /// </remarks>
-        /// <param name="organizationId">The organization id.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="OrganizationApiKeysListItem"/> results.</returns>
-        public virtual async Task<WorkOSList<OrganizationApiKeysListItem>> ListApiKeys(string organizationId, OrganizationsListApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            return await this.GetAsync<WorkOSList<OrganizationApiKeysListItem>>($"/organizations/{organizationId}/api_keys", options, requestOptions, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="ListApiKeys"/>. Yields individual items across all pages.</summary>
-        /// <param name="organizationId">The organization id.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="OrganizationApiKeysListItem"/> items.</returns>
-        public virtual IAsyncEnumerable<OrganizationApiKeysListItem> ListApiKeysAutoPagingAsync(string organizationId, OrganizationsListApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            return this.ListAutoPagingAsync<OrganizationApiKeysListItem>($"/organizations/{organizationId}/api_keys", options, requestOptions, cancellationToken);
-        }
-
-        /// <summary>Create an API key for an organization</summary>
-        /// <remarks>
-        /// Create a new API key for an organization
-        /// </remarks>
-        /// <param name="organizationId">The organization id.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="OrganizationApiKeysCreateResponse"/> result.</returns>
-        public virtual async Task<OrganizationApiKeysCreateResponse> CreateApiKey(string organizationId, OrganizationsCreateApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            return await this.PostAsync<OrganizationApiKeysCreateResponse>($"/organizations/{organizationId}/api_keys", options, requestOptions, cancellationToken);
-        }
-
         /// <summary>Get Audit Log Configuration</summary>
         /// <remarks>
-        /// Get the unified view of audit log trail and stream configuration for an organization
+        /// Get the unified view of audit log trail and stream configuration for an organization.
         /// </remarks>
-        /// <param name="id">The id.</param>
+        /// <param name="id">Unique identifier of the Organization.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="OrganizationGetAuditLogConfigurationResponse"/> result.</returns>
-        public virtual async Task<OrganizationGetAuditLogConfigurationResponse> GetAuditLogConfiguration(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuditLogConfiguration"/> result.</returns>
+        public virtual async Task<AuditLogConfiguration> GetAuditLogConfiguration(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<OrganizationGetAuditLogConfigurationResponse>($"/organizations/{id}/audit_log_configuration", null, requestOptions, cancellationToken);
-        }
-
-        /// <summary>List enabled feature flags for an organization</summary>
-        /// <remarks>
-        /// Get a list of all enabled feature flags for an organization
-        /// </remarks>
-        /// <param name="organizationId">The organization id.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="OrganizationFeatureFlagsListItem"/> results.</returns>
-        public virtual async Task<WorkOSList<OrganizationFeatureFlagsListItem>> ListFeatureFlags(string organizationId, OrganizationsListFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            return await this.GetAsync<WorkOSList<OrganizationFeatureFlagsListItem>>($"/organizations/{organizationId}/feature-flags", options, requestOptions, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="ListFeatureFlags"/>. Yields individual items across all pages.</summary>
-        /// <param name="organizationId">The organization id.</param>
-        /// <param name="options">Request options.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="OrganizationFeatureFlagsListItem"/> items.</returns>
-        public virtual IAsyncEnumerable<OrganizationFeatureFlagsListItem> ListFeatureFlagsAutoPagingAsync(string organizationId, OrganizationsListFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            return this.ListAutoPagingAsync<OrganizationFeatureFlagsListItem>($"/organizations/{organizationId}/feature-flags", options, requestOptions, cancellationToken);
-        }
-
-        /// <summary>List roles for an organization</summary>
-        /// <remarks>
-        /// Get a list of all of existing roles for an organization
-        /// </remarks>
-        /// <param name="organizationId">The organization id.</param>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="OrganizationRolesListResponse"/> result.</returns>
-        public virtual async Task<OrganizationRolesListResponse> ListRoles(string organizationId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            return await this.GetAsync<OrganizationRolesListResponse>($"/organizations/{organizationId}/roles", null, requestOptions, cancellationToken);
+            return await this.GetAsync<AuditLogConfiguration>($"/organizations/{id}/audit_log_configuration", null, requestOptions, cancellationToken);
         }
     }
 }

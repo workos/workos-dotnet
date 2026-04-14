@@ -9,7 +9,7 @@ namespace WorkOS
     public class SSOLogoutAuthorizeRequest
     {
 
-        /// <summary>The ID of the profile to generate a logout URL for</summary>
+        /// <summary>The unique ID of the profile to log out.</summary>
         [JsonProperty("profile_id")]
         [STJS.JsonPropertyName("profile_id")]
         public string ProfileId { get; set; } = default!;

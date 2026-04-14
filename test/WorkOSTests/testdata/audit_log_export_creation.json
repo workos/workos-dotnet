@@ -1,22 +1,20 @@
 {
-  "organization_id": "org_01HRSF1G3DQWG4X8BPJMVK9Z5N",
-  "range_start": "2024-01-01T00:00:00.000Z",
-  "range_end": "2024-01-31T23:59:59.999Z",
+  "organization_id": "org_01EHZNVPK3SFK441A1RGBFSHRT",
+  "range_start": "2022-07-02T18:09:06.996Z",
+  "range_end": "2022-09-02T18:09:06.996Z",
   "actions": [
-    "user.created",
-    "user.updated"
+    "user.signed_in"
   ],
   "actors": [
-    "admin@example.com"
+    "Jon Smith"
   ],
   "actor_names": [
-    "Admin User"
+    "Jon Smith"
   ],
   "actor_ids": [
-    "user_01HRSF1G3DQWG4X8BPJMVK9Z5N"
+    "user_01GBZK5MP7TD1YCFQHFR22180V"
   ],
   "targets": [
-    "document",
-    "folder"
+    "team"
   ]
 }

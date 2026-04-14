@@ -23,95 +23,142 @@ namespace WorkOS
         /// <param name="client">The HTTP client used to make API requests.</param>
         public FeatureFlagsService(WorkOSClient client) : base(client) { }
 
-        /// <summary>List Feature Flags</summary>
+        /// <summary>List feature flags</summary>
         /// <remarks>
-        /// Get a list of all of your existing feature flags matching the criteria specified
+        /// Get a list of all of your existing feature flags matching the criteria specified.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="FeatureFlagsListItem"/> results.</returns>
-        public virtual async Task<WorkOSList<FeatureFlagsListItem>> List(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="Flag"/> results.</returns>
+        public virtual async Task<WorkOSList<Flag>> List(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<FeatureFlagsListItem>>("/feature-flags", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<Flag>>("/feature-flags", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="List"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="FeatureFlagsListItem"/> items.</returns>
-        public virtual IAsyncEnumerable<FeatureFlagsListItem> ListAutoPagingAsync(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="Flag"/> items.</returns>
+        public virtual IAsyncEnumerable<Flag> ListAutoPagingAsync(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<FeatureFlagsListItem>("/feature-flags", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<Flag>("/feature-flags", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Get a Feature Flag</summary>
+        /// <summary>Get a feature flag</summary>
         /// <remarks>
-        /// Get the details of an existing feature flag by its slug
+        /// Get the details of an existing feature flag by its slug.
         /// </remarks>
-        /// <param name="slug">The slug.</param>
+        /// <param name="slug">A unique key to reference the Feature Flag.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="FeatureFlagsFindBySlugResponse"/> result.</returns>
-        public virtual async Task<FeatureFlagsFindBySlugResponse> Get(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="Flag"/> result.</returns>
+        public virtual async Task<Flag> Get(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<FeatureFlagsFindBySlugResponse>($"/feature-flags/{slug}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<Flag>($"/feature-flags/{slug}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Disable a feature flag</summary>
         /// <remarks>
-        /// Disables a feature flag in the current environment
+        /// Disables a feature flag in the current environment.
         /// </remarks>
-        /// <param name="slug">The slug.</param>
-        /// <param name="options">Request options.</param>
+        /// <param name="slug">A unique key to reference the Feature Flag.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="FeatureFlagsDisableFlagResponse"/> result.</returns>
-        public virtual async Task<FeatureFlagsDisableFlagResponse> Disable(string slug, FeatureFlagsDisableOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="FeatureFlag"/> result.</returns>
+        public virtual async Task<FeatureFlag> Disable(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<FeatureFlagsDisableFlagResponse>($"/feature-flags/{slug}/disable", options, requestOptions, cancellationToken);
+            return await this.PutAsync<FeatureFlag>($"/feature-flags/{slug}/disable", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Enable a feature flag</summary>
         /// <remarks>
-        /// Enables a feature flag in the current environment
+        /// Enables a feature flag in the current environment.
         /// </remarks>
-        /// <param name="slug">The slug.</param>
+        /// <param name="slug">A unique key to reference the Feature Flag.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="FeatureFlag"/> result.</returns>
+        public virtual async Task<FeatureFlag> Enable(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PutAsync<FeatureFlag>($"/feature-flags/{slug}/enable", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Add a feature flag target</summary>
+        /// <remarks>
+        /// Enables a feature flag for a specific target in the current environment. Currently, supported targets include users and organizations.
+        /// </remarks>
+        /// <param name="slug">The unique slug identifier of the feature flag.</param>
+        /// <param name="resourceId">The resource ID in format "user_&lt;id&gt;" or "org_&lt;id&gt;".</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task AddFlagTarget(string slug, string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.PostAsync<object>($"/feature-flags/{slug}/targets/{resourceId}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Remove a feature flag target</summary>
+        /// <remarks>
+        /// Removes a target from the feature flag's target list in the current environment. Currently, supported targets include users and organizations.
+        /// </remarks>
+        /// <param name="slug">The unique slug identifier of the feature flag.</param>
+        /// <param name="resourceId">The resource ID in format "user_&lt;id&gt;" or "org_&lt;id&gt;".</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task RemoveFlagTarget(string slug, string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/feature-flags/{slug}/targets/{resourceId}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List enabled feature flags for an organization</summary>
+        /// <remarks>
+        /// Get a list of all enabled feature flags for an organization.
+        /// </remarks>
+        /// <param name="organizationId">Unique identifier of the Organization.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="FeatureFlagsEnableFlagResponse"/> result.</returns>
-        public virtual async Task<FeatureFlagsEnableFlagResponse> Enable(string slug, FeatureFlagsEnableOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="Flag"/> results.</returns>
+        public virtual async Task<WorkOSList<Flag>> ListOrganizationFeatureFlags(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<FeatureFlagsEnableFlagResponse>($"/feature-flags/{slug}/enable", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<Flag>>($"/organizations/{organizationId}/feature-flags", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Create or update a feature flag target</summary>
-        /// <remarks>
-        /// Creates or updates a target for a feature flag in the current environment. The target will be enabled for the flag.
-        /// </remarks>
-        /// <param name="slug">The unique slug identifier of the feature flag</param>
-        /// <param name="targetId">The target ID in format "user_&lt;id&gt;" or "org_&lt;id&gt;"</param>
+        /// <summary>Auto-paging variant of <see cref="ListOrganizationFeatureFlags"/>. Yields individual items across all pages.</summary>
+        /// <param name="organizationId">Unique identifier of the Organization.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task CreateTarget(string slug, string targetId, FeatureFlagsCreateTargetOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="Flag"/> items.</returns>
+        public virtual IAsyncEnumerable<Flag> ListOrganizationFeatureFlagsAutoPagingAsync(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.PostAsync<object>($"/feature-flags/{slug}/targets/{targetId}", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<Flag>($"/organizations/{organizationId}/feature-flags", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Delete a feature flag target</summary>
+        /// <summary>List enabled feature flags for a user</summary>
         /// <remarks>
-        /// Removes a target from a feature flag in the current environment.
+        /// Get a list of all enabled feature flags for the provided user. This includes feature flags enabled specifically for the user as well as any organizations that the user is a member of.
         /// </remarks>
-        /// <param name="slug">The unique slug identifier of the feature flag</param>
-        /// <param name="targetId">The target ID in format "user_&lt;id&gt;" or "org_&lt;id&gt;"</param>
+        /// <param name="userId">The ID of the user.</param>
+        /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteTarget(string slug, string targetId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="Flag"/> results.</returns>
+        public virtual async Task<WorkOSList<Flag>> ListUserFeatureFlags(string userId, FeatureFlagsListUserFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.DeleteAsync($"/feature-flags/{slug}/targets/{targetId}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<Flag>>($"/user_management/users/{userId}/feature-flags", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListUserFeatureFlags"/>. Yields individual items across all pages.</summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="Flag"/> items.</returns>
+        public virtual IAsyncEnumerable<Flag> ListUserFeatureFlagsAutoPagingAsync(string userId, FeatureFlagsListUserFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<Flag>($"/user_management/users/{userId}/feature-flags", options, requestOptions, cancellationToken);
         }
     }
 }

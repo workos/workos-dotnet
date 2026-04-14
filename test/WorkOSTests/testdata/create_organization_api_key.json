@@ -1,7 +1,7 @@
 {
-  "name": "My API Key",
+  "name": "Production API Key",
   "permissions": [
-    "read:users",
-    "write:users"
+    "posts:read",
+    "posts:write"
   ]
 }

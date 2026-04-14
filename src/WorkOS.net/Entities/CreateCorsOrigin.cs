@@ -9,7 +9,7 @@ namespace WorkOS
     public class CreateCorsOrigin
     {
 
-        /// <summary>The origin URL to allow for CORS requests</summary>
+        /// <summary>The origin URL to allow for CORS requests.</summary>
         [JsonProperty("origin")]
         [STJS.JsonPropertyName("origin")]
         public string Origin { get; set; } = default!;

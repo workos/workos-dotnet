@@ -2,6 +2,16 @@
 
 namespace WorkOS
 {
-    /// <summary>ConnectionOption is structurally identical to ConnectionFindResponseOption.</summary>
-    public class ConnectionOption : ConnectionFindResponseOption { }
+    using Newtonsoft.Json;
+    using STJS = System.Text.Json.Serialization;
+
+    /// <summary>Configuration options for SAML connections. Only present for SAML connection types.</summary>
+    public class ConnectionOption
+    {
+
+        /// <summary>The signing certificate of the SAML connection.</summary>
+        [JsonProperty("signing_cert")]
+        [STJS.JsonPropertyName("signing_cert")]
+        public string? SigningCert { get; set; }
+    }
 }

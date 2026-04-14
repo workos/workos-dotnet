@@ -1,8 +1,8 @@
 {
   "return_url": null,
   "success_url": null,
-  "organization": "org_01HRSF1G3DQWG4X8BPJMVK9Z5N",
-  "intent": "sso",
+  "organization": "org_01EHZNVPK3SFK441A1RGBFSHRT",
+  "intent": null,
   "intent_options": null,
   "admin_emails": null
 }

@@ -9,6 +9,8 @@ namespace WorkOS
     /// <summary>Represents a set role permissions.</summary>
     public class SetRolePermissions
     {
+
+        /// <summary>The permission slugs to assign to the role.</summary>
         [JsonProperty("permissions")]
         [STJS.JsonPropertyName("permissions")]
         public List<string> Permissions { get; set; } = default!;
