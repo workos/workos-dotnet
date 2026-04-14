@@ -71,6 +71,7 @@ namespace WorkOS
         public bool? AllowProfilesOutsideOrganization { get; set; }
 
         /// <summary>The domains associated with the organization. Deprecated in favor of `domain_data`.</summary>
+        [System.Obsolete("This field is deprecated.")]
         [JsonProperty("domains")]
         [STJS.JsonPropertyName("domains")]
         public List<string>? Domains { get; set; }

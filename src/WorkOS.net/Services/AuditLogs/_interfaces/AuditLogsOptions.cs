@@ -86,6 +86,7 @@ namespace WorkOS
         public List<string>? Actions { get; set; }
 
         /// <summary>Deprecated. Use `actor_names` instead.</summary>
+        [System.Obsolete("Deprecated. Use `actor_names` instead.")]
         [JsonProperty("actors")]
         [STJS.JsonPropertyName("actors")]
         public List<string>? Actors { get; set; }
