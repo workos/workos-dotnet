@@ -15,29 +15,8 @@ namespace WorkOS
     /// <summary>
     /// A client to manage requests to the WorkOS API.
     /// </summary>
-    public class WorkOSClient
+    public partial class WorkOSClient
     {
-        // @oagen-start service-accessors (backing fields)
-        private ApiKeysService? apiKeys;
-        private MultiFactorAuthService? multiFactorAuth;
-        private ConnectService? connect;
-        private AuthorizationService? authorization;
-        private SSOService? sSO;
-        private PipesService? pipes;
-        private DirectorySyncService? directorySync;
-        private EventsService? events;
-        private FeatureFlagsService? featureFlags;
-        private OrganizationDomainsService? organizationDomains;
-        private OrganizationsService? organizations;
-        private AdminPortalService? adminPortal;
-        private RadarService? radar;
-        private UserManagementService? userManagement;
-        private WebhooksService? webhooks;
-        private WidgetsService? widgets;
-        private AuditLogsService? auditLogs;
-
-        // @oagen-end service-accessors (backing fields)
-
         // Non-spec service backing fields (hand-maintained)
         private PasswordlessService? passwordless;
         private VaultService? vault;
@@ -107,43 +86,6 @@ namespace WorkOS
         /// throw via <see cref="RequireClientId"/>.
         /// </summary>
         public string? ClientId { get; }
-
-        // @oagen-start service-accessors (properties)
-        public virtual ApiKeysService ApiKeys => this.apiKeys ??= new ApiKeysService(this);
-
-        public virtual MultiFactorAuthService MultiFactorAuth => this.multiFactorAuth ??= new MultiFactorAuthService(this);
-
-        public virtual ConnectService Connect => this.connect ??= new ConnectService(this);
-
-        public virtual AuthorizationService Authorization => this.authorization ??= new AuthorizationService(this);
-
-        public virtual SSOService SSO => this.sSO ??= new SSOService(this);
-
-        public virtual PipesService Pipes => this.pipes ??= new PipesService(this);
-
-        public virtual DirectorySyncService DirectorySync => this.directorySync ??= new DirectorySyncService(this);
-
-        public virtual EventsService Events => this.events ??= new EventsService(this);
-
-        public virtual FeatureFlagsService FeatureFlags => this.featureFlags ??= new FeatureFlagsService(this);
-
-        public virtual OrganizationDomainsService OrganizationDomains => this.organizationDomains ??= new OrganizationDomainsService(this);
-
-        public virtual OrganizationsService Organizations => this.organizations ??= new OrganizationsService(this);
-
-        public virtual AdminPortalService AdminPortal => this.adminPortal ??= new AdminPortalService(this);
-
-        public virtual RadarService Radar => this.radar ??= new RadarService(this);
-
-        public virtual UserManagementService UserManagement => this.userManagement ??= new UserManagementService(this);
-
-        public virtual WebhooksService Webhooks => this.webhooks ??= new WebhooksService(this);
-
-        public virtual WidgetsService Widgets => this.widgets ??= new WidgetsService(this);
-
-        public virtual AuditLogsService AuditLogs => this.auditLogs ??= new AuditLogsService(this);
-
-        // @oagen-end service-accessors (properties)
 
         // Non-spec service accessors (hand-maintained)
 
