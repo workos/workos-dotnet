@@ -59,7 +59,7 @@ namespace WorkOS
         /// <summary>The redirect URIs configured for this application.</summary>
         [JsonProperty("redirect_uris")]
         [STJS.JsonPropertyName("redirect_uris")]
-        public List<object>? RedirectUris { get; set; }
+        public List<ConnectApplicationRedirectUri>? RedirectUris { get; set; }
 
         /// <summary>Whether the application uses PKCE for authorization.</summary>
         [JsonProperty("uses_pkce")]

@@ -17,7 +17,7 @@ namespace WorkOS
         /// <summary>The [access token](/reference/pipes/access-token) object, present when `active` is `true`.</summary>
         [JsonProperty("access_token")]
         [STJS.JsonPropertyName("access_token")]
-        public object? AccessToken { get; set; }
+        public DataIntegrationAccessTokenResponseAccessToken? AccessToken { get; set; }
 
         /// <summary>- `"not_installed"`: The user does not have the integration installed.</summary>
         /// <remarks>
@@ -25,6 +25,6 @@ namespace WorkOS
         /// </remarks>
         [JsonProperty("error")]
         [STJS.JsonPropertyName("error")]
-        public string? Error { get; set; }
+        public DataIntegrationAccessTokenResponseError? Error { get; set; }
     }
 }
