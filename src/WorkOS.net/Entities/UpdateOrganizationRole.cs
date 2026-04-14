@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>UpdateOrganizationRole is structurally identical to UpdateAuthorizationPermission.</summary>
+    /// <summary>Represents an update organization role.</summary>
+    /// <remarks>Structurally identical to <see cref="UpdateAuthorizationPermission"/>.</remarks>
     public class UpdateOrganizationRole : UpdateAuthorizationPermission { }
 }

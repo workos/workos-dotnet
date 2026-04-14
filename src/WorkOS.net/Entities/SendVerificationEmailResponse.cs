@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>SendVerificationEmailResponse is structurally identical to ResetPasswordResponse.</summary>
+    /// <summary>Represents a send verification email response.</summary>
+    /// <remarks>Structurally identical to <see cref="ResetPasswordResponse"/>.</remarks>
     public class SendVerificationEmailResponse : ResetPasswordResponse { }
 }

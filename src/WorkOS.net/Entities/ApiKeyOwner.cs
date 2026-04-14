@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>ApiKeyOwner is structurally identical to ApiKeyCreatedDataOwner.</summary>
+    /// <summary>The entity that owns the API Key.</summary>
+    /// <remarks>Structurally identical to <see cref="ApiKeyCreatedDataOwner"/>.</remarks>
     public class ApiKeyOwner : ApiKeyCreatedDataOwner { }
 }

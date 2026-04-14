@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>AuthenticationFactorSms is structurally identical to AuthenticationFactorEnrolledSms.</summary>
+    /// <summary>SMS-based authentication factor details.</summary>
+    /// <remarks>Structurally identical to <see cref="AuthenticationFactorEnrolledSms"/>.</remarks>
     public class AuthenticationFactorSms : AuthenticationFactorEnrolledSms { }
 }

@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>AuthenticationPasskeyFailedDataError is structurally identical to AuthenticationEmailVerificationFailedDataError.</summary>
+    /// <summary>Details about the authentication error.</summary>
+    /// <remarks>Structurally identical to <see cref="AuthenticationEmailVerificationFailedDataError"/>.</remarks>
     public class AuthenticationPasskeyFailedDataError : AuthenticationEmailVerificationFailedDataError { }
 }

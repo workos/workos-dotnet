@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>PermissionDeletedData is structurally identical to PermissionCreatedData.</summary>
+    /// <summary>The event payload.</summary>
+    /// <remarks>Structurally identical to <see cref="PermissionCreatedData"/>.</remarks>
     public class PermissionDeletedData : PermissionCreatedData { }
 }

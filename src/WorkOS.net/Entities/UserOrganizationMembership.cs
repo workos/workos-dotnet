@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>UserOrganizationMembership is structurally identical to OrganizationMembership.</summary>
+    /// <summary>Represents an user organization membership.</summary>
+    /// <remarks>Structurally identical to <see cref="OrganizationMembership"/>.</remarks>
     public class UserOrganizationMembership : OrganizationMembership { }
 }

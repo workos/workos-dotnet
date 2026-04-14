@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>ConnectionSAMLCertificateRenewedDataConnection is structurally identical to ConnectionSAMLCertificateRenewalRequiredDataConnection.</summary>
+    /// <summary>The connection with the renewed certificate.</summary>
+    /// <remarks>Structurally identical to <see cref="ConnectionSAMLCertificateRenewalRequiredDataConnection"/>.</remarks>
     public class ConnectionSAMLCertificateRenewedDataConnection : ConnectionSAMLCertificateRenewalRequiredDataConnection { }
 }

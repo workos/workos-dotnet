@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>FlagDeletedContext is structurally identical to FlagCreatedContext.</summary>
-    public class FlagDeletedContext : FlagCreatedContext { }
+    /// <summary>Additional context about the event.</summary>
+    /// <remarks>Structurally identical to <see cref="EventSchemaContext"/>.</remarks>
+    public class FlagDeletedContext : EventSchemaContext { }
 }

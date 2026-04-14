@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>ConfirmEmailChange is structurally identical to AuthenticationChallengesVerifyRequest.</summary>
+    /// <summary>Represents a confirm email change.</summary>
+    /// <remarks>Structurally identical to <see cref="AuthenticationChallengesVerifyRequest"/>.</remarks>
     public class ConfirmEmailChange : AuthenticationChallengesVerifyRequest { }
 }

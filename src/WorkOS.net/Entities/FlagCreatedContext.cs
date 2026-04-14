@@ -2,21 +2,7 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
-
     /// <summary>Additional context about the event.</summary>
-    public class FlagCreatedContext
-    {
-
-        /// <summary>The client ID associated with the flag event.</summary>
-        [JsonProperty("client_id")]
-        [STJS.JsonPropertyName("client_id")]
-        public string ClientId { get; set; } = default!;
-
-        /// <summary>The actor who performed the action.</summary>
-        [JsonProperty("actor")]
-        [STJS.JsonPropertyName("actor")]
-        public FlagCreatedContextActor Actor { get; set; } = default!;
-    }
+    /// <remarks>Structurally identical to <see cref="EventSchemaContext"/>.</remarks>
+    public class FlagCreatedContext : EventSchemaContext { }
 }

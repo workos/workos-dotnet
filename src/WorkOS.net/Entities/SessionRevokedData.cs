@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>SessionRevokedData is structurally identical to SessionCreatedData.</summary>
+    /// <summary>The event payload.</summary>
+    /// <remarks>Structurally identical to <see cref="SessionCreatedData"/>.</remarks>
     public class SessionRevokedData : SessionCreatedData { }
 }

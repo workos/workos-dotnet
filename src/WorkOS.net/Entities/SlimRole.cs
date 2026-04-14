@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>SlimRole is structurally identical to AddRolePermission.</summary>
+    /// <summary>The primary role assigned to the user.</summary>
+    /// <remarks>Structurally identical to <see cref="AddRolePermission"/>.</remarks>
     public class SlimRole : AddRolePermission { }
 }

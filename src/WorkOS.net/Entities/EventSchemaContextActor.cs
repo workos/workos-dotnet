@@ -4,5 +4,5 @@ namespace WorkOS
 {
     /// <summary>The actor who performed the action.</summary>
     /// <remarks>Structurally identical to <see cref="EventContextActor"/>.</remarks>
-    public class FlagCreatedContextActor : EventContextActor { }
+    public class EventSchemaContextActor : EventContextActor { }
 }

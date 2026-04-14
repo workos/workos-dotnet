@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>UserSessionsImpersonator is structurally identical to AuthenticateResponseImpersonator.</summary>
+    /// <summary>Information about the impersonator if this session was created via impersonation.</summary>
+    /// <remarks>Structurally identical to <see cref="AuthenticateResponseImpersonator"/>.</remarks>
     public class UserSessionsImpersonator : AuthenticateResponseImpersonator { }
 }

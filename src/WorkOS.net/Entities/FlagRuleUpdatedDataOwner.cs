@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>FlagRuleUpdatedDataOwner is structurally identical to FeatureFlagOwner.</summary>
+    /// <summary>Represents a flag rule updated data owner.</summary>
+    /// <remarks>Structurally identical to <see cref="FeatureFlagOwner"/>.</remarks>
     public class FlagRuleUpdatedDataOwner : FeatureFlagOwner { }
 }

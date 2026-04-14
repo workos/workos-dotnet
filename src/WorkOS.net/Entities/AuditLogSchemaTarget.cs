@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>AuditLogSchemaTarget is structurally identical to AuditLogSchemaJsonTarget.</summary>
+    /// <summary>Represents an audit log schema target.</summary>
+    /// <remarks>Structurally identical to <see cref="AuditLogSchemaJsonTarget"/>.</remarks>
     public class AuditLogSchemaTarget : AuditLogSchemaJsonTarget { }
 }

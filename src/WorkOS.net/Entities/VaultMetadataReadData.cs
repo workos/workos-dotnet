@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>VaultMetadataReadData is structurally identical to VaultDataDeletedData.</summary>
+    /// <summary>The event payload.</summary>
+    /// <remarks>Structurally identical to <see cref="VaultDataDeletedData"/>.</remarks>
     public class VaultMetadataReadData : VaultDataDeletedData { }
 }

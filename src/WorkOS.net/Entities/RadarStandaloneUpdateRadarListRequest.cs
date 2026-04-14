@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>RadarStandaloneUpdateRadarListRequest is structurally identical to RadarStandaloneDeleteRadarListEntryRequest.</summary>
+    /// <summary>Represents a radar standalone update radar list request.</summary>
+    /// <remarks>Structurally identical to <see cref="RadarStandaloneDeleteRadarListEntryRequest"/>.</remarks>
     public class RadarStandaloneUpdateRadarListRequest : RadarStandaloneDeleteRadarListEntryRequest { }
 }

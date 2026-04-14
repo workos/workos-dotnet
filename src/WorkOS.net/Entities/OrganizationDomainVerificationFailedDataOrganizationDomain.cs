@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>OrganizationDomainVerificationFailedDataOrganizationDomain is structurally identical to OrganizationCreatedDataDomain.</summary>
+    /// <summary>The organization domain that failed verification.</summary>
+    /// <remarks>Structurally identical to <see cref="OrganizationCreatedDataDomain"/>.</remarks>
     public class OrganizationDomainVerificationFailedDataOrganizationDomain : OrganizationCreatedDataDomain { }
 }

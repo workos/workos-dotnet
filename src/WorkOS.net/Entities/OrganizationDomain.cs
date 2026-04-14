@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>OrganizationDomain is structurally identical to OrganizationCreatedDataDomain.</summary>
+    /// <summary>Represents an organization domain.</summary>
+    /// <remarks>Structurally identical to <see cref="OrganizationCreatedDataDomain"/>.</remarks>
     public class OrganizationDomain : OrganizationCreatedDataDomain { }
 }

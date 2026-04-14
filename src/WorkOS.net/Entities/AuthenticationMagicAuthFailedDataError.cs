@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>AuthenticationMagicAuthFailedDataError is structurally identical to AuthenticationEmailVerificationFailedDataError.</summary>
+    /// <summary>Details about the authentication error.</summary>
+    /// <remarks>Structurally identical to <see cref="AuthenticationEmailVerificationFailedDataError"/>.</remarks>
     public class AuthenticationMagicAuthFailedDataError : AuthenticationEmailVerificationFailedDataError { }
 }

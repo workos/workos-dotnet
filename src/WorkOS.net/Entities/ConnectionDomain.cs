@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>ConnectionDomain is structurally identical to ConnectionActivatedDataDomain.</summary>
+    /// <summary>Represents a connection domain.</summary>
+    /// <remarks>Structurally identical to <see cref="ConnectionActivatedDataDomain"/>.</remarks>
     public class ConnectionDomain : ConnectionActivatedDataDomain { }
 }

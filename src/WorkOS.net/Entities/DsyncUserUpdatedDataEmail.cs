@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>DsyncUserUpdatedDataEmail is structurally identical to DirectoryUserEmail.</summary>
+    /// <summary>Represents a dsync user updated data email.</summary>
+    /// <remarks>Structurally identical to <see cref="DirectoryUserEmail"/>.</remarks>
     public class DsyncUserUpdatedDataEmail : DirectoryUserEmail { }
 }

@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>FlagDeletedContextActor is structurally identical to EventContextActor.</summary>
+    /// <summary>The actor who performed the action.</summary>
+    /// <remarks>Structurally identical to <see cref="EventContextActor"/>.</remarks>
     public class FlagDeletedContextActor : EventContextActor { }
 }

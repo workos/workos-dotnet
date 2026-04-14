@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>Permission is structurally identical to AuthorizationPermission.</summary>
+    /// <summary>Represents a permission.</summary>
+    /// <remarks>Structurally identical to <see cref="AuthorizationPermission"/>.</remarks>
     public class Permission : AuthorizationPermission { }
 }

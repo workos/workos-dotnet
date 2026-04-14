@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>CreateRole is structurally identical to CreateAuthorizationPermission.</summary>
+    /// <summary>Represents a create role.</summary>
+    /// <remarks>Structurally identical to <see cref="CreateAuthorizationPermission"/>.</remarks>
     public class CreateRole : CreateAuthorizationPermission { }
 }

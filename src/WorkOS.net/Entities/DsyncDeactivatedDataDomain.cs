@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>DsyncDeactivatedDataDomain is structurally identical to DsyncActivatedDataDomain.</summary>
+    /// <summary>Represents a dsync deactivated data domain.</summary>
+    /// <remarks>Structurally identical to <see cref="DsyncActivatedDataDomain"/>.</remarks>
     public class DsyncDeactivatedDataDomain : DsyncActivatedDataDomain { }
 }

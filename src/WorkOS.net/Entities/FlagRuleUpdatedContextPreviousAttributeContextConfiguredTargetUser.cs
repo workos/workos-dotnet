@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>FlagRuleUpdatedContextPreviousAttributeContextConfiguredTargetUser is structurally identical to FlagRuleUpdatedContextConfiguredTargetUser.</summary>
+    /// <summary>Represents a flag rule updated context previous attribute context configured target user.</summary>
+    /// <remarks>Structurally identical to <see cref="FlagRuleUpdatedContextConfiguredTargetUser"/>.</remarks>
     public class FlagRuleUpdatedContextPreviousAttributeContextConfiguredTargetUser : FlagRuleUpdatedContextConfiguredTargetUser { }
 }

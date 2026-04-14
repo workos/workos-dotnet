@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>PasswordResetSucceededData is structurally identical to PasswordResetCreatedData.</summary>
+    /// <summary>The event payload.</summary>
+    /// <remarks>Structurally identical to <see cref="PasswordResetCreatedData"/>.</remarks>
     public class PasswordResetSucceededData : PasswordResetCreatedData { }
 }

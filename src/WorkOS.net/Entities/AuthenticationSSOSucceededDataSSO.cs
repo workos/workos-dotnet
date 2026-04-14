@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>AuthenticationSSOSucceededDataSSO is structurally identical to AuthenticationSSOFailedDataSSO.</summary>
+    /// <summary>SSO connection details.</summary>
+    /// <remarks>Structurally identical to <see cref="AuthenticationSSOFailedDataSSO"/>.</remarks>
     public class AuthenticationSSOSucceededDataSSO : AuthenticationSSOFailedDataSSO { }
 }

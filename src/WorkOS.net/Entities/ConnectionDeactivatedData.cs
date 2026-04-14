@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>ConnectionDeactivatedData is structurally identical to ConnectionActivatedData.</summary>
+    /// <summary>The event payload.</summary>
+    /// <remarks>Structurally identical to <see cref="ConnectionActivatedData"/>.</remarks>
     public class ConnectionDeactivatedData : ConnectionActivatedData { }
 }

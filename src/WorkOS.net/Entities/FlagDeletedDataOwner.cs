@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>FlagDeletedDataOwner is structurally identical to FeatureFlagOwner.</summary>
+    /// <summary>Represents a flag deleted data owner.</summary>
+    /// <remarks>Structurally identical to <see cref="FeatureFlagOwner"/>.</remarks>
     public class FlagDeletedDataOwner : FeatureFlagOwner { }
 }

@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>RemoveRole is structurally identical to AssignRole.</summary>
+    /// <summary>Represents a remove role.</summary>
+    /// <remarks>Structurally identical to <see cref="AssignRole"/>.</remarks>
     public class RemoveRole : AssignRole { }
 }

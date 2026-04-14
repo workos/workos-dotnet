@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>ConnectionDeactivatedDataDomain is structurally identical to ConnectionActivatedDataDomain.</summary>
+    /// <summary>Represents a connection deactivated data domain.</summary>
+    /// <remarks>Structurally identical to <see cref="ConnectionActivatedDataDomain"/>.</remarks>
     public class ConnectionDeactivatedDataDomain : ConnectionActivatedDataDomain { }
 }

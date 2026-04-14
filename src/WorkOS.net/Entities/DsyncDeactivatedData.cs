@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>DsyncDeactivatedData is structurally identical to DsyncActivatedData.</summary>
+    /// <summary>The event payload.</summary>
+    /// <remarks>Structurally identical to <see cref="DsyncActivatedData"/>.</remarks>
     public class DsyncDeactivatedData : DsyncActivatedData { }
 }

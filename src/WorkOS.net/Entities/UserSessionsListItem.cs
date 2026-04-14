@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>UserSessionsListItem is structurally identical to SessionCreatedData.</summary>
+    /// <summary>Represents an user sessions list item.</summary>
+    /// <remarks>Structurally identical to <see cref="SessionCreatedData"/>.</remarks>
     public class UserSessionsListItem : SessionCreatedData { }
 }

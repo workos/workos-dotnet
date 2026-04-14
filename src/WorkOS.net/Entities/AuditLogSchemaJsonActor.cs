@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>AuditLogSchemaJsonActor is structurally identical to AuditLogSchemaActor.</summary>
+    /// <summary>The metadata schema for the actor.</summary>
+    /// <remarks>Structurally identical to <see cref="AuditLogSchemaActor"/>.</remarks>
     public class AuditLogSchemaJsonActor : AuditLogSchemaActor { }
 }

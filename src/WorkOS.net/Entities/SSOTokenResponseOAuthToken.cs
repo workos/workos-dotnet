@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>SSOTokenResponseOAuthToken is structurally identical to AuthenticateResponseOAuthToken.</summary>
+    /// <summary>OAuth tokens issued by the identity provider, if available.</summary>
+    /// <remarks>Structurally identical to <see cref="AuthenticateResponseOAuthToken"/>.</remarks>
     public class SSOTokenResponseOAuthToken : AuthenticateResponseOAuthToken { }
 }

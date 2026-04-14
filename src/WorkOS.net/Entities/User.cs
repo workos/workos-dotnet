@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>User is structurally identical to EmailChangeConfirmationUser.</summary>
+    /// <summary>The user object.</summary>
+    /// <remarks>Structurally identical to <see cref="EmailChangeConfirmationUser"/>.</remarks>
     public class User : EmailChangeConfirmationUser { }
 }

@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>DirectoryUserWithGroupsEmail is structurally identical to DirectoryUserEmail.</summary>
+    /// <summary>Represents a directory user with groups email.</summary>
+    /// <remarks>Structurally identical to <see cref="DirectoryUserEmail"/>.</remarks>
     public class DirectoryUserWithGroupsEmail : DirectoryUserEmail { }
 }

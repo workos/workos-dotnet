@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>OrganizationDomainVerifiedData is structurally identical to OrganizationCreatedDataDomain.</summary>
+    /// <summary>The event payload.</summary>
+    /// <remarks>Structurally identical to <see cref="OrganizationCreatedDataDomain"/>.</remarks>
     public class OrganizationDomainVerifiedData : OrganizationCreatedDataDomain { }
 }

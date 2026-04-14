@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>OrganizationRoleUpdatedData is structurally identical to OrganizationRoleCreatedData.</summary>
+    /// <summary>The event payload.</summary>
+    /// <remarks>Structurally identical to <see cref="OrganizationRoleCreatedData"/>.</remarks>
     public class OrganizationRoleUpdatedData : OrganizationRoleCreatedData { }
 }

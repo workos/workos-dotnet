@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>Flag is structurally identical to FeatureFlag.</summary>
+    /// <summary>Represents a flag.</summary>
+    /// <remarks>Structurally identical to <see cref="FeatureFlag"/>.</remarks>
     public class Flag : FeatureFlag { }
 }

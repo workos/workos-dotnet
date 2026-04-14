@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>VaultDataUpdatedData is structurally identical to VaultDataCreatedData.</summary>
+    /// <summary>The event payload.</summary>
+    /// <remarks>Structurally identical to <see cref="VaultDataCreatedData"/>.</remarks>
     public class VaultDataUpdatedData : VaultDataCreatedData { }
 }

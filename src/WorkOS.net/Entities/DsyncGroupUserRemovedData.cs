@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>DsyncGroupUserRemovedData is structurally identical to DsyncGroupUserAddedData.</summary>
+    /// <summary>The event payload.</summary>
+    /// <remarks>Structurally identical to <see cref="DsyncGroupUserAddedData"/>.</remarks>
     public class DsyncGroupUserRemovedData : DsyncGroupUserAddedData { }
 }

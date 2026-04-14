@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>ApiKeyRevokedData is structurally identical to ApiKeyCreatedData.</summary>
+    /// <summary>The event payload.</summary>
+    /// <remarks>Structurally identical to <see cref="ApiKeyCreatedData"/>.</remarks>
     public class ApiKeyRevokedData : ApiKeyCreatedData { }
 }

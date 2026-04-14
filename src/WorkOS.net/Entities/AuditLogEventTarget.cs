@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>AuditLogEventTarget is structurally identical to AuditLogEventActor.</summary>
+    /// <summary>Represents an audit log event target.</summary>
+    /// <remarks>Structurally identical to <see cref="AuditLogEventActor"/>.</remarks>
     public class AuditLogEventTarget : AuditLogEventActor { }
 }

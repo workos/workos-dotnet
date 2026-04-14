@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>UserInvite is structurally identical to Invitation.</summary>
+    /// <summary>Represents an user invite.</summary>
+    /// <remarks>Structurally identical to <see cref="Invitation"/>.</remarks>
     public class UserInvite : Invitation { }
 }

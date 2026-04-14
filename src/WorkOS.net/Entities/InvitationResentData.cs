@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>InvitationResentData is structurally identical to InvitationAcceptedData.</summary>
+    /// <summary>The event payload.</summary>
+    /// <remarks>Structurally identical to <see cref="InvitationAcceptedData"/>.</remarks>
     public class InvitationResentData : InvitationAcceptedData { }
 }

@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>OrganizationDomainStandAlone is structurally identical to OrganizationCreatedDataDomain.</summary>
+    /// <summary>Represents an organization domain stand alone.</summary>
+    /// <remarks>Structurally identical to <see cref="OrganizationCreatedDataDomain"/>.</remarks>
     public class OrganizationDomainStandAlone : OrganizationCreatedDataDomain { }
 }

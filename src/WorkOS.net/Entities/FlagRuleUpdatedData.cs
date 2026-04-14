@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
-    /// <summary>FlagRuleUpdatedData is structurally identical to FlagCreatedData.</summary>
+    /// <summary>The event payload.</summary>
+    /// <remarks>Structurally identical to <see cref="FlagCreatedData"/>.</remarks>
     public class FlagRuleUpdatedData : FlagCreatedData { }
 }
