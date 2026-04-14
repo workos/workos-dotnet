@@ -37,6 +37,7 @@ namespace WorkOS
             this.ApiBaseURL = options.ApiBaseURL ?? DefaultApiBaseURL;
             this.ApiKey = options.ApiKey;
             this.ClientId = options.ClientId;
+            this.MaxRetries = options.MaxRetries;
             this.HttpClient = options.HttpClient ?? this.DefaultHttpClient();
         }
 
@@ -86,6 +87,11 @@ namespace WorkOS
         /// throw via <see cref="RequireClientId"/>.
         /// </summary>
         public string? ClientId { get; }
+
+        /// <summary>
+        /// Maximum number of automatic retries for retryable requests.
+        /// </summary>
+        public int MaxRetries { get; }
 
         // Non-spec service accessors (hand-maintained)
 
@@ -153,7 +159,9 @@ namespace WorkOS
         }
 
         /// <summary>
-        /// Makes a request to the WorkOS API.
+        /// Makes a request to the WorkOS API with automatic retries for retryable
+        /// failures (429, 5xx, and network errors). Uses exponential backoff with
+        /// full jitter and honors the <c>Retry-After</c> header when present.
         /// </summary>
         /// <param name="request">The request to make to the WorkOS API.</param>
         /// <param name="cancellationToken">A token used to cancel the request.</param>
@@ -162,16 +170,80 @@ namespace WorkOS
             WorkOSRequest request,
             CancellationToken cancellationToken = default)
         {
-            var requestMessage = this.CreateHttpRequestMessage(request);
-            var response = await this.HttpClient.SendAsync(requestMessage, cancellationToken);
+            var maxRetries = request.RequestOptions?.MaxRetries ?? this.MaxRetries;
 
-            if (!response.IsSuccessStatusCode)
+            HttpResponseMessage? response = null;
+            Exception? lastException = null;
+
+            for (int attempt = 0; attempt <= maxRetries; attempt++)
             {
-                var body = await response.Content.ReadAsStringAsync();
+                if (attempt > 0)
+                {
+                    var delay = ComputeRetryDelay(attempt, response);
+                    await Task.Delay(delay, cancellationToken).ConfigureAwait(false);
+                }
+
+                // Must build a fresh HttpRequestMessage per attempt because
+                // HttpClient disposes the content after sending.
+                var requestMessage = this.CreateHttpRequestMessage(request);
+
+                try
+                {
+                    response = await this.HttpClient.SendAsync(requestMessage, cancellationToken)
+                        .ConfigureAwait(false);
+                    lastException = null;
+                }
+                catch (HttpRequestException ex)
+                {
+                    lastException = ex;
+                    response = null;
+
+                    // Retryable transport error — retry if we have attempts left.
+                    if (attempt < maxRetries)
+                    {
+                        continue;
+                    }
+
+                    throw;
+                }
+                catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested)
+                {
+                    // Timeout (not caller cancellation) — retryable.
+                    lastException = ex;
+                    response = null;
+
+                    if (attempt < maxRetries)
+                    {
+                        continue;
+                    }
+
+                    throw;
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return response;
+                }
+
+                // Only retry on 429 and 5xx.
+                var statusCode = (int)response.StatusCode;
+                if ((statusCode == 429 || statusCode >= 500) && attempt < maxRetries)
+                {
+                    continue;
+                }
+
+                // Non-retryable error or out of retries.
+                var body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 throw MapError(response.StatusCode, body);
             }
 
-            return response;
+            // Should not be reachable, but satisfy the compiler.
+            if (lastException != null)
+            {
+                throw lastException;
+            }
+
+            return response!;
         }
 
         /// <summary>
@@ -271,6 +343,45 @@ namespace WorkOS
             }
         }
 
+        private static TimeSpan ComputeRetryDelay(int attempt, HttpResponseMessage? response)
+        {
+            // Base delay: 0.5s * 2^(attempt-1) → 0.5s, 1s, 2s, 4s, ...
+            var baseDelay = TimeSpan.FromMilliseconds(500 * Math.Pow(2, attempt - 1));
+
+            // Full jitter: uniform random in [0, baseDelay]
+            var jitteredMs = Random.Shared.NextDouble() * baseDelay.TotalMilliseconds;
+            var delay = TimeSpan.FromMilliseconds(jitteredMs);
+
+            // Honor Retry-After header as minimum.
+            if (response?.Headers.RetryAfter != null)
+            {
+                TimeSpan retryAfterDelay;
+                if (response.Headers.RetryAfter.Delta.HasValue)
+                {
+                    retryAfterDelay = response.Headers.RetryAfter.Delta.Value;
+                }
+                else if (response.Headers.RetryAfter.Date.HasValue)
+                {
+                    retryAfterDelay = response.Headers.RetryAfter.Date.Value - DateTimeOffset.UtcNow;
+                    if (retryAfterDelay < TimeSpan.Zero)
+                    {
+                        retryAfterDelay = TimeSpan.Zero;
+                    }
+                }
+                else
+                {
+                    retryAfterDelay = TimeSpan.Zero;
+                }
+
+                if (retryAfterDelay > delay)
+                {
+                    delay = retryAfterDelay;
+                }
+            }
+
+            return delay;
+        }
+
         private static bool UsesQueryString(HttpMethod method) =>
             method == HttpMethod.Get || method == HttpMethod.Delete;
 
@@ -300,10 +411,17 @@ namespace WorkOS
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
             }
 
-            // Idempotency key via RequestOptions
-            if (!string.IsNullOrWhiteSpace(request.RequestOptions?.IdempotencyKey))
+            // Idempotency key: use explicit value if provided, otherwise auto-generate
+            // for POST requests to ensure safe retries (per sdk-runtime-contract §2).
+            var idempotencyKey = request.RequestOptions?.IdempotencyKey;
+            if (string.IsNullOrWhiteSpace(idempotencyKey) && request.Method == HttpMethod.Post)
             {
-                requestMessage.Headers.TryAddWithoutValidation("Idempotency-Key", request.RequestOptions.IdempotencyKey);
+                idempotencyKey = Guid.NewGuid().ToString();
+            }
+
+            if (!string.IsNullOrWhiteSpace(idempotencyKey))
+            {
+                requestMessage.Headers.TryAddWithoutValidation("Idempotency-Key", idempotencyKey);
             }
 
             requestMessage.Headers.TryAddWithoutValidation("User-Agent", userAgentString);

@@ -225,6 +225,82 @@ namespace WorkOSTests
             }
         }
 
+        /// <summary>
+        /// Mocks sequential responses for the same method + path where each
+        /// response can have its own status code and optional headers.
+        /// </summary>
+        public void MockSequentialResponseMessages(
+            HttpMethod method,
+            string path,
+            (HttpStatusCode Status, string Body, IDictionary<string, string>? Headers)[] responses)
+        {
+            var setup = this.MockHandler.Protected()
+                .SetupSequence<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.Is<HttpRequestMessage>(m =>
+                        m.Method == method &&
+                        m.RequestUri!.AbsolutePath == path),
+                    ItExpr.IsAny<CancellationToken>());
+
+            foreach (var (status, body, headers) in responses)
+            {
+                var msg = new HttpResponseMessage
+                {
+                    Content = new StringContent(body),
+                    StatusCode = status,
+                };
+                if (headers != null)
+                {
+                    foreach (var kv in headers)
+                    {
+                        msg.Headers.TryAddWithoutValidation(kv.Key, kv.Value);
+                    }
+                }
+
+                // Capture via a local copy to avoid closure issues.
+                var captured = msg;
+                setup.ReturnsAsync(() =>
+                {
+                    // We can't capture in the callback of SetupSequence,
+                    // so we track via the ReturnsAsync factory.
+                    return captured;
+                });
+            }
+        }
+
+        /// <summary>
+        /// Mocks sequential responses for ANY request method + path where each
+        /// response can have its own status code and optional headers.
+        /// </summary>
+        public void MockSequentialResponseMessagesForAnyRequest(
+            (HttpStatusCode Status, string Body, IDictionary<string, string>? Headers)[] responses)
+        {
+            var setup = this.MockHandler.Protected()
+                .SetupSequence<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>());
+
+            foreach (var (status, body, headers) in responses)
+            {
+                var msg = new HttpResponseMessage
+                {
+                    Content = new StringContent(body),
+                    StatusCode = status,
+                };
+                if (headers != null)
+                {
+                    foreach (var kv in headers)
+                    {
+                        msg.Headers.TryAddWithoutValidation(kv.Key, kv.Value);
+                    }
+                }
+
+                var captured = msg;
+                setup.ReturnsAsync(() => captured);
+            }
+        }
+
         public void MockResponseForAnyRequest(
             HttpStatusCode status,
             string response)

@@ -27,6 +27,12 @@ namespace WorkOS
         public string? ClientId { get; set; }
 
         /// <summary>
+        /// Maximum number of automatic retries for retryable requests (429 and 5xx responses,
+        /// and network failures). Set to 0 to disable retries. Defaults to 2.
+        /// </summary>
+        public int MaxRetries { get; set; } = 2;
+
+        /// <summary>
         /// The HTTP client to make API requests.
         /// </summary>
         public HttpClient? HttpClient { get; set; }

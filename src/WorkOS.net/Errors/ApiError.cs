@@ -55,8 +55,10 @@ namespace WorkOS
 
     /// <summary>
     /// Thrown when the caller has exceeded the API rate limit (HTTP 429).
-    /// The SDK does not auto-retry; callers should back off and retry according
-    /// to the <c>Retry-After</c> header (if present) on the underlying response.
+    /// The SDK automatically retries 429 responses up to
+    /// <see cref="WorkOSOptions.MaxRetries"/> times with exponential backoff,
+    /// honoring the <c>Retry-After</c> header when present. This exception is
+    /// thrown only after all retries have been exhausted.
     /// </summary>
     public class RateLimitExceededError : ApiError
     {
@@ -67,9 +69,10 @@ namespace WorkOS
     }
 
     /// <summary>
-    /// Thrown for HTTP 5xx responses from the WorkOS API. The SDK does not
-    /// auto-retry server errors; callers who want resilience should wrap calls
-    /// in their own retry policy (e.g. Polly).
+    /// Thrown for HTTP 5xx responses from the WorkOS API. The SDK automatically
+    /// retries 5xx responses up to <see cref="WorkOSOptions.MaxRetries"/> times
+    /// with exponential backoff. This exception is thrown only after all retries
+    /// have been exhausted.
     /// </summary>
     public class ServerError : ApiError
     {
