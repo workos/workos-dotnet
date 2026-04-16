@@ -30,10 +30,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="OrganizationDomain"/> result.</returns>
-        public virtual async Task<OrganizationDomain> Create(OrganizationDomainsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="OrganizationCreatedDataDomain"/> result.</returns>
+        public virtual async Task<OrganizationCreatedDataDomain> Create(OrganizationDomainsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<OrganizationDomain>("/organization_domains", options, requestOptions, cancellationToken);
+            return await this.PostAsync<OrganizationCreatedDataDomain>("/organization_domains", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get an Organization Domain</summary>
@@ -43,10 +43,10 @@ namespace WorkOS
         /// <param name="id">Unique identifier of the organization domain.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="OrganizationDomainStandAlone"/> result.</returns>
-        public virtual async Task<OrganizationDomainStandAlone> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="OrganizationCreatedDataDomain"/> result.</returns>
+        public virtual async Task<OrganizationCreatedDataDomain> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<OrganizationDomainStandAlone>($"/organization_domains/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<OrganizationCreatedDataDomain>($"/organization_domains/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete an Organization Domain</summary>
@@ -68,10 +68,10 @@ namespace WorkOS
         /// <param name="id">Unique identifier of the organization domain.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="OrganizationDomainStandAlone"/> result.</returns>
-        public virtual async Task<OrganizationDomainStandAlone> Verify(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="OrganizationCreatedDataDomain"/> result.</returns>
+        public virtual async Task<OrganizationCreatedDataDomain> Verify(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<OrganizationDomainStandAlone>($"/organization_domains/{id}/verify", null, requestOptions, cancellationToken);
+            return await this.PostAsync<OrganizationCreatedDataDomain>($"/organization_domains/{id}/verify", null, requestOptions, cancellationToken);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace WorkOS
         public string Event { get; internal set; } = "flag.updated";
 
         /// <summary>The event payload.</summary>
-        public FlagUpdatedData Data { get; set; } = default!;
+        public FlagCreatedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

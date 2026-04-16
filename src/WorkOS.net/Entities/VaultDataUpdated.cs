@@ -13,7 +13,7 @@ namespace WorkOS
         public string Event { get; internal set; } = "vault.data.updated";
 
         /// <summary>The event payload.</summary>
-        public VaultDataUpdatedData Data { get; set; } = default!;
+        public VaultDataCreatedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

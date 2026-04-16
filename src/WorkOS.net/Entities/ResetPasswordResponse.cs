@@ -8,6 +8,6 @@ namespace WorkOS
     {
 
         /// <summary>The user whose password was reset.</summary>
-        public User User { get; set; } = default!;
+        public EmailChangeConfirmationUser User { get; set; } = default!;
     }
 }

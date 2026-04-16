@@ -22,6 +22,6 @@ namespace WorkOS
         public string? Email { get; set; }
 
         /// <summary>Details about the authentication error.</summary>
-        public AuthenticationOAuthFailedDataError Error { get; set; } = default!;
+        public AuthenticationEmailVerificationFailedDataError Error { get; set; } = default!;
     }
 }

@@ -13,7 +13,7 @@ namespace WorkOS
         public string Event { get; internal set; } = "password_reset.succeeded";
 
         /// <summary>The event payload.</summary>
-        public PasswordResetSucceededData Data { get; set; } = default!;
+        public PasswordResetCreatedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

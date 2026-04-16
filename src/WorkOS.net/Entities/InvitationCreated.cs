@@ -13,7 +13,7 @@ namespace WorkOS
         public string Event { get; internal set; } = "invitation.created";
 
         /// <summary>The event payload.</summary>
-        public InvitationCreatedData Data { get; set; } = default!;
+        public InvitationAcceptedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

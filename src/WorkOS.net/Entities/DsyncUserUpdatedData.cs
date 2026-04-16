@@ -37,7 +37,7 @@ namespace WorkOS
 
         /// <summary>A list of email addresses for the user.</summary>
         [System.Obsolete("This field is deprecated.")]
-        public List<DsyncUserUpdatedDataEmail>? Emails { get; set; }
+        public List<DirectoryUserEmail>? Emails { get; set; }
 
         /// <summary>The job title of the user.</summary>
         [System.Obsolete("This field is deprecated.")]
@@ -58,10 +58,10 @@ namespace WorkOS
 
         /// <summary>An object containing the custom attribute mapping for the Directory Provider.</summary>
         public Dictionary<string, object> CustomAttributes { get; set; } = default!;
-        public SlimRole? Role { get; set; }
+        public AddRolePermission? Role { get; set; }
 
         /// <summary>All roles assigned to the user.</summary>
-        public List<SlimRole>? Roles { get; set; }
+        public List<AddRolePermission>? Roles { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

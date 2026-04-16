@@ -44,7 +44,7 @@ namespace WorkOS
         public DateTimeOffset UpdatedAt { get; set; }
 
         /// <summary>The primary role assigned to the user within the organization.</summary>
-        public SlimRole Role { get; set; } = default!;
+        public AddRolePermission Role { get; set; } = default!;
 
         /// <summary>
         /// Typed accessor for <see cref="CustomAttributes"/>. Returns the value stored under

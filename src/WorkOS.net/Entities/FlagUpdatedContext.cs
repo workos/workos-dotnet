@@ -11,7 +11,7 @@ namespace WorkOS
         public string ClientId { get; set; } = default!;
 
         /// <summary>The actor who performed the action.</summary>
-        public FlagUpdatedContextActor Actor { get; set; } = default!;
+        public EventContextActor Actor { get; set; } = default!;
 
         /// <summary>Attributes that changed from their previous values.</summary>
         public FlagUpdatedContextPreviousAttribute? PreviousAttributes { get; set; }

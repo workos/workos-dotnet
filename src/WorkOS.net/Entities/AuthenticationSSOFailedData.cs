@@ -25,6 +25,6 @@ namespace WorkOS
         public AuthenticationSSOFailedDataSSO SSO { get; set; } = default!;
 
         /// <summary>Details about the authentication error.</summary>
-        public AuthenticationSSOFailedDataError Error { get; set; } = default!;
+        public AuthenticationEmailVerificationFailedDataError Error { get; set; } = default!;
     }
 }

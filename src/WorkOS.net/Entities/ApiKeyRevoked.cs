@@ -13,7 +13,7 @@ namespace WorkOS
         public string Event { get; internal set; } = "api_key.revoked";
 
         /// <summary>The event payload.</summary>
-        public ApiKeyRevokedData Data { get; set; } = default!;
+        public ApiKeyCreatedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

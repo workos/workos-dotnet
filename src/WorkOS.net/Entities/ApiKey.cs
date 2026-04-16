@@ -16,7 +16,7 @@ namespace WorkOS
         public string Id { get; set; } = default!;
 
         /// <summary>The entity that owns the API Key.</summary>
-        public ApiKeyOwner Owner { get; set; } = default!;
+        public ApiKeyCreatedDataOwner Owner { get; set; } = default!;
 
         /// <summary>A descriptive name for the API Key.</summary>
         public string Name { get; set; } = default!;

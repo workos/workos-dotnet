@@ -29,10 +29,10 @@ namespace WorkOS
         public OrganizationMembershipCreatedDataStatus Status { get; set; }
 
         /// <summary>The role associated with the membership.</summary>
-        public SlimRole Role { get; set; } = default!;
+        public AddRolePermission Role { get; set; } = default!;
 
         /// <summary>The roles associated with the membership.</summary>
-        public List<SlimRole>? Roles { get; set; }
+        public List<AddRolePermission>? Roles { get; set; }
 
         /// <summary>Custom attributes associated with the membership.</summary>
         public Dictionary<string, object> CustomAttributes { get; set; } = default!;

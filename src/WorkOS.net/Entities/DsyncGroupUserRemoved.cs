@@ -13,7 +13,7 @@ namespace WorkOS
         public string Event { get; internal set; } = "dsync.group.user_removed";
 
         /// <summary>The event payload.</summary>
-        public DsyncGroupUserRemovedData Data { get; set; } = default!;
+        public DsyncGroupUserAddedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

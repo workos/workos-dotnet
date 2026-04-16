@@ -49,7 +49,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGet()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/feature_flag.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/feature-flags/test_slug", HttpStatusCode.OK, fixture);
             var result = await this.service.Get("test_slug");
             Assert.NotNull(result);
@@ -144,12 +144,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/feature_flag.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/feature-flags", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<Flag>();
+            var items = new List<FeatureFlag>();
             await foreach (var item in this.service.ListAutoPagingAsync(new FeatureFlagsListOptions()))
             {
                 items.Add(item);
@@ -164,7 +164,7 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/feature-flags", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<Flag>();
+            var items = new List<FeatureFlag>();
             await foreach (var item in this.service.ListAutoPagingAsync(new FeatureFlagsListOptions()))
             {
                 items.Add(item);
@@ -176,12 +176,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListOrganizationFeatureFlagsAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/feature_flag.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_organizationId/feature-flags", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<Flag>();
+            var items = new List<FeatureFlag>();
             await foreach (var item in this.service.ListOrganizationFeatureFlagsAutoPagingAsync("test_organizationId", new FeatureFlagsListOrganizationFeatureFlagsOptions()))
             {
                 items.Add(item);
@@ -196,7 +196,7 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_organizationId/feature-flags", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<Flag>();
+            var items = new List<FeatureFlag>();
             await foreach (var item in this.service.ListOrganizationFeatureFlagsAutoPagingAsync("test_organizationId", new FeatureFlagsListOrganizationFeatureFlagsOptions()))
             {
                 items.Add(item);
@@ -208,12 +208,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListUserFeatureFlagsAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/flag.json");
+            var fixture = System.IO.File.ReadAllText("testdata/feature_flag.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_userId/feature-flags", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<Flag>();
+            var items = new List<FeatureFlag>();
             await foreach (var item in this.service.ListUserFeatureFlagsAutoPagingAsync("test_userId", new FeatureFlagsListUserFeatureFlagsOptions()))
             {
                 items.Add(item);
@@ -228,7 +228,7 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_userId/feature-flags", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<Flag>();
+            var items = new List<FeatureFlag>();
             await foreach (var item in this.service.ListUserFeatureFlagsAutoPagingAsync("test_userId", new FeatureFlagsListUserFeatureFlagsOptions()))
             {
                 items.Add(item);

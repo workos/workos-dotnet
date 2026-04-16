@@ -601,10 +601,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Permission"/> result.</returns>
-        public virtual async Task<Permission> CreatePermission(AuthorizationCreatePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuthorizationPermission"/> result.</returns>
+        public virtual async Task<AuthorizationPermission> CreatePermission(AuthorizationCreatePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<Permission>("/authorization/permissions", options, requestOptions, cancellationToken);
+            return await this.PostAsync<AuthorizationPermission>("/authorization/permissions", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a permission</summary>

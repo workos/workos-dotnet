@@ -9,7 +9,7 @@ namespace WorkOS
     {
 
         /// <summary>The connection with the renewed certificate.</summary>
-        public ConnectionSAMLCertificateRenewedDataConnection Connection { get; set; } = default!;
+        public ConnectionSAMLCertificateRenewalRequiredDataConnection Connection { get; set; } = default!;
 
         /// <summary>The renewed SAML certificate details.</summary>
         public ConnectionSAMLCertificateRenewedDataCertificate Certificate { get; set; } = default!;

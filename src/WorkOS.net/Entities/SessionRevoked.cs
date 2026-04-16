@@ -13,7 +13,7 @@ namespace WorkOS
         public string Event { get; internal set; } = "session.revoked";
 
         /// <summary>The event payload.</summary>
-        public SessionRevokedData Data { get; set; } = default!;
+        public SessionCreatedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

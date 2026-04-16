@@ -20,6 +20,6 @@ namespace WorkOS
         public Profile Profile { get; set; } = default!;
 
         /// <summary>OAuth tokens issued by the identity provider, if available.</summary>
-        public SSOTokenResponseOAuthToken? OAuthTokens { get; set; }
+        public AuthenticateResponseOAuthToken? OAuthTokens { get; set; }
     }
 }

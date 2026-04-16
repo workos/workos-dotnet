@@ -19,7 +19,7 @@ namespace WorkOS
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>Additional context about the event.</summary>
-        public FlagCreatedContext Context { get; set; } = default!;
+        public EventSchemaContext Context { get; set; } = default!;
 
         /// <summary>Distinguishes the Event object.</summary>
         public string Object { get; internal set; } = "event";

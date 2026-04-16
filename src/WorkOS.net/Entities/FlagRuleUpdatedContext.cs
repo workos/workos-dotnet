@@ -13,7 +13,7 @@ namespace WorkOS
         public string ClientId { get; set; } = default!;
 
         /// <summary>The actor who performed the action.</summary>
-        public FlagRuleUpdatedContextActor Actor { get; set; } = default!;
+        public EventContextActor Actor { get; set; } = default!;
 
         /// <summary>The access type of the flag rule.</summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]

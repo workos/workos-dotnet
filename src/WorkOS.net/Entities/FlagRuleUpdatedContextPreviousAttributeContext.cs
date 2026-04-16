@@ -11,6 +11,6 @@ namespace WorkOS
         public FlagRuleUpdatedContextAccessType? AccessType { get; set; }
 
         /// <summary>The previous configured targets for the flag rule.</summary>
-        public FlagRuleUpdatedContextPreviousAttributeContextConfiguredTarget? ConfiguredTargets { get; set; }
+        public FlagRuleUpdatedContextConfiguredTarget? ConfiguredTargets { get; set; }
     }
 }

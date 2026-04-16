@@ -30,20 +30,20 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="Flag"/> results.</returns>
-        public virtual async Task<WorkOSList<Flag>> List(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="FeatureFlag"/> results.</returns>
+        public virtual async Task<WorkOSList<FeatureFlag>> List(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<Flag>>("/feature-flags", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<FeatureFlag>>("/feature-flags", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="List"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="Flag"/> items.</returns>
-        public virtual IAsyncEnumerable<Flag> ListAutoPagingAsync(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="FeatureFlag"/> items.</returns>
+        public virtual IAsyncEnumerable<FeatureFlag> ListAutoPagingAsync(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<Flag>("/feature-flags", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<FeatureFlag>("/feature-flags", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a feature flag</summary>
@@ -53,10 +53,10 @@ namespace WorkOS
         /// <param name="slug">A unique key to reference the Feature Flag.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Flag"/> result.</returns>
-        public virtual async Task<Flag> Get(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="FeatureFlag"/> result.</returns>
+        public virtual async Task<FeatureFlag> Get(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<Flag>($"/feature-flags/{slug}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<FeatureFlag>($"/feature-flags/{slug}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Disable a feature flag</summary>
@@ -119,10 +119,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="Flag"/> results.</returns>
-        public virtual async Task<WorkOSList<Flag>> ListOrganizationFeatureFlags(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="FeatureFlag"/> results.</returns>
+        public virtual async Task<WorkOSList<FeatureFlag>> ListOrganizationFeatureFlags(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<Flag>>($"/organizations/{organizationId}/feature-flags", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<FeatureFlag>>($"/organizations/{organizationId}/feature-flags", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListOrganizationFeatureFlags"/>. Yields individual items across all pages.</summary>
@@ -130,10 +130,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="Flag"/> items.</returns>
-        public virtual IAsyncEnumerable<Flag> ListOrganizationFeatureFlagsAutoPagingAsync(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="FeatureFlag"/> items.</returns>
+        public virtual IAsyncEnumerable<FeatureFlag> ListOrganizationFeatureFlagsAutoPagingAsync(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<Flag>($"/organizations/{organizationId}/feature-flags", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<FeatureFlag>($"/organizations/{organizationId}/feature-flags", options, requestOptions, cancellationToken);
         }
 
         /// <summary>List enabled feature flags for a user</summary>
@@ -144,10 +144,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="Flag"/> results.</returns>
-        public virtual async Task<WorkOSList<Flag>> ListUserFeatureFlags(string userId, FeatureFlagsListUserFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="FeatureFlag"/> results.</returns>
+        public virtual async Task<WorkOSList<FeatureFlag>> ListUserFeatureFlags(string userId, FeatureFlagsListUserFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<Flag>>($"/user_management/users/{userId}/feature-flags", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<FeatureFlag>>($"/user_management/users/{userId}/feature-flags", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListUserFeatureFlags"/>. Yields individual items across all pages.</summary>
@@ -155,10 +155,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="Flag"/> items.</returns>
-        public virtual IAsyncEnumerable<Flag> ListUserFeatureFlagsAutoPagingAsync(string userId, FeatureFlagsListUserFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="FeatureFlag"/> items.</returns>
+        public virtual IAsyncEnumerable<FeatureFlag> ListUserFeatureFlagsAutoPagingAsync(string userId, FeatureFlagsListUserFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<Flag>($"/user_management/users/{userId}/feature-flags", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<FeatureFlag>($"/user_management/users/{userId}/feature-flags", options, requestOptions, cancellationToken);
         }
     }
 }

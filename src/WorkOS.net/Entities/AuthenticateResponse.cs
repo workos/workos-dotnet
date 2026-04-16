@@ -8,7 +8,7 @@ namespace WorkOS
     {
 
         /// <summary>The corresponding [user](https://workos.com/docs/reference/authkit/user) object.</summary>
-        public User User { get; set; } = default!;
+        public EmailChangeConfirmationUser User { get; set; } = default!;
 
         /// <summary>The ID of the organization the user selected to sign in to.</summary>
         public string? OrganizationId { get; set; }

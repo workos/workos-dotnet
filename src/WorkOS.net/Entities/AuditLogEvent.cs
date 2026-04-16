@@ -19,7 +19,7 @@ namespace WorkOS
         public AuditLogEventActor Actor { get; set; } = default!;
 
         /// <summary>The resources affected by the action.</summary>
-        public List<AuditLogEventTarget> Targets { get; set; } = default!;
+        public List<AuditLogEventActor> Targets { get; set; } = default!;
 
         /// <summary>Additional context about where and how the action occurred.</summary>
         public AuditLogEventContext Context { get; set; } = default!;

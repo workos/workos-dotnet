@@ -13,7 +13,7 @@ namespace WorkOS
         public string Event { get; internal set; } = "organization.deleted";
 
         /// <summary>The event payload.</summary>
-        public OrganizationDeletedData Data { get; set; } = default!;
+        public OrganizationCreatedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

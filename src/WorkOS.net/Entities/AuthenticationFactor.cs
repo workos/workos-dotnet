@@ -25,7 +25,7 @@ namespace WorkOS
         public string? UserId { get; set; }
 
         /// <summary>SMS-based authentication factor details.</summary>
-        public AuthenticationFactorSms? Sms { get; set; }
+        public AuthenticationFactorEnrolledSms? Sms { get; set; }
 
         /// <summary>TOTP-based authentication factor details.</summary>
         public AuthenticationFactorTotp? Totp { get; set; }

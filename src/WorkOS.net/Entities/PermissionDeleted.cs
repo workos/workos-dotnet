@@ -13,7 +13,7 @@ namespace WorkOS
         public string Event { get; internal set; } = "permission.deleted";
 
         /// <summary>The event payload.</summary>
-        public PermissionDeletedData Data { get; set; } = default!;
+        public PermissionCreatedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

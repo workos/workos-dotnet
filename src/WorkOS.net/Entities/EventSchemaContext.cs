@@ -11,6 +11,6 @@ namespace WorkOS
         public string ClientId { get; set; } = default!;
 
         /// <summary>The actor who performed the action.</summary>
-        public EventSchemaContextActor Actor { get; set; } = default!;
+        public EventContextActor Actor { get; set; } = default!;
     }
 }

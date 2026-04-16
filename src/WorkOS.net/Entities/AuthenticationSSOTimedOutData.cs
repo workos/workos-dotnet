@@ -22,9 +22,9 @@ namespace WorkOS
         public string? Email { get; set; }
 
         /// <summary>SSO connection details.</summary>
-        public AuthenticationSSOTimedOutDataSSO SSO { get; set; } = default!;
+        public AuthenticationSSOFailedDataSSO SSO { get; set; } = default!;
 
         /// <summary>Details about the authentication error.</summary>
-        public AuthenticationSSOTimedOutDataError Error { get; set; } = default!;
+        public AuthenticationEmailVerificationFailedDataError Error { get; set; } = default!;
     }
 }

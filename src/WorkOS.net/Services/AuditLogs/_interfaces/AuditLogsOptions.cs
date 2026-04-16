@@ -32,7 +32,7 @@ namespace WorkOS
         public AuditLogSchemaActor? Actor { get; set; }
 
         /// <summary>The list of targets for the schema.</summary>
-        public List<AuditLogSchemaTarget> Targets { get; set; } = default!;
+        public List<AuditLogSchemaJsonTarget> Targets { get; set; } = default!;
 
         /// <summary>Optional JSON schema for event metadata.</summary>
         public Dictionary<string, object>? Metadata { get; set; }

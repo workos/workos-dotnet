@@ -16,7 +16,7 @@ namespace WorkOS
         public long Version { get; set; }
 
         /// <summary>The metadata schema for the actor.</summary>
-        public AuditLogSchemaJsonActor? Actor { get; set; }
+        public AuditLogSchemaActor? Actor { get; set; }
 
         /// <summary>The list of targets for the schema.</summary>
         public List<AuditLogSchemaJsonTarget> Targets { get; set; } = default!;

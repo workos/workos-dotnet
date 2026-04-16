@@ -13,7 +13,7 @@ namespace WorkOS
         public string Event { get; internal set; } = "group.member_removed";
 
         /// <summary>The event payload.</summary>
-        public GroupMemberRemovedData Data { get; set; } = default!;
+        public GroupMemberAddedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

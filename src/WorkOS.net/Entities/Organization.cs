@@ -19,7 +19,7 @@ namespace WorkOS
         public string Name { get; set; } = default!;
 
         /// <summary>List of Organization Domains.</summary>
-        public List<OrganizationDomain> Domains { get; set; } = default!;
+        public List<OrganizationCreatedDataDomain> Domains { get; set; } = default!;
 
         /// <summary>Object containing [metadata](https://workos.com/docs/authkit/metadata) key/value pairs associated with the Organization.</summary>
         public Dictionary<string, string> Metadata { get; set; } = default!;

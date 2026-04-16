@@ -26,7 +26,7 @@ namespace WorkOS
         public string? Description { get; set; }
 
         /// <summary>The owner of the Feature Flag.</summary>
-        public FlagCreatedDataOwner? Owner { get; set; }
+        public FeatureFlagOwner? Owner { get; set; }
 
         /// <summary>Labels assigned to the Feature Flag for categorizing and filtering.</summary>
         public List<string> Tags { get; set; } = default!;

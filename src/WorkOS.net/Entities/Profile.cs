@@ -40,10 +40,10 @@ namespace WorkOS
         public string? LastName { get; set; }
 
         /// <summary>The role assigned to the user within the organization, if applicable.</summary>
-        public SlimRole? Role { get; set; }
+        public AddRolePermission? Role { get; set; }
 
         /// <summary>The roles assigned to the user within the organization, if applicable.</summary>
-        public List<SlimRole>? Roles { get; set; }
+        public List<AddRolePermission>? Roles { get; set; }
 
         /// <summary>The groups the user belongs to, as returned by the identity provider.</summary>
         public List<string>? Groups { get; set; }

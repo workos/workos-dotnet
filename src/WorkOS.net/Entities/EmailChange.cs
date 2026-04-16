@@ -10,7 +10,7 @@ namespace WorkOS
 
         /// <summary>Distinguishes the email change object.</summary>
         public string Object { get; internal set; } = "email_change";
-        public User User { get; set; } = default!;
+        public EmailChangeConfirmationUser User { get; set; } = default!;
 
         /// <summary>The new email address the user is changing to.</summary>
         public string NewEmail { get; set; } = default!;

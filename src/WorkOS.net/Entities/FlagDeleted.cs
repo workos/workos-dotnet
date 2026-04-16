@@ -13,13 +13,13 @@ namespace WorkOS
         public string Event { get; internal set; } = "flag.deleted";
 
         /// <summary>The event payload.</summary>
-        public FlagDeletedData Data { get; set; } = default!;
+        public FlagCreatedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>Additional context about the event.</summary>
-        public FlagDeletedContext Context { get; set; } = default!;
+        public EventSchemaContext Context { get; set; } = default!;
 
         /// <summary>Distinguishes the Event object.</summary>
         public string Object { get; internal set; } = "event";

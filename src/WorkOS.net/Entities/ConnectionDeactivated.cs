@@ -13,7 +13,7 @@ namespace WorkOS
         public string Event { get; internal set; } = "connection.deactivated";
 
         /// <summary>The event payload.</summary>
-        public ConnectionDeactivatedData Data { get; set; } = default!;
+        public ConnectionActivatedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

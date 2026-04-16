@@ -13,7 +13,7 @@ namespace WorkOS
         public string Event { get; internal set; } = "dsync.deactivated";
 
         /// <summary>The event payload.</summary>
-        public DsyncDeactivatedData Data { get; set; } = default!;
+        public DsyncActivatedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

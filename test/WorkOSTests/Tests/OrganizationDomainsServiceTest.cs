@@ -29,7 +29,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreate()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_domain.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization_created_data_domain.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/organization_domains", HttpStatusCode.OK, fixture);
             var options = new OrganizationDomainsCreateOptions();
             options.Domain = "test_domain";
@@ -47,7 +47,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGet()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_domain_stand_alone.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization_created_data_domain.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organization_domains/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.Get("test_id");
             Assert.NotNull(result);
@@ -68,7 +68,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestVerify()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/organization_domain_stand_alone.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization_created_data_domain.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/organization_domains/test_id/verify", HttpStatusCode.OK, fixture);
             var result = await this.service.Verify("test_id");
             Assert.NotNull(result);

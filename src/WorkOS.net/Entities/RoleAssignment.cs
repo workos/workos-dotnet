@@ -15,7 +15,7 @@ namespace WorkOS
         public string Id { get; set; } = default!;
 
         /// <summary>The role included in the assignment.</summary>
-        public SlimRole Role { get; set; } = default!;
+        public AddRolePermission Role { get; set; } = default!;
 
         /// <summary>The resource to which the role is assigned.</summary>
         public RoleAssignmentResource Resource { get; set; } = default!;

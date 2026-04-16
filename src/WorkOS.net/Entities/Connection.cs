@@ -40,7 +40,7 @@ namespace WorkOS
         public ConnectionActivatedDataStatus Status { get; set; }
 
         /// <summary>List of Organization Domains.</summary>
-        public List<ConnectionDomain> Domains { get; set; } = default!;
+        public List<ConnectionActivatedDataDomain> Domains { get; set; } = default!;
 
         /// <summary>Configuration options for SAML connections. Only present for SAML connection types.</summary>
         public ConnectionOption? Options { get; set; }

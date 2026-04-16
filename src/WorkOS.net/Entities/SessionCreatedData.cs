@@ -17,7 +17,7 @@ namespace WorkOS
         public string Id { get; set; } = default!;
 
         /// <summary>Information about the impersonator if this session was created via impersonation.</summary>
-        public SessionCreatedDataImpersonator? Impersonator { get; set; }
+        public AuthenticateResponseImpersonator? Impersonator { get; set; }
 
         /// <summary>The IP address from which the session was created.</summary>
         public string? IpAddress { get; set; }

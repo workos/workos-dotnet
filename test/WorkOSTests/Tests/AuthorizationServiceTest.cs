@@ -498,7 +498,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreatePermission()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/permission.json");
+            var fixture = System.IO.File.ReadAllText("testdata/authorization_permission.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/authorization/permissions", HttpStatusCode.OK, fixture);
             var options = new AuthorizationCreatePermissionOptions();
             options.Slug = "test_slug";

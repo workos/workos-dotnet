@@ -22,6 +22,6 @@ namespace WorkOS
         public string? Email { get; set; }
 
         /// <summary>SSO connection details.</summary>
-        public AuthenticationSSOStartedDataSSO SSO { get; set; } = default!;
+        public AuthenticationSSOFailedDataSSO SSO { get; set; } = default!;
     }
 }

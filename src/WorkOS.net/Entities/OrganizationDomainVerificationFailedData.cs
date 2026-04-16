@@ -15,6 +15,6 @@ namespace WorkOS
         public OrganizationDomainVerificationFailedDataReason Reason { get; set; }
 
         /// <summary>The organization domain that failed verification.</summary>
-        public OrganizationDomainVerificationFailedDataOrganizationDomain OrganizationDomain { get; set; } = default!;
+        public OrganizationCreatedDataDomain OrganizationDomain { get; set; } = default!;
     }
 }

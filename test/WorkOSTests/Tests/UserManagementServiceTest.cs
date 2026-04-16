@@ -172,14 +172,14 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreate()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user.json");
+            var fixture = System.IO.File.ReadAllText("testdata/email_change_confirmation_user.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/users", HttpStatusCode.OK, fixture);
             var options = new UserManagementCreateOptions();
             options.Email = "test_email";
             var result = await this.service.Create(options);
             Assert.NotNull(result);
             Assert.Equal("user_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
-            Assert.Equal("marcelina.davis@example.com", result.Email);
+            Assert.Equal("new.email@example.com", result.Email);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users");
             await this.httpMock.AssertRequestBodyContainsAsync("email", "test_email");
         }
@@ -187,36 +187,36 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGetByExternalId()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user.json");
+            var fixture = System.IO.File.ReadAllText("testdata/email_change_confirmation_user.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/external_id/test_external_id", HttpStatusCode.OK, fixture);
             var result = await this.service.GetByExternalId("test_external_id");
             Assert.NotNull(result);
             Assert.Equal("user_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
-            Assert.Equal("marcelina.davis@example.com", result.Email);
+            Assert.Equal("new.email@example.com", result.Email);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/users/external_id/test_external_id");
         }
 
         [Fact]
         public async Task TestGet()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user.json");
+            var fixture = System.IO.File.ReadAllText("testdata/email_change_confirmation_user.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.Get("test_id");
             Assert.NotNull(result);
             Assert.Equal("user_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
-            Assert.Equal("marcelina.davis@example.com", result.Email);
+            Assert.Equal("new.email@example.com", result.Email);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/users/test_id");
         }
 
         [Fact]
         public async Task TestUpdate()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user.json");
+            var fixture = System.IO.File.ReadAllText("testdata/email_change_confirmation_user.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/user_management/users/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.Update("test_id", new UserManagementUpdateOptions());
             Assert.NotNull(result);
             Assert.Equal("user_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
-            Assert.Equal("marcelina.davis@example.com", result.Email);
+            Assert.Equal("new.email@example.com", result.Email);
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/user_management/users/test_id");
         }
 
@@ -258,7 +258,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestVerifyEmail()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/verify_email_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/reset_password_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/users/test_id/email_verification/confirm", HttpStatusCode.OK, fixture);
             var options = new UserManagementVerifyEmailOptions();
             options.Code = "test_code";
@@ -271,7 +271,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestSendVerificationEmail()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/send_verification_email_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/reset_password_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/users/test_id/email_verification/send", HttpStatusCode.OK, fixture);
             var result = await this.service.SendVerificationEmail("test_id");
             Assert.NotNull(result);
@@ -331,7 +331,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestSendInvitation()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user_invite.json");
+            var fixture = System.IO.File.ReadAllText("testdata/invitation.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/invitations", HttpStatusCode.OK, fixture);
             var options = new UserManagementSendInvitationOptions();
             options.Email = "test_email";
@@ -347,7 +347,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestFindInvitationByToken()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user_invite.json");
+            var fixture = System.IO.File.ReadAllText("testdata/invitation.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/user_management/invitations/by_token/test_token", HttpStatusCode.OK, fixture);
             var result = await this.service.FindInvitationByToken("test_token");
             Assert.NotNull(result);
@@ -360,7 +360,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGetInvitation()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user_invite.json");
+            var fixture = System.IO.File.ReadAllText("testdata/invitation.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/user_management/invitations/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.GetInvitation("test_id");
             Assert.NotNull(result);
@@ -386,7 +386,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestResendInvitation()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user_invite.json");
+            var fixture = System.IO.File.ReadAllText("testdata/invitation.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/invitations/test_id/resend", HttpStatusCode.OK, fixture);
             var result = await this.service.ResendInvitation("test_id", new UserManagementResendInvitationOptions());
             Assert.NotNull(result);
@@ -494,26 +494,26 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGetOrganizationMembership()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user_organization_membership.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization_membership.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/user_management/organization_memberships/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.GetOrganizationMembership("test_id");
             Assert.NotNull(result);
             Assert.Equal("om_01HXYZ123456789ABCDEFGHIJ", result.Id);
-            Assert.Equal("user_01EHQTV6MWP9P1F4ZXGXMC8ABB", result.UserId);
-            Assert.Equal("org_01EHZNVPK3SFK441A1RGBFSHRT", result.OrganizationId);
+            Assert.Equal("user_01E4ZCR3C5A4QZ2Z2JQXGKZJ9E", result.UserId);
+            Assert.Equal("org_01E4ZCR3C56J083X43JQXF3JK5", result.OrganizationId);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/organization_memberships/test_id");
         }
 
         [Fact]
         public async Task TestUpdateOrganizationMembership()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user_organization_membership.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization_membership.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/user_management/organization_memberships/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.UpdateOrganizationMembership("test_id", new UserManagementUpdateOrganizationMembershipOptions());
             Assert.NotNull(result);
             Assert.Equal("om_01HXYZ123456789ABCDEFGHIJ", result.Id);
-            Assert.Equal("user_01EHQTV6MWP9P1F4ZXGXMC8ABB", result.UserId);
-            Assert.Equal("org_01EHZNVPK3SFK441A1RGBFSHRT", result.OrganizationId);
+            Assert.Equal("user_01E4ZCR3C5A4QZ2Z2JQXGKZJ9E", result.UserId);
+            Assert.Equal("org_01E4ZCR3C56J083X43JQXF3JK5", result.OrganizationId);
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/user_management/organization_memberships/test_id");
         }
 
@@ -541,13 +541,13 @@ namespace WorkOSTests
         [Fact]
         public async Task TestReactivateOrganizationMembership()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user_organization_membership.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization_membership.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/user_management/organization_memberships/test_id/reactivate", HttpStatusCode.OK, fixture);
             var result = await this.service.ReactivateOrganizationMembership("test_id");
             Assert.NotNull(result);
             Assert.Equal("om_01HXYZ123456789ABCDEFGHIJ", result.Id);
-            Assert.Equal("user_01EHQTV6MWP9P1F4ZXGXMC8ABB", result.UserId);
-            Assert.Equal("org_01EHZNVPK3SFK441A1RGBFSHRT", result.OrganizationId);
+            Assert.Equal("user_01E4ZCR3C5A4QZ2Z2JQXGKZJ9E", result.UserId);
+            Assert.Equal("org_01E4ZCR3C56J083X43JQXF3JK5", result.OrganizationId);
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/user_management/organization_memberships/test_id/reactivate");
         }
 
@@ -598,12 +598,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user.json");
+            var fixture = System.IO.File.ReadAllText("testdata/email_change_confirmation_user.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<User>();
+            var items = new List<EmailChangeConfirmationUser>();
             await foreach (var item in this.service.ListAutoPagingAsync(new UserManagementListOptions()))
             {
                 items.Add(item);
@@ -618,7 +618,7 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<User>();
+            var items = new List<EmailChangeConfirmationUser>();
             await foreach (var item in this.service.ListAutoPagingAsync(new UserManagementListOptions()))
             {
                 items.Add(item);
@@ -630,12 +630,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListSessionsAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user_sessions_list_item.json");
+            var fixture = System.IO.File.ReadAllText("testdata/session_created_data.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_id/sessions", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<UserSessionsListItem>();
+            var items = new List<SessionCreatedData>();
             await foreach (var item in this.service.ListSessionsAutoPagingAsync("test_id", new UserManagementListSessionsOptions()))
             {
                 items.Add(item);
@@ -650,7 +650,7 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_id/sessions", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<UserSessionsListItem>();
+            var items = new List<SessionCreatedData>();
             await foreach (var item in this.service.ListSessionsAutoPagingAsync("test_id", new UserManagementListSessionsOptions()))
             {
                 items.Add(item);
@@ -662,12 +662,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListInvitationsAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user_invite.json");
+            var fixture = System.IO.File.ReadAllText("testdata/invitation.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/invitations", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<UserInvite>();
+            var items = new List<Invitation>();
             await foreach (var item in this.service.ListInvitationsAutoPagingAsync(new UserManagementListInvitationsOptions()))
             {
                 items.Add(item);
@@ -682,7 +682,7 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/invitations", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<UserInvite>();
+            var items = new List<Invitation>();
             await foreach (var item in this.service.ListInvitationsAutoPagingAsync(new UserManagementListInvitationsOptions()))
             {
                 items.Add(item);
@@ -694,12 +694,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListOrganizationMembershipsAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user_organization_membership.json");
+            var fixture = System.IO.File.ReadAllText("testdata/organization_membership.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/organization_memberships", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<UserOrganizationMembership>();
+            var items = new List<OrganizationMembership>();
             await foreach (var item in this.service.ListOrganizationMembershipsAutoPagingAsync(new UserManagementListOrganizationMembershipsOptions()))
             {
                 items.Add(item);
@@ -714,7 +714,7 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/organization_memberships", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<UserOrganizationMembership>();
+            var items = new List<OrganizationMembership>();
             await foreach (var item in this.service.ListOrganizationMembershipsAutoPagingAsync(new UserManagementListOrganizationMembershipsOptions()))
             {
                 items.Add(item);

@@ -273,20 +273,20 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="User"/> results.</returns>
-        public virtual async Task<WorkOSList<User>> List(UserManagementListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="EmailChangeConfirmationUser"/> results.</returns>
+        public virtual async Task<WorkOSList<EmailChangeConfirmationUser>> List(UserManagementListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<User>>("/user_management/users", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<EmailChangeConfirmationUser>>("/user_management/users", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="List"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="User"/> items.</returns>
-        public virtual IAsyncEnumerable<User> ListAutoPagingAsync(UserManagementListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="EmailChangeConfirmationUser"/> items.</returns>
+        public virtual IAsyncEnumerable<EmailChangeConfirmationUser> ListAutoPagingAsync(UserManagementListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<User>("/user_management/users", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<EmailChangeConfirmationUser>("/user_management/users", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Create a user</summary>
@@ -296,10 +296,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="User"/> result.</returns>
-        public virtual async Task<User> Create(UserManagementCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="EmailChangeConfirmationUser"/> result.</returns>
+        public virtual async Task<EmailChangeConfirmationUser> Create(UserManagementCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<User>("/user_management/users", options, requestOptions, cancellationToken);
+            return await this.PostAsync<EmailChangeConfirmationUser>("/user_management/users", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a user by external ID</summary>
@@ -309,10 +309,10 @@ namespace WorkOS
         /// <param name="externalId">The external ID of the user.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="User"/> result.</returns>
-        public virtual async Task<User> GetByExternalId(string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="EmailChangeConfirmationUser"/> result.</returns>
+        public virtual async Task<EmailChangeConfirmationUser> GetByExternalId(string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<User>($"/user_management/users/external_id/{externalId}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<EmailChangeConfirmationUser>($"/user_management/users/external_id/{externalId}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a user</summary>
@@ -322,10 +322,10 @@ namespace WorkOS
         /// <param name="id">The unique ID of the user.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="User"/> result.</returns>
-        public virtual async Task<User> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="EmailChangeConfirmationUser"/> result.</returns>
+        public virtual async Task<EmailChangeConfirmationUser> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<User>($"/user_management/users/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<EmailChangeConfirmationUser>($"/user_management/users/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Update a user</summary>
@@ -336,10 +336,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="User"/> result.</returns>
-        public virtual async Task<User> Update(string id, UserManagementUpdateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="EmailChangeConfirmationUser"/> result.</returns>
+        public virtual async Task<EmailChangeConfirmationUser> Update(string id, UserManagementUpdateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<User>($"/user_management/users/{id}", options, requestOptions, cancellationToken);
+            return await this.PutAsync<EmailChangeConfirmationUser>($"/user_management/users/{id}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a user</summary>
@@ -390,10 +390,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="VerifyEmailResponse"/> result.</returns>
-        public virtual async Task<VerifyEmailResponse> VerifyEmail(string id, UserManagementVerifyEmailOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ResetPasswordResponse"/> result.</returns>
+        public virtual async Task<ResetPasswordResponse> VerifyEmail(string id, UserManagementVerifyEmailOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<VerifyEmailResponse>($"/user_management/users/{id}/email_verification/confirm", options, requestOptions, cancellationToken);
+            return await this.PostAsync<ResetPasswordResponse>($"/user_management/users/{id}/email_verification/confirm", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Send verification email</summary>
@@ -403,10 +403,10 @@ namespace WorkOS
         /// <param name="id">The ID of the user.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="SendVerificationEmailResponse"/> result.</returns>
-        public virtual async Task<SendVerificationEmailResponse> SendVerificationEmail(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ResetPasswordResponse"/> result.</returns>
+        public virtual async Task<ResetPasswordResponse> SendVerificationEmail(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<SendVerificationEmailResponse>($"/user_management/users/{id}/email_verification/send", null, requestOptions, cancellationToken);
+            return await this.PostAsync<ResetPasswordResponse>($"/user_management/users/{id}/email_verification/send", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Get user identities</summary>
@@ -430,10 +430,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="UserSessionsListItem"/> results.</returns>
-        public virtual async Task<WorkOSList<UserSessionsListItem>> ListSessions(string id, UserManagementListSessionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="SessionCreatedData"/> results.</returns>
+        public virtual async Task<WorkOSList<SessionCreatedData>> ListSessions(string id, UserManagementListSessionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<UserSessionsListItem>>($"/user_management/users/{id}/sessions", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<SessionCreatedData>>($"/user_management/users/{id}/sessions", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListSessions"/>. Yields individual items across all pages.</summary>
@@ -441,10 +441,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="UserSessionsListItem"/> items.</returns>
-        public virtual IAsyncEnumerable<UserSessionsListItem> ListSessionsAutoPagingAsync(string id, UserManagementListSessionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="SessionCreatedData"/> items.</returns>
+        public virtual IAsyncEnumerable<SessionCreatedData> ListSessionsAutoPagingAsync(string id, UserManagementListSessionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<UserSessionsListItem>($"/user_management/users/{id}/sessions", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<SessionCreatedData>($"/user_management/users/{id}/sessions", options, requestOptions, cancellationToken);
         }
 
         /// <summary>List invitations</summary>
@@ -454,20 +454,20 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="UserInvite"/> results.</returns>
-        public virtual async Task<WorkOSList<UserInvite>> ListInvitations(UserManagementListInvitationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="Invitation"/> results.</returns>
+        public virtual async Task<WorkOSList<Invitation>> ListInvitations(UserManagementListInvitationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<UserInvite>>("/user_management/invitations", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<Invitation>>("/user_management/invitations", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListInvitations"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="UserInvite"/> items.</returns>
-        public virtual IAsyncEnumerable<UserInvite> ListInvitationsAutoPagingAsync(UserManagementListInvitationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="Invitation"/> items.</returns>
+        public virtual IAsyncEnumerable<Invitation> ListInvitationsAutoPagingAsync(UserManagementListInvitationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<UserInvite>("/user_management/invitations", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<Invitation>("/user_management/invitations", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Send an invitation</summary>
@@ -477,10 +477,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserInvite"/> result.</returns>
-        public virtual async Task<UserInvite> SendInvitation(UserManagementSendInvitationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="Invitation"/> result.</returns>
+        public virtual async Task<Invitation> SendInvitation(UserManagementSendInvitationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<UserInvite>("/user_management/invitations", options, requestOptions, cancellationToken);
+            return await this.PostAsync<Invitation>("/user_management/invitations", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Find an invitation by token</summary>
@@ -490,10 +490,10 @@ namespace WorkOS
         /// <param name="token">The token used to accept the invitation.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserInvite"/> result.</returns>
-        public virtual async Task<UserInvite> FindInvitationByToken(string token, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="Invitation"/> result.</returns>
+        public virtual async Task<Invitation> FindInvitationByToken(string token, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<UserInvite>($"/user_management/invitations/by_token/{token}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<Invitation>($"/user_management/invitations/by_token/{token}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Get an invitation</summary>
@@ -503,10 +503,10 @@ namespace WorkOS
         /// <param name="id">The unique ID of the invitation.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserInvite"/> result.</returns>
-        public virtual async Task<UserInvite> GetInvitation(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="Invitation"/> result.</returns>
+        public virtual async Task<Invitation> GetInvitation(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<UserInvite>($"/user_management/invitations/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<Invitation>($"/user_management/invitations/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Accept an invitation</summary>
@@ -530,10 +530,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserInvite"/> result.</returns>
-        public virtual async Task<UserInvite> ResendInvitation(string id, UserManagementResendInvitationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="Invitation"/> result.</returns>
+        public virtual async Task<Invitation> ResendInvitation(string id, UserManagementResendInvitationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<UserInvite>($"/user_management/invitations/{id}/resend", options, requestOptions, cancellationToken);
+            return await this.PostAsync<Invitation>($"/user_management/invitations/{id}/resend", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Revoke an invitation</summary>
@@ -595,20 +595,20 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="UserOrganizationMembership"/> results.</returns>
-        public virtual async Task<WorkOSList<UserOrganizationMembership>> ListOrganizationMemberships(UserManagementListOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="OrganizationMembership"/> results.</returns>
+        public virtual async Task<WorkOSList<OrganizationMembership>> ListOrganizationMemberships(UserManagementListOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<UserOrganizationMembership>>("/user_management/organization_memberships", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<OrganizationMembership>>("/user_management/organization_memberships", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListOrganizationMemberships"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="UserOrganizationMembership"/> items.</returns>
-        public virtual IAsyncEnumerable<UserOrganizationMembership> ListOrganizationMembershipsAutoPagingAsync(UserManagementListOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="OrganizationMembership"/> items.</returns>
+        public virtual IAsyncEnumerable<OrganizationMembership> ListOrganizationMembershipsAutoPagingAsync(UserManagementListOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<UserOrganizationMembership>("/user_management/organization_memberships", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<OrganizationMembership>("/user_management/organization_memberships", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Create an organization membership</summary>
@@ -632,10 +632,10 @@ namespace WorkOS
         /// <param name="id">The unique ID of the organization membership.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserOrganizationMembership"/> result.</returns>
-        public virtual async Task<UserOrganizationMembership> GetOrganizationMembership(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="OrganizationMembership"/> result.</returns>
+        public virtual async Task<OrganizationMembership> GetOrganizationMembership(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<UserOrganizationMembership>($"/user_management/organization_memberships/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<OrganizationMembership>($"/user_management/organization_memberships/{id}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Update an organization membership</summary>
@@ -646,10 +646,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserOrganizationMembership"/> result.</returns>
-        public virtual async Task<UserOrganizationMembership> UpdateOrganizationMembership(string id, UserManagementUpdateOrganizationMembershipOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="OrganizationMembership"/> result.</returns>
+        public virtual async Task<OrganizationMembership> UpdateOrganizationMembership(string id, UserManagementUpdateOrganizationMembershipOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<UserOrganizationMembership>($"/user_management/organization_memberships/{id}", options, requestOptions, cancellationToken);
+            return await this.PutAsync<OrganizationMembership>($"/user_management/organization_memberships/{id}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete an organization membership</summary>
@@ -690,10 +690,10 @@ namespace WorkOS
         /// <param name="id">The unique ID of the organization membership.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="UserOrganizationMembership"/> result.</returns>
-        public virtual async Task<UserOrganizationMembership> ReactivateOrganizationMembership(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="OrganizationMembership"/> result.</returns>
+        public virtual async Task<OrganizationMembership> ReactivateOrganizationMembership(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<UserOrganizationMembership>($"/user_management/organization_memberships/{id}/reactivate", null, requestOptions, cancellationToken);
+            return await this.PutAsync<OrganizationMembership>($"/user_management/organization_memberships/{id}/reactivate", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Create a redirect URI</summary>
