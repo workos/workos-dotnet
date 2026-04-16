@@ -2,26 +2,18 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
     public class ConnectionSAMLCertificateRenewalRequiredData
     {
 
         /// <summary>The connection with the expiring certificate.</summary>
-        [JsonProperty("connection")]
-        [STJS.JsonPropertyName("connection")]
         public ConnectionSAMLCertificateRenewalRequiredDataConnection Connection { get; set; } = default!;
 
         /// <summary>The SAML certificate details.</summary>
-        [JsonProperty("certificate")]
-        [STJS.JsonPropertyName("certificate")]
         public ConnectionSAMLCertificateRenewalRequiredDataCertificate Certificate { get; set; } = default!;
 
         /// <summary>The number of days until the certificate expires.</summary>
-        [JsonProperty("days_until_expiry")]
-        [STJS.JsonPropertyName("days_until_expiry")]
         public long DaysUntilExpiry { get; set; }
     }
 }

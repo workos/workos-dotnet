@@ -10,13 +10,10 @@ namespace WorkOS
     {
 
         /// <summary>The domain value.</summary>
-        [JsonProperty("domain")]
-        [STJS.JsonPropertyName("domain")]
         public string Domain { get; set; } = default!;
 
         /// <summary>The verification state of the domain.</summary>
-        [JsonProperty("state", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("state")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public OrganizationDomainDataState State { get; set; }
     }

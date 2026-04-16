@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>The previous data attributes of the flag.</summary>
     public class FlagRuleUpdatedContextPreviousAttributeData
     {
 
         /// <summary>Whether the flag was previously enabled.</summary>
-        [JsonProperty("enabled")]
-        [STJS.JsonPropertyName("enabled")]
         public bool? Enabled { get; set; }
 
         /// <summary>The previous default value of the flag.</summary>
-        [JsonProperty("default_value")]
-        [STJS.JsonPropertyName("default_value")]
         public bool? DefaultValue { get; set; }
     }
 }

@@ -2,26 +2,18 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a dsync activated data domain.</summary>
     public class DsyncActivatedDataDomain
     {
 
         /// <summary>Distinguishes the organization domain object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "organization_domain";
 
         /// <summary>Unique identifier of the organization domain.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The domain value.</summary>
-        [JsonProperty("domain")]
-        [STJS.JsonPropertyName("domain")]
         public string Domain { get; set; } = default!;
     }
 }

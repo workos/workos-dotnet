@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an user consent option choice.</summary>
     public class UserConsentOptionChoice
     {
 
         /// <summary>The value of this choice.</summary>
-        [JsonProperty("value")]
-        [STJS.JsonPropertyName("value")]
         public string? Value { get; set; }
 
         /// <summary>A human-readable label for this choice.</summary>
-        [JsonProperty("label")]
-        [STJS.JsonPropertyName("label")]
         public string? Label { get; set; }
     }
 }

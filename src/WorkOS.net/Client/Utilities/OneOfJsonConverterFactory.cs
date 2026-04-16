@@ -6,36 +6,31 @@ namespace WorkOS
     using System.Reflection;
     using System.Text.Json;
     using System.Text.Json.Serialization;
+    using OneOf;
 
     /// <summary>
     /// System.Text.Json converter factory that mirrors
-    /// <see cref="AnyOfJsonConverter"/>: serializes the inner value of an
-    /// <see cref="AnyOf{T1,T2}"/> / <see cref="AnyOf{T1,T2,T3}"/> directly and
-    /// deserializes by trying each type parameter in declaration order.
+    /// <see cref="OneOfJsonConverter"/>: serializes the inner value of a
+    /// <c>OneOf&lt;T0, T1, ...&gt;</c> directly and deserializes by trying each
+    /// type parameter in declaration order.
     /// </summary>
-    public class AnyOfJsonConverterFactory : JsonConverterFactory
+    public class OneOfJsonConverterFactory : JsonConverterFactory
     {
         public override bool CanConvert(Type typeToConvert)
         {
-            if (!typeToConvert.IsGenericType)
-            {
-                return false;
-            }
-
-            var def = typeToConvert.GetGenericTypeDefinition();
-            return def == typeof(AnyOf<,>) || def == typeof(AnyOf<,,>);
+            return typeof(IOneOf).IsAssignableFrom(typeToConvert);
         }
 
         public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
         {
-            var converterType = typeof(AnyOfConverterImpl<>).MakeGenericType(typeToConvert);
+            var converterType = typeof(OneOfConverterImpl<>).MakeGenericType(typeToConvert);
             return (JsonConverter)Activator.CreateInstance(converterType)!;
         }
 
-        private class AnyOfConverterImpl<TAnyOf> : JsonConverter<TAnyOf>
-            where TAnyOf : class
+        private class OneOfConverterImpl<TOneOf> : JsonConverter<TOneOf>
+            where TOneOf : class
         {
-            public override TAnyOf? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            public override TOneOf? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
                 if (reader.TokenType == JsonTokenType.Null)
                 {
@@ -54,7 +49,7 @@ namespace WorkOS
                         {
                             var raw = element.GetRawText();
                             var converted = JsonSerializer.Deserialize(raw, arg, options);
-                            return (TAnyOf?)InvokeImplicit(typeToConvert, arg, converted);
+                            return (TOneOf?)InvokeImplicit(typeToConvert, arg, converted);
                         }
                         catch (JsonException)
                         {
@@ -67,10 +62,10 @@ namespace WorkOS
                 var fallbackType = typeArgs[0];
                 var fallbackRaw = element.GetRawText();
                 var fallbackValue = JsonSerializer.Deserialize(fallbackRaw, fallbackType, options);
-                return (TAnyOf?)InvokeImplicit(typeToConvert, fallbackType, fallbackValue);
+                return (TOneOf?)InvokeImplicit(typeToConvert, fallbackType, fallbackValue);
             }
 
-            public override void Write(Utf8JsonWriter writer, TAnyOf value, JsonSerializerOptions options)
+            public override void Write(Utf8JsonWriter writer, TOneOf value, JsonSerializerOptions options)
             {
                 if (value == null)
                 {
@@ -78,8 +73,8 @@ namespace WorkOS
                     return;
                 }
 
-                var valueProp = value.GetType().GetProperty("Value", BindingFlags.Instance | BindingFlags.Public);
-                var inner = valueProp?.GetValue(value);
+                var oneOf = value as IOneOf;
+                var inner = oneOf?.Value;
                 if (inner == null)
                 {
                     writer.WriteNullValue();
@@ -111,13 +106,13 @@ namespace WorkOS
                 || type == typeof(byte) || type == typeof(double) || type == typeof(float)
                 || type == typeof(decimal);
 
-            private static object? InvokeImplicit(Type anyOfType, Type argType, object? value)
+            private static object? InvokeImplicit(Type oneOfType, Type argType, object? value)
             {
-                var op = anyOfType
+                var op = oneOfType
                     .GetMethods(BindingFlags.Public | BindingFlags.Static)
                     .FirstOrDefault(m =>
                         m.Name == "op_Implicit"
-                        && m.ReturnType == anyOfType
+                        && m.ReturnType == oneOfType
                         && m.GetParameters().Length == 1
                         && m.GetParameters()[0].ParameterType == argType);
 
@@ -126,18 +121,8 @@ namespace WorkOS
                     return op.Invoke(null, new[] { value });
                 }
 
-                var ctor = anyOfType.GetConstructor(
-                    BindingFlags.NonPublic | BindingFlags.Instance,
-                    binder: null,
-                    types: new[] { typeof(object) },
-                    modifiers: null);
-                if (ctor != null)
-                {
-                    return ctor.Invoke(new[] { value });
-                }
-
                 throw new JsonException(
-                    $"AnyOfJsonConverterFactory: cannot construct {anyOfType.Name} from {argType.Name}.");
+                    $"OneOfJsonConverterFactory: cannot construct {oneOfType.Name} from {argType.Name}.");
             }
         }
     }

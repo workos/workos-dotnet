@@ -12,54 +12,35 @@ namespace WorkOS
     {
 
         /// <summary>A unique slug for the role.</summary>
-        [JsonProperty("slug")]
-        [STJS.JsonPropertyName("slug")]
         public string Slug { get; set; } = default!;
 
         /// <summary>Distinguishes the role object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "role";
 
         /// <summary>Unique identifier of the role.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>A descriptive name for the role.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
         /// <summary>An optional description of the role.</summary>
-        [JsonProperty("description")]
-        [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }
 
-        /// <summary>Whether the role is scoped to the environment or an organization.</summary>
-        [JsonProperty("type", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("type")]
+        /// <summary>Whether the role is scoped to the environment or an organization (custom role).</summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public RoleType Type { get; set; }
 
         /// <summary>The slug of the resource type the role is scoped to.</summary>
-        [JsonProperty("resource_type_slug")]
-        [STJS.JsonPropertyName("resource_type_slug")]
         public string ResourceTypeSlug { get; set; } = default!;
 
         /// <summary>The permission slugs assigned to the role.</summary>
-        [JsonProperty("permissions")]
-        [STJS.JsonPropertyName("permissions")]
         public List<string> Permissions { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("updated_at")]
-        [STJS.JsonPropertyName("updated_at")]
         public DateTimeOffset UpdatedAt { get; set; }
     }
 }

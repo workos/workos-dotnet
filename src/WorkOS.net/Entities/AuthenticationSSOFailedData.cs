@@ -2,47 +2,29 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
     public class AuthenticationSSOFailedData
     {
-        [JsonProperty("type")]
-        [STJS.JsonPropertyName("type")]
         public string Type { get; internal set; } = "sso";
-        [JsonProperty("status")]
-        [STJS.JsonPropertyName("status")]
         public string Status { get; internal set; } = "failed";
 
         /// <summary>The IP address of the request.</summary>
-        [JsonProperty("ip_address")]
-        [STJS.JsonPropertyName("ip_address")]
         public string? IpAddress { get; set; }
 
         /// <summary>The user agent of the request.</summary>
-        [JsonProperty("user_agent")]
-        [STJS.JsonPropertyName("user_agent")]
         public string? UserAgent { get; set; }
 
         /// <summary>The ID of the user.</summary>
-        [JsonProperty("user_id")]
-        [STJS.JsonPropertyName("user_id")]
         public string? UserId { get; set; }
 
         /// <summary>The email address of the user.</summary>
-        [JsonProperty("email")]
-        [STJS.JsonPropertyName("email")]
         public string? Email { get; set; }
 
         /// <summary>SSO connection details.</summary>
-        [JsonProperty("sso")]
-        [STJS.JsonPropertyName("sso")]
         public AuthenticationSSOFailedDataSSO SSO { get; set; } = default!;
 
         /// <summary>Details about the authentication error.</summary>
-        [JsonProperty("error")]
-        [STJS.JsonPropertyName("error")]
         public AuthenticationSSOFailedDataError Error { get; set; } = default!;
     }
 }

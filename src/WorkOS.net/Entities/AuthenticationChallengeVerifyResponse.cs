@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an authentication challenge verify response.</summary>
     public class AuthenticationChallengeVerifyResponse
     {
 
         /// <summary>The authentication challenge object.</summary>
-        [JsonProperty("challenge")]
-        [STJS.JsonPropertyName("challenge")]
         public AuthenticationChallenge Challenge { get; set; } = default!;
 
         /// <summary>Whether the code was valid.</summary>
-        [JsonProperty("valid")]
-        [STJS.JsonPropertyName("valid")]
         public bool Valid { get; set; }
     }
 }

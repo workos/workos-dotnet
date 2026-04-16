@@ -80,6 +80,16 @@ namespace WorkOS
         DsyncUserUpdated,
         [EnumMember(Value = "email_verification.created")]
         EmailVerificationCreated,
+        [EnumMember(Value = "group.created")]
+        GroupCreated,
+        [EnumMember(Value = "group.deleted")]
+        GroupDeleted,
+        [EnumMember(Value = "group.member_added")]
+        GroupMemberAdded,
+        [EnumMember(Value = "group.member_removed")]
+        GroupMemberRemoved,
+        [EnumMember(Value = "group.updated")]
+        GroupUpdated,
         [EnumMember(Value = "flag.created")]
         FlagCreated,
         [EnumMember(Value = "flag.deleted")]

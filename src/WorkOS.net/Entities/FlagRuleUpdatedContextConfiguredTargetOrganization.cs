@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a flag rule updated context configured target organization.</summary>
     public class FlagRuleUpdatedContextConfiguredTargetOrganization
     {
 
         /// <summary>The ID of the organization.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The name of the organization.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
     }
 }

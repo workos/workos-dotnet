@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a revoke session.</summary>
     public class RevokeSession
     {
 
         /// <summary>The ID of the session to revoke. This can be extracted from the `sid` claim of the access token.</summary>
-        [JsonProperty("session_id")]
-        [STJS.JsonPropertyName("session_id")]
         public string SessionId { get; set; } = default!;
 
         /// <summary>The URL to redirect the user to after session revocation.</summary>
-        [JsonProperty("return_to")]
-        [STJS.JsonPropertyName("return_to")]
         public string? ReturnTo { get; set; }
     }
 }

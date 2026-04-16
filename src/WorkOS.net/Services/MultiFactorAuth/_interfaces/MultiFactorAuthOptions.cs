@@ -11,8 +11,6 @@ namespace WorkOS
     public class MultiFactorAuthVerifyChallengeOptions : BaseOptions
     {
         /// <summary>The one-time code to verify.</summary>
-        [JsonProperty("code")]
-        [STJS.JsonPropertyName("code")]
         public string Code { get; set; } = default!;
 
     }
@@ -21,29 +19,20 @@ namespace WorkOS
     public class MultiFactorAuthEnrollFactorOptions : BaseOptions
     {
         /// <summary>The type of factor to enroll.</summary>
-        [JsonProperty("type", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("type")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public AuthenticationFactorsCreateRequestType Type { get; set; }
 
         /// <summary>Required when type is 'sms'.</summary>
-        [JsonProperty("phone_number")]
-        [STJS.JsonPropertyName("phone_number")]
         public string? PhoneNumber { get; set; }
 
         /// <summary>Required when type is 'totp'.</summary>
-        [JsonProperty("totp_issuer")]
-        [STJS.JsonPropertyName("totp_issuer")]
         public string? TotpIssuer { get; set; }
 
         /// <summary>Required when type is 'totp'.</summary>
-        [JsonProperty("totp_user")]
-        [STJS.JsonPropertyName("totp_user")]
         public string? TotpUser { get; set; }
 
         /// <summary>The ID of the user to associate the factor with.</summary>
-        [JsonProperty("user_id")]
-        [STJS.JsonPropertyName("user_id")]
         public string? UserId { get; set; }
 
     }
@@ -52,8 +41,6 @@ namespace WorkOS
     public class MultiFactorAuthChallengeFactorOptions : BaseOptions
     {
         /// <summary>A custom template for the SMS message. Use the {{code}} placeholder to include the verification code.</summary>
-        [JsonProperty("sms_template")]
-        [STJS.JsonPropertyName("sms_template")]
         public string? SmsTemplate { get; set; }
 
     }
@@ -67,23 +54,15 @@ namespace WorkOS
     public class MultiFactorAuthCreateUserAuthFactorOptions : BaseOptions
     {
         /// <summary>The type of the factor to enroll.</summary>
-        [JsonProperty("type")]
-        [STJS.JsonPropertyName("type")]
         public string Type { get; set; } = default!;
 
         /// <summary>Your application or company name displayed in the user's authenticator app.</summary>
-        [JsonProperty("totp_issuer")]
-        [STJS.JsonPropertyName("totp_issuer")]
         public string? TotpIssuer { get; set; }
 
         /// <summary>The user's account name displayed in their authenticator app.</summary>
-        [JsonProperty("totp_user")]
-        [STJS.JsonPropertyName("totp_user")]
         public string? TotpUser { get; set; }
 
         /// <summary>The Base32-encoded shared secret for TOTP factors. This can be provided when creating the auth factor, otherwise it will be generated. The algorithm used to derive TOTP codes is SHA-1, the code length is 6 digits, and the timestep is 30 seconds – the secret must be compatible with these parameters.</summary>
-        [JsonProperty("totp_secret")]
-        [STJS.JsonPropertyName("totp_secret")]
         public string? TotpSecret { get; set; }
 
     }

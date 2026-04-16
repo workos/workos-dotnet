@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a portal link response.</summary>
     public class PortalLinkResponse
     {
 
         /// <summary>An ephemeral link to initiate the Admin Portal.</summary>
-        [JsonProperty("link")]
-        [STJS.JsonPropertyName("link")]
         public string Link { get; set; } = default!;
     }
 }

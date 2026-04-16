@@ -3,36 +3,24 @@
 namespace WorkOS
 {
     using System.Collections.Generic;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>The [access token](/reference/pipes/access-token) object, present when `active` is `true`.</summary>
     public class DataIntegrationAccessTokenResponseAccessToken
     {
 
         /// <summary>Distinguishes the access token object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "access_token";
 
         /// <summary>The OAuth access token for the connected integration.</summary>
-        [JsonProperty("access_token")]
-        [STJS.JsonPropertyName("access_token")]
         public string AccessToken { get; set; } = default!;
 
         /// <summary>The ISO-8601 formatted timestamp indicating when the access token expires.</summary>
-        [JsonProperty("expires_at")]
-        [STJS.JsonPropertyName("expires_at")]
         public string? ExpiresAt { get; set; }
 
         /// <summary>The scopes granted to the access token.</summary>
-        [JsonProperty("scopes")]
-        [STJS.JsonPropertyName("scopes")]
         public List<string> Scopes { get; set; } = default!;
 
         /// <summary>If the integration has requested scopes that aren't present on the access token, they're listed here.</summary>
-        [JsonProperty("missing_scopes")]
-        [STJS.JsonPropertyName("missing_scopes")]
         public List<string> MissingScopes { get; set; } = default!;
     }
 }

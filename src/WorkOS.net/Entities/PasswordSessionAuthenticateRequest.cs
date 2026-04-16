@@ -2,54 +2,34 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a password session authenticate request.</summary>
     public class PasswordSessionAuthenticateRequest
     {
 
         /// <summary>The client ID of the application.</summary>
-        [JsonProperty("client_id")]
-        [STJS.JsonPropertyName("client_id")]
         public string ClientId { get; set; } = default!;
 
         /// <summary>The client secret of the application.</summary>
-        [JsonProperty("client_secret")]
-        [STJS.JsonPropertyName("client_secret")]
         public string ClientSecret { get; set; } = default!;
-        [JsonProperty("grant_type")]
-        [STJS.JsonPropertyName("grant_type")]
         public string GrantType { get; internal set; } = "password";
 
         /// <summary>The user's email address.</summary>
-        [JsonProperty("email")]
-        [STJS.JsonPropertyName("email")]
         public string Email { get; set; } = default!;
 
         /// <summary>The user's password.</summary>
-        [JsonProperty("password")]
-        [STJS.JsonPropertyName("password")]
         public string Password { get; set; } = default!;
 
         /// <summary>An invitation token to accept during authentication.</summary>
-        [JsonProperty("invitation_token")]
-        [STJS.JsonPropertyName("invitation_token")]
         public string? InvitationToken { get; set; }
 
         /// <summary>The IP address of the user's request.</summary>
-        [JsonProperty("ip_address")]
-        [STJS.JsonPropertyName("ip_address")]
         public string? IpAddress { get; set; }
 
         /// <summary>A unique identifier for the device.</summary>
-        [JsonProperty("device_id")]
-        [STJS.JsonPropertyName("device_id")]
         public string? DeviceId { get; set; }
 
         /// <summary>The user agent string from the user's browser.</summary>
-        [JsonProperty("user_agent")]
-        [STJS.JsonPropertyName("user_agent")]
         public string? UserAgent { get; set; }
     }
 }

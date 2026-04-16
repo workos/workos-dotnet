@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a radar standalone delete radar list entry request.</summary>
     public class RadarStandaloneDeleteRadarListEntryRequest
     {
 
         /// <summary>The value to remove from the list. Must match an existing entry.</summary>
-        [JsonProperty("entry")]
-        [STJS.JsonPropertyName("entry")]
         public string Entry { get; set; } = default!;
     }
 }

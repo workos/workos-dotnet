@@ -114,18 +114,18 @@ var session = client.Session.LoadSealedSession(cookieValue);
 
 ## Error handling
 
-All non-2xx responses from the WorkOS API raise subclasses of `WorkOS.ApiError`.
+All non-2xx responses from the WorkOS API raise subclasses of `WorkOS.ApiException`.
 The SDK maps well-known status codes to specific exception types so you can
 `catch` exactly what you care about:
 
-| HTTP status | Exception type              |
-| ----------- | --------------------------- |
-| 401         | `AuthenticationError`       |
-| 404         | `NotFoundError`             |
-| 422         | `UnprocessableEntityError`  |
-| 429         | `RateLimitExceededError`    |
-| 5xx         | `ServerError`               |
-| other       | `ApiError`                  |
+| HTTP status | Exception type                  |
+| ----------- | ------------------------------- |
+| 401         | `AuthenticationException`       |
+| 404         | `NotFoundException`             |
+| 422         | `UnprocessableEntityException`  |
+| 429         | `RateLimitExceededException`    |
+| 5xx         | `ServerException`               |
+| other       | `ApiException`                  |
 
 Every exception exposes a `StatusCode` property and carries the raw response
 body in `Exception.Message`.
@@ -135,15 +135,15 @@ try
 {
     var org = await client.Organizations.GetOrganization("org_01H...");
 }
-catch (NotFoundError)
+catch (NotFoundException)
 {
     // organization does not exist
 }
-catch (RateLimitExceededError)
+catch (RateLimitExceededException)
 {
     // back off per Retry-After and retry
 }
-catch (ApiError ex)
+catch (ApiException ex)
 {
     Console.Error.WriteLine($"WorkOS API error {(int)ex.StatusCode}: {ex.Message}");
     throw;

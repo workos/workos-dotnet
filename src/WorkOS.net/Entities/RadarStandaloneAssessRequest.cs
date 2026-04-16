@@ -10,40 +10,28 @@ namespace WorkOS
     {
 
         /// <summary>The IP address of the request to assess.</summary>
-        [JsonProperty("ip_address")]
-        [STJS.JsonPropertyName("ip_address")]
         public string IpAddress { get; set; } = default!;
 
         /// <summary>The user agent string of the request to assess.</summary>
-        [JsonProperty("user_agent")]
-        [STJS.JsonPropertyName("user_agent")]
         public string UserAgent { get; set; } = default!;
 
         /// <summary>The email address of the user making the request.</summary>
-        [JsonProperty("email")]
-        [STJS.JsonPropertyName("email")]
         public string Email { get; set; } = default!;
 
         /// <summary>The authentication method being used.</summary>
-        [JsonProperty("auth_method", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("auth_method")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public RadarStandaloneAssessRequestAuthMethod AuthMethod { get; set; }
 
         /// <summary>The action being performed.</summary>
-        [JsonProperty("action", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("action")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public RadarStandaloneAssessRequestAction Action { get; set; }
 
         /// <summary>An optional device fingerprint for the request.</summary>
-        [JsonProperty("device_fingerprint")]
-        [STJS.JsonPropertyName("device_fingerprint")]
         public string? DeviceFingerprint { get; set; }
 
         /// <summary>An optional bot detection score for the request.</summary>
-        [JsonProperty("bot_score")]
-        [STJS.JsonPropertyName("bot_score")]
         public string? BotScore { get; set; }
     }
 }

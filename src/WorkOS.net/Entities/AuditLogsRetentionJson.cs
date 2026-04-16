@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an audit logs retention json.</summary>
     public class AuditLogsRetentionJson
     {
 
         /// <summary>The number of days Audit Log events will be retained before being permanently deleted. Valid values are 30 and 365.</summary>
-        [JsonProperty("retention_period_in_days")]
-        [STJS.JsonPropertyName("retention_period_in_days")]
         public long? RetentionPeriodInDays { get; set; }
     }
 }

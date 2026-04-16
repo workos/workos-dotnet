@@ -12,55 +12,37 @@ namespace WorkOS
     {
 
         /// <summary>Distinguishes the directory object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "directory";
 
         /// <summary>Unique identifier of the directory.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The ID of the organization the directory belongs to.</summary>
-        [JsonProperty("organization_id")]
-        [STJS.JsonPropertyName("organization_id")]
         public string? OrganizationId { get; set; }
 
         /// <summary>The type of the directory.</summary>
-        [JsonProperty("type", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("type")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public DsyncActivatedDataType Type { get; set; }
 
         /// <summary>The current state of the directory.</summary>
-        [JsonProperty("state", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("state")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public DsyncActivatedDataState State { get; set; }
 
         /// <summary>The name of the directory.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("updated_at")]
-        [STJS.JsonPropertyName("updated_at")]
         public DateTimeOffset UpdatedAt { get; set; }
 
         /// <summary>The external key of the directory.</summary>
-        [JsonProperty("external_key")]
-        [STJS.JsonPropertyName("external_key")]
         public string ExternalKey { get; set; } = default!;
 
         /// <summary>The domains associated with the directory.</summary>
-        [JsonProperty("domains")]
-        [STJS.JsonPropertyName("domains")]
         public List<DsyncActivatedDataDomain> Domains { get; set; } = default!;
     }
 }

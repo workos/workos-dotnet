@@ -11,18 +11,12 @@ namespace WorkOS
     public class ConnectCompleteOAuth2Options : BaseOptions
     {
         /// <summary>Identifier provided when AuthKit redirected to your login page.</summary>
-        [JsonProperty("external_auth_id")]
-        [STJS.JsonPropertyName("external_auth_id")]
         public string ExternalAuthId { get; set; } = default!;
 
         /// <summary>The user to create or update in AuthKit.</summary>
-        [JsonProperty("user")]
-        [STJS.JsonPropertyName("user")]
         public UserObject User { get; set; } = default!;
 
         /// <summary>Array of [User Consent Options](https://workos.com/docs/reference/workos-connect/standalone/user-consent-options) to store with the session.</summary>
-        [JsonProperty("user_consent_options")]
-        [STJS.JsonPropertyName("user_consent_options")]
         public List<UserConsentOption>? UserConsentOptions { get; set; }
 
     }
@@ -31,8 +25,6 @@ namespace WorkOS
     public class ConnectListApplicationsOptions : ListOptions
     {
         /// <summary>Filter Connect Applications by organization ID.</summary>
-        [JsonProperty("organization_id")]
-        [STJS.JsonPropertyName("organization_id")]
         public string? OrganizationId { get; set; }
 
     }
@@ -41,23 +33,15 @@ namespace WorkOS
     public class ConnectUpdateApplicationOptions : BaseOptions
     {
         /// <summary>The name of the application.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
         public string? Name { get; set; }
 
         /// <summary>A description for the application.</summary>
-        [JsonProperty("description")]
-        [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }
 
         /// <summary>The OAuth scopes granted to the application.</summary>
-        [JsonProperty("scopes")]
-        [STJS.JsonPropertyName("scopes")]
         public List<string>? Scopes { get; set; }
 
         /// <summary>Updated redirect URIs for the application. OAuth applications only.</summary>
-        [JsonProperty("redirect_uris")]
-        [STJS.JsonPropertyName("redirect_uris")]
         public List<RedirectUriInput>? RedirectUris { get; set; }
 
     }

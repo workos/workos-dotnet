@@ -3,37 +3,23 @@
 namespace WorkOS
 {
     using System;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a dsync group created.</summary>
     public class DsyncGroupCreated
     {
 
         /// <summary>Unique identifier for the event.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
-        [JsonProperty("event")]
-        [STJS.JsonPropertyName("event")]
         public string Event { get; internal set; } = "dsync.group.created";
 
         /// <summary>The event payload.</summary>
-        [JsonProperty("data")]
-        [STJS.JsonPropertyName("data")]
         public DirectoryGroup Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
-        [JsonProperty("context")]
-        [STJS.JsonPropertyName("context")]
         public EventContext? Context { get; set; }
 
         /// <summary>Distinguishes the Event object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "event";
     }
 }

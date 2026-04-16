@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a reset password response.</summary>
     public class ResetPasswordResponse
     {
 
         /// <summary>The user whose password was reset.</summary>
-        [JsonProperty("user")]
-        [STJS.JsonPropertyName("user")]
         public User User { get; set; } = default!;
     }
 }

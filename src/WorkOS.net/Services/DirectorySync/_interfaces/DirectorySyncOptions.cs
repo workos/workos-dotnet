@@ -11,19 +11,13 @@ namespace WorkOS
     public class DirectorySyncListOptions : ListOptions
     {
         /// <summary>Filter Directories by their associated organization.</summary>
-        [JsonProperty("organization_id")]
-        [STJS.JsonPropertyName("organization_id")]
         public string? OrganizationId { get; set; }
 
         /// <summary>Searchable text to match against Directory names.</summary>
-        [JsonProperty("search")]
-        [STJS.JsonPropertyName("search")]
         public string? Search { get; set; }
 
         /// <summary>Filter Directories by their associated domain.</summary>
         [System.Obsolete("This parameter is deprecated.")]
-        [JsonProperty("domain")]
-        [STJS.JsonPropertyName("domain")]
         public string? Domain { get; set; }
 
     }
@@ -32,13 +26,9 @@ namespace WorkOS
     public class DirectorySyncListGroupsOptions : ListOptions
     {
         /// <summary>Unique identifier of the WorkOS Directory. This value can be obtained from the WorkOS dashboard or from the WorkOS API.</summary>
-        [JsonProperty("directory")]
-        [STJS.JsonPropertyName("directory")]
         public string? Directory { get; set; }
 
         /// <summary>Unique identifier of the WorkOS Directory User. This value can be obtained from the WorkOS API.</summary>
-        [JsonProperty("user")]
-        [STJS.JsonPropertyName("user")]
         public string? User { get; set; }
 
     }
@@ -47,13 +37,9 @@ namespace WorkOS
     public class DirectorySyncListUsersOptions : ListOptions
     {
         /// <summary>Unique identifier of the WorkOS Directory. This value can be obtained from the WorkOS dashboard or from the WorkOS API.</summary>
-        [JsonProperty("directory")]
-        [STJS.JsonPropertyName("directory")]
         public string? Directory { get; set; }
 
         /// <summary>Unique identifier of the WorkOS Directory Group. This value can be obtained from the WorkOS API.</summary>
-        [JsonProperty("group")]
-        [STJS.JsonPropertyName("group")]
         public string? Group { get; set; }
 
     }

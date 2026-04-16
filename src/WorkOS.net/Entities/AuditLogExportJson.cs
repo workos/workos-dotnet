@@ -11,34 +11,23 @@ namespace WorkOS
     {
 
         /// <summary>Distinguishes the Audit Log Export object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "audit_log_export";
 
         /// <summary>The unique ID of the Audit Log Export.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The state of the export. Possible values: pending, ready, error.</summary>
-        [JsonProperty("state", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("state")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public AuditLogExportJsonState State { get; set; }
 
         /// <summary>A URL to the CSV file. Only defined when the Audit Log Export is ready.</summary>
-        [JsonProperty("url")]
-        [STJS.JsonPropertyName("url")]
         public string? Url { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("updated_at")]
-        [STJS.JsonPropertyName("updated_at")]
         public DateTimeOffset UpdatedAt { get; set; }
     }
 }

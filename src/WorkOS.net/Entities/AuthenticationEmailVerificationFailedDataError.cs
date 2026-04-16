@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Details about the authentication error.</summary>
     public class AuthenticationEmailVerificationFailedDataError
     {
 
         /// <summary>The error code.</summary>
-        [JsonProperty("code")]
-        [STJS.JsonPropertyName("code")]
         public string Code { get; set; } = default!;
 
         /// <summary>A human-readable error message.</summary>
-        [JsonProperty("message")]
-        [STJS.JsonPropertyName("message")]
         public string Message { get; set; } = default!;
     }
 }

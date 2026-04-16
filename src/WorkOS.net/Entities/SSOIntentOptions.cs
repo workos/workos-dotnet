@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an SSO intent options.</summary>
     public class SSOIntentOptions
     {
 
         /// <summary>The bookmark slug to use for SSO.</summary>
-        [JsonProperty("bookmark_slug")]
-        [STJS.JsonPropertyName("bookmark_slug")]
         public string? BookmarkSlug { get; set; }
 
         /// <summary>The SSO provider type to configure.</summary>
-        [JsonProperty("provider_type")]
-        [STJS.JsonPropertyName("provider_type")]
         public string ProviderType { get; internal set; } = "GoogleSAML";
     }
 }

@@ -7,12 +7,12 @@ namespace WorkOS
     /// <summary>
     /// Base exception type for all non-2xx HTTP responses from the WorkOS API.
     /// The SDK maps known status codes to the specific subclasses below; any other
-    /// status code (e.g. 400, 403, 409) surfaces as an <see cref="ApiError"/> directly.
+    /// status code (e.g. 400, 403, 409) surfaces as an <see cref="ApiException"/> directly.
     /// The <see cref="Exception.Message"/> contains the raw response body.
     /// </summary>
-    public class ApiError : Exception
+    public class ApiException : Exception
     {
-        public ApiError(string message, HttpStatusCode statusCode)
+        public ApiException(string message, HttpStatusCode statusCode)
             : base(message)
         {
             this.StatusCode = statusCode;
@@ -23,18 +23,18 @@ namespace WorkOS
     }
 
     /// <summary>Thrown when the API rejects the provided credentials (HTTP 401).</summary>
-    public class AuthenticationError : ApiError
+    public class AuthenticationException : ApiException
     {
-        public AuthenticationError(string message)
+        public AuthenticationException(string message)
             : base(message, HttpStatusCode.Unauthorized)
         {
         }
     }
 
     /// <summary>Thrown when the requested resource does not exist (HTTP 404).</summary>
-    public class NotFoundError : ApiError
+    public class NotFoundException : ApiException
     {
-        public NotFoundError(string message)
+        public NotFoundException(string message)
             : base(message, HttpStatusCode.NotFound)
         {
         }
@@ -45,9 +45,9 @@ namespace WorkOS
     /// unacceptable (HTTP 422) — e.g. a missing required field or a value that
     /// fails server-side validation.
     /// </summary>
-    public class UnprocessableEntityError : ApiError
+    public class UnprocessableEntityException : ApiException
     {
-        public UnprocessableEntityError(string message)
+        public UnprocessableEntityException(string message)
             : base(message, (HttpStatusCode)422)
         {
         }
@@ -60,9 +60,9 @@ namespace WorkOS
     /// honoring the <c>Retry-After</c> header when present. This exception is
     /// thrown only after all retries have been exhausted.
     /// </summary>
-    public class RateLimitExceededError : ApiError
+    public class RateLimitExceededException : ApiException
     {
-        public RateLimitExceededError(string message)
+        public RateLimitExceededException(string message)
             : base(message, (HttpStatusCode)429)
         {
         }
@@ -74,9 +74,9 @@ namespace WorkOS
     /// with exponential backoff. This exception is thrown only after all retries
     /// have been exhausted.
     /// </summary>
-    public class ServerError : ApiError
+    public class ServerException : ApiException
     {
-        public ServerError(string message)
+        public ServerException(string message)
             : base(message, HttpStatusCode.InternalServerError)
         {
         }

@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>The connection with the expiring certificate.</summary>
     public class ConnectionSAMLCertificateRenewalRequiredDataConnection
     {
 
         /// <summary>Unique identifier of the connection.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The ID of the organization the connection belongs to.</summary>
-        [JsonProperty("organization_id")]
-        [STJS.JsonPropertyName("organization_id")]
         public string? OrganizationId { get; set; }
     }
 }

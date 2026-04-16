@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>The owner of the API key.</summary>
     public class ApiKeyCreatedDataOwner
     {
 
         /// <summary>The type of the API key owner.</summary>
-        [JsonProperty("type")]
-        [STJS.JsonPropertyName("type")]
         public string Type { get; internal set; } = "organization";
 
         /// <summary>The unique identifier of the API key owner.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
     }
 }

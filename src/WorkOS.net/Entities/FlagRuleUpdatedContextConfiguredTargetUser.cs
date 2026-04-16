@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a flag rule updated context configured target user.</summary>
     public class FlagRuleUpdatedContextConfiguredTargetUser
     {
 
         /// <summary>The ID of the user.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The email of the user.</summary>
-        [JsonProperty("email")]
-        [STJS.JsonPropertyName("email")]
         public string Email { get; set; } = default!;
     }
 }

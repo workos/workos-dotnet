@@ -10,29 +10,20 @@ namespace WorkOS
     {
 
         /// <summary>The verdict of the risk assessment.</summary>
-        [JsonProperty("verdict", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("verdict")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public RadarStandaloneResponseVerdict Verdict { get; set; }
 
         /// <summary>A human-readable reason for the verdict.</summary>
-        [JsonProperty("reason")]
-        [STJS.JsonPropertyName("reason")]
         public string Reason { get; set; } = default!;
 
         /// <summary>Unique identifier of the authentication attempt.</summary>
-        [JsonProperty("attempt_id")]
-        [STJS.JsonPropertyName("attempt_id")]
         public string AttemptId { get; set; } = default!;
 
         /// <summary>The Radar control that triggered the verdict. Only present if the verdict is `block` or `challenge`.</summary>
-        [JsonProperty("control")]
-        [STJS.JsonPropertyName("control")]
         public RadarStandaloneResponseControl? Control { get; set; }
 
         /// <summary>The type of blocklist entry that triggered the verdict. Only present if the control is `restriction`.</summary>
-        [JsonProperty("blocklist_type")]
-        [STJS.JsonPropertyName("blocklist_type")]
         public RadarStandaloneResponseBlocklistType? BlocklistType { get; set; }
     }
 }

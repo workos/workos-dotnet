@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an SSO device authorization request.</summary>
     public class SSODeviceAuthorizationRequest
     {
 
         /// <summary>The WorkOS client ID for your application.</summary>
-        [JsonProperty("client_id")]
-        [STJS.JsonPropertyName("client_id")]
         public string ClientId { get; set; } = default!;
     }
 }

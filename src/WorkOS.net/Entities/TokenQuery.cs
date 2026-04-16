@@ -2,31 +2,21 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a token query.</summary>
     public class TokenQuery
     {
 
         /// <summary>The client ID of the WorkOS environment.</summary>
-        [JsonProperty("client_id")]
-        [STJS.JsonPropertyName("client_id")]
         public string ClientId { get; set; } = default!;
 
         /// <summary>The client secret of the WorkOS environment.</summary>
-        [JsonProperty("client_secret")]
-        [STJS.JsonPropertyName("client_secret")]
         public string ClientSecret { get; set; } = default!;
 
         /// <summary>The authorization code received from the authorization callback.</summary>
-        [JsonProperty("code")]
-        [STJS.JsonPropertyName("code")]
         public string Code { get; set; } = default!;
 
         /// <summary>The grant type for the token request.</summary>
-        [JsonProperty("grant_type")]
-        [STJS.JsonPropertyName("grant_type")]
         public string GrantType { get; internal set; } = "authorization_code";
     }
 }

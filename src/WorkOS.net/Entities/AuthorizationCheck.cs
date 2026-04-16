@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an authorization check.</summary>
     public class AuthorizationCheck
     {
 
         /// <summary>Whether the organization membership has the specified permission on the resource.</summary>
-        [JsonProperty("authorized")]
-        [STJS.JsonPropertyName("authorized")]
         public bool Authorized { get; set; }
     }
 }

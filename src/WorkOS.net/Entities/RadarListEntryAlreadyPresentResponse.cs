@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a radar list entry already present response.</summary>
     public class RadarListEntryAlreadyPresentResponse
     {
 
         /// <summary>A message indicating the entry already exists.</summary>
-        [JsonProperty("message")]
-        [STJS.JsonPropertyName("message")]
         public string Message { get; set; } = default!;
     }
 }

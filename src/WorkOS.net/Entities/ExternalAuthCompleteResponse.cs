@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an external auth complete response.</summary>
     public class ExternalAuthCompleteResponse
     {
 
         /// <summary>URI to redirect the user back to AuthKit to complete the OAuth flow.</summary>
-        [JsonProperty("redirect_uri")]
-        [STJS.JsonPropertyName("redirect_uri")]
         public string RedirectUri { get; set; } = default!;
     }
 }

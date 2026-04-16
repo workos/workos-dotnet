@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create cors origin.</summary>
     public class CreateCorsOrigin
     {
 
         /// <summary>The origin URL to allow for CORS requests.</summary>
-        [JsonProperty("origin")]
-        [STJS.JsonPropertyName("origin")]
         public string Origin { get; set; } = default!;
     }
 }

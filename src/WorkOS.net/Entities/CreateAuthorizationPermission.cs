@@ -2,31 +2,21 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create authorization permission.</summary>
     public class CreateAuthorizationPermission
     {
 
         /// <summary>A unique key to reference the permission. Must be lowercase and contain only letters, numbers, hyphens, underscores, colons, periods, and asterisks.</summary>
-        [JsonProperty("slug")]
-        [STJS.JsonPropertyName("slug")]
         public string Slug { get; set; } = default!;
 
         /// <summary>A descriptive name for the Permission.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
         /// <summary>An optional description of the Permission.</summary>
-        [JsonProperty("description")]
-        [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }
 
         /// <summary>The slug of the resource type this permission is scoped to.</summary>
-        [JsonProperty("resource_type_slug")]
-        [STJS.JsonPropertyName("resource_type_slug")]
         public string? ResourceTypeSlug { get; set; }
     }
 }

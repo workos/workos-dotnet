@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create redirect uri.</summary>
     public class CreateRedirectUri
     {
 
         /// <summary>The redirect URI to create.</summary>
-        [JsonProperty("uri")]
-        [STJS.JsonPropertyName("uri")]
         public string Uri { get; set; } = default!;
     }
 }

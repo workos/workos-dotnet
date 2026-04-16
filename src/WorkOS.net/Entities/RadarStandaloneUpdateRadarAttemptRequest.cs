@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a radar standalone update radar attempt request.</summary>
     public class RadarStandaloneUpdateRadarAttemptRequest
     {
 
         /// <summary>Set to `"success"` to mark the challenge as completed.</summary>
-        [JsonProperty("challenge_status")]
-        [STJS.JsonPropertyName("challenge_status")]
         public string ChallengeStatus { get; internal set; } = "success";
 
         /// <summary>Set to `"success"` to mark the authentication attempt as successful.</summary>
-        [JsonProperty("attempt_status")]
-        [STJS.JsonPropertyName("attempt_status")]
         public string AttemptStatus { get; internal set; } = "success";
     }
 }

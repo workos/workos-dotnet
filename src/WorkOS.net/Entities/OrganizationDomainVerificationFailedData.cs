@@ -10,14 +10,11 @@ namespace WorkOS
     {
 
         /// <summary>The reason the domain verification failed.</summary>
-        [JsonProperty("reason", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("reason")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public OrganizationDomainVerificationFailedDataReason Reason { get; set; }
 
         /// <summary>The organization domain that failed verification.</summary>
-        [JsonProperty("organization_domain")]
-        [STJS.JsonPropertyName("organization_domain")]
         public OrganizationDomainVerificationFailedDataOrganizationDomain OrganizationDomain { get; set; } = default!;
     }
 }

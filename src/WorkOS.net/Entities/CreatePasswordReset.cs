@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create password reset.</summary>
     public class CreatePasswordReset
     {
 
         /// <summary>The password reset token.</summary>
-        [JsonProperty("token")]
-        [STJS.JsonPropertyName("token")]
         public string Token { get; set; } = default!;
 
         /// <summary>The new password to set for the user.</summary>
-        [JsonProperty("new_password")]
-        [STJS.JsonPropertyName("new_password")]
         public string NewPassword { get; set; } = default!;
     }
 }

@@ -2,31 +2,21 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a check authorization.</summary>
     public class CheckAuthorization
     {
 
         /// <summary>The slug of the permission to check.</summary>
-        [JsonProperty("permission_slug")]
-        [STJS.JsonPropertyName("permission_slug")]
         public string PermissionSlug { get; set; } = default!;
 
-        /// <summary>The ID of the resource.</summary>
-        [JsonProperty("resource_id")]
-        [STJS.JsonPropertyName("resource_id")]
+        /// <summary>The ID of the resource. Mutually exclusive with `resource_external_id` and `resource_type_slug`.</summary>
         public string? ResourceId { get; set; }
 
-        /// <summary>The external ID of the resource.</summary>
-        [JsonProperty("resource_external_id")]
-        [STJS.JsonPropertyName("resource_external_id")]
+        /// <summary>The external ID of the resource. Required with `resource_type_slug`. Mutually exclusive with `resource_id`.</summary>
         public string? ResourceExternalId { get; set; }
 
-        /// <summary>The slug of the resource type.</summary>
-        [JsonProperty("resource_type_slug")]
-        [STJS.JsonPropertyName("resource_type_slug")]
+        /// <summary>The slug of the resource type. Required with `resource_external_id`. Mutually exclusive with `resource_id`.</summary>
         public string? ResourceTypeSlug { get; set; }
     }
 }

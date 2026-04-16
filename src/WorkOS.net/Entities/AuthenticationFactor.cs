@@ -11,44 +11,29 @@ namespace WorkOS
     {
 
         /// <summary>Distinguishes the authentication factor object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "authentication_factor";
 
         /// <summary>The unique ID of the factor.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The type of the factor to enroll.</summary>
-        [JsonProperty("type", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("type")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public AuthenticationFactorEnrolledType Type { get; set; }
 
         /// <summary>The ID of the [user](https://workos.com/docs/reference/authkit/user).</summary>
-        [JsonProperty("user_id")]
-        [STJS.JsonPropertyName("user_id")]
         public string? UserId { get; set; }
 
         /// <summary>SMS-based authentication factor details.</summary>
-        [JsonProperty("sms")]
-        [STJS.JsonPropertyName("sms")]
         public AuthenticationFactorSms? Sms { get; set; }
 
         /// <summary>TOTP-based authentication factor details.</summary>
-        [JsonProperty("totp")]
-        [STJS.JsonPropertyName("totp")]
         public AuthenticationFactorTotp? Totp { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("updated_at")]
-        [STJS.JsonPropertyName("updated_at")]
         public DateTimeOffset UpdatedAt { get; set; }
     }
 }

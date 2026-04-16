@@ -6,25 +6,20 @@ namespace WorkOS
     using System.Reflection;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using OneOf;
 
     /// <summary>
-    /// Newtonsoft.Json converter for <see cref="AnyOf{T1,T2}"/> and
-    /// <see cref="AnyOf{T1,T2,T3}"/>. Serializes the underlying inner value
-    /// directly (not wrapped in <c>{ "Value": ... }</c>) and, when reading,
-    /// attempts to deserialize the incoming JSON into each type parameter in
-    /// declaration order, picking the first that succeeds.
+    /// Newtonsoft.Json converter for <c>OneOf&lt;T0, T1, ...&gt;</c> types from
+    /// the OneOf NuGet package. Serializes the underlying inner value directly
+    /// (not wrapped in <c>{ "Value": ... }</c>) and, when reading, attempts to
+    /// deserialize the incoming JSON into each type parameter in declaration
+    /// order, picking the first that succeeds.
     /// </summary>
-    public class AnyOfJsonConverter : JsonConverter
+    public class OneOfJsonConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
-            if (!objectType.IsGenericType)
-            {
-                return false;
-            }
-
-            var def = objectType.GetGenericTypeDefinition();
-            return def == typeof(AnyOf<,>) || def == typeof(AnyOf<,,>);
+            return typeof(IOneOf).IsAssignableFrom(objectType);
         }
 
         public override object? ReadJson(
@@ -73,8 +68,8 @@ namespace WorkOS
                 return;
             }
 
-            var valueProp = value.GetType().GetProperty("Value", BindingFlags.Instance | BindingFlags.Public);
-            var inner = valueProp?.GetValue(value);
+            var oneOf = value as IOneOf;
+            var inner = oneOf?.Value;
             serializer.Serialize(writer, inner);
         }
 
@@ -101,14 +96,13 @@ namespace WorkOS
             || type == typeof(byte) || type == typeof(double) || type == typeof(float)
             || type == typeof(decimal);
 
-        private static object? InvokeImplicit(Type anyOfType, Type argType, object? value)
+        private static object? InvokeImplicit(Type oneOfType, Type argType, object? value)
         {
-            // Use the implicit conversion operator defined on AnyOf<...> for argType.
-            var op = anyOfType
+            var op = oneOfType
                 .GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .FirstOrDefault(m =>
                     m.Name == "op_Implicit"
-                    && m.ReturnType == anyOfType
+                    && m.ReturnType == oneOfType
                     && m.GetParameters().Length == 1
                     && m.GetParameters()[0].ParameterType == argType);
 
@@ -117,19 +111,8 @@ namespace WorkOS
                 return op.Invoke(null, new[] { value });
             }
 
-            // Fallback: try to construct via reflection — there's a private ctor taking object?.
-            var ctor = anyOfType.GetConstructor(
-                BindingFlags.NonPublic | BindingFlags.Instance,
-                binder: null,
-                types: new[] { typeof(object) },
-                modifiers: null);
-            if (ctor != null)
-            {
-                return ctor.Invoke(new[] { value });
-            }
-
             throw new JsonSerializationException(
-                $"AnyOfJsonConverter: cannot construct {anyOfType.Name} from {argType.Name}.");
+                $"OneOfJsonConverter: cannot construct {oneOfType.Name} from {argType.Name}.");
         }
     }
 }

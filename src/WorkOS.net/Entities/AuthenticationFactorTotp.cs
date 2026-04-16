@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>TOTP-based authentication factor details.</summary>
     public class AuthenticationFactorTotp
     {
 
         /// <summary>Your application or company name displayed in the user's authenticator app. Defaults to your WorkOS team name.</summary>
-        [JsonProperty("issuer")]
-        [STJS.JsonPropertyName("issuer")]
         public string Issuer { get; set; } = default!;
 
         /// <summary>The user's account name displayed in their authenticator app. Defaults to the user's email.</summary>
-        [JsonProperty("user")]
-        [STJS.JsonPropertyName("user")]
         public string User { get; set; } = default!;
     }
 }

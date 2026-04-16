@@ -3,16 +3,12 @@
 namespace WorkOS
 {
     using System.Collections.Generic;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a jwks response.</summary>
     public class JwksResponse
     {
 
         /// <summary>The public keys used for verifying access tokens.</summary>
-        [JsonProperty("keys")]
-        [STJS.JsonPropertyName("keys")]
         public List<JwksResponseKeys> Keys { get; set; } = default!;
     }
 }

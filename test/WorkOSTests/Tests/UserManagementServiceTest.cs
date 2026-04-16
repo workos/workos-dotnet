@@ -839,35 +839,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationError>(() => this.service.GetJwks("test_clientId"));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.GetJwks("test_clientId"));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundError>(() => this.service.GetJwks("test_clientId"));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.GetJwks("test_clientId"));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.GetJwks("test_clientId"));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.GetJwks("test_clientId"));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.GetJwks("test_clientId"));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.GetJwks("test_clientId"));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerError>(() => this.service.GetJwks("test_clientId"));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.GetJwks("test_clientId"));
         }
     }
 }

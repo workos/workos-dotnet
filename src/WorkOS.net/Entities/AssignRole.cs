@@ -2,31 +2,21 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an assign role.</summary>
     public class AssignRole
     {
 
         /// <summary>The slug of the role to assign.</summary>
-        [JsonProperty("role_slug")]
-        [STJS.JsonPropertyName("role_slug")]
         public string RoleSlug { get; set; } = default!;
 
-        /// <summary>The ID of the resource. Use either this or `resource_external_id` and `resource_type_slug`.</summary>
-        [JsonProperty("resource_id")]
-        [STJS.JsonPropertyName("resource_id")]
+        /// <summary>The ID of the resource. Mutually exclusive with `resource_external_id` and `resource_type_slug`.</summary>
         public string? ResourceId { get; set; }
 
-        /// <summary>The external ID of the resource. Requires `resource_type_slug`.</summary>
-        [JsonProperty("resource_external_id")]
-        [STJS.JsonPropertyName("resource_external_id")]
+        /// <summary>The external ID of the resource. Required with `resource_type_slug`. Mutually exclusive with `resource_id`.</summary>
         public string? ResourceExternalId { get; set; }
 
-        /// <summary>The resource type slug. Required with `resource_external_id`.</summary>
-        [JsonProperty("resource_type_slug")]
-        [STJS.JsonPropertyName("resource_type_slug")]
+        /// <summary>The resource type slug. Required with `resource_external_id`. Mutually exclusive with `resource_id`.</summary>
         public string? ResourceTypeSlug { get; set; }
     }
 }

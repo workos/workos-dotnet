@@ -3,51 +3,33 @@
 namespace WorkOS
 {
     using System;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a password reset.</summary>
     public class PasswordReset
     {
 
         /// <summary>Distinguishes the password reset object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "password_reset";
 
         /// <summary>The unique ID of the password reset object.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The unique ID of the user.</summary>
-        [JsonProperty("user_id")]
-        [STJS.JsonPropertyName("user_id")]
         public string UserId { get; set; } = default!;
 
         /// <summary>The email address of the user.</summary>
-        [JsonProperty("email")]
-        [STJS.JsonPropertyName("email")]
         public string Email { get; set; } = default!;
 
         /// <summary>The timestamp when the password reset token expires.</summary>
-        [JsonProperty("expires_at")]
-        [STJS.JsonPropertyName("expires_at")]
         public DateTimeOffset ExpiresAt { get; set; }
 
         /// <summary>The timestamp when the password reset token was created.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>The token used to reset the password.</summary>
-        [JsonProperty("password_reset_token")]
-        [STJS.JsonPropertyName("password_reset_token")]
         public string PasswordResetToken { get; set; } = default!;
 
         /// <summary>The URL where the user can reset their password.</summary>
-        [JsonProperty("password_reset_url")]
-        [STJS.JsonPropertyName("password_reset_url")]
         public string PasswordResetUrl { get; set; } = default!;
     }
 }

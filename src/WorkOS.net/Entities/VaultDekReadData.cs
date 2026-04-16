@@ -11,25 +11,16 @@ namespace WorkOS
     {
 
         /// <summary>The unique identifier of the actor.</summary>
-        [JsonProperty("actor_id")]
-        [STJS.JsonPropertyName("actor_id")]
         public string ActorId { get; set; } = default!;
-        [JsonProperty("actor_source", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("actor_source")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public VaultDataCreatedDataActorSource ActorSource { get; set; }
 
         /// <summary>The name of the actor.</summary>
-        [JsonProperty("actor_name")]
-        [STJS.JsonPropertyName("actor_name")]
         public string ActorName { get; set; } = default!;
 
         /// <summary>The unique identifiers of the data encryption keys.</summary>
-        [JsonProperty("key_ids")]
-        [STJS.JsonPropertyName("key_ids")]
         public List<string> KeyIds { get; set; } = default!;
-        [JsonProperty("key_context")]
-        [STJS.JsonPropertyName("key_context")]
         public Dictionary<string, string> KeyContext { get; set; } = default!;
     }
 }

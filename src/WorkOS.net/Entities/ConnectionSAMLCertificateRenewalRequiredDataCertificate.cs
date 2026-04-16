@@ -11,19 +11,14 @@ namespace WorkOS
     {
 
         /// <summary>The type of the SAML certificate.</summary>
-        [JsonProperty("certificate_type", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("certificate_type")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public ConnectionSAMLCertificateRenewalRequiredDataCertificateCertificateType CertificateType { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("expiry_date")]
-        [STJS.JsonPropertyName("expiry_date")]
         public DateTimeOffset ExpiryDate { get; set; }
 
         /// <summary>Whether the certificate has already expired.</summary>
-        [JsonProperty("is_expired")]
-        [STJS.JsonPropertyName("is_expired")]
         public bool IsExpired { get; set; }
     }
 }

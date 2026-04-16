@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an update JWT template.</summary>
     public class UpdateJWTTemplate
     {
 
         /// <summary>The JWT template content as a Liquid template string.</summary>
-        [JsonProperty("content")]
-        [STJS.JsonPropertyName("content")]
         public string Content { get; set; } = default!;
     }
 }

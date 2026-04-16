@@ -14,12 +14,30 @@ namespace WorkOS
     using System.Reflection;
     using System.Text;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
 
     /// <summary>
     /// Helper utilities when issuing HTTP requests.
     /// </summary>
     public class RequestUtilities
     {
+        /// <summary>
+        /// Shared Newtonsoft settings with snake_case naming and OneOf converter.
+        /// Convention-based: generated types no longer carry per-property
+        /// <c>[JsonProperty("wire_name")]</c> attributes.
+        /// </summary>
+        internal static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+            ContractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new SnakeCaseNamingStrategy(),
+            },
+            Converters = { new OneOfJsonConverter() },
+        };
+
+        private static readonly SnakeCaseNamingStrategy WireNamingStrategy = new SnakeCaseNamingStrategy();
+
         /// <summary>
         /// Encodes options into a query string.
         /// </summary>
@@ -72,10 +90,7 @@ namespace WorkOS
             return JsonConvert.SerializeObject(
                 value,
                 Formatting.None,
-                new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore,
-                });
+                JsonSettings);
         }
 
         /// <summary>
@@ -86,7 +101,7 @@ namespace WorkOS
         /// <returns>A deserialized object.</returns>
         public static T FromJson<T>(string value)
         {
-            JsonSerializer jsonSerializer = JsonSerializer.Create();
+            JsonSerializer jsonSerializer = JsonSerializer.Create(JsonSettings);
             JsonTextReader reader = new JsonTextReader(new StringReader(value));
             return jsonSerializer.Deserialize<T>(reader)!;
         }
@@ -204,7 +219,9 @@ namespace WorkOS
 
         /// <summary>
         /// Return the wire name for a property, or null if the property is
-        /// ignored entirely. Respects Newtonsoft [JsonProperty]/[JsonIgnore].
+        /// ignored entirely. Respects Newtonsoft [JsonProperty]/[JsonIgnore]
+        /// and falls back to snake_case conversion of the property name
+        /// (matching the global naming convention).
         /// </summary>
         private static string? ResolveWireName(PropertyInfo prop)
         {
@@ -219,7 +236,7 @@ namespace WorkOS
                 return jp.PropertyName;
             }
 
-            return prop.Name;
+            return WireNamingStrategy.GetPropertyName(prop.Name, false);
         }
 
         /// <summary>

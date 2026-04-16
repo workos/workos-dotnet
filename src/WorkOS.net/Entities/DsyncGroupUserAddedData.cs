@@ -2,26 +2,18 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
     public class DsyncGroupUserAddedData
     {
 
         /// <summary>The ID of the directory.</summary>
-        [JsonProperty("directory_id")]
-        [STJS.JsonPropertyName("directory_id")]
         public string DirectoryId { get; set; } = default!;
 
         /// <summary>The directory user added to the group.</summary>
-        [JsonProperty("user")]
-        [STJS.JsonPropertyName("user")]
         public DirectoryUser User { get; set; } = default!;
 
         /// <summary>The directory group the user was added to.</summary>
-        [JsonProperty("group")]
-        [STJS.JsonPropertyName("group")]
         public DirectoryGroup Group { get; set; } = default!;
     }
 }

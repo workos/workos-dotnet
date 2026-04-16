@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a widget session token response.</summary>
     public class WidgetSessionTokenResponse
     {
 
         /// <summary>The widget session token.</summary>
-        [JsonProperty("token")]
-        [STJS.JsonPropertyName("token")]
         public string Token { get; set; } = default!;
     }
 }

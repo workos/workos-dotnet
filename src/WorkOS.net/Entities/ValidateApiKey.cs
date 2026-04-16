@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a validate api key.</summary>
     public class ValidateApiKey
     {
 
         /// <summary>The value for an API key.</summary>
-        [JsonProperty("value")]
-        [STJS.JsonPropertyName("value")]
         public string Value { get; set; } = default!;
     }
 }

@@ -3,29 +3,22 @@
 namespace WorkOS
 {
     using System.Collections.Generic;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an authorized connect application list data.</summary>
     public class AuthorizedConnectApplicationListData
     {
 
         /// <summary>Distinguishes the authorized connect application object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "authorized_connect_application";
 
         /// <summary>The unique ID of the authorized connect application.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The scopes granted by the user to the application.</summary>
-        [JsonProperty("granted_scopes")]
-        [STJS.JsonPropertyName("granted_scopes")]
         public List<string> GrantedScopes { get; set; } = default!;
-        [JsonProperty("application")]
-        [STJS.JsonPropertyName("application")]
+
+        /// <summary>The OAuth resource associated with the authorized connect application, if one was requested.</summary>
+        public string? OAuthResource { get; set; }
         public ConnectApplication Application { get; set; } = default!;
     }
 }

@@ -12,99 +12,62 @@ namespace WorkOS
     {
 
         /// <summary>Distinguishes the Directory User object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "directory_user";
 
         /// <summary>Unique identifier for the Directory User.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The identifier of the Directory the Directory User belongs to.</summary>
-        [JsonProperty("directory_id")]
-        [STJS.JsonPropertyName("directory_id")]
         public string DirectoryId { get; set; } = default!;
 
         /// <summary>The identifier for the Organization in which the Directory resides.</summary>
-        [JsonProperty("organization_id")]
-        [STJS.JsonPropertyName("organization_id")]
         public string OrganizationId { get; set; } = default!;
 
         /// <summary>Unique identifier for the user, assigned by the Directory Provider. Different Directory Providers use different ID formats.</summary>
-        [JsonProperty("idp_id")]
-        [STJS.JsonPropertyName("idp_id")]
         public string IdpId { get; set; } = default!;
 
         /// <summary>The email address of the user.</summary>
-        [JsonProperty("email")]
-        [STJS.JsonPropertyName("email")]
         public string? Email { get; set; }
 
         /// <summary>The first name of the user.</summary>
-        [JsonProperty("first_name")]
-        [STJS.JsonPropertyName("first_name")]
         public string? FirstName { get; set; }
 
         /// <summary>The last name of the user.</summary>
-        [JsonProperty("last_name")]
-        [STJS.JsonPropertyName("last_name")]
         public string? LastName { get; set; }
 
         /// <summary>A list of email addresses for the user.</summary>
         [System.Obsolete("This field is deprecated.")]
-        [JsonProperty("emails")]
-        [STJS.JsonPropertyName("emails")]
         public List<DsyncUserUpdatedDataEmail>? Emails { get; set; }
 
         /// <summary>The job title of the user.</summary>
         [System.Obsolete("This field is deprecated.")]
-        [JsonProperty("job_title")]
-        [STJS.JsonPropertyName("job_title")]
         public string? JobTitle { get; set; }
 
         /// <summary>The username of the user.</summary>
         [System.Obsolete("This field is deprecated.")]
-        [JsonProperty("username")]
-        [STJS.JsonPropertyName("username")]
         public string? Username { get; set; }
 
         /// <summary>The state of the user.</summary>
-        [JsonProperty("state", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("state")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public DirectoryUserState State { get; set; }
 
         /// <summary>The raw attributes received from the directory provider.</summary>
         [System.Obsolete("This field is deprecated.")]
-        [JsonProperty("raw_attributes")]
-        [STJS.JsonPropertyName("raw_attributes")]
         public Dictionary<string, object> RawAttributes { get; set; } = default!;
 
         /// <summary>An object containing the custom attribute mapping for the Directory Provider.</summary>
-        [JsonProperty("custom_attributes")]
-        [STJS.JsonPropertyName("custom_attributes")]
         public Dictionary<string, object> CustomAttributes { get; set; } = default!;
-        [JsonProperty("role")]
-        [STJS.JsonPropertyName("role")]
         public SlimRole? Role { get; set; }
 
         /// <summary>All roles assigned to the user.</summary>
-        [JsonProperty("roles")]
-        [STJS.JsonPropertyName("roles")]
         public List<SlimRole>? Roles { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("updated_at")]
-        [STJS.JsonPropertyName("updated_at")]
         public DateTimeOffset UpdatedAt { get; set; }
-        [JsonProperty("previous_attributes")]
-        [STJS.JsonPropertyName("previous_attributes")]
         public Dictionary<string, object>? PreviousAttributes { get; set; }
 
         /// <summary>

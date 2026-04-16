@@ -11,74 +11,47 @@ namespace WorkOS
     {
 
         /// <summary>Distinguishes the invitation object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "invitation";
 
         /// <summary>The unique ID of the invitation.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The email address of the recipient.</summary>
-        [JsonProperty("email")]
-        [STJS.JsonPropertyName("email")]
         public string Email { get; set; } = default!;
 
         /// <summary>The state of the invitation.</summary>
-        [JsonProperty("state", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("state")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public InvitationAcceptedDataState State { get; set; }
 
         /// <summary>The timestamp when the invitation was accepted, or null if not yet accepted.</summary>
-        [JsonProperty("accepted_at")]
-        [STJS.JsonPropertyName("accepted_at")]
         public DateTimeOffset? AcceptedAt { get; set; }
 
         /// <summary>The timestamp when the invitation was revoked, or null if not revoked.</summary>
-        [JsonProperty("revoked_at")]
-        [STJS.JsonPropertyName("revoked_at")]
         public DateTimeOffset? RevokedAt { get; set; }
 
         /// <summary>The timestamp when the invitation expires.</summary>
-        [JsonProperty("expires_at")]
-        [STJS.JsonPropertyName("expires_at")]
         public DateTimeOffset ExpiresAt { get; set; }
 
         /// <summary>The ID of the [organization](https://workos.com/docs/reference/organization) that the recipient will join.</summary>
-        [JsonProperty("organization_id")]
-        [STJS.JsonPropertyName("organization_id")]
         public string? OrganizationId { get; set; }
 
         /// <summary>The ID of the user who invited the recipient, if provided.</summary>
-        [JsonProperty("inviter_user_id")]
-        [STJS.JsonPropertyName("inviter_user_id")]
         public string? InviterUserId { get; set; }
 
         /// <summary>The ID of the user who accepted the invitation, once accepted.</summary>
-        [JsonProperty("accepted_user_id")]
-        [STJS.JsonPropertyName("accepted_user_id")]
         public string? AcceptedUserId { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("updated_at")]
-        [STJS.JsonPropertyName("updated_at")]
         public DateTimeOffset UpdatedAt { get; set; }
 
         /// <summary>The token used to accept the invitation.</summary>
-        [JsonProperty("token")]
-        [STJS.JsonPropertyName("token")]
         public string Token { get; set; } = default!;
 
         /// <summary>The URL where the recipient can accept the invitation.</summary>
-        [JsonProperty("accept_invitation_url")]
-        [STJS.JsonPropertyName("accept_invitation_url")]
         public string AcceptInvitationUrl { get; set; } = default!;
     }
 }

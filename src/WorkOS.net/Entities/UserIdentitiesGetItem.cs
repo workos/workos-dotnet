@@ -10,18 +10,13 @@ namespace WorkOS
     {
 
         /// <summary>The unique ID of the user in the external identity provider.</summary>
-        [JsonProperty("idp_id")]
-        [STJS.JsonPropertyName("idp_id")]
         public string IdpId { get; set; } = default!;
 
         /// <summary>The type of the identity.</summary>
-        [JsonProperty("type")]
-        [STJS.JsonPropertyName("type")]
         public string Type { get; internal set; } = "OAuth";
 
         /// <summary>The type of OAuth provider for the identity.</summary>
-        [JsonProperty("provider", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("provider")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public UserIdentitiesGetItemProvider Provider { get; set; }
     }

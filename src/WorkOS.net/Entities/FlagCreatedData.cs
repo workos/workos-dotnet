@@ -4,69 +4,43 @@ namespace WorkOS
 {
     using System;
     using System.Collections.Generic;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
     public class FlagCreatedData
     {
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "feature_flag";
 
         /// <summary>Unique identifier of the Feature Flag.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The ID of the environment the Feature Flag belongs to.</summary>
-        [JsonProperty("environment_id")]
-        [STJS.JsonPropertyName("environment_id")]
         public string EnvironmentId { get; set; } = default!;
 
         /// <summary>A unique key to reference the Feature Flag.</summary>
-        [JsonProperty("slug")]
-        [STJS.JsonPropertyName("slug")]
         public string Slug { get; set; } = default!;
 
         /// <summary>A descriptive name for the Feature Flag.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
         /// <summary>A description for the Feature Flag.</summary>
-        [JsonProperty("description")]
-        [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }
 
         /// <summary>The owner of the Feature Flag.</summary>
-        [JsonProperty("owner")]
-        [STJS.JsonPropertyName("owner")]
         public FlagCreatedDataOwner? Owner { get; set; }
 
         /// <summary>Labels assigned to the Feature Flag for categorizing and filtering.</summary>
-        [JsonProperty("tags")]
-        [STJS.JsonPropertyName("tags")]
         public List<string> Tags { get; set; } = default!;
 
         /// <summary>Specifies whether the Feature Flag is active for the current environment.</summary>
-        [JsonProperty("enabled")]
-        [STJS.JsonPropertyName("enabled")]
         public bool Enabled { get; set; }
 
         /// <summary>The value returned for users and organizations who don't match any configured targeting rules.</summary>
-        [JsonProperty("default_value")]
-        [STJS.JsonPropertyName("default_value")]
         public bool DefaultValue { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("updated_at")]
-        [STJS.JsonPropertyName("updated_at")]
         public DateTimeOffset UpdatedAt { get; set; }
     }
 }

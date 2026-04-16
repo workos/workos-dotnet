@@ -3,19 +3,13 @@
 namespace WorkOS
 {
     using System.Collections.Generic;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a role list.</summary>
     public class RoleList
     {
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "list";
 
         /// <summary>The list of records for the current page.</summary>
-        [JsonProperty("data")]
-        [STJS.JsonPropertyName("data")]
         public List<Role> Data { get; set; } = default!;
     }
 }

@@ -2,26 +2,18 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a feature flag owner.</summary>
     public class FeatureFlagOwner
     {
 
         /// <summary>The email address of the flag owner.</summary>
-        [JsonProperty("email")]
-        [STJS.JsonPropertyName("email")]
         public string Email { get; set; } = default!;
 
         /// <summary>The first name of the flag owner.</summary>
-        [JsonProperty("first_name")]
-        [STJS.JsonPropertyName("first_name")]
         public string? FirstName { get; set; }
 
         /// <summary>The last name of the flag owner.</summary>
-        [JsonProperty("last_name")]
-        [STJS.JsonPropertyName("last_name")]
         public string? LastName { get; set; }
     }
 }

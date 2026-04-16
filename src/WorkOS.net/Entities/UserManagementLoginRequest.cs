@@ -3,26 +3,18 @@
 namespace WorkOS
 {
     using System.Collections.Generic;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an user management login request.</summary>
     public class UserManagementLoginRequest
     {
 
         /// <summary>Identifier provided when AuthKit redirected to your login page.</summary>
-        [JsonProperty("external_auth_id")]
-        [STJS.JsonPropertyName("external_auth_id")]
         public string ExternalAuthId { get; set; } = default!;
 
         /// <summary>The user to create or update in AuthKit.</summary>
-        [JsonProperty("user")]
-        [STJS.JsonPropertyName("user")]
         public UserObject User { get; set; } = default!;
 
         /// <summary>Array of [User Consent Options](https://workos.com/docs/reference/workos-connect/standalone/user-consent-options) to store with the session.</summary>
-        [JsonProperty("user_consent_options")]
-        [STJS.JsonPropertyName("user_consent_options")]
         public List<UserConsentOption>? UserConsentOptions { get; set; }
     }
 }

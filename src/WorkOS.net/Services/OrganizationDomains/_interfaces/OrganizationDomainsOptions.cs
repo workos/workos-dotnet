@@ -11,13 +11,9 @@ namespace WorkOS
     public class OrganizationDomainsCreateOptions : BaseOptions
     {
         /// <summary>The domain to add to the organization.</summary>
-        [JsonProperty("domain")]
-        [STJS.JsonPropertyName("domain")]
         public string Domain { get; set; } = default!;
 
         /// <summary>The ID of the organization to add the domain to.</summary>
-        [JsonProperty("organization_id")]
-        [STJS.JsonPropertyName("organization_id")]
         public string OrganizationId { get; set; } = default!;
 
     }

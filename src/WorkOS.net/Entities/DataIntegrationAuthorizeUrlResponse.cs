@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a data integration authorize url response.</summary>
     public class DataIntegrationAuthorizeUrlResponse
     {
 
         /// <summary>The OAuth authorization URL to redirect the user to.</summary>
-        [JsonProperty("url")]
-        [STJS.JsonPropertyName("url")]
         public string Url { get; set; } = default!;
     }
 }

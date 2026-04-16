@@ -2,26 +2,18 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an event context google analytics session.</summary>
     public class EventContextGoogleAnalyticsSession
     {
 
         /// <summary>The Google Analytics container ID.</summary>
-        [JsonProperty("containerId")]
-        [STJS.JsonPropertyName("containerId")]
         public string ContainerId { get; set; } = default!;
 
         /// <summary>The Google Analytics session ID.</summary>
-        [JsonProperty("sessionId")]
-        [STJS.JsonPropertyName("sessionId")]
         public string? SessionId { get; set; }
 
         /// <summary>The Google Analytics session number.</summary>
-        [JsonProperty("sessionNumber")]
-        [STJS.JsonPropertyName("sessionNumber")]
         public string? SessionNumber { get; set; }
     }
 }

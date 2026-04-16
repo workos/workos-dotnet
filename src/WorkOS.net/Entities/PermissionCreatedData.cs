@@ -3,51 +3,33 @@
 namespace WorkOS
 {
     using System;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>The event payload.</summary>
     public class PermissionCreatedData
     {
 
         /// <summary>Distinguishes the permission object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "permission";
 
         /// <summary>Unique identifier of the permission.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The slug identifier of the permission.</summary>
-        [JsonProperty("slug")]
-        [STJS.JsonPropertyName("slug")]
         public string Slug { get; set; } = default!;
 
         /// <summary>The name of the permission.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
         /// <summary>A description of the permission.</summary>
-        [JsonProperty("description")]
-        [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }
 
         /// <summary>Whether the permission is a system permission.</summary>
-        [JsonProperty("system")]
-        [STJS.JsonPropertyName("system")]
         public bool System { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("updated_at")]
-        [STJS.JsonPropertyName("updated_at")]
         public DateTimeOffset UpdatedAt { get; set; }
     }
 }

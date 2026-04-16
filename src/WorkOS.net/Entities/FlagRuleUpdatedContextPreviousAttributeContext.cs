@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>The previous context attributes of the flag rule.</summary>
     public class FlagRuleUpdatedContextPreviousAttributeContext
     {
 
         /// <summary>The previous access type of the flag rule.</summary>
-        [JsonProperty("access_type")]
-        [STJS.JsonPropertyName("access_type")]
         public FlagRuleUpdatedContextAccessType? AccessType { get; set; }
 
         /// <summary>The previous configured targets for the flag rule.</summary>
-        [JsonProperty("configured_targets")]
-        [STJS.JsonPropertyName("configured_targets")]
         public FlagRuleUpdatedContextPreviousAttributeContextConfiguredTarget? ConfiguredTargets { get; set; }
     }
 }

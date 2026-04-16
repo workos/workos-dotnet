@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Information about the impersonator if this session was created via impersonation.</summary>
     public class AuthenticateResponseImpersonator
     {
 
         /// <summary>The email address of the WorkOS Dashboard user who is impersonating the user.</summary>
-        [JsonProperty("email")]
-        [STJS.JsonPropertyName("email")]
         public string Email { get; set; } = default!;
 
         /// <summary>The justification the impersonator gave for impersonating the user.</summary>
-        [JsonProperty("reason")]
-        [STJS.JsonPropertyName("reason")]
         public string? Reason { get; set; }
     }
 }

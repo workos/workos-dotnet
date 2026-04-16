@@ -14,13 +14,13 @@ namespace WorkOSTests
     public class ErrorPathTest
     {
         [Fact]
-        public async Task Returns401_ThrowsAuthenticationError()
+        public async Task Returns401_ThrowsAuthenticationException()
         {
             var httpMock = new HttpMock();
             httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"message\":\"Unauthorized\"}");
             var client = CreateClient(httpMock);
 
-            var ex = await Assert.ThrowsAsync<AuthenticationError>(() =>
+            var ex = await Assert.ThrowsAsync<AuthenticationException>(() =>
                 client.MakeRawAPIRequest(new WorkOSRequest
                 {
                     Method = HttpMethod.Get,
@@ -32,13 +32,13 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task Returns404_ThrowsNotFoundError()
+        public async Task Returns404_ThrowsNotFoundException()
         {
             var httpMock = new HttpMock();
             httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"message\":\"Not Found\"}");
             var client = CreateClient(httpMock);
 
-            var ex = await Assert.ThrowsAsync<NotFoundError>(() =>
+            var ex = await Assert.ThrowsAsync<NotFoundException>(() =>
                 client.MakeRawAPIRequest(new WorkOSRequest
                 {
                     Method = HttpMethod.Get,
@@ -50,7 +50,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task Returns422_ThrowsUnprocessableEntityError()
+        public async Task Returns422_ThrowsUnprocessableEntityException()
         {
             var httpMock = new HttpMock();
             httpMock.MockResponseForAnyRequest(
@@ -58,7 +58,7 @@ namespace WorkOSTests
                 "{\"message\":\"Validation failed\"}");
             var client = CreateClient(httpMock);
 
-            var ex = await Assert.ThrowsAsync<UnprocessableEntityError>(() =>
+            var ex = await Assert.ThrowsAsync<UnprocessableEntityException>(() =>
                 client.MakeRawAPIRequest(new WorkOSRequest
                 {
                     Method = HttpMethod.Post,
@@ -70,7 +70,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task Returns429_ThrowsRateLimitExceededError()
+        public async Task Returns429_ThrowsRateLimitExceededException()
         {
             var httpMock = new HttpMock();
             httpMock.MockResponseForAnyRequest(
@@ -78,7 +78,7 @@ namespace WorkOSTests
                 "{\"message\":\"Too Many Requests\"}");
             var client = CreateClient(httpMock);
 
-            var ex = await Assert.ThrowsAsync<RateLimitExceededError>(() =>
+            var ex = await Assert.ThrowsAsync<RateLimitExceededException>(() =>
                 client.MakeRawAPIRequest(new WorkOSRequest
                 {
                     Method = HttpMethod.Get,
@@ -90,7 +90,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task Returns500_ThrowsServerError()
+        public async Task Returns500_ThrowsServerException()
         {
             var httpMock = new HttpMock();
             httpMock.MockResponseForAnyRequest(
@@ -98,7 +98,7 @@ namespace WorkOSTests
                 "{\"message\":\"Internal Server Error\"}");
             var client = CreateClient(httpMock);
 
-            var ex = await Assert.ThrowsAsync<ServerError>(() =>
+            var ex = await Assert.ThrowsAsync<ServerException>(() =>
                 client.MakeRawAPIRequest(new WorkOSRequest
                 {
                     Method = HttpMethod.Get,
@@ -110,7 +110,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task Returns400_ThrowsApiError()
+        public async Task Returns400_ThrowsApiException()
         {
             var httpMock = new HttpMock();
             httpMock.MockResponseForAnyRequest(
@@ -118,7 +118,7 @@ namespace WorkOSTests
                 "{\"message\":\"Bad Request\"}");
             var client = CreateClient(httpMock);
 
-            var ex = await Assert.ThrowsAsync<ApiError>(() =>
+            var ex = await Assert.ThrowsAsync<ApiException>(() =>
                 client.MakeRawAPIRequest(new WorkOSRequest
                 {
                     Method = HttpMethod.Post,
@@ -143,7 +143,7 @@ namespace WorkOSTests
                 MaxRetries = 2,
             });
 
-            await Assert.ThrowsAsync<ApiError>(() =>
+            await Assert.ThrowsAsync<ApiException>(() =>
                 client.MakeRawAPIRequest(new WorkOSRequest
                 {
                     Method = HttpMethod.Post,

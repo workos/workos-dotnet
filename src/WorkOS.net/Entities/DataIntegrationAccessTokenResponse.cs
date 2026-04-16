@@ -2,29 +2,21 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a data integration access token response.</summary>
     public class DataIntegrationAccessTokenResponse
     {
 
         /// <summary>Indicates whether the access token is valid and ready for use, or if reauthorization is required.</summary>
-        [JsonProperty("active")]
-        [STJS.JsonPropertyName("active")]
         public bool Active { get; internal set; } = true;
 
-        /// <summary>The [access token](/reference/pipes/access-token) object, present when `active` is `true`.</summary>
-        [JsonProperty("access_token")]
-        [STJS.JsonPropertyName("access_token")]
+        /// <summary>The [access token](https://workos.com/docs/reference/pipes/access-token) object, present when `active` is `true`.</summary>
         public DataIntegrationAccessTokenResponseAccessToken? AccessToken { get; set; }
 
         /// <summary>- `"not_installed"`: The user does not have the integration installed.</summary>
         /// <remarks>
         /// - `"needs_reauthorization"`: The user needs to reauthorize the integration.
         /// </remarks>
-        [JsonProperty("error")]
-        [STJS.JsonPropertyName("error")]
         public DataIntegrationAccessTokenResponseError? Error { get; set; }
     }
 }

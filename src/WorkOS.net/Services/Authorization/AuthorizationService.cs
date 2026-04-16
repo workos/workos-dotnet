@@ -49,7 +49,25 @@ namespace WorkOS
         /// <returns>A page of <see cref="AuthorizationResource"/> results.</returns>
         public virtual async Task<WorkOSList<AuthorizationResource>> ListOrganizationMembershipResources(string organizationMembershipId, AuthorizationListOrganizationMembershipResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<AuthorizationResource>>($"/authorization/organization_memberships/{organizationMembershipId}/resources", options, requestOptions, cancellationToken);
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"/authorization/organization_memberships/{organizationMembershipId}/resources",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.ParentResource is ParentResourceById byId)
+            {
+                request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+            }
+            else if (options?.ParentResource is ParentResourceByExternalId byExternalId)
+            {
+                request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
+            }
+
+            return await this.Client.MakeAPIRequest<WorkOSList<AuthorizationResource>>(request, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListOrganizationMembershipResources"/>. Yields individual items across all pages.</summary>
@@ -61,6 +79,62 @@ namespace WorkOS
         public virtual IAsyncEnumerable<AuthorizationResource> ListOrganizationMembershipResourcesAutoPagingAsync(string organizationMembershipId, AuthorizationListOrganizationMembershipResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.ListAutoPagingAsync<AuthorizationResource>($"/authorization/organization_memberships/{organizationMembershipId}/resources", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List effective permissions for an organization membership on a resource</summary>
+        /// <remarks>
+        /// Returns all permissions the organization membership effectively has on a resource, including permissions inherited through roles assigned to ancestor resources.
+        /// </remarks>
+        /// <param name="organizationMembershipId">The ID of the organization membership.</param>
+        /// <param name="resourceId">The ID of the authorization resource.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="AuthorizationPermission"/> results.</returns>
+        public virtual async Task<WorkOSList<AuthorizationPermission>> ListResourcePermissions(string organizationMembershipId, string resourceId, AuthorizationListResourcePermissionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<AuthorizationPermission>>($"/authorization/organization_memberships/{organizationMembershipId}/resources/{resourceId}/permissions", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListResourcePermissions"/>. Yields individual items across all pages.</summary>
+        /// <param name="organizationMembershipId">The ID of the organization membership.</param>
+        /// <param name="resourceId">The ID of the authorization resource.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="AuthorizationPermission"/> items.</returns>
+        public virtual IAsyncEnumerable<AuthorizationPermission> ListResourcePermissionsAutoPagingAsync(string organizationMembershipId, string resourceId, AuthorizationListResourcePermissionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<AuthorizationPermission>($"/authorization/organization_memberships/{organizationMembershipId}/resources/{resourceId}/permissions", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List effective permissions for an organization membership on a resource by external ID</summary>
+        /// <remarks>
+        /// Returns all permissions the organization membership effectively has on a resource identified by its external ID, including permissions inherited through roles assigned to ancestor resources.
+        /// </remarks>
+        /// <param name="organizationMembershipId">The ID of the organization membership.</param>
+        /// <param name="resourceTypeSlug">The slug of the resource type.</param>
+        /// <param name="externalId">An identifier you provide to reference the resource in your system.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="AuthorizationPermission"/> results.</returns>
+        public virtual async Task<WorkOSList<AuthorizationPermission>> ListEffectivePermissionsByExternalId(string organizationMembershipId, string resourceTypeSlug, string externalId, AuthorizationListEffectivePermissionsByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<AuthorizationPermission>>($"/authorization/organization_memberships/{organizationMembershipId}/resources/{resourceTypeSlug}/{externalId}/permissions", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListEffectivePermissionsByExternalId"/>. Yields individual items across all pages.</summary>
+        /// <param name="organizationMembershipId">The ID of the organization membership.</param>
+        /// <param name="resourceTypeSlug">The slug of the resource type.</param>
+        /// <param name="externalId">An identifier you provide to reference the resource in your system.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="AuthorizationPermission"/> items.</returns>
+        public virtual IAsyncEnumerable<AuthorizationPermission> ListEffectivePermissionsByExternalIdAutoPagingAsync(string organizationMembershipId, string resourceTypeSlug, string externalId, AuthorizationListEffectivePermissionsByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<AuthorizationPermission>($"/authorization/organization_memberships/{organizationMembershipId}/resources/{resourceTypeSlug}/{externalId}/permissions", options, requestOptions, cancellationToken);
         }
 
         /// <summary>List role assignments</summary>
@@ -128,9 +202,9 @@ namespace WorkOS
             await this.DeleteAsync($"/authorization/organization_memberships/{organizationMembershipId}/role_assignments/{roleAssignmentId}", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>List organization roles</summary>
+        /// <summary>List custom roles</summary>
         /// <remarks>
-        /// Get a list of all roles that apply to an organization. This includes both environment roles and organization-specific roles, returned in priority order.
+        /// Get a list of all roles that apply to an organization. This includes both environment roles and custom roles, returned in priority order.
         /// </remarks>
         /// <param name="organizationId">The ID of the organization.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
@@ -141,9 +215,9 @@ namespace WorkOS
             return await this.GetAsync<RoleList>($"/authorization/organizations/{organizationId}/roles", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>Create a custom organization role</summary>
+        /// <summary>Create a custom role</summary>
         /// <remarks>
-        /// Create a new custom organization role. When slug is omitted, it is auto-generated from the role name.
+        /// Create a new custom role for this organization.
         /// </remarks>
         /// <param name="organizationId">The ID of the organization.</param>
         /// <param name="options">Request options.</param>
@@ -155,9 +229,9 @@ namespace WorkOS
             return await this.PostAsync<Role>($"/authorization/organizations/{organizationId}/roles", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Get an organization role</summary>
+        /// <summary>Get a custom role</summary>
         /// <remarks>
-        /// Retrieve a role that applies to an organization by its slug. This can return either an environment role or an organization-specific role.
+        /// Retrieve a role that applies to an organization by its slug. This can return either an environment role or a custom role.
         /// </remarks>
         /// <param name="organizationId">The ID of the organization.</param>
         /// <param name="slug">The slug of the role.</param>
@@ -169,9 +243,9 @@ namespace WorkOS
             return await this.GetAsync<Role>($"/authorization/organizations/{organizationId}/roles/{slug}", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>Update an organization role</summary>
+        /// <summary>Update a custom role</summary>
         /// <remarks>
-        /// Update an existing custom organization role. Only the fields provided in the request body will be updated.
+        /// Update an existing custom role. Only the fields provided in the request body will be updated.
         /// </remarks>
         /// <param name="organizationId">The ID of the organization.</param>
         /// <param name="slug">The slug of the role.</param>
@@ -184,9 +258,9 @@ namespace WorkOS
             return await this.PatchAsync<Role>($"/authorization/organizations/{organizationId}/roles/{slug}", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Delete a custom organization role</summary>
+        /// <summary>Delete a custom role</summary>
         /// <remarks>
-        /// Delete an existing custom organization role.
+        /// Delete an existing custom role.
         /// </remarks>
         /// <param name="organizationId">The ID of the organization.</param>
         /// <param name="slug">The slug of the role.</param>
@@ -197,9 +271,9 @@ namespace WorkOS
             await this.DeleteAsync($"/authorization/organizations/{organizationId}/roles/{slug}", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>Add a permission to an organization role</summary>
+        /// <summary>Add a permission to a custom role</summary>
         /// <remarks>
-        /// Add a single permission to an organization role. If the permission is already assigned to the role, this operation has no effect.
+        /// Add a single permission to a custom role. If the permission is already assigned to the role, this operation has no effect.
         /// </remarks>
         /// <param name="organizationId">The ID of the organization.</param>
         /// <param name="slug">The slug of the role.</param>
@@ -212,9 +286,9 @@ namespace WorkOS
             return await this.PostAsync<Role>($"/authorization/organizations/{organizationId}/roles/{slug}/permissions", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Set permissions for a role</summary>
+        /// <summary>Set permissions for a custom role</summary>
         /// <remarks>
-        /// Replace all permissions on a role with the provided list.
+        /// Replace all permissions on a custom role with the provided list.
         /// </remarks>
         /// <param name="organizationId">The ID of the organization.</param>
         /// <param name="slug">The slug of the role.</param>
@@ -227,9 +301,9 @@ namespace WorkOS
             return await this.PutAsync<Role>($"/authorization/organizations/{organizationId}/roles/{slug}/permissions", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Remove a permission from an organization role</summary>
+        /// <summary>Remove a permission from a custom role</summary>
         /// <remarks>
-        /// Remove a single permission from an organization role by its slug.
+        /// Remove a single permission from a custom role by its slug.
         /// </remarks>
         /// <param name="organizationId">The ID of the organization.</param>
         /// <param name="slug">The slug of the role.</param>
@@ -522,7 +596,7 @@ namespace WorkOS
 
         /// <summary>Create a permission</summary>
         /// <remarks>
-        /// Create a new permission in your WorkOS environment. The permission can then be assigned to environment roles and organization roles.
+        /// Create a new permission in your WorkOS environment. The permission can then be assigned to environment roles and custom roles.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>

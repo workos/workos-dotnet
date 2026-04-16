@@ -3,39 +3,25 @@
 namespace WorkOS
 {
     using System;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a flag deleted.</summary>
     public class FlagDeleted
     {
 
         /// <summary>Unique identifier for the event.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
-        [JsonProperty("event")]
-        [STJS.JsonPropertyName("event")]
         public string Event { get; internal set; } = "flag.deleted";
 
         /// <summary>The event payload.</summary>
-        [JsonProperty("data")]
-        [STJS.JsonPropertyName("data")]
         public FlagDeletedData Data { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>Additional context about the event.</summary>
-        [JsonProperty("context")]
-        [STJS.JsonPropertyName("context")]
         public FlagDeletedContext Context { get; set; } = default!;
 
         /// <summary>Distinguishes the Event object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "event";
     }
 }

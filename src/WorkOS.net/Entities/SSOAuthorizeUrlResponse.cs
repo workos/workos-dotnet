@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an SSO authorize url response.</summary>
     public class SSOAuthorizeUrlResponse
     {
 
         /// <summary>An OAuth 2.0 authorization URL.</summary>
-        [JsonProperty("url")]
-        [STJS.JsonPropertyName("url")]
         public string Url { get; set; } = default!;
     }
 }

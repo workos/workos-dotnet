@@ -119,35 +119,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationError>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundError>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityError>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededError>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerError>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
         }
     }
 }

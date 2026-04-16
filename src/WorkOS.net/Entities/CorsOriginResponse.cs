@@ -3,36 +3,24 @@
 namespace WorkOS
 {
     using System;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a cors origin response.</summary>
     public class CorsOriginResponse
     {
 
         /// <summary>Distinguishes the CORS origin object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "cors_origin";
 
         /// <summary>Unique identifier of the CORS origin.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The origin URL.</summary>
-        [JsonProperty("origin")]
-        [STJS.JsonPropertyName("origin")]
         public string Origin { get; set; } = default!;
 
         /// <summary>Timestamp when the CORS origin was created.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>Timestamp when the CORS origin was last updated.</summary>
-        [JsonProperty("updated_at")]
-        [STJS.JsonPropertyName("updated_at")]
         public DateTimeOffset UpdatedAt { get; set; }
     }
 }

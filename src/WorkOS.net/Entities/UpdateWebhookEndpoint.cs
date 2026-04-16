@@ -3,26 +3,18 @@
 namespace WorkOS
 {
     using System.Collections.Generic;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an update webhook endpoint.</summary>
     public class UpdateWebhookEndpoint
     {
 
         /// <summary>The HTTPS URL where webhooks will be sent.</summary>
-        [JsonProperty("endpoint_url")]
-        [STJS.JsonPropertyName("endpoint_url")]
         public string? EndpointUrl { get; set; }
 
         /// <summary>Whether the Webhook Endpoint is enabled or disabled.</summary>
-        [JsonProperty("status")]
-        [STJS.JsonPropertyName("status")]
         public UpdateWebhookEndpointStatus? Status { get; set; }
 
         /// <summary>The events that the Webhook Endpoint is subscribed to.</summary>
-        [JsonProperty("events")]
-        [STJS.JsonPropertyName("events")]
         public List<CreateWebhookEndpointEvents>? Events { get; set; }
     }
 }

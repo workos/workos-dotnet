@@ -49,7 +49,7 @@ namespace WorkOSTests
             var httpMock = new HttpMock();
             httpMock.MockSequentialResponseMessagesForAnyRequest(new[]
             {
-                (HttpStatusCode.InternalServerError, "{\"message\":\"oops\"}", (IDictionary<string, string>?)null),
+                (HttpStatusCode.InternalServerException, "{\"message\":\"oops\"}", (IDictionary<string, string>?)null),
                 (HttpStatusCode.OK, "{}", (IDictionary<string, string>?)null),
             });
 
@@ -82,7 +82,7 @@ namespace WorkOSTests
                 MaxRetries = 2,
             });
 
-            await Assert.ThrowsAsync<ApiError>(() =>
+            await Assert.ThrowsAsync<ApiException>(() =>
                 client.MakeRawAPIRequest(new WorkOSRequest
                 {
                     Method = HttpMethod.Get,
@@ -98,9 +98,9 @@ namespace WorkOSTests
             var httpMock = new HttpMock();
             httpMock.MockSequentialResponseMessagesForAnyRequest(new[]
             {
-                (HttpStatusCode.InternalServerError, "{\"message\":\"fail 1\"}", (IDictionary<string, string>?)null),
-                (HttpStatusCode.InternalServerError, "{\"message\":\"fail 2\"}", (IDictionary<string, string>?)null),
-                (HttpStatusCode.InternalServerError, "{\"message\":\"fail 3\"}", (IDictionary<string, string>?)null),
+                (HttpStatusCode.InternalServerException, "{\"message\":\"fail 1\"}", (IDictionary<string, string>?)null),
+                (HttpStatusCode.InternalServerException, "{\"message\":\"fail 2\"}", (IDictionary<string, string>?)null),
+                (HttpStatusCode.InternalServerException, "{\"message\":\"fail 3\"}", (IDictionary<string, string>?)null),
             });
 
             var client = new WorkOSClient(new WorkOSOptions
@@ -110,7 +110,7 @@ namespace WorkOSTests
                 MaxRetries = 2,
             });
 
-            var ex = await Assert.ThrowsAsync<ServerError>(() =>
+            var ex = await Assert.ThrowsAsync<ServerException>(() =>
                 client.MakeRawAPIRequest(new WorkOSRequest
                 {
                     Method = HttpMethod.Get,
@@ -156,7 +156,7 @@ namespace WorkOSTests
             var httpMock = new HttpMock();
             httpMock.MockSequentialResponseMessagesForAnyRequest(new[]
             {
-                (HttpStatusCode.InternalServerError, "{\"message\":\"fail\"}", (IDictionary<string, string>?)null),
+                (HttpStatusCode.InternalServerException, "{\"message\":\"fail\"}", (IDictionary<string, string>?)null),
                 (HttpStatusCode.OK, "{}", (IDictionary<string, string>?)null),
             });
 
@@ -253,7 +253,7 @@ namespace WorkOSTests
         public async Task ZeroRetriesDisablesRetry()
         {
             var httpMock = new HttpMock();
-            httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"message\":\"fail\"}");
+            httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerException, "{\"message\":\"fail\"}");
 
             var client = new WorkOSClient(new WorkOSOptions
             {
@@ -262,7 +262,7 @@ namespace WorkOSTests
                 MaxRetries = 0,
             });
 
-            await Assert.ThrowsAsync<ServerError>(() =>
+            await Assert.ThrowsAsync<ServerException>(() =>
                 client.MakeRawAPIRequest(new WorkOSRequest
                 {
                     Method = HttpMethod.Get,

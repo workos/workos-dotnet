@@ -10,19 +10,14 @@ namespace WorkOS
     {
 
         /// <summary>Unique identifier of the actor.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The source of the actor that performed the action.</summary>
-        [JsonProperty("source", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("source")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public EventContextActorSource Source { get; set; }
 
         /// <summary>The name of the actor.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
         public string? Name { get; set; }
     }
 }

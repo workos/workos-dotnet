@@ -10,19 +10,14 @@ namespace WorkOS
     {
 
         /// <summary>The unique identifier of the organization.</summary>
-        [JsonProperty("organization_id")]
-        [STJS.JsonPropertyName("organization_id")]
         public string OrganizationId { get; set; } = default!;
 
         /// <summary>The external key provider used for BYOK.</summary>
-        [JsonProperty("key_provider", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("key_provider")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public VaultByokKeyVerificationCompletedDataKeyProvider KeyProvider { get; set; }
 
         /// <summary>Whether the BYOK key verification completed successfully.</summary>
-        [JsonProperty("verified")]
-        [STJS.JsonPropertyName("verified")]
         public bool Verified { get; set; }
     }
 }

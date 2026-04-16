@@ -2,21 +2,15 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an email change confirmation.</summary>
     public class EmailChangeConfirmation
     {
 
         /// <summary>Distinguishes the email change confirmation object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "email_change_confirmation";
 
         /// <summary>The user object.</summary>
-        [JsonProperty("user")]
-        [STJS.JsonPropertyName("user")]
         public EmailChangeConfirmationUser User { get; set; } = default!;
     }
 }

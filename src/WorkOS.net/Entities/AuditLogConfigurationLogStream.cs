@@ -11,30 +11,22 @@ namespace WorkOS
     {
 
         /// <summary>Unique identifier of the Audit Log Stream.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The type of the Audit Log Stream destination.</summary>
-        [JsonProperty("type", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("type")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public AuditLogConfigurationLogStreamType Type { get; set; }
 
         /// <summary>The current state of the Audit Log Stream.</summary>
-        [JsonProperty("state", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("state")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public AuditLogConfigurationLogStreamState State { get; set; }
 
         /// <summary>ISO-8601 timestamp of when the last event was successfully synced, or null if no events have been synced.</summary>
-        [JsonProperty("last_synced_at")]
-        [STJS.JsonPropertyName("last_synced_at")]
         public string? LastSyncedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
     }
 }

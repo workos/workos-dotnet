@@ -12,7 +12,7 @@ The largest breaking changes are:
 - path identifiers now move out of option objects and into method arguments
 - auth URL and AuthKit authentication helpers now read `client_id` from `WorkOSOptions.ClientId`
 - ad hoc idempotency arguments were replaced by `RequestOptions`
-- service calls now throw typed `ApiError` exceptions for non-2xx responses
+- service calls now throw typed `ApiException` exceptions for non-2xx responses
 - retry behavior and idempotency headers are now handled by the client runtime
 
 ## 1. Upgrade Runtime Requirements
@@ -295,12 +295,12 @@ In v2, service methods generally passed whatever response body came back into de
 
 In v3, non-2xx responses are mapped to typed exceptions:
 
-- `AuthenticationError`
-- `NotFoundError`
-- `UnprocessableEntityError`
-- `RateLimitExceededError`
-- `ServerError`
-- `ApiError`
+- `AuthenticationException`
+- `NotFoundException`
+- `UnprocessableEntityException`
+- `RateLimitExceededException`
+- `ServerException`
+- `ApiException`
 
 ### Before
 
@@ -315,11 +315,11 @@ try
 {
     var org = await client.Organizations.Get("org_missing");
 }
-catch (NotFoundError)
+catch (NotFoundException)
 {
     // handle missing organization
 }
-catch (ApiError ex)
+catch (ApiException ex)
 {
     // handle other API failures
     throw;

@@ -326,20 +326,20 @@ namespace WorkOS
             switch ((int)statusCode)
             {
                 case 401:
-                    return new AuthenticationError(body);
+                    return new AuthenticationException(body);
                 case 404:
-                    return new NotFoundError(body);
+                    return new NotFoundException(body);
                 case 422:
-                    return new UnprocessableEntityError(body);
+                    return new UnprocessableEntityException(body);
                 case 429:
-                    return new RateLimitExceededError(body);
+                    return new RateLimitExceededException(body);
                 default:
                     if ((int)statusCode >= 500)
                     {
-                        return new ServerError(body);
+                        return new ServerException(body);
                     }
 
-                    return new ApiError(body, statusCode);
+                    return new ApiException(body, statusCode);
             }
         }
 

@@ -12,44 +12,29 @@ namespace WorkOS
     {
 
         /// <summary>Distinguishes the Webhook Endpoint object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "webhook_endpoint";
 
         /// <summary>Unique identifier of the Webhook Endpoint.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>The URL to which webhooks are sent.</summary>
-        [JsonProperty("endpoint_url")]
-        [STJS.JsonPropertyName("endpoint_url")]
         public string EndpointUrl { get; set; } = default!;
 
         /// <summary>The secret used to sign webhook payloads.</summary>
-        [JsonProperty("secret")]
-        [STJS.JsonPropertyName("secret")]
         public string Secret { get; set; } = default!;
 
         /// <summary>Whether the Webhook Endpoint is enabled or disabled.</summary>
-        [JsonProperty("status", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [STJS.JsonPropertyName("status")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public UpdateWebhookEndpointStatus Status { get; set; }
 
         /// <summary>The events that the Webhook Endpoint is subscribed to.</summary>
-        [JsonProperty("events")]
-        [STJS.JsonPropertyName("events")]
         public List<string> Events { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("updated_at")]
-        [STJS.JsonPropertyName("updated_at")]
         public DateTimeOffset UpdatedAt { get; set; }
     }
 }

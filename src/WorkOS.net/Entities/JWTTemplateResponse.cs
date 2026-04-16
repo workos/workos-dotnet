@@ -2,31 +2,21 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a JWT template response.</summary>
     public class JWTTemplateResponse
     {
 
         /// <summary>The object type.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "jwt_template";
 
         /// <summary>The JWT template content as a Liquid template string.</summary>
-        [JsonProperty("content")]
-        [STJS.JsonPropertyName("content")]
         public string Content { get; set; } = default!;
 
         /// <summary>The timestamp when the JWT template was created.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public string CreatedAt { get; set; } = default!;
 
         /// <summary>The timestamp when the JWT template was last updated.</summary>
-        [JsonProperty("updated_at")]
-        [STJS.JsonPropertyName("updated_at")]
         public string UpdatedAt { get; set; } = default!;
     }
 }

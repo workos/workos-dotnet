@@ -3,36 +3,24 @@
 namespace WorkOS
 {
     using System.Collections.Generic;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create M2 m application.</summary>
     public class CreateM2MApplication
     {
 
         /// <summary>The name of the application.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
         /// <summary>The type of application to create.</summary>
-        [JsonProperty("application_type")]
-        [STJS.JsonPropertyName("application_type")]
         public string ApplicationType { get; internal set; } = "m2m";
 
         /// <summary>A description for the application.</summary>
-        [JsonProperty("description")]
-        [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }
 
         /// <summary>The OAuth scopes granted to the application.</summary>
-        [JsonProperty("scopes")]
-        [STJS.JsonPropertyName("scopes")]
         public List<string>? Scopes { get; set; }
 
         /// <summary>The organization ID this application belongs to.</summary>
-        [JsonProperty("organization_id")]
-        [STJS.JsonPropertyName("organization_id")]
         public string OrganizationId { get; set; } = default!;
     }
 }

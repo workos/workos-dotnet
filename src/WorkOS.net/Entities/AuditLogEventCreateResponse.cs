@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an audit log event create response.</summary>
     public class AuditLogEventCreateResponse
     {
 
         /// <summary>Whether the Audit Log event was created successfully.</summary>
-        [JsonProperty("success")]
-        [STJS.JsonPropertyName("success")]
         public bool Success { get; set; }
     }
 }

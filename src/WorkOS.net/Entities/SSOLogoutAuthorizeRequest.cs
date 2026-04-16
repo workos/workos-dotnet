@@ -2,16 +2,12 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an SSO logout authorize request.</summary>
     public class SSOLogoutAuthorizeRequest
     {
 
         /// <summary>The unique ID of the profile to log out.</summary>
-        [JsonProperty("profile_id")]
-        [STJS.JsonPropertyName("profile_id")]
         public string ProfileId { get; set; } = default!;
     }
 }

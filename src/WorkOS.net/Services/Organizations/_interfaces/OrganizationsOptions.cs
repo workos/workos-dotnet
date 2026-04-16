@@ -11,13 +11,9 @@ namespace WorkOS
     public class OrganizationsListOptions : ListOptions
     {
         /// <summary>The domains of an Organization. Any Organization with a matching domain will be returned.</summary>
-        [JsonProperty("domains")]
-        [STJS.JsonPropertyName("domains")]
         public List<string>? Domains { get; set; }
 
         /// <summary>Searchable text for an Organization. Matches against the organization name.</summary>
-        [JsonProperty("search")]
-        [STJS.JsonPropertyName("search")]
         public string? Search { get; set; }
 
     }
@@ -26,33 +22,21 @@ namespace WorkOS
     public class OrganizationsCreateOptions : BaseOptions
     {
         /// <summary>The name of the organization.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
         /// <summary>Whether the organization allows profiles from outside the organization to sign in.</summary>
-        [JsonProperty("allow_profiles_outside_organization")]
-        [STJS.JsonPropertyName("allow_profiles_outside_organization")]
         public bool? AllowProfilesOutsideOrganization { get; set; }
 
         /// <summary>The domains associated with the organization. Deprecated in favor of `domain_data`.</summary>
-        [JsonProperty("domains")]
-        [STJS.JsonPropertyName("domains")]
         public List<string>? Domains { get; set; }
 
         /// <summary>The domains associated with the organization, including verification state.</summary>
-        [JsonProperty("domain_data")]
-        [STJS.JsonPropertyName("domain_data")]
         public List<OrganizationDomainData>? DomainData { get; set; }
 
         /// <summary>Object containing [metadata](https://workos.com/docs/authkit/metadata) key/value pairs associated with the Organization.</summary>
-        [JsonProperty("metadata")]
-        [STJS.JsonPropertyName("metadata")]
         public Dictionary<string, string>? Metadata { get; set; }
 
         /// <summary>An external identifier for the Organization.</summary>
-        [JsonProperty("external_id")]
-        [STJS.JsonPropertyName("external_id")]
         public string? ExternalId { get; set; }
 
     }
@@ -61,39 +45,25 @@ namespace WorkOS
     public class OrganizationsUpdateOptions : BaseOptions
     {
         /// <summary>The name of the organization.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
         public string? Name { get; set; }
 
         /// <summary>Whether the organization allows profiles from outside the organization to sign in.</summary>
-        [JsonProperty("allow_profiles_outside_organization")]
-        [STJS.JsonPropertyName("allow_profiles_outside_organization")]
         public bool? AllowProfilesOutsideOrganization { get; set; }
 
         /// <summary>The domains associated with the organization. Deprecated in favor of `domain_data`.</summary>
         [System.Obsolete("This field is deprecated.")]
-        [JsonProperty("domains")]
-        [STJS.JsonPropertyName("domains")]
         public List<string>? Domains { get; set; }
 
         /// <summary>The domains associated with the organization, including verification state.</summary>
-        [JsonProperty("domain_data")]
-        [STJS.JsonPropertyName("domain_data")]
         public List<OrganizationDomainData>? DomainData { get; set; }
 
         /// <summary>The Stripe customer ID associated with the organization.</summary>
-        [JsonProperty("stripe_customer_id")]
-        [STJS.JsonPropertyName("stripe_customer_id")]
         public string? StripeCustomerId { get; set; }
 
         /// <summary>Object containing [metadata](https://workos.com/docs/authkit/metadata) key/value pairs associated with the Organization.</summary>
-        [JsonProperty("metadata")]
-        [STJS.JsonPropertyName("metadata")]
         public Dictionary<string, string>? Metadata { get; set; }
 
         /// <summary>An external identifier for the Organization.</summary>
-        [JsonProperty("external_id")]
-        [STJS.JsonPropertyName("external_id")]
         public string? ExternalId { get; set; }
 
     }

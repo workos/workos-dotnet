@@ -3,34 +3,22 @@
 namespace WorkOS
 {
     using System;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an email change.</summary>
     public class EmailChange
     {
 
         /// <summary>Distinguishes the email change object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "email_change";
-        [JsonProperty("user")]
-        [STJS.JsonPropertyName("user")]
         public User User { get; set; } = default!;
 
         /// <summary>The new email address the user is changing to.</summary>
-        [JsonProperty("new_email")]
-        [STJS.JsonPropertyName("new_email")]
         public string NewEmail { get; set; } = default!;
 
         /// <summary>The timestamp when the email change code expires.</summary>
-        [JsonProperty("expires_at")]
-        [STJS.JsonPropertyName("expires_at")]
         public DateTimeOffset ExpiresAt { get; set; }
 
         /// <summary>The timestamp when the email change challenge was created.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
     }
 }

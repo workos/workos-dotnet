@@ -2,36 +2,24 @@
 
 namespace WorkOS
 {
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an SSO token response.</summary>
     public class SSOTokenResponse
     {
 
         /// <summary>The type of token issued.</summary>
-        [JsonProperty("token_type")]
-        [STJS.JsonPropertyName("token_type")]
         public string TokenType { get; internal set; } = "Bearer";
 
         /// <summary>An access token that can be exchanged for a user profile. Access tokens are short-lived — see the `expires_in` field for the exact lifetime.</summary>
-        [JsonProperty("access_token")]
-        [STJS.JsonPropertyName("access_token")]
         public string AccessToken { get; set; } = default!;
 
         /// <summary>The lifetime of the access token in seconds.</summary>
-        [JsonProperty("expires_in")]
-        [STJS.JsonPropertyName("expires_in")]
         public long ExpiresIn { get; set; }
 
         /// <summary>The user profile returned by the identity provider.</summary>
-        [JsonProperty("profile")]
-        [STJS.JsonPropertyName("profile")]
         public Profile Profile { get; set; } = default!;
 
         /// <summary>OAuth tokens issued by the identity provider, if available.</summary>
-        [JsonProperty("oauth_tokens")]
-        [STJS.JsonPropertyName("oauth_tokens")]
         public SSOTokenResponseOAuthToken? OAuthTokens { get; set; }
     }
 }

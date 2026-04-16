@@ -3,39 +3,25 @@
 namespace WorkOS
 {
     using System.Collections.Generic;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Additional context about the event.</summary>
     public class EventContext
     {
 
         /// <summary>The Google Analytics client ID.</summary>
-        [JsonProperty("google_analytics_client_id")]
-        [STJS.JsonPropertyName("google_analytics_client_id")]
         public string? GoogleAnalyticsClientId { get; set; }
 
         /// <summary>The Google Analytics sessions associated with the event.</summary>
-        [JsonProperty("google_analytics_sessions")]
-        [STJS.JsonPropertyName("google_analytics_sessions")]
         public List<EventContextGoogleAnalyticsSession>? GoogleAnalyticsSessions { get; set; }
 
         /// <summary>The anonymous ID from analytics.</summary>
-        [JsonProperty("ajs_anonymous_id")]
-        [STJS.JsonPropertyName("ajs_anonymous_id")]
         public string? AjsAnonymousId { get; set; }
 
         /// <summary>The client ID associated with the event.</summary>
-        [JsonProperty("client_id")]
-        [STJS.JsonPropertyName("client_id")]
         public string? ClientId { get; set; }
-        [JsonProperty("actor")]
-        [STJS.JsonPropertyName("actor")]
         public EventContextActor? Actor { get; set; }
 
         /// <summary>Attributes that changed from their previous values.</summary>
-        [JsonProperty("previous_attributes")]
-        [STJS.JsonPropertyName("previous_attributes")]
         public Dictionary<string, object>? PreviousAttributes { get; set; }
 
         /// <summary>

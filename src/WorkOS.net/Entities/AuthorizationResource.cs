@@ -3,61 +3,39 @@
 namespace WorkOS
 {
     using System;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an authorization resource.</summary>
     public class AuthorizationResource
     {
 
         /// <summary>Distinguishes the Resource object.</summary>
-        [JsonProperty("object")]
-        [STJS.JsonPropertyName("object")]
         public string Object { get; internal set; } = "authorization_resource";
 
         /// <summary>A human-readable name for the Resource.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
         /// <summary>An optional description of the Resource.</summary>
-        [JsonProperty("description")]
-        [STJS.JsonPropertyName("description")]
         public string? Description { get; set; }
 
         /// <summary>The ID of the organization that owns the resource.</summary>
-        [JsonProperty("organization_id")]
-        [STJS.JsonPropertyName("organization_id")]
         public string OrganizationId { get; set; } = default!;
 
         /// <summary>The ID of the parent resource, if this resource is nested.</summary>
-        [JsonProperty("parent_resource_id")]
-        [STJS.JsonPropertyName("parent_resource_id")]
         public string? ParentResourceId { get; set; }
 
         /// <summary>The unique ID of the Resource.</summary>
-        [JsonProperty("id")]
-        [STJS.JsonPropertyName("id")]
         public string Id { get; set; } = default!;
 
         /// <summary>An identifier you provide to reference the resource in your system.</summary>
-        [JsonProperty("external_id")]
-        [STJS.JsonPropertyName("external_id")]
         public string ExternalId { get; set; } = default!;
 
         /// <summary>The slug of the resource type this resource belongs to.</summary>
-        [JsonProperty("resource_type_slug")]
-        [STJS.JsonPropertyName("resource_type_slug")]
         public string ResourceTypeSlug { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("created_at")]
-        [STJS.JsonPropertyName("created_at")]
         public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
-        [JsonProperty("updated_at")]
-        [STJS.JsonPropertyName("updated_at")]
         public DateTimeOffset UpdatedAt { get; set; }
     }
 }

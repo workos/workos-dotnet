@@ -3,26 +3,18 @@
 namespace WorkOS
 {
     using System.Collections.Generic;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an audit log schema.</summary>
     public class AuditLogSchema
     {
 
         /// <summary>The metadata schema for the actor.</summary>
-        [JsonProperty("actor")]
-        [STJS.JsonPropertyName("actor")]
         public AuditLogSchemaActor? Actor { get; set; }
 
         /// <summary>The list of targets for the schema.</summary>
-        [JsonProperty("targets")]
-        [STJS.JsonPropertyName("targets")]
         public List<AuditLogSchemaTarget> Targets { get; set; } = default!;
 
         /// <summary>Optional JSON schema for event metadata.</summary>
-        [JsonProperty("metadata")]
-        [STJS.JsonPropertyName("metadata")]
         public Dictionary<string, object>? Metadata { get; set; }
 
         /// <summary>

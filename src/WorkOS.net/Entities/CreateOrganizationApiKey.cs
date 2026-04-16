@@ -3,21 +3,15 @@
 namespace WorkOS
 {
     using System.Collections.Generic;
-    using Newtonsoft.Json;
-    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a create organization api key.</summary>
     public class CreateOrganizationApiKey
     {
 
         /// <summary>The name for the API key.</summary>
-        [JsonProperty("name")]
-        [STJS.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
 
         /// <summary>The permission slugs to assign to the API key.</summary>
-        [JsonProperty("permissions")]
-        [STJS.JsonPropertyName("permissions")]
         public List<string>? Permissions { get; set; }
     }
 }
