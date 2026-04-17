@@ -43,21 +43,37 @@ namespace WorkOSTests
             AssertStjRoundTrip<Connection>("testdata/connection.json");
         }
 
+        private static readonly JsonSerializerSettings NewtonsoftSettings = new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+            ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver
+            {
+                NamingStrategy = new Newtonsoft.Json.Serialization.SnakeCaseNamingStrategy(),
+            },
+        };
+
         private static void AssertNewtonsoftRoundTrip<T>(string fixturePath)
         {
             var raw = File.ReadAllText(fixturePath);
-            var entity = JsonConvert.DeserializeObject<T>(raw);
+            var entity = JsonConvert.DeserializeObject<T>(raw, NewtonsoftSettings);
             Assert.NotNull(entity);
-            var reserialized = JsonConvert.SerializeObject(entity);
+            var reserialized = JsonConvert.SerializeObject(entity, NewtonsoftSettings);
             AssertStructurallyEqual(raw, reserialized, $"{typeof(T).Name} (Newtonsoft)");
         }
+
+        private static readonly STJ.JsonSerializerOptions StjOptions = new STJ.JsonSerializerOptions
+        {
+            PropertyNamingPolicy = STJ.JsonNamingPolicy.SnakeCaseLower,
+            DefaultIgnoreCondition = STJ.Serialization.JsonIgnoreCondition.WhenWritingNull,
+            Converters = { new WorkOSStringEnumConverterFactory() },
+        };
 
         private static void AssertStjRoundTrip<T>(string fixturePath)
         {
             var raw = File.ReadAllText(fixturePath);
-            var entity = STJ.JsonSerializer.Deserialize<T>(raw);
+            var entity = STJ.JsonSerializer.Deserialize<T>(raw, StjOptions);
             Assert.NotNull(entity);
-            var reserialized = STJ.JsonSerializer.Serialize(entity);
+            var reserialized = STJ.JsonSerializer.Serialize(entity, StjOptions);
             AssertStructurallyEqual(raw, reserialized, $"{typeof(T).Name} (STJ)");
         }
 

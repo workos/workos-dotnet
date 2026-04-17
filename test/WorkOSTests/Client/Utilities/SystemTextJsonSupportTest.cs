@@ -14,11 +14,18 @@ namespace WorkOSTests
     /// </summary>
     public class SystemTextJsonSupportTest
     {
+        private static readonly JsonSerializerOptions StjOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+            Converters = { new WorkOS.WorkOSStringEnumConverterFactory() },
+        };
+
         [Fact]
         public void Stj_Organization_DeserializesSnakeCasedProperties()
         {
             var json = File.ReadAllText("testdata/organization.json");
-            var org = JsonSerializer.Deserialize<Organization>(json);
+            var org = JsonSerializer.Deserialize<Organization>(json, StjOptions);
 
             Assert.NotNull(org);
             Assert.Equal("org_01EHWNCE74X7JSDV0X3SZ3KJNY", org!.Id);
@@ -34,7 +41,7 @@ namespace WorkOSTests
         public void Stj_Organization_DeserializesNestedListAndDictionary()
         {
             var json = File.ReadAllText("testdata/organization.json");
-            var org = JsonSerializer.Deserialize<Organization>(json)!;
+            var org = JsonSerializer.Deserialize<Organization>(json, StjOptions)!;
 
             Assert.NotNull(org.Domains);
             Assert.Single(org.Domains);
@@ -48,8 +55,8 @@ namespace WorkOSTests
         public void Stj_Organization_RoundTripPreservesSnakeCase()
         {
             var json = File.ReadAllText("testdata/organization.json");
-            var org = JsonSerializer.Deserialize<Organization>(json)!;
-            var reserialized = JsonSerializer.Serialize(org);
+            var org = JsonSerializer.Deserialize<Organization>(json, StjOptions)!;
+            var reserialized = JsonSerializer.Serialize(org, StjOptions);
 
             Assert.Contains("\"external_id\"", reserialized);
             Assert.Contains("\"stripe_customer_id\"", reserialized);
@@ -62,10 +69,10 @@ namespace WorkOSTests
         public void Stj_Connection_DeserializesEnumViaEnumMember()
         {
             var json = File.ReadAllText("testdata/connection.json");
-            var connection = JsonSerializer.Deserialize<Connection>(json)!;
+            var connection = JsonSerializer.Deserialize<Connection>(json, StjOptions)!;
 
             Assert.Equal(ConnectionState.Active, connection.State);
-            var reserialized = JsonSerializer.Serialize(connection);
+            var reserialized = JsonSerializer.Serialize(connection, StjOptions);
             Assert.Contains("\"state\":\"active\"", reserialized);
         }
 
@@ -76,7 +83,7 @@ namespace WorkOSTests
             var rewritten = json.Replace(
                 "\"state\": \"active\"",
                 "\"state\": \"some_new_state_from_server\"");
-            var connection = JsonSerializer.Deserialize<Connection>(rewritten)!;
+            var connection = JsonSerializer.Deserialize<Connection>(rewritten, StjOptions)!;
             Assert.Equal(ConnectionState.Unknown, connection.State);
         }
 
@@ -90,7 +97,7 @@ namespace WorkOSTests
                 "\"allow_profiles_outside_organization\":false}]," +
                 "\"list_metadata\":{\"before\":null,\"after\":\"cursor_xyz\"}}";
 
-            var page = JsonSerializer.Deserialize<WorkOSList<Organization>>(json)!;
+            var page = JsonSerializer.Deserialize<WorkOSList<Organization>>(json, StjOptions)!;
             Assert.NotNull(page.Data);
             Assert.Single(page.Data!);
             Assert.Equal("org_1", page.Data![0].Id);

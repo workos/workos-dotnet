@@ -29,7 +29,7 @@ namespace WorkOS
         internal static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore,
-            ContractResolver = new DefaultContractResolver
+            ContractResolver = new InternalPropertyContractResolver
             {
                 NamingStrategy = new SnakeCaseNamingStrategy(),
             },
@@ -214,7 +214,7 @@ namespace WorkOS
 
         private static IEnumerable<PropertyInfo> GetSerializableProperties(Type type)
         {
-            return type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            return type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
         /// <summary>
@@ -354,6 +354,44 @@ namespace WorkOS
             }
 
             result.Add(new KeyValuePair<string, string>(key, rendered));
+        }
+
+        /// <summary>
+        /// Contract resolver that includes internal properties so that
+        /// service-injected fields (grant_type, client_id, client_secret)
+        /// on wrapper options classes are serialized into the JSON body.
+        /// </summary>
+        private class InternalPropertyContractResolver : DefaultContractResolver
+        {
+            protected override List<MemberInfo> GetSerializableMembers(Type objectType)
+            {
+                var members = base.GetSerializableMembers(objectType);
+
+                // Add internal (assembly-level) properties that base skips.
+                foreach (var prop in objectType.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance))
+                {
+                    if (prop.GetMethod?.IsAssembly == true && !members.Any(m => m.Name == prop.Name))
+                    {
+                        members.Add(prop);
+                    }
+                }
+
+                return members;
+            }
+
+            protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+            {
+                var prop = base.CreateProperty(member, memberSerialization);
+
+                // Ensure internal properties are readable/writable for serialization.
+                if (member is PropertyInfo pi && pi.GetMethod?.IsAssembly == true)
+                {
+                    prop.Readable = pi.CanRead;
+                    prop.Writable = pi.CanWrite;
+                }
+
+                return prop;
+            }
         }
     }
 }

@@ -5,5 +5,7 @@
   "code": "vBqZKaPpsnJlPfXiDqN7b6VTz",
   "ip_address": null,
   "device_id": null,
-  "user_agent": null
+  "user_agent": null,
+  "code_verifier": null,
+  "invitation_token": null
 }

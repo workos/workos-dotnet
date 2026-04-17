@@ -1,7 +1,7 @@
 {
   "version": 1,
   "language": "dotnet",
-  "generatedAt": "2026-04-16T19:22:54.033Z",
+  "generatedAt": "2026-04-16T23:23:46.208Z",
   "files": [
     "src/WorkOS.net/Client/WorkOSClient.Generated.cs",
     "src/WorkOS.net/Entities/ActionAuthenticationDenied.cs",
@@ -673,6 +673,8 @@
     "test/WorkOSTests/testdata/create_user_organization_membership_nulls.json",
     "test/WorkOSTests/testdata/create_webhook_endpoint.json",
     "test/WorkOSTests/testdata/data_integration_access_token_response.json",
+    "test/WorkOSTests/testdata/data_integration_access_token_response_access_token.json",
+    "test/WorkOSTests/testdata/data_integration_access_token_response_access_token_nulls.json",
     "test/WorkOSTests/testdata/data_integration_access_token_response_nulls.json",
     "test/WorkOSTests/testdata/data_integration_authorize_url_response.json",
     "test/WorkOSTests/testdata/data_integrations_get_data_integration_authorize_url_request.json",

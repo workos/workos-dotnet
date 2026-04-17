@@ -49,7 +49,7 @@ namespace WorkOSTests
             var httpMock = new HttpMock();
             httpMock.MockSequentialResponseMessagesForAnyRequest(new[]
             {
-                (HttpStatusCode.InternalServerException, "{\"message\":\"oops\"}", (IDictionary<string, string>?)null),
+                (HttpStatusCode.InternalServerError, "{\"message\":\"oops\"}", (IDictionary<string, string>?)null),
                 (HttpStatusCode.OK, "{}", (IDictionary<string, string>?)null),
             });
 
@@ -98,9 +98,9 @@ namespace WorkOSTests
             var httpMock = new HttpMock();
             httpMock.MockSequentialResponseMessagesForAnyRequest(new[]
             {
-                (HttpStatusCode.InternalServerException, "{\"message\":\"fail 1\"}", (IDictionary<string, string>?)null),
-                (HttpStatusCode.InternalServerException, "{\"message\":\"fail 2\"}", (IDictionary<string, string>?)null),
-                (HttpStatusCode.InternalServerException, "{\"message\":\"fail 3\"}", (IDictionary<string, string>?)null),
+                (HttpStatusCode.InternalServerError, "{\"message\":\"fail 1\"}", (IDictionary<string, string>?)null),
+                (HttpStatusCode.InternalServerError, "{\"message\":\"fail 2\"}", (IDictionary<string, string>?)null),
+                (HttpStatusCode.InternalServerError, "{\"message\":\"fail 3\"}", (IDictionary<string, string>?)null),
             });
 
             var client = new WorkOSClient(new WorkOSOptions
@@ -156,7 +156,7 @@ namespace WorkOSTests
             var httpMock = new HttpMock();
             httpMock.MockSequentialResponseMessagesForAnyRequest(new[]
             {
-                (HttpStatusCode.InternalServerException, "{\"message\":\"fail\"}", (IDictionary<string, string>?)null),
+                (HttpStatusCode.InternalServerError, "{\"message\":\"fail\"}", (IDictionary<string, string>?)null),
                 (HttpStatusCode.OK, "{}", (IDictionary<string, string>?)null),
             });
 
@@ -253,7 +253,7 @@ namespace WorkOSTests
         public async Task ZeroRetriesDisablesRetry()
         {
             var httpMock = new HttpMock();
-            httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerException, "{\"message\":\"fail\"}");
+            httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"message\":\"fail\"}");
 
             var client = new WorkOSClient(new WorkOSOptions
             {

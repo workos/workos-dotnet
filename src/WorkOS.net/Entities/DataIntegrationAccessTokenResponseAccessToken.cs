@@ -4,7 +4,7 @@ namespace WorkOS
 {
     using System.Collections.Generic;
 
-    /// <summary>The [access token](/reference/pipes/access-token) object, present when `active` is `true`.</summary>
+    /// <summary>The [access token](https://workos.com/docs/reference/pipes/access-token) object, present when `active` is `true`.</summary>
     public class DataIntegrationAccessTokenResponseAccessToken
     {
 

@@ -454,6 +454,16 @@ namespace WorkOS
                 }
             }
 
+            // Append extra query params from parameter-group dispatch.
+            if (request.ExtraQueryParams != null)
+            {
+                foreach (var kv in request.ExtraQueryParams)
+                {
+                    builder.Append(builder.ToString().Contains("?") ? "&" : "?");
+                    builder.Append($"{System.Net.WebUtility.UrlEncode(kv.Key)}={System.Net.WebUtility.UrlEncode(kv.Value)}");
+                }
+            }
+
             return new Uri(builder.ToString());
         }
     }

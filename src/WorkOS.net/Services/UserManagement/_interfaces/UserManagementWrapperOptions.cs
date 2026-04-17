@@ -38,6 +38,10 @@ namespace WorkOS
     {
         public string Code { get; set; } = default!;
 
+        public string? CodeVerifier { get; set; }
+
+        public string? InvitationToken { get; set; }
+
         public string? IpAddress { get; set; }
 
         public string? DeviceId { get; set; }

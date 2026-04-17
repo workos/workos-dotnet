@@ -44,5 +44,21 @@ namespace WorkOS
         /// Per-request configuration overrides (API key, idempotency key, etc.).
         /// </summary>
         public RequestOptions? RequestOptions { get; set; }
+
+        /// <summary>
+        /// Extra query parameters injected by parameter-group dispatch
+        /// (e.g. discriminated parent-resource unions). These are appended
+        /// to the URL query string alongside the options-derived params.
+        /// </summary>
+        internal Dictionary<string, string>? ExtraQueryParams { get; set; }
+
+        /// <summary>
+        /// Append an extra query parameter to the request.
+        /// </summary>
+        internal void AddQueryParam(string key, string value)
+        {
+            this.ExtraQueryParams ??= new Dictionary<string, string>();
+            this.ExtraQueryParams[key] = value;
+        }
     }
 }
