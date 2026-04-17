@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -32,9 +33,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="DataIntegrationAuthorizeUrlResponse"/> result.</returns>
-        public virtual async Task<DataIntegrationAuthorizeUrlResponse> AuthorizeDataIntegration(string slug, PipesAuthorizeDataIntegrationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<DataIntegrationAuthorizeUrlResponse> AuthorizeDataIntegrationAsync(string slug, PipesAuthorizeDataIntegrationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<DataIntegrationAuthorizeUrlResponse>($"/data-integrations/{slug}/authorize", options, requestOptions, cancellationToken);
+            return await this.PostAsync<DataIntegrationAuthorizeUrlResponse>($"/data-integrations/{Uri.EscapeDataString(slug)}/authorize", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="AuthorizeDataIntegrationAsync"/>.</summary>
+        public virtual Task<DataIntegrationAuthorizeUrlResponse> AuthorizeDataIntegration(string slug, PipesAuthorizeDataIntegrationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.AuthorizeDataIntegrationAsync(slug, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get an access token for a connected account</summary>
@@ -46,9 +53,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="DataIntegrationAccessTokenResponse"/> result.</returns>
-        public virtual async Task<DataIntegrationAccessTokenResponse> CreateDataIntegrationToken(string slug, PipesCreateDataIntegrationTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<DataIntegrationAccessTokenResponse> CreateDataIntegrationTokenAsync(string slug, PipesCreateDataIntegrationTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<DataIntegrationAccessTokenResponse>($"/data-integrations/{slug}/token", options, requestOptions, cancellationToken);
+            return await this.PostAsync<DataIntegrationAccessTokenResponse>($"/data-integrations/{Uri.EscapeDataString(slug)}/token", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateDataIntegrationTokenAsync"/>.</summary>
+        public virtual Task<DataIntegrationAccessTokenResponse> CreateDataIntegrationToken(string slug, PipesCreateDataIntegrationTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateDataIntegrationTokenAsync(slug, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a connected account</summary>
@@ -61,9 +74,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
-        public virtual async Task<ConnectedAccount> GetUserConnectedAccount(string userId, string slug, PipesGetUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<ConnectedAccount> GetUserConnectedAccountAsync(string userId, string slug, PipesGetUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<ConnectedAccount>($"/user_management/users/{userId}/connected_accounts/{slug}", options, requestOptions, cancellationToken);
+            return await this.GetAsync<ConnectedAccount>($"/user_management/users/{Uri.EscapeDataString(userId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetUserConnectedAccountAsync"/>.</summary>
+        public virtual Task<ConnectedAccount> GetUserConnectedAccount(string userId, string slug, PipesGetUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetUserConnectedAccountAsync(userId, slug, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a connected account</summary>
@@ -75,9 +94,15 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteUserConnectedAccount(string userId, string slug, PipesDeleteUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteUserConnectedAccountAsync(string userId, string slug, PipesDeleteUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.DeleteAsync($"/user_management/users/{userId}/connected_accounts/{slug}", options, requestOptions, cancellationToken);
+            await this.DeleteAsync($"/user_management/users/{Uri.EscapeDataString(userId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteUserConnectedAccountAsync"/>.</summary>
+        public virtual Task DeleteUserConnectedAccount(string userId, string slug, PipesDeleteUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteUserConnectedAccountAsync(userId, slug, options, requestOptions, cancellationToken);
         }
 
         /// <summary>List providers</summary>
@@ -89,9 +114,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="DataIntegrationsListResponse"/> result.</returns>
-        public virtual async Task<DataIntegrationsListResponse> ListUserDataProviders(string userId, PipesListUserDataProvidersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<DataIntegrationsListResponse> ListUserDataProvidersAsync(string userId, PipesListUserDataProvidersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<DataIntegrationsListResponse>($"/user_management/users/{userId}/data_providers", options, requestOptions, cancellationToken);
+            return await this.GetAsync<DataIntegrationsListResponse>($"/user_management/users/{Uri.EscapeDataString(userId)}/data_providers", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListUserDataProvidersAsync"/>.</summary>
+        public virtual Task<DataIntegrationsListResponse> ListUserDataProviders(string userId, PipesListUserDataProvidersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListUserDataProvidersAsync(userId, options, requestOptions, cancellationToken);
         }
     }
 }

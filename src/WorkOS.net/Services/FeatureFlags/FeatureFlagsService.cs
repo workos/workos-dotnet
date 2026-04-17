@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -31,12 +32,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="FeatureFlag"/> results.</returns>
-        public virtual async Task<WorkOSList<FeatureFlag>> List(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<FeatureFlag>> ListAsync(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.GetAsync<WorkOSList<FeatureFlag>>("/feature-flags", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="List"/>. Yields individual items across all pages.</summary>
+        /// <summary>Compatibility wrapper for <see cref="ListAsync"/>.</summary>
+        public virtual Task<WorkOSList<FeatureFlag>> List(FeatureFlagsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -54,9 +61,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="FeatureFlag"/> result.</returns>
-        public virtual async Task<FeatureFlag> Get(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<FeatureFlag> GetAsync(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<FeatureFlag>($"/feature-flags/{slug}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<FeatureFlag>($"/feature-flags/{Uri.EscapeDataString(slug)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetAsync"/>.</summary>
+        public virtual Task<FeatureFlag> Get(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetAsync(slug, requestOptions, cancellationToken);
         }
 
         /// <summary>Disable a feature flag</summary>
@@ -67,9 +80,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="FeatureFlag"/> result.</returns>
-        public virtual async Task<FeatureFlag> Disable(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<FeatureFlag> DisableAsync(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<FeatureFlag>($"/feature-flags/{slug}/disable", null, requestOptions, cancellationToken);
+            return await this.PutAsync<FeatureFlag>($"/feature-flags/{Uri.EscapeDataString(slug)}/disable", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DisableAsync"/>.</summary>
+        public virtual Task<FeatureFlag> Disable(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DisableAsync(slug, requestOptions, cancellationToken);
         }
 
         /// <summary>Enable a feature flag</summary>
@@ -80,9 +99,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="FeatureFlag"/> result.</returns>
-        public virtual async Task<FeatureFlag> Enable(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<FeatureFlag> EnableAsync(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<FeatureFlag>($"/feature-flags/{slug}/enable", null, requestOptions, cancellationToken);
+            return await this.PutAsync<FeatureFlag>($"/feature-flags/{Uri.EscapeDataString(slug)}/enable", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="EnableAsync"/>.</summary>
+        public virtual Task<FeatureFlag> Enable(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.EnableAsync(slug, requestOptions, cancellationToken);
         }
 
         /// <summary>Add a feature flag target</summary>
@@ -93,9 +118,15 @@ namespace WorkOS
         /// <param name="resourceId">The resource ID in format "user_&lt;id&gt;" or "org_&lt;id&gt;".</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task AddFlagTarget(string slug, string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task AddFlagTargetAsync(string slug, string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.PostAsync<object>($"/feature-flags/{slug}/targets/{resourceId}", null, requestOptions, cancellationToken);
+            await this.PostAsync<object>($"/feature-flags/{Uri.EscapeDataString(slug)}/targets/{Uri.EscapeDataString(resourceId)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="AddFlagTargetAsync"/>.</summary>
+        public virtual Task AddFlagTarget(string slug, string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.AddFlagTargetAsync(slug, resourceId, requestOptions, cancellationToken);
         }
 
         /// <summary>Remove a feature flag target</summary>
@@ -106,9 +137,15 @@ namespace WorkOS
         /// <param name="resourceId">The resource ID in format "user_&lt;id&gt;" or "org_&lt;id&gt;".</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task RemoveFlagTarget(string slug, string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task RemoveFlagTargetAsync(string slug, string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.DeleteAsync($"/feature-flags/{slug}/targets/{resourceId}", null, requestOptions, cancellationToken);
+            await this.DeleteAsync($"/feature-flags/{Uri.EscapeDataString(slug)}/targets/{Uri.EscapeDataString(resourceId)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="RemoveFlagTargetAsync"/>.</summary>
+        public virtual Task RemoveFlagTarget(string slug, string resourceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.RemoveFlagTargetAsync(slug, resourceId, requestOptions, cancellationToken);
         }
 
         /// <summary>List enabled feature flags for an organization</summary>
@@ -120,12 +157,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="FeatureFlag"/> results.</returns>
-        public virtual async Task<WorkOSList<FeatureFlag>> ListOrganizationFeatureFlags(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<FeatureFlag>> ListOrganizationFeatureFlagsAsync(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<FeatureFlag>>($"/organizations/{organizationId}/feature-flags", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<FeatureFlag>>($"/organizations/{Uri.EscapeDataString(organizationId)}/feature-flags", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="ListOrganizationFeatureFlags"/>. Yields individual items across all pages.</summary>
+        /// <summary>Compatibility wrapper for <see cref="ListOrganizationFeatureFlagsAsync"/>.</summary>
+        public virtual Task<WorkOSList<FeatureFlag>> ListOrganizationFeatureFlags(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListOrganizationFeatureFlagsAsync(organizationId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListOrganizationFeatureFlagsAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="organizationId">Unique identifier of the Organization.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
@@ -133,7 +176,7 @@ namespace WorkOS
         /// <returns>An async sequence of <see cref="FeatureFlag"/> items.</returns>
         public virtual IAsyncEnumerable<FeatureFlag> ListOrganizationFeatureFlagsAutoPagingAsync(string organizationId, FeatureFlagsListOrganizationFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<FeatureFlag>($"/organizations/{organizationId}/feature-flags", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<FeatureFlag>($"/organizations/{Uri.EscapeDataString(organizationId)}/feature-flags", options, requestOptions, cancellationToken);
         }
 
         /// <summary>List enabled feature flags for a user</summary>
@@ -145,12 +188,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="FeatureFlag"/> results.</returns>
-        public virtual async Task<WorkOSList<FeatureFlag>> ListUserFeatureFlags(string userId, FeatureFlagsListUserFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<FeatureFlag>> ListUserFeatureFlagsAsync(string userId, FeatureFlagsListUserFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<FeatureFlag>>($"/user_management/users/{userId}/feature-flags", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<FeatureFlag>>($"/user_management/users/{Uri.EscapeDataString(userId)}/feature-flags", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="ListUserFeatureFlags"/>. Yields individual items across all pages.</summary>
+        /// <summary>Compatibility wrapper for <see cref="ListUserFeatureFlagsAsync"/>.</summary>
+        public virtual Task<WorkOSList<FeatureFlag>> ListUserFeatureFlags(string userId, FeatureFlagsListUserFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListUserFeatureFlagsAsync(userId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListUserFeatureFlagsAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="userId">The ID of the user.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
@@ -158,7 +207,7 @@ namespace WorkOS
         /// <returns>An async sequence of <see cref="FeatureFlag"/> items.</returns>
         public virtual IAsyncEnumerable<FeatureFlag> ListUserFeatureFlagsAutoPagingAsync(string userId, FeatureFlagsListUserFeatureFlagsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<FeatureFlag>($"/user_management/users/{userId}/feature-flags", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<FeatureFlag>($"/user_management/users/{Uri.EscapeDataString(userId)}/feature-flags", options, requestOptions, cancellationToken);
         }
     }
 }

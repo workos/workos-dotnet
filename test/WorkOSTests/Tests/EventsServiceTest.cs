@@ -27,21 +27,21 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestList()
+        public async Task TestListAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_event_schema.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/events", HttpStatusCode.OK, fixture);
-            var result = await this.service.List(new EventsListOptions());
+            var result = await this.service.ListAsync(new EventsListOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/events");
         }
 
         [Fact]
-        public async Task TestListEmpty()
+        public async Task TestListAsyncEmpty()
         {
             this.httpMock.MockResponse(HttpMethod.Get, "/events", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.List(new EventsListOptions());
+            var result = await this.service.ListAsync(new EventsListOptions());
             Assert.NotNull(result);
             Assert.Empty(result.Data);
         }
@@ -82,35 +82,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.List(new EventsListOptions()));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.ListAsync(new EventsListOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundException>(() => this.service.List(new EventsListOptions()));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.ListAsync(new EventsListOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.List(new EventsListOptions()));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.ListAsync(new EventsListOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.List(new EventsListOptions()));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.ListAsync(new EventsListOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerException>(() => this.service.List(new EventsListOptions()));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.ListAsync(new EventsListOptions()));
         }
     }
 }

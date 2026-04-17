@@ -7,7 +7,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="MultiFactorAuthService.VerifyChallenge"/>: Verify Challenge</summary>
+    /// <summary>Request options for <see cref="MultiFactorAuthService.VerifyChallengeAsync"/>: Verify Challenge</summary>
     public class MultiFactorAuthVerifyChallengeOptions : BaseOptions
     {
         /// <summary>The one-time code to verify.</summary>
@@ -15,7 +15,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="MultiFactorAuthService.EnrollFactor"/>: Enroll Factor</summary>
+    /// <summary>Request options for <see cref="MultiFactorAuthService.EnrollFactorAsync"/>: Enroll Factor</summary>
     public class MultiFactorAuthEnrollFactorOptions : BaseOptions
     {
         /// <summary>The type of factor to enroll.</summary>
@@ -37,7 +37,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="MultiFactorAuthService.ChallengeFactor"/>: Challenge Factor</summary>
+    /// <summary>Request options for <see cref="MultiFactorAuthService.ChallengeFactorAsync"/>: Challenge Factor</summary>
     public class MultiFactorAuthChallengeFactorOptions : BaseOptions
     {
         /// <summary>A custom template for the SMS message. Use the {{code}} placeholder to include the verification code.</summary>
@@ -45,12 +45,12 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="MultiFactorAuthService.ListUserAuthFactors"/>: List authentication factors</summary>
+    /// <summary>Request options for <see cref="MultiFactorAuthService.ListUserAuthFactorsAsync"/>: List authentication factors</summary>
     public class MultiFactorAuthListUserAuthFactorsOptions : ListOptions
     {
     }
 
-    /// <summary>Request options for <see cref="MultiFactorAuthService.CreateUserAuthFactor"/>: Enroll an authentication factor</summary>
+    /// <summary>Request options for <see cref="MultiFactorAuthService.CreateUserAuthFactorAsync"/>: Enroll an authentication factor</summary>
     public class MultiFactorAuthCreateUserAuthFactorOptions : BaseOptions
     {
         /// <summary>The type of the factor to enroll.</summary>

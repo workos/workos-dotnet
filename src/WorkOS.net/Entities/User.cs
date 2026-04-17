@@ -6,7 +6,7 @@ namespace WorkOS
     using System.Collections.Generic;
 
     /// <summary>The user object.</summary>
-    public class EmailChangeConfirmationUser
+    public class User
     {
 
         /// <summary>Distinguishes the user object.</summary>

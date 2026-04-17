@@ -27,54 +27,54 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestCreateValidation()
+        public async Task TestCreateValidationAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/api_key_validation_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/api_keys/validations", HttpStatusCode.OK, fixture);
             var options = new ApiKeysCreateValidationOptions();
             options.Value = "test_value";
-            var result = await this.service.CreateValidation(options);
+            var result = await this.service.CreateValidationAsync(options);
             Assert.NotNull(result);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/api_keys/validations");
             await this.httpMock.AssertRequestBodyContainsAsync("value", "test_value");
         }
 
         [Fact]
-        public async Task TestDelete()
+        public async Task TestDeleteAsync()
         {
             this.httpMock.MockResponse(HttpMethod.Delete, "/api_keys/test_id", HttpStatusCode.NoContent, "");
-            await this.service.Delete("test_id");
+            await this.service.DeleteAsync("test_id");
             this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/api_keys/test_id");
         }
 
         [Fact]
-        public async Task TestListOrganizationApiKeys()
+        public async Task TestListOrganizationApiKeysAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_api_key.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListOrganizationApiKeys("test_organizationId", new ApiKeysListOrganizationApiKeysOptions());
+            var result = await this.service.ListOrganizationApiKeysAsync("test_organizationId", new ApiKeysListOrganizationApiKeysOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_organizationId/api_keys");
         }
 
         [Fact]
-        public async Task TestListOrganizationApiKeysEmpty()
+        public async Task TestListOrganizationApiKeysAsyncEmpty()
         {
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListOrganizationApiKeys("test_organizationId", new ApiKeysListOrganizationApiKeysOptions());
+            var result = await this.service.ListOrganizationApiKeysAsync("test_organizationId", new ApiKeysListOrganizationApiKeysOptions());
             Assert.NotNull(result);
             Assert.Empty(result.Data);
         }
 
         [Fact]
-        public async Task TestCreateOrganizationApiKey()
+        public async Task TestCreateOrganizationApiKeyAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/api_key_with_value.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/organizations/test_organizationId/api_keys", HttpStatusCode.OK, fixture);
             var options = new ApiKeysCreateOrganizationApiKeyOptions();
             options.Name = "test_name";
-            var result = await this.service.CreateOrganizationApiKey("test_organizationId", options);
+            var result = await this.service.CreateOrganizationApiKeyAsync("test_organizationId", options);
             Assert.NotNull(result);
             Assert.Equal("api_key_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
             Assert.Equal("Production API Key", result.Name);
@@ -119,35 +119,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.CreateValidation(new ApiKeysCreateValidationOptions()));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.CreateValidationAsync(new ApiKeysCreateValidationOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundException>(() => this.service.CreateValidation(new ApiKeysCreateValidationOptions()));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.CreateValidationAsync(new ApiKeysCreateValidationOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.CreateValidation(new ApiKeysCreateValidationOptions()));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.CreateValidationAsync(new ApiKeysCreateValidationOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.CreateValidation(new ApiKeysCreateValidationOptions()));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.CreateValidationAsync(new ApiKeysCreateValidationOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerException>(() => this.service.CreateValidation(new ApiKeysCreateValidationOptions()));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.CreateValidationAsync(new ApiKeysCreateValidationOptions()));
         }
     }
 }

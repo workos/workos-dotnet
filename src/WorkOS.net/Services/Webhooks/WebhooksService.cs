@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -31,12 +32,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="WebhookEndpointJson"/> results.</returns>
-        public virtual async Task<WorkOSList<WebhookEndpointJson>> ListEndpoints(WebhooksListEndpointsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<WebhookEndpointJson>> ListEndpointsAsync(WebhooksListEndpointsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.GetAsync<WorkOSList<WebhookEndpointJson>>("/webhook_endpoints", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="ListEndpoints"/>. Yields individual items across all pages.</summary>
+        /// <summary>Compatibility wrapper for <see cref="ListEndpointsAsync"/>.</summary>
+        public virtual Task<WorkOSList<WebhookEndpointJson>> ListEndpoints(WebhooksListEndpointsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListEndpointsAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListEndpointsAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -54,9 +61,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="WebhookEndpointJson"/> result.</returns>
-        public virtual async Task<WebhookEndpointJson> CreateEndpoint(WebhooksCreateEndpointOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WebhookEndpointJson> CreateEndpointAsync(WebhooksCreateEndpointOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.PostAsync<WebhookEndpointJson>("/webhook_endpoints", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateEndpointAsync"/>.</summary>
+        public virtual Task<WebhookEndpointJson> CreateEndpoint(WebhooksCreateEndpointOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateEndpointAsync(options, requestOptions, cancellationToken);
         }
 
         /// <summary>Update a Webhook Endpoint</summary>
@@ -68,9 +81,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="WebhookEndpointJson"/> result.</returns>
-        public virtual async Task<WebhookEndpointJson> UpdateEndpoint(string id, WebhooksUpdateEndpointOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WebhookEndpointJson> UpdateEndpointAsync(string id, WebhooksUpdateEndpointOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PatchAsync<WebhookEndpointJson>($"/webhook_endpoints/{id}", options, requestOptions, cancellationToken);
+            return await this.PatchAsync<WebhookEndpointJson>($"/webhook_endpoints/{Uri.EscapeDataString(id)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="UpdateEndpointAsync"/>.</summary>
+        public virtual Task<WebhookEndpointJson> UpdateEndpoint(string id, WebhooksUpdateEndpointOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.UpdateEndpointAsync(id, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a Webhook Endpoint</summary>
@@ -80,9 +99,15 @@ namespace WorkOS
         /// <param name="id">Unique identifier of the Webhook Endpoint.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteEndpoint(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteEndpointAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.DeleteAsync($"/webhook_endpoints/{id}", null, requestOptions, cancellationToken);
+            await this.DeleteAsync($"/webhook_endpoints/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteEndpointAsync"/>.</summary>
+        public virtual Task DeleteEndpoint(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteEndpointAsync(id, requestOptions, cancellationToken);
         }
     }
 }

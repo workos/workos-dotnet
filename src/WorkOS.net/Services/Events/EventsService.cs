@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -31,12 +32,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="EventSchema"/> results.</returns>
-        public virtual async Task<WorkOSList<EventSchema>> List(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<EventSchema>> ListAsync(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.GetAsync<WorkOSList<EventSchema>>("/events", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="List"/>. Yields individual items across all pages.</summary>
+        /// <summary>Compatibility wrapper for <see cref="ListAsync"/>.</summary>
+        public virtual Task<WorkOSList<EventSchema>> List(EventsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>

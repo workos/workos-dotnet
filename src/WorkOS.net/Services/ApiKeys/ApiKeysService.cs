@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -31,9 +32,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ApiKeyValidationResponse"/> result.</returns>
-        public virtual async Task<ApiKeyValidationResponse> CreateValidation(ApiKeysCreateValidationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<ApiKeyValidationResponse> CreateValidationAsync(ApiKeysCreateValidationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.PostAsync<ApiKeyValidationResponse>("/api_keys/validations", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateValidationAsync"/>.</summary>
+        public virtual Task<ApiKeyValidationResponse> CreateValidation(ApiKeysCreateValidationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateValidationAsync(options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete an API key</summary>
@@ -43,9 +50,15 @@ namespace WorkOS
         /// <param name="id">The unique ID of the API key.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.DeleteAsync($"/api_keys/{id}", null, requestOptions, cancellationToken);
+            await this.DeleteAsync($"/api_keys/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteAsync"/>.</summary>
+        public virtual Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>List API keys for an organization</summary>
@@ -57,12 +70,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="ApiKey"/> results.</returns>
-        public virtual async Task<WorkOSList<ApiKey>> ListOrganizationApiKeys(string organizationId, ApiKeysListOrganizationApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<ApiKey>> ListOrganizationApiKeysAsync(string organizationId, ApiKeysListOrganizationApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<ApiKey>>($"/organizations/{organizationId}/api_keys", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<ApiKey>>($"/organizations/{Uri.EscapeDataString(organizationId)}/api_keys", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="ListOrganizationApiKeys"/>. Yields individual items across all pages.</summary>
+        /// <summary>Compatibility wrapper for <see cref="ListOrganizationApiKeysAsync"/>.</summary>
+        public virtual Task<WorkOSList<ApiKey>> ListOrganizationApiKeys(string organizationId, ApiKeysListOrganizationApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListOrganizationApiKeysAsync(organizationId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListOrganizationApiKeysAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="organizationId">Unique identifier of the Organization.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
@@ -70,7 +89,7 @@ namespace WorkOS
         /// <returns>An async sequence of <see cref="ApiKey"/> items.</returns>
         public virtual IAsyncEnumerable<ApiKey> ListOrganizationApiKeysAutoPagingAsync(string organizationId, ApiKeysListOrganizationApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<ApiKey>($"/organizations/{organizationId}/api_keys", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<ApiKey>($"/organizations/{Uri.EscapeDataString(organizationId)}/api_keys", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Create an API key for an organization</summary>
@@ -82,9 +101,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ApiKeyWithValue"/> result.</returns>
-        public virtual async Task<ApiKeyWithValue> CreateOrganizationApiKey(string organizationId, ApiKeysCreateOrganizationApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<ApiKeyWithValue> CreateOrganizationApiKeyAsync(string organizationId, ApiKeysCreateOrganizationApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<ApiKeyWithValue>($"/organizations/{organizationId}/api_keys", options, requestOptions, cancellationToken);
+            return await this.PostAsync<ApiKeyWithValue>($"/organizations/{Uri.EscapeDataString(organizationId)}/api_keys", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateOrganizationApiKeyAsync"/>.</summary>
+        public virtual Task<ApiKeyWithValue> CreateOrganizationApiKey(string organizationId, ApiKeysCreateOrganizationApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateOrganizationApiKeyAsync(organizationId, options, requestOptions, cancellationToken);
         }
     }
 }

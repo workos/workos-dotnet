@@ -58,7 +58,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.CreateDevice"/>: Get device authorization URL</summary>
+    /// <summary>Request options for <see cref="UserManagementService.CreateDeviceAsync"/>: Get device authorization URL</summary>
     public class UserManagementCreateDeviceOptions : BaseOptions
     {
         /// <summary>The WorkOS client ID for your application.</summary>
@@ -77,7 +77,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.RevokeSession"/>: Revoke Session</summary>
+    /// <summary>Request options for <see cref="UserManagementService.RevokeSessionAsync"/>: Revoke Session</summary>
     public class UserManagementRevokeSessionOptions : BaseOptions
     {
         /// <summary>The ID of the session to revoke. This can be extracted from the `sid` claim of the access token.</summary>
@@ -88,7 +88,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.CreateCorsOrigin"/>: Create a CORS origin</summary>
+    /// <summary>Request options for <see cref="UserManagementService.CreateCorsOriginAsync"/>: Create a CORS origin</summary>
     public class UserManagementCreateCorsOriginOptions : BaseOptions
     {
         /// <summary>The origin URL to allow for CORS requests.</summary>
@@ -96,7 +96,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.ResetPassword"/>: Create a password reset token</summary>
+    /// <summary>Request options for <see cref="UserManagementService.ResetPasswordAsync"/>: Create a password reset token</summary>
     public class UserManagementResetPasswordOptions : BaseOptions
     {
         /// <summary>The email address of the user requesting a password reset.</summary>
@@ -104,7 +104,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.ConfirmPasswordReset"/>: Reset the password</summary>
+    /// <summary>Request options for <see cref="UserManagementService.ConfirmPasswordResetAsync"/>: Reset the password</summary>
     public class UserManagementConfirmPasswordResetOptions : BaseOptions
     {
         /// <summary>The password reset token.</summary>
@@ -115,7 +115,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.List"/>: List users</summary>
+    /// <summary>Request options for <see cref="UserManagementService.ListAsync"/>: List users</summary>
     public class UserManagementListOptions : ListOptions
     {
         /// <summary>Filter users by the organization they are a member of. Deprecated in favor of `organization_id`.</summary>
@@ -130,7 +130,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.Create"/>: Create a user</summary>
+    /// <summary>Request options for <see cref="UserManagementService.CreateAsync"/>: Create a user</summary>
     public class UserManagementCreateOptions : BaseOptions
     {
         /// <summary>The email address of the user.</summary>
@@ -173,7 +173,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.Update"/>: Update a user</summary>
+    /// <summary>Request options for <see cref="UserManagementService.UpdateAsync"/>: Update a user</summary>
     public class UserManagementUpdateOptions : BaseOptions
     {
         /// <summary>The email address of the user.</summary>
@@ -203,7 +203,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.ConfirmEmailChange"/>: Confirm email change</summary>
+    /// <summary>Request options for <see cref="UserManagementService.ConfirmEmailChangeAsync"/>: Confirm email change</summary>
     public class UserManagementConfirmEmailChangeOptions : BaseOptions
     {
         /// <summary>The one-time code used to confirm the email change.</summary>
@@ -211,7 +211,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.SendEmailChange"/>: Send email change code</summary>
+    /// <summary>Request options for <see cref="UserManagementService.SendEmailChangeAsync"/>: Send email change code</summary>
     public class UserManagementSendEmailChangeOptions : BaseOptions
     {
         /// <summary>The new email address to change to.</summary>
@@ -219,7 +219,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.VerifyEmail"/>: Verify email</summary>
+    /// <summary>Request options for <see cref="UserManagementService.VerifyEmailAsync"/>: Verify email</summary>
     public class UserManagementVerifyEmailOptions : BaseOptions
     {
         /// <summary>The one-time email verification code.</summary>
@@ -227,12 +227,12 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.ListSessions"/>: List sessions</summary>
+    /// <summary>Request options for <see cref="UserManagementService.ListSessionsAsync"/>: List sessions</summary>
     public class UserManagementListSessionsOptions : ListOptions
     {
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.ListInvitations"/>: List invitations</summary>
+    /// <summary>Request options for <see cref="UserManagementService.ListInvitationsAsync"/>: List invitations</summary>
     public class UserManagementListInvitationsOptions : ListOptions
     {
         /// <summary>The ID of the [organization](https://workos.com/docs/reference/organization) that the recipient will join.</summary>
@@ -243,7 +243,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.SendInvitation"/>: Send an invitation</summary>
+    /// <summary>Request options for <see cref="UserManagementService.SendInvitationAsync"/>: Send an invitation</summary>
     public class UserManagementSendInvitationOptions : BaseOptions
     {
         /// <summary>The email address of the recipient.</summary>
@@ -266,7 +266,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.ResendInvitation"/>: Resend an invitation</summary>
+    /// <summary>Request options for <see cref="UserManagementService.ResendInvitationAsync"/>: Resend an invitation</summary>
     public class UserManagementResendInvitationOptions : BaseOptions
     {
         /// <summary>The locale to use when rendering the invitation email. See [supported locales](https://workos.com/docs/authkit/hosted-ui/localization).</summary>
@@ -274,7 +274,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.UpdateJWTTemplate"/>: Update JWT template</summary>
+    /// <summary>Request options for <see cref="UserManagementService.UpdateJWTTemplateAsync"/>: Update JWT template</summary>
     public class UserManagementUpdateJWTTemplateOptions : BaseOptions
     {
         /// <summary>The JWT template content as a Liquid template string.</summary>
@@ -282,7 +282,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.CreateMagicAuth"/>: Create a Magic Auth code</summary>
+    /// <summary>Request options for <see cref="UserManagementService.CreateMagicAuthAsync"/>: Create a Magic Auth code</summary>
     public class UserManagementCreateMagicAuthOptions : BaseOptions
     {
         /// <summary>The email address to send the magic code to.</summary>
@@ -293,7 +293,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.ListOrganizationMemberships"/>: List organization memberships</summary>
+    /// <summary>Request options for <see cref="UserManagementService.ListOrganizationMembershipsAsync"/>: List organization memberships</summary>
     public class UserManagementListOrganizationMembershipsOptions : ListOptions
     {
         /// <summary>The ID of the [organization](https://workos.com/docs/reference/organization) which the user belongs to.</summary>
@@ -307,7 +307,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.CreateOrganizationMembership"/>: Create an organization membership</summary>
+    /// <summary>Request options for <see cref="UserManagementService.CreateOrganizationMembershipAsync"/>: Create an organization membership</summary>
     public class UserManagementCreateOrganizationMembershipOptions : BaseOptions
     {
         /// <summary>The ID of the [user](https://workos.com/docs/reference/authkit/user).</summary>
@@ -336,7 +336,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.UpdateOrganizationMembership"/>: Update an organization membership</summary>
+    /// <summary>Request options for <see cref="UserManagementService.UpdateOrganizationMembershipAsync"/>: Update an organization membership</summary>
     public class UserManagementUpdateOrganizationMembershipOptions : BaseOptions
     {
         [JsonIgnore]
@@ -345,7 +345,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.CreateRedirectUri"/>: Create a redirect URI</summary>
+    /// <summary>Request options for <see cref="UserManagementService.CreateRedirectUriAsync"/>: Create a redirect URI</summary>
     public class UserManagementCreateRedirectUriOptions : BaseOptions
     {
         /// <summary>The redirect URI to create.</summary>
@@ -353,7 +353,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.ListAuthorizedApplications"/>: List authorized applications</summary>
+    /// <summary>Request options for <see cref="UserManagementService.ListAuthorizedApplicationsAsync"/>: List authorized applications</summary>
     public class UserManagementListAuthorizedApplicationsOptions : ListOptions
     {
     }

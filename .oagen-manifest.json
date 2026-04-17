@@ -1,7 +1,7 @@
 {
   "version": 1,
   "language": "dotnet",
-  "generatedAt": "2026-04-17T15:53:48.914Z",
+  "generatedAt": "2026-04-17T16:59:15.555Z",
   "files": [
     "src/WorkOS.net/Client/WorkOSClient.Generated.cs",
     "src/WorkOS.net/Entities/ActionAuthenticationDenied.cs",
@@ -160,7 +160,6 @@
     "src/WorkOS.net/Entities/DsyncUserUpdatedData.cs",
     "src/WorkOS.net/Entities/EmailChange.cs",
     "src/WorkOS.net/Entities/EmailChangeConfirmation.cs",
-    "src/WorkOS.net/Entities/EmailChangeConfirmationUser.cs",
     "src/WorkOS.net/Entities/EmailVerification.cs",
     "src/WorkOS.net/Entities/EmailVerificationCodeSessionAuthenticateRequest.cs",
     "src/WorkOS.net/Entities/EmailVerificationCreated.cs",
@@ -289,6 +288,7 @@
     "src/WorkOS.net/Entities/UpdateUser.cs",
     "src/WorkOS.net/Entities/UpdateUserOrganizationMembership.cs",
     "src/WorkOS.net/Entities/UpdateWebhookEndpoint.cs",
+    "src/WorkOS.net/Entities/User.cs",
     "src/WorkOS.net/Entities/UserAuthenticationFactorEnrollResponse.cs",
     "src/WorkOS.net/Entities/UserConsentOption.cs",
     "src/WorkOS.net/Entities/UserConsentOptionChoice.cs",

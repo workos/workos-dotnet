@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -32,9 +33,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthenticationChallengeVerifyResponse"/> result.</returns>
-        public virtual async Task<AuthenticationChallengeVerifyResponse> VerifyChallenge(string id, MultiFactorAuthVerifyChallengeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<AuthenticationChallengeVerifyResponse> VerifyChallengeAsync(string id, MultiFactorAuthVerifyChallengeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<AuthenticationChallengeVerifyResponse>($"/auth/challenges/{id}/verify", options, requestOptions, cancellationToken);
+            return await this.PostAsync<AuthenticationChallengeVerifyResponse>($"/auth/challenges/{Uri.EscapeDataString(id)}/verify", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="VerifyChallengeAsync"/>.</summary>
+        public virtual Task<AuthenticationChallengeVerifyResponse> VerifyChallenge(string id, MultiFactorAuthVerifyChallengeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.VerifyChallengeAsync(id, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Enroll Factor</summary>
@@ -45,9 +52,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthenticationFactorEnrolled"/> result.</returns>
-        public virtual async Task<AuthenticationFactorEnrolled> EnrollFactor(MultiFactorAuthEnrollFactorOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<AuthenticationFactorEnrolled> EnrollFactorAsync(MultiFactorAuthEnrollFactorOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.PostAsync<AuthenticationFactorEnrolled>("/auth/factors/enroll", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="EnrollFactorAsync"/>.</summary>
+        public virtual Task<AuthenticationFactorEnrolled> EnrollFactor(MultiFactorAuthEnrollFactorOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.EnrollFactorAsync(options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get Factor</summary>
@@ -58,9 +71,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthenticationFactor"/> result.</returns>
-        public virtual async Task<AuthenticationFactor> GetFactor(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<AuthenticationFactor> GetFactorAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<AuthenticationFactor>($"/auth/factors/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<AuthenticationFactor>($"/auth/factors/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetFactorAsync"/>.</summary>
+        public virtual Task<AuthenticationFactor> GetFactor(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetFactorAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete Factor</summary>
@@ -70,9 +89,15 @@ namespace WorkOS
         /// <param name="id">The unique ID of the Factor.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteFactor(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteFactorAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.DeleteAsync($"/auth/factors/{id}", null, requestOptions, cancellationToken);
+            await this.DeleteAsync($"/auth/factors/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteFactorAsync"/>.</summary>
+        public virtual Task DeleteFactor(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteFactorAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>Challenge Factor</summary>
@@ -84,9 +109,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthenticationChallenge"/> result.</returns>
-        public virtual async Task<AuthenticationChallenge> ChallengeFactor(string id, MultiFactorAuthChallengeFactorOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<AuthenticationChallenge> ChallengeFactorAsync(string id, MultiFactorAuthChallengeFactorOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<AuthenticationChallenge>($"/auth/factors/{id}/challenge", options, requestOptions, cancellationToken);
+            return await this.PostAsync<AuthenticationChallenge>($"/auth/factors/{Uri.EscapeDataString(id)}/challenge", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ChallengeFactorAsync"/>.</summary>
+        public virtual Task<AuthenticationChallenge> ChallengeFactor(string id, MultiFactorAuthChallengeFactorOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ChallengeFactorAsync(id, options, requestOptions, cancellationToken);
         }
 
         /// <summary>List authentication factors</summary>
@@ -98,12 +129,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="AuthenticationFactor"/> results.</returns>
-        public virtual async Task<WorkOSList<AuthenticationFactor>> ListUserAuthFactors(string userlandUserId, MultiFactorAuthListUserAuthFactorsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<AuthenticationFactor>> ListUserAuthFactorsAsync(string userlandUserId, MultiFactorAuthListUserAuthFactorsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<AuthenticationFactor>>($"/user_management/users/{userlandUserId}/auth_factors", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<AuthenticationFactor>>($"/user_management/users/{Uri.EscapeDataString(userlandUserId)}/auth_factors", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="ListUserAuthFactors"/>. Yields individual items across all pages.</summary>
+        /// <summary>Compatibility wrapper for <see cref="ListUserAuthFactorsAsync"/>.</summary>
+        public virtual Task<WorkOSList<AuthenticationFactor>> ListUserAuthFactors(string userlandUserId, MultiFactorAuthListUserAuthFactorsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListUserAuthFactorsAsync(userlandUserId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListUserAuthFactorsAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="userlandUserId">The ID of the [user](https://workos.com/docs/reference/authkit/user).</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
@@ -111,7 +148,7 @@ namespace WorkOS
         /// <returns>An async sequence of <see cref="AuthenticationFactor"/> items.</returns>
         public virtual IAsyncEnumerable<AuthenticationFactor> ListUserAuthFactorsAutoPagingAsync(string userlandUserId, MultiFactorAuthListUserAuthFactorsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<AuthenticationFactor>($"/user_management/users/{userlandUserId}/auth_factors", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<AuthenticationFactor>($"/user_management/users/{Uri.EscapeDataString(userlandUserId)}/auth_factors", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Enroll an authentication factor</summary>
@@ -123,9 +160,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="UserAuthenticationFactorEnrollResponse"/> result.</returns>
-        public virtual async Task<UserAuthenticationFactorEnrollResponse> CreateUserAuthFactor(string userlandUserId, MultiFactorAuthCreateUserAuthFactorOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<UserAuthenticationFactorEnrollResponse> CreateUserAuthFactorAsync(string userlandUserId, MultiFactorAuthCreateUserAuthFactorOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<UserAuthenticationFactorEnrollResponse>($"/user_management/users/{userlandUserId}/auth_factors", options, requestOptions, cancellationToken);
+            return await this.PostAsync<UserAuthenticationFactorEnrollResponse>($"/user_management/users/{Uri.EscapeDataString(userlandUserId)}/auth_factors", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateUserAuthFactorAsync"/>.</summary>
+        public virtual Task<UserAuthenticationFactorEnrollResponse> CreateUserAuthFactor(string userlandUserId, MultiFactorAuthCreateUserAuthFactorOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateUserAuthFactorAsync(userlandUserId, options, requestOptions, cancellationToken);
         }
     }
 }

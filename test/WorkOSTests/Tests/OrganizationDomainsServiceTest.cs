@@ -27,14 +27,14 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestCreate()
+        public async Task TestCreateAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/organization_created_data_domain.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/organization_domains", HttpStatusCode.OK, fixture);
             var options = new OrganizationDomainsCreateOptions();
             options.Domain = "test_domain";
             options.OrganizationId = "test_organization_id";
-            var result = await this.service.Create(options);
+            var result = await this.service.CreateAsync(options);
             Assert.NotNull(result);
             Assert.Equal("org_domain_01EHZNVPK2QXHMVWCEDQEKY69A", result.Id);
             Assert.Equal("org_01HE8GSH8FQPASKSY27THRKRBP", result.OrganizationId);
@@ -45,11 +45,11 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestGet()
+        public async Task TestGetAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/organization_created_data_domain.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organization_domains/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.Get("test_id");
+            var result = await this.service.GetAsync("test_id");
             Assert.NotNull(result);
             Assert.Equal("org_domain_01EHZNVPK2QXHMVWCEDQEKY69A", result.Id);
             Assert.Equal("org_01HE8GSH8FQPASKSY27THRKRBP", result.OrganizationId);
@@ -58,19 +58,19 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestDelete()
+        public async Task TestDeleteAsync()
         {
             this.httpMock.MockResponse(HttpMethod.Delete, "/organization_domains/test_id", HttpStatusCode.NoContent, "");
-            await this.service.Delete("test_id");
+            await this.service.DeleteAsync("test_id");
             this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/organization_domains/test_id");
         }
 
         [Fact]
-        public async Task TestVerify()
+        public async Task TestVerifyAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/organization_created_data_domain.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/organization_domains/test_id/verify", HttpStatusCode.OK, fixture);
-            var result = await this.service.Verify("test_id");
+            var result = await this.service.VerifyAsync("test_id");
             Assert.NotNull(result);
             Assert.Equal("org_domain_01EHZNVPK2QXHMVWCEDQEKY69A", result.Id);
             Assert.Equal("org_01HE8GSH8FQPASKSY27THRKRBP", result.OrganizationId);
@@ -82,35 +82,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.Create(new OrganizationDomainsCreateOptions()));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.CreateAsync(new OrganizationDomainsCreateOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundException>(() => this.service.Create(new OrganizationDomainsCreateOptions()));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.CreateAsync(new OrganizationDomainsCreateOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.Create(new OrganizationDomainsCreateOptions()));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.CreateAsync(new OrganizationDomainsCreateOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.Create(new OrganizationDomainsCreateOptions()));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.CreateAsync(new OrganizationDomainsCreateOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerException>(() => this.service.Create(new OrganizationDomainsCreateOptions()));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.CreateAsync(new OrganizationDomainsCreateOptions()));
         }
     }
 }

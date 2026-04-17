@@ -7,7 +7,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="OrganizationsService.List"/>: List Organizations</summary>
+    /// <summary>Request options for <see cref="OrganizationsService.ListAsync"/>: List Organizations</summary>
     public class OrganizationsListOptions : ListOptions
     {
         /// <summary>The domains of an Organization. Any Organization with a matching domain will be returned.</summary>
@@ -18,7 +18,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="OrganizationsService.Create"/>: Create an Organization</summary>
+    /// <summary>Request options for <see cref="OrganizationsService.CreateAsync"/>: Create an Organization</summary>
     public class OrganizationsCreateOptions : BaseOptions
     {
         /// <summary>The name of the organization.</summary>
@@ -41,7 +41,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="OrganizationsService.Update"/>: Update an Organization</summary>
+    /// <summary>Request options for <see cref="OrganizationsService.UpdateAsync"/>: Update an Organization</summary>
     public class OrganizationsUpdateOptions : BaseOptions
     {
         /// <summary>The name of the organization.</summary>

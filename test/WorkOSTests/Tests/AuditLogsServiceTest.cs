@@ -27,97 +27,97 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestGetOrganizationAuditLogsRetention()
+        public async Task TestGetOrganizationAuditLogsRetentionAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/audit_logs_retention_json.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_id/audit_logs_retention", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetOrganizationAuditLogsRetention("test_id");
+            var result = await this.service.GetOrganizationAuditLogsRetentionAsync("test_id");
             Assert.NotNull(result);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_id/audit_logs_retention");
         }
 
         [Fact]
-        public async Task TestUpdateOrganizationAuditLogsRetention()
+        public async Task TestUpdateOrganizationAuditLogsRetentionAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/audit_logs_retention_json.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/organizations/test_id/audit_logs_retention", HttpStatusCode.OK, fixture);
-            var result = await this.service.UpdateOrganizationAuditLogsRetention("test_id", new AuditLogsUpdateOrganizationAuditLogsRetentionOptions());
+            var result = await this.service.UpdateOrganizationAuditLogsRetentionAsync("test_id", new AuditLogsUpdateOrganizationAuditLogsRetentionOptions());
             Assert.NotNull(result);
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/organizations/test_id/audit_logs_retention");
         }
 
         [Fact]
-        public async Task TestListActions()
+        public async Task TestListActionsAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_audit_log_action_json.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListActions(new AuditLogsListActionsOptions());
+            var result = await this.service.ListActionsAsync(new AuditLogsListActionsOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/audit_logs/actions");
         }
 
         [Fact]
-        public async Task TestListActionsEmpty()
+        public async Task TestListActionsAsyncEmpty()
         {
             this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListActions(new AuditLogsListActionsOptions());
+            var result = await this.service.ListActionsAsync(new AuditLogsListActionsOptions());
             Assert.NotNull(result);
             Assert.Empty(result.Data);
         }
 
         [Fact]
-        public async Task TestListActionSchemas()
+        public async Task TestListActionSchemasAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_audit_log_schema_json.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListActionSchemas("test_actionName", new AuditLogsListActionSchemasOptions());
+            var result = await this.service.ListActionSchemasAsync("test_actionName", new AuditLogsListActionSchemasOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas");
         }
 
         [Fact]
-        public async Task TestListActionSchemasEmpty()
+        public async Task TestListActionSchemasAsyncEmpty()
         {
             this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListActionSchemas("test_actionName", new AuditLogsListActionSchemasOptions());
+            var result = await this.service.ListActionSchemasAsync("test_actionName", new AuditLogsListActionSchemasOptions());
             Assert.NotNull(result);
             Assert.Empty(result.Data);
         }
 
         [Fact]
-        public async Task TestCreateSchema()
+        public async Task TestCreateSchemaAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/audit_log_schema_json.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateSchema("test_actionName", new AuditLogsCreateSchemaOptions());
+            var result = await this.service.CreateSchemaAsync("test_actionName", new AuditLogsCreateSchemaOptions());
             Assert.NotNull(result);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/audit_logs/actions/test_actionName/schemas");
         }
 
         [Fact]
-        public async Task TestCreateEvent()
+        public async Task TestCreateEventAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/audit_log_event_create_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/audit_logs/events", HttpStatusCode.OK, fixture);
             var options = new AuditLogsCreateEventOptions();
             options.OrganizationId = "test_organization_id";
-            var result = await this.service.CreateEvent(options);
+            var result = await this.service.CreateEventAsync(options);
             Assert.NotNull(result);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/audit_logs/events");
             await this.httpMock.AssertRequestBodyContainsAsync("organization_id", "test_organization_id");
         }
 
         [Fact]
-        public async Task TestCreateExport()
+        public async Task TestCreateExportAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/audit_log_export_json.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/audit_logs/exports", HttpStatusCode.OK, fixture);
             var options = new AuditLogsCreateExportOptions();
             options.OrganizationId = "test_organization_id";
             options.RangeStart = "test_range_start";
-            var result = await this.service.CreateExport(options);
+            var result = await this.service.CreateExportAsync(options);
             Assert.NotNull(result);
             Assert.Equal("audit_log_export_01GBZK5MP7TD1YCFQHFR22180V", result.Id);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/audit_logs/exports");
@@ -126,11 +126,11 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestGetExport()
+        public async Task TestGetExportAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/audit_log_export_json.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/exports/test_auditLogExportId", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetExport("test_auditLogExportId");
+            var result = await this.service.GetExportAsync("test_auditLogExportId");
             Assert.NotNull(result);
             Assert.Equal("audit_log_export_01GBZK5MP7TD1YCFQHFR22180V", result.Id);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/audit_logs/exports/test_auditLogExportId");
@@ -204,35 +204,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.GetOrganizationAuditLogsRetention("test_id"));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.GetOrganizationAuditLogsRetentionAsync("test_id"));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundException>(() => this.service.GetOrganizationAuditLogsRetention("test_id"));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.GetOrganizationAuditLogsRetentionAsync("test_id"));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.GetOrganizationAuditLogsRetention("test_id"));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.GetOrganizationAuditLogsRetentionAsync("test_id"));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.GetOrganizationAuditLogsRetention("test_id"));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.GetOrganizationAuditLogsRetentionAsync("test_id"));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerException>(() => this.service.GetOrganizationAuditLogsRetention("test_id"));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.GetOrganizationAuditLogsRetentionAsync("test_id"));
         }
     }
 }

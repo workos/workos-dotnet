@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -31,12 +32,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="Directory"/> results.</returns>
-        public virtual async Task<WorkOSList<Directory>> List(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<Directory>> ListAsync(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.GetAsync<WorkOSList<Directory>>("/directories", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="List"/>. Yields individual items across all pages.</summary>
+        /// <summary>Compatibility wrapper for <see cref="ListAsync"/>.</summary>
+        public virtual Task<WorkOSList<Directory>> List(DirectorySyncListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -54,9 +61,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Directory"/> result.</returns>
-        public virtual async Task<Directory> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Directory> GetAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<Directory>($"/directories/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<Directory>($"/directories/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetAsync"/>.</summary>
+        public virtual Task<Directory> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a Directory</summary>
@@ -66,9 +79,15 @@ namespace WorkOS
         /// <param name="id">Unique identifier for the Directory.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.DeleteAsync($"/directories/{id}", null, requestOptions, cancellationToken);
+            await this.DeleteAsync($"/directories/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteAsync"/>.</summary>
+        public virtual Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>List Directory Groups</summary>
@@ -79,12 +98,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="DirectoryGroup"/> results.</returns>
-        public virtual async Task<WorkOSList<DirectoryGroup>> ListGroups(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<DirectoryGroup>> ListGroupsAsync(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.GetAsync<WorkOSList<DirectoryGroup>>("/directory_groups", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="ListGroups"/>. Yields individual items across all pages.</summary>
+        /// <summary>Compatibility wrapper for <see cref="ListGroupsAsync"/>.</summary>
+        public virtual Task<WorkOSList<DirectoryGroup>> ListGroups(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListGroupsAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListGroupsAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -102,9 +127,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="DirectoryGroup"/> result.</returns>
-        public virtual async Task<DirectoryGroup> GetGroup(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<DirectoryGroup> GetGroupAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<DirectoryGroup>($"/directory_groups/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<DirectoryGroup>($"/directory_groups/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetGroupAsync"/>.</summary>
+        public virtual Task<DirectoryGroup> GetGroup(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetGroupAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>List Directory Users</summary>
@@ -115,12 +146,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="DirectoryUserWithGroups"/> results.</returns>
-        public virtual async Task<WorkOSList<DirectoryUserWithGroups>> ListUsers(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<DirectoryUserWithGroups>> ListUsersAsync(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.GetAsync<WorkOSList<DirectoryUserWithGroups>>("/directory_users", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="ListUsers"/>. Yields individual items across all pages.</summary>
+        /// <summary>Compatibility wrapper for <see cref="ListUsersAsync"/>.</summary>
+        public virtual Task<WorkOSList<DirectoryUserWithGroups>> ListUsers(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListUsersAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListUsersAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -138,9 +175,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="DirectoryUserWithGroups"/> result.</returns>
-        public virtual async Task<DirectoryUserWithGroups> GetUser(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<DirectoryUserWithGroups> GetUserAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<DirectoryUserWithGroups>($"/directory_users/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<DirectoryUserWithGroups>($"/directory_users/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetUserAsync"/>.</summary>
+        public virtual Task<DirectoryUserWithGroups> GetUser(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetUserAsync(id, requestOptions, cancellationToken);
         }
     }
 }

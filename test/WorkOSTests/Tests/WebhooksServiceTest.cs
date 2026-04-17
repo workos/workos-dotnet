@@ -27,33 +27,33 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListEndpoints()
+        public async Task TestListEndpointsAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_webhook_endpoint_json.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/webhook_endpoints", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListEndpoints(new WebhooksListEndpointsOptions());
+            var result = await this.service.ListEndpointsAsync(new WebhooksListEndpointsOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/webhook_endpoints");
         }
 
         [Fact]
-        public async Task TestListEndpointsEmpty()
+        public async Task TestListEndpointsAsyncEmpty()
         {
             this.httpMock.MockResponse(HttpMethod.Get, "/webhook_endpoints", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListEndpoints(new WebhooksListEndpointsOptions());
+            var result = await this.service.ListEndpointsAsync(new WebhooksListEndpointsOptions());
             Assert.NotNull(result);
             Assert.Empty(result.Data);
         }
 
         [Fact]
-        public async Task TestCreateEndpoint()
+        public async Task TestCreateEndpointAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/webhook_endpoint_json.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/webhook_endpoints", HttpStatusCode.OK, fixture);
             var options = new WebhooksCreateEndpointOptions();
             options.EndpointUrl = "test_endpoint_url";
-            var result = await this.service.CreateEndpoint(options);
+            var result = await this.service.CreateEndpointAsync(options);
             Assert.NotNull(result);
             Assert.Equal("we_0123456789", result.Id);
             Assert.Equal("https://example.com/webhooks", result.EndpointUrl);
@@ -63,11 +63,11 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestUpdateEndpoint()
+        public async Task TestUpdateEndpointAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/webhook_endpoint_json.json");
             this.httpMock.MockResponse(HttpMethod.Patch, "/webhook_endpoints/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.UpdateEndpoint("test_id", new WebhooksUpdateEndpointOptions());
+            var result = await this.service.UpdateEndpointAsync("test_id", new WebhooksUpdateEndpointOptions());
             Assert.NotNull(result);
             Assert.Equal("we_0123456789", result.Id);
             Assert.Equal("https://example.com/webhooks", result.EndpointUrl);
@@ -76,10 +76,10 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestDeleteEndpoint()
+        public async Task TestDeleteEndpointAsync()
         {
             this.httpMock.MockResponse(HttpMethod.Delete, "/webhook_endpoints/test_id", HttpStatusCode.NoContent, "");
-            await this.service.DeleteEndpoint("test_id");
+            await this.service.DeleteEndpointAsync("test_id");
             this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/webhook_endpoints/test_id");
         }
 
@@ -119,35 +119,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.ListEndpointsAsync(new WebhooksListEndpointsOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundException>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.ListEndpointsAsync(new WebhooksListEndpointsOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.ListEndpointsAsync(new WebhooksListEndpointsOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.ListEndpointsAsync(new WebhooksListEndpointsOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerException>(() => this.service.ListEndpoints(new WebhooksListEndpointsOptions()));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.ListEndpointsAsync(new WebhooksListEndpointsOptions()));
         }
     }
 }

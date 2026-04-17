@@ -27,31 +27,31 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestList()
+        public async Task TestListAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_directory.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/directories", HttpStatusCode.OK, fixture);
-            var result = await this.service.List(new DirectorySyncListOptions());
+            var result = await this.service.ListAsync(new DirectorySyncListOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directories");
         }
 
         [Fact]
-        public async Task TestListEmpty()
+        public async Task TestListAsyncEmpty()
         {
             this.httpMock.MockResponse(HttpMethod.Get, "/directories", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.List(new DirectorySyncListOptions());
+            var result = await this.service.ListAsync(new DirectorySyncListOptions());
             Assert.NotNull(result);
             Assert.Empty(result.Data);
         }
 
         [Fact]
-        public async Task TestGet()
+        public async Task TestGetAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/directory.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/directories/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.Get("test_id");
+            var result = await this.service.GetAsync("test_id");
             Assert.NotNull(result);
             Assert.Equal("directory_01ECAZ4NV9QMV47GW873HDCX74", result.Id);
             Assert.Equal("org_01EHZNVPK3SFK441A1RGBFSHRT", result.OrganizationId);
@@ -60,39 +60,39 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestDelete()
+        public async Task TestDeleteAsync()
         {
             this.httpMock.MockResponse(HttpMethod.Delete, "/directories/test_id", HttpStatusCode.NoContent, "");
-            await this.service.Delete("test_id");
+            await this.service.DeleteAsync("test_id");
             this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/directories/test_id");
         }
 
         [Fact]
-        public async Task TestListGroups()
+        public async Task TestListGroupsAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_directory_group.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/directory_groups", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListGroups(new DirectorySyncListGroupsOptions());
+            var result = await this.service.ListGroupsAsync(new DirectorySyncListGroupsOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directory_groups");
         }
 
         [Fact]
-        public async Task TestListGroupsEmpty()
+        public async Task TestListGroupsAsyncEmpty()
         {
             this.httpMock.MockResponse(HttpMethod.Get, "/directory_groups", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListGroups(new DirectorySyncListGroupsOptions());
+            var result = await this.service.ListGroupsAsync(new DirectorySyncListGroupsOptions());
             Assert.NotNull(result);
             Assert.Empty(result.Data);
         }
 
         [Fact]
-        public async Task TestGetGroup()
+        public async Task TestGetGroupAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/directory_group.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/directory_groups/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetGroup("test_id");
+            var result = await this.service.GetGroupAsync("test_id");
             Assert.NotNull(result);
             Assert.Equal("directory_group_01E1JJS84MFPPQ3G655FHTKX6Z", result.Id);
             Assert.Equal("02grqrue4294w24", result.IdpId);
@@ -101,31 +101,31 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListUsers()
+        public async Task TestListUsersAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_directory_user_with_groups.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/directory_users", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListUsers(new DirectorySyncListUsersOptions());
+            var result = await this.service.ListUsersAsync(new DirectorySyncListUsersOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/directory_users");
         }
 
         [Fact]
-        public async Task TestListUsersEmpty()
+        public async Task TestListUsersAsyncEmpty()
         {
             this.httpMock.MockResponse(HttpMethod.Get, "/directory_users", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListUsers(new DirectorySyncListUsersOptions());
+            var result = await this.service.ListUsersAsync(new DirectorySyncListUsersOptions());
             Assert.NotNull(result);
             Assert.Empty(result.Data);
         }
 
         [Fact]
-        public async Task TestGetUser()
+        public async Task TestGetUserAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/directory_user_with_groups.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/directory_users/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetUser("test_id");
+            var result = await this.service.GetUserAsync("test_id");
             Assert.NotNull(result);
             Assert.Equal("directory_user_01E1JG7J09H96KYP8HM9B0G5SJ", result.Id);
             Assert.Equal("directory_01ECAZ4NV9QMV47GW873HDCX74", result.DirectoryId);
@@ -233,35 +233,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.List(new DirectorySyncListOptions()));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.ListAsync(new DirectorySyncListOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundException>(() => this.service.List(new DirectorySyncListOptions()));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.ListAsync(new DirectorySyncListOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.List(new DirectorySyncListOptions()));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.ListAsync(new DirectorySyncListOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.List(new DirectorySyncListOptions()));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.ListAsync(new DirectorySyncListOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerException>(() => this.service.List(new DirectorySyncListOptions()));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.ListAsync(new DirectorySyncListOptions()));
         }
     }
 }

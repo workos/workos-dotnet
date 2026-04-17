@@ -11,6 +11,6 @@ namespace WorkOS
         public string Object { get; internal set; } = "email_change_confirmation";
 
         /// <summary>The user object.</summary>
-        public EmailChangeConfirmationUser User { get; set; } = default!;
+        public User User { get; set; } = default!;
     }
 }

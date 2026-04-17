@@ -27,13 +27,13 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestCreateToken()
+        public async Task TestCreateTokenAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/widget_session_token_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/widgets/token", HttpStatusCode.OK, fixture);
             var options = new WidgetsCreateTokenOptions();
             options.OrganizationId = "test_organization_id";
-            var result = await this.service.CreateToken(options);
+            var result = await this.service.CreateTokenAsync(options);
             Assert.NotNull(result);
             Assert.Equal("eyJhbGciOiJSUzI1NiIsImtpZCI6InNlc3Npb24...", result.Token);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/widgets/token");
@@ -44,35 +44,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.CreateToken(new WidgetsCreateTokenOptions()));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.CreateTokenAsync(new WidgetsCreateTokenOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundException>(() => this.service.CreateToken(new WidgetsCreateTokenOptions()));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.CreateTokenAsync(new WidgetsCreateTokenOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.CreateToken(new WidgetsCreateTokenOptions()));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.CreateTokenAsync(new WidgetsCreateTokenOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.CreateToken(new WidgetsCreateTokenOptions()));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.CreateTokenAsync(new WidgetsCreateTokenOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerException>(() => this.service.CreateToken(new WidgetsCreateTokenOptions()));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.CreateTokenAsync(new WidgetsCreateTokenOptions()));
         }
     }
 }

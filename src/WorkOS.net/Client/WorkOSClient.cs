@@ -15,13 +15,16 @@ namespace WorkOS
     /// <summary>
     /// A client to manage requests to the WorkOS API.
     /// </summary>
-    public partial class WorkOSClient
+    public partial class WorkOSClient : IDisposable
     {
+        private readonly bool ownsHttpClient;
+
         // Non-spec service backing fields (hand-maintained)
         private PasswordlessService? passwordless;
         private VaultService? vault;
         private ActionsService? actions;
         private SessionService? session;
+        private bool disposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkOSClient"/> class.
@@ -29,7 +32,7 @@ namespace WorkOS
         /// <param name="options">Parameters to create the client with.</param>
         public WorkOSClient(WorkOSOptions options)
         {
-            if (options.ApiKey == null || options.ApiKey.Length == 0)
+            if (string.IsNullOrEmpty(options.ApiKey))
             {
                 throw new ArgumentException("API Key is required", nameof(options.ApiKey));
             }
@@ -38,17 +41,8 @@ namespace WorkOS
             this.ApiKey = options.ApiKey;
             this.ClientId = options.ClientId;
             this.MaxRetries = options.MaxRetries;
+            this.ownsHttpClient = options.HttpClient == null;
             this.HttpClient = options.HttpClient ?? this.DefaultHttpClient();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkOSClient"/> class for mocking.
-        /// </summary>
-        protected WorkOSClient()
-        {
-            this.ApiBaseURL = default!;
-            this.ApiKey = default!;
-            this.HttpClient = default!;
         }
 
         /// <summary>
@@ -122,6 +116,16 @@ namespace WorkOS
             {
                 Timeout = DefaultTimeout,
             };
+        }
+
+        /// <summary>
+        /// Disposes the internally-created <see cref="HttpClient"/> instance.
+        /// Caller-supplied clients remain owned by the caller.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -380,6 +384,25 @@ namespace WorkOS
             }
 
             return delay;
+        }
+
+        /// <summary>
+        /// Releases managed resources owned by the client.
+        /// </summary>
+        /// <param name="disposing">Whether managed resources should be disposed.</param>
+        private void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing && this.ownsHttpClient)
+            {
+                this.HttpClient.Dispose();
+            }
+
+            this.disposed = true;
         }
 
         private static bool UsesQueryString(HttpMethod method) =>

@@ -7,12 +7,12 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="WebhooksService.ListEndpoints"/>: List Webhook Endpoints</summary>
+    /// <summary>Request options for <see cref="WebhooksService.ListEndpointsAsync"/>: List Webhook Endpoints</summary>
     public class WebhooksListEndpointsOptions : ListOptions
     {
     }
 
-    /// <summary>Request options for <see cref="WebhooksService.CreateEndpoint"/>: Create a Webhook Endpoint</summary>
+    /// <summary>Request options for <see cref="WebhooksService.CreateEndpointAsync"/>: Create a Webhook Endpoint</summary>
     public class WebhooksCreateEndpointOptions : BaseOptions
     {
         /// <summary>The HTTPS URL where webhooks will be sent.</summary>
@@ -23,7 +23,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="WebhooksService.UpdateEndpoint"/>: Update a Webhook Endpoint</summary>
+    /// <summary>Request options for <see cref="WebhooksService.UpdateEndpointAsync"/>: Update a Webhook Endpoint</summary>
     public class WebhooksUpdateEndpointOptions : BaseOptions
     {
         /// <summary>The HTTPS URL where webhooks will be sent.</summary>

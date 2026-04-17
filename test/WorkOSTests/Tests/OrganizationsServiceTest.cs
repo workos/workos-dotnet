@@ -27,33 +27,33 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestList()
+        public async Task TestListAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_organization.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations", HttpStatusCode.OK, fixture);
-            var result = await this.service.List(new OrganizationsListOptions());
+            var result = await this.service.ListAsync(new OrganizationsListOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations");
         }
 
         [Fact]
-        public async Task TestListEmpty()
+        public async Task TestListAsyncEmpty()
         {
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.List(new OrganizationsListOptions());
+            var result = await this.service.ListAsync(new OrganizationsListOptions());
             Assert.NotNull(result);
             Assert.Empty(result.Data);
         }
 
         [Fact]
-        public async Task TestCreate()
+        public async Task TestCreateAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/organization.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/organizations", HttpStatusCode.OK, fixture);
             var options = new OrganizationsCreateOptions();
             options.Name = "test_name";
-            var result = await this.service.Create(options);
+            var result = await this.service.CreateAsync(options);
             Assert.NotNull(result);
             Assert.Equal("org_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
             Assert.Equal("Acme Inc.", result.Name);
@@ -62,11 +62,11 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestGetByExternalId()
+        public async Task TestGetByExternalIdAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/organization.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/external_id/test_external_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetByExternalId("test_external_id");
+            var result = await this.service.GetByExternalIdAsync("test_external_id");
             Assert.NotNull(result);
             Assert.Equal("org_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
             Assert.Equal("Acme Inc.", result.Name);
@@ -74,11 +74,11 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestGet()
+        public async Task TestGetAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/organization.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.Get("test_id");
+            var result = await this.service.GetAsync("test_id");
             Assert.NotNull(result);
             Assert.Equal("org_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
             Assert.Equal("Acme Inc.", result.Name);
@@ -86,11 +86,11 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestUpdate()
+        public async Task TestUpdateAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/organization.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/organizations/test_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.Update("test_id", new OrganizationsUpdateOptions());
+            var result = await this.service.UpdateAsync("test_id", new OrganizationsUpdateOptions());
             Assert.NotNull(result);
             Assert.Equal("org_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
             Assert.Equal("Acme Inc.", result.Name);
@@ -98,19 +98,19 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestDelete()
+        public async Task TestDeleteAsync()
         {
             this.httpMock.MockResponse(HttpMethod.Delete, "/organizations/test_id", HttpStatusCode.NoContent, "");
-            await this.service.Delete("test_id");
+            await this.service.DeleteAsync("test_id");
             this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/organizations/test_id");
         }
 
         [Fact]
-        public async Task TestGetAuditLogConfiguration()
+        public async Task TestGetAuditLogConfigurationAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/audit_log_configuration.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_id/audit_log_configuration", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetAuditLogConfiguration("test_id");
+            var result = await this.service.GetAuditLogConfigurationAsync("test_id");
             Assert.NotNull(result);
             Assert.Equal("org_01EHZNVPK3SFK441A1RGBFSHRT", result.OrganizationId);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_id/audit_log_configuration");
@@ -152,35 +152,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.List(new OrganizationsListOptions()));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.ListAsync(new OrganizationsListOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundException>(() => this.service.List(new OrganizationsListOptions()));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.ListAsync(new OrganizationsListOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.List(new OrganizationsListOptions()));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.ListAsync(new OrganizationsListOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.List(new OrganizationsListOptions()));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.ListAsync(new OrganizationsListOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerException>(() => this.service.List(new OrganizationsListOptions()));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.ListAsync(new OrganizationsListOptions()));
         }
     }
 }

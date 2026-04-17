@@ -7,7 +7,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="EventsService.List"/>: List events</summary>
+    /// <summary>Request options for <see cref="EventsService.ListAsync"/>: List events</summary>
     public class EventsListOptions : ListOptions
     {
         /// <summary>Filter events by one or more event types (e.g. `dsync.user.created`).</summary>

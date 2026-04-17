@@ -7,17 +7,17 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="FeatureFlagsService.List"/>: List feature flags</summary>
+    /// <summary>Request options for <see cref="FeatureFlagsService.ListAsync"/>: List feature flags</summary>
     public class FeatureFlagsListOptions : ListOptions
     {
     }
 
-    /// <summary>Request options for <see cref="FeatureFlagsService.ListOrganizationFeatureFlags"/>: List enabled feature flags for an organization</summary>
+    /// <summary>Request options for <see cref="FeatureFlagsService.ListOrganizationFeatureFlagsAsync"/>: List enabled feature flags for an organization</summary>
     public class FeatureFlagsListOrganizationFeatureFlagsOptions : ListOptions
     {
     }
 
-    /// <summary>Request options for <see cref="FeatureFlagsService.ListUserFeatureFlags"/>: List enabled feature flags for a user</summary>
+    /// <summary>Request options for <see cref="FeatureFlagsService.ListUserFeatureFlagsAsync"/>: List enabled feature flags for a user</summary>
     public class FeatureFlagsListUserFeatureFlagsOptions : ListOptions
     {
     }

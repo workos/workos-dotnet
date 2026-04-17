@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -31,9 +32,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="WidgetSessionTokenResponse"/> result.</returns>
-        public virtual async Task<WidgetSessionTokenResponse> CreateToken(WidgetsCreateTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WidgetSessionTokenResponse> CreateTokenAsync(WidgetsCreateTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.PostAsync<WidgetSessionTokenResponse>("/widgets/token", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateTokenAsync"/>.</summary>
+        public virtual Task<WidgetSessionTokenResponse> CreateToken(WidgetsCreateTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateTokenAsync(options, requestOptions, cancellationToken);
         }
     }
 }

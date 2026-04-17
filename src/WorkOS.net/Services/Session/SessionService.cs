@@ -14,65 +14,6 @@ namespace WorkOS
     using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
 
-    /// <summary>Failure reasons for session cookie authentication.</summary>
-    public enum SessionFailureReason
-    {
-        NoSessionCookieProvided,
-        InvalidSessionCookie,
-        InvalidJwt,
-        InvalidGrant,
-        MfaEnrollment,
-        SsoRequired,
-    }
-
-    /// <summary>Success result from authenticating a session cookie.</summary>
-    public class SessionAuthResult
-    {
-        public bool Authenticated { get; set; }
-
-        public string? SessionId { get; set; }
-
-        public string? OrganizationId { get; set; }
-
-        public string? Role { get; set; }
-
-        public List<string>? Roles { get; set; }
-
-        public List<string>? Permissions { get; set; }
-
-        public List<string>? Entitlements { get; set; }
-
-        public Dictionary<string, object>? FeatureFlags { get; set; }
-
-        public string? AccessToken { get; set; }
-
-        public SessionFailureReason? Reason { get; set; }
-    }
-
-    /// <summary>Success result from refreshing a session cookie.</summary>
-    public class SessionRefreshResult
-    {
-        public bool Authenticated { get; set; }
-
-        public string? SealedSession { get; set; }
-
-        public string? SessionId { get; set; }
-
-        public string? OrganizationId { get; set; }
-
-        public string? Role { get; set; }
-
-        public List<string>? Roles { get; set; }
-
-        public List<string>? Permissions { get; set; }
-
-        public List<string>? Entitlements { get; set; }
-
-        public Dictionary<string, object>? FeatureFlags { get; set; }
-
-        public SessionFailureReason? Reason { get; set; }
-    }
-
     /// <summary>Sealed session cookie management, JWT validation, and JWKS helpers (H04-H07, H13).</summary>
     public class SessionService
     {
@@ -97,7 +38,7 @@ namespace WorkOS
                 throw new InvalidOperationException("Client ID is required to build JWKS URL.");
             }
 
-            return $"{this.client.ApiBaseURL}/sso/jwks/{id}";
+            return $"{this.client.ApiBaseURL}/sso/jwks/{Uri.EscapeDataString(id)}";
         }
 
         /// <summary>Authenticate a sealed session cookie.</summary>
@@ -124,7 +65,7 @@ namespace WorkOS
             {
                 session = UnsealData(sessionData, cookiePassword);
             }
-            catch
+            catch (Exception)
             {
                 return new SessionAuthResult
                 {
@@ -156,7 +97,7 @@ namespace WorkOS
                     AccessToken = accessToken,
                 };
             }
-            catch
+            catch (Exception)
             {
                 return new SessionAuthResult
                 {

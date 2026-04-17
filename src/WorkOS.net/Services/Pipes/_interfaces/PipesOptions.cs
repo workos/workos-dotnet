@@ -7,7 +7,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="PipesService.AuthorizeDataIntegration"/>: Get authorization URL</summary>
+    /// <summary>Request options for <see cref="PipesService.AuthorizeDataIntegrationAsync"/>: Get authorization URL</summary>
     public class PipesAuthorizeDataIntegrationOptions : BaseOptions
     {
         /// <summary>The ID of the user to authorize.</summary>
@@ -21,7 +21,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="PipesService.CreateDataIntegrationToken"/>: Get an access token for a connected account</summary>
+    /// <summary>Request options for <see cref="PipesService.CreateDataIntegrationTokenAsync"/>: Get an access token for a connected account</summary>
     public class PipesCreateDataIntegrationTokenOptions : BaseOptions
     {
         /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>
@@ -32,7 +32,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="PipesService.GetUserConnectedAccount"/>: Get a connected account</summary>
+    /// <summary>Request options for <see cref="PipesService.GetUserConnectedAccountAsync"/>: Get a connected account</summary>
     public class PipesGetUserConnectedAccountOptions : BaseOptions
     {
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
@@ -40,7 +40,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="PipesService.DeleteUserConnectedAccount"/>: Delete a connected account</summary>
+    /// <summary>Request options for <see cref="PipesService.DeleteUserConnectedAccountAsync"/>: Delete a connected account</summary>
     public class PipesDeleteUserConnectedAccountOptions : BaseOptions
     {
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
@@ -48,7 +48,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="PipesService.ListUserDataProviders"/>: List providers</summary>
+    /// <summary>Request options for <see cref="PipesService.ListUserDataProvidersAsync"/>: List providers</summary>
     public class PipesListUserDataProvidersOptions : BaseOptions
     {
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to filter connections for a specific organization.</summary>

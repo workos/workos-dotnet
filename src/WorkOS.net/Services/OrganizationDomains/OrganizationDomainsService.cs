@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -31,9 +32,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="OrganizationCreatedDataDomain"/> result.</returns>
-        public virtual async Task<OrganizationCreatedDataDomain> Create(OrganizationDomainsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<OrganizationCreatedDataDomain> CreateAsync(OrganizationDomainsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.PostAsync<OrganizationCreatedDataDomain>("/organization_domains", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateAsync"/>.</summary>
+        public virtual Task<OrganizationCreatedDataDomain> Create(OrganizationDomainsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateAsync(options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get an Organization Domain</summary>
@@ -44,9 +51,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="OrganizationCreatedDataDomain"/> result.</returns>
-        public virtual async Task<OrganizationCreatedDataDomain> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<OrganizationCreatedDataDomain> GetAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<OrganizationCreatedDataDomain>($"/organization_domains/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<OrganizationCreatedDataDomain>($"/organization_domains/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetAsync"/>.</summary>
+        public virtual Task<OrganizationCreatedDataDomain> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete an Organization Domain</summary>
@@ -56,9 +69,15 @@ namespace WorkOS
         /// <param name="id">Unique identifier of the organization domain.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.DeleteAsync($"/organization_domains/{id}", null, requestOptions, cancellationToken);
+            await this.DeleteAsync($"/organization_domains/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteAsync"/>.</summary>
+        public virtual Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>Verify an Organization Domain</summary>
@@ -69,9 +88,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="OrganizationCreatedDataDomain"/> result.</returns>
-        public virtual async Task<OrganizationCreatedDataDomain> Verify(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<OrganizationCreatedDataDomain> VerifyAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<OrganizationCreatedDataDomain>($"/organization_domains/{id}/verify", null, requestOptions, cancellationToken);
+            return await this.PostAsync<OrganizationCreatedDataDomain>($"/organization_domains/{Uri.EscapeDataString(id)}/verify", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="VerifyAsync"/>.</summary>
+        public virtual Task<OrganizationCreatedDataDomain> Verify(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.VerifyAsync(id, requestOptions, cancellationToken);
         }
     }
 }

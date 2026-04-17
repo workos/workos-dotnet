@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -36,9 +37,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ExternalAuthCompleteResponse"/> result.</returns>
-        public virtual async Task<ExternalAuthCompleteResponse> CompleteOAuth2(ConnectCompleteOAuth2Options options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<ExternalAuthCompleteResponse> CompleteOAuth2Async(ConnectCompleteOAuth2Options options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.PostAsync<ExternalAuthCompleteResponse>("/authkit/oauth2/complete", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CompleteOAuth2Async"/>.</summary>
+        public virtual Task<ExternalAuthCompleteResponse> CompleteOAuth2(ConnectCompleteOAuth2Options options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CompleteOAuth2Async(options, requestOptions, cancellationToken);
         }
 
         /// <summary>List Connect Applications</summary>
@@ -49,12 +56,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="ConnectApplication"/> results.</returns>
-        public virtual async Task<WorkOSList<ConnectApplication>> ListApplications(ConnectListApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<ConnectApplication>> ListApplicationsAsync(ConnectListApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.GetAsync<WorkOSList<ConnectApplication>>("/connect/applications", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="ListApplications"/>. Yields individual items across all pages.</summary>
+        /// <summary>Compatibility wrapper for <see cref="ListApplicationsAsync"/>.</summary>
+        public virtual Task<WorkOSList<ConnectApplication>> ListApplications(ConnectListApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListApplicationsAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListApplicationsAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -69,10 +82,16 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ConnectApplication"/> result.</returns>
-        public async Task<ConnectApplication> CreateOAuthApplication(CreateOAuthApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<ConnectApplication> CreateOAuthApplicationAsync(CreateOAuthApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.ApplicationType = "oauth";
             return await this.PostAsync<ConnectApplication>("/connect/applications", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateOAuthApplicationAsync"/>.</summary>
+        public Task<ConnectApplication> CreateOAuthApplication(CreateOAuthApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateOAuthApplicationAsync(options, requestOptions, cancellationToken);
         }
 
         /// <summary>Create m2m application.</summary>
@@ -80,10 +99,16 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ConnectApplication"/> result.</returns>
-        public async Task<ConnectApplication> CreateM2MApplication(CreateM2MApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public async Task<ConnectApplication> CreateM2MApplicationAsync(CreateM2MApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.ApplicationType = "m2m";
             return await this.PostAsync<ConnectApplication>("/connect/applications", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateM2MApplicationAsync"/>.</summary>
+        public Task<ConnectApplication> CreateM2MApplication(CreateM2MApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateM2MApplicationAsync(options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a Connect Application</summary>
@@ -94,9 +119,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ConnectApplication"/> result.</returns>
-        public virtual async Task<ConnectApplication> GetApplication(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<ConnectApplication> GetApplicationAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<ConnectApplication>($"/connect/applications/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<ConnectApplication>($"/connect/applications/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetApplicationAsync"/>.</summary>
+        public virtual Task<ConnectApplication> GetApplication(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetApplicationAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>Update a Connect Application</summary>
@@ -108,9 +139,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ConnectApplication"/> result.</returns>
-        public virtual async Task<ConnectApplication> UpdateApplication(string id, ConnectUpdateApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<ConnectApplication> UpdateApplicationAsync(string id, ConnectUpdateApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<ConnectApplication>($"/connect/applications/{id}", options, requestOptions, cancellationToken);
+            return await this.PutAsync<ConnectApplication>($"/connect/applications/{Uri.EscapeDataString(id)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="UpdateApplicationAsync"/>.</summary>
+        public virtual Task<ConnectApplication> UpdateApplication(string id, ConnectUpdateApplicationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.UpdateApplicationAsync(id, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a Connect Application</summary>
@@ -120,9 +157,15 @@ namespace WorkOS
         /// <param name="id">The application ID or client ID of the Connect Application.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteApplication(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteApplicationAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.DeleteAsync($"/connect/applications/{id}", null, requestOptions, cancellationToken);
+            await this.DeleteAsync($"/connect/applications/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteApplicationAsync"/>.</summary>
+        public virtual Task DeleteApplication(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteApplicationAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>List Client Secrets for a Connect Application</summary>
@@ -133,9 +176,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ApplicationCredentialsListItem"/> result.</returns>
-        public virtual async Task<List<ApplicationCredentialsListItem>> ListApplicationClientSecrets(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<ApplicationCredentialsListItem>> ListApplicationClientSecretsAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<List<ApplicationCredentialsListItem>>($"/connect/applications/{id}/client_secrets", null, requestOptions, cancellationToken);
+            return await this.GetAsync<List<ApplicationCredentialsListItem>>($"/connect/applications/{Uri.EscapeDataString(id)}/client_secrets", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListApplicationClientSecretsAsync"/>.</summary>
+        public virtual Task<List<ApplicationCredentialsListItem>> ListApplicationClientSecrets(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListApplicationClientSecretsAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>Create a new client secret for a Connect Application</summary>
@@ -146,9 +195,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="NewConnectApplicationSecret"/> result.</returns>
-        public virtual async Task<NewConnectApplicationSecret> CreateApplicationClientSecret(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<NewConnectApplicationSecret> CreateApplicationClientSecretAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<NewConnectApplicationSecret>($"/connect/applications/{id}/client_secrets", null, requestOptions, cancellationToken);
+            return await this.PostAsync<NewConnectApplicationSecret>($"/connect/applications/{Uri.EscapeDataString(id)}/client_secrets", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateApplicationClientSecretAsync"/>.</summary>
+        public virtual Task<NewConnectApplicationSecret> CreateApplicationClientSecret(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateApplicationClientSecretAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a Client Secret</summary>
@@ -158,9 +213,15 @@ namespace WorkOS
         /// <param name="id">The unique ID of the client secret.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteClientSecret(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteClientSecretAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.DeleteAsync($"/connect/client_secrets/{id}", null, requestOptions, cancellationToken);
+            await this.DeleteAsync($"/connect/client_secrets/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteClientSecretAsync"/>.</summary>
+        public virtual Task DeleteClientSecret(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteClientSecretAsync(id, requestOptions, cancellationToken);
         }
     }
 }

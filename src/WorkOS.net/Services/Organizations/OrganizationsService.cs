@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -31,12 +32,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="Organization"/> results.</returns>
-        public virtual async Task<WorkOSList<Organization>> List(OrganizationsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<Organization>> ListAsync(OrganizationsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.GetAsync<WorkOSList<Organization>>("/organizations", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="List"/>. Yields individual items across all pages.</summary>
+        /// <summary>Compatibility wrapper for <see cref="ListAsync"/>.</summary>
+        public virtual Task<WorkOSList<Organization>> List(OrganizationsListOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -54,9 +61,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Organization"/> result.</returns>
-        public virtual async Task<Organization> Create(OrganizationsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Organization> CreateAsync(OrganizationsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.PostAsync<Organization>("/organizations", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateAsync"/>.</summary>
+        public virtual Task<Organization> Create(OrganizationsCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateAsync(options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get an Organization by External ID</summary>
@@ -67,9 +80,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Organization"/> result.</returns>
-        public virtual async Task<Organization> GetByExternalId(string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Organization> GetByExternalIdAsync(string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<Organization>($"/organizations/external_id/{externalId}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<Organization>($"/organizations/external_id/{Uri.EscapeDataString(externalId)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetByExternalIdAsync"/>.</summary>
+        public virtual Task<Organization> GetByExternalId(string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetByExternalIdAsync(externalId, requestOptions, cancellationToken);
         }
 
         /// <summary>Get an Organization</summary>
@@ -80,9 +99,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Organization"/> result.</returns>
-        public virtual async Task<Organization> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Organization> GetAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<Organization>($"/organizations/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<Organization>($"/organizations/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetAsync"/>.</summary>
+        public virtual Task<Organization> Get(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>Update an Organization</summary>
@@ -94,9 +119,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Organization"/> result.</returns>
-        public virtual async Task<Organization> Update(string id, OrganizationsUpdateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Organization> UpdateAsync(string id, OrganizationsUpdateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<Organization>($"/organizations/{id}", options, requestOptions, cancellationToken);
+            return await this.PutAsync<Organization>($"/organizations/{Uri.EscapeDataString(id)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="UpdateAsync"/>.</summary>
+        public virtual Task<Organization> Update(string id, OrganizationsUpdateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.UpdateAsync(id, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete an Organization</summary>
@@ -106,9 +137,15 @@ namespace WorkOS
         /// <param name="id">Unique identifier of the Organization.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.DeleteAsync($"/organizations/{id}", null, requestOptions, cancellationToken);
+            await this.DeleteAsync($"/organizations/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteAsync"/>.</summary>
+        public virtual Task Delete(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>Get Audit Log Configuration</summary>
@@ -119,9 +156,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuditLogConfiguration"/> result.</returns>
-        public virtual async Task<AuditLogConfiguration> GetAuditLogConfiguration(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<AuditLogConfiguration> GetAuditLogConfigurationAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<AuditLogConfiguration>($"/organizations/{id}/audit_log_configuration", null, requestOptions, cancellationToken);
+            return await this.GetAsync<AuditLogConfiguration>($"/organizations/{Uri.EscapeDataString(id)}/audit_log_configuration", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetAuditLogConfigurationAsync"/>.</summary>
+        public virtual Task<AuditLogConfiguration> GetAuditLogConfiguration(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetAuditLogConfigurationAsync(id, requestOptions, cancellationToken);
         }
     }
 }

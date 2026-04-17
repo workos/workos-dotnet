@@ -7,7 +7,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="ConnectService.CompleteOAuth2"/>: Complete external authentication</summary>
+    /// <summary>Request options for <see cref="ConnectService.CompleteOAuth2Async"/>: Complete external authentication</summary>
     public class ConnectCompleteOAuth2Options : BaseOptions
     {
         /// <summary>Identifier provided when AuthKit redirected to your login page.</summary>
@@ -21,7 +21,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="ConnectService.ListApplications"/>: List Connect Applications</summary>
+    /// <summary>Request options for <see cref="ConnectService.ListApplicationsAsync"/>: List Connect Applications</summary>
     public class ConnectListApplicationsOptions : ListOptions
     {
         /// <summary>Filter Connect Applications by organization ID.</summary>
@@ -29,7 +29,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="ConnectService.UpdateApplication"/>: Update a Connect Application</summary>
+    /// <summary>Request options for <see cref="ConnectService.UpdateApplicationAsync"/>: Update a Connect Application</summary>
     public class ConnectUpdateApplicationOptions : BaseOptions
     {
         /// <summary>The name of the application.</summary>

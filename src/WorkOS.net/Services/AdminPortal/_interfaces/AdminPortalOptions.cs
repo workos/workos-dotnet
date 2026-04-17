@@ -7,7 +7,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="AdminPortalService.GenerateLink"/>: Generate a Portal Link</summary>
+    /// <summary>Request options for <see cref="AdminPortalService.GenerateLinkAsync"/>: Generate a Portal Link</summary>
     public class AdminPortalGenerateLinkOptions : BaseOptions
     {
         /// <summary>The URL to go to when an admin clicks on your logo in the Admin Portal. If not specified, the return URL configured on the [Redirects](https://dashboard.workos.com/redirects) page will be used.</summary>

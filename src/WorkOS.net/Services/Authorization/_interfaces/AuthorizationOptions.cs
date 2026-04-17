@@ -7,7 +7,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="AuthorizationService.Check"/>: Check authorization</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.CheckAsync"/>: Check authorization</summary>
     public class AuthorizationCheckOptions : BaseOptions
     {
         /// <summary>The slug of the permission to check.</summary>
@@ -35,7 +35,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.ListOrganizationMembershipResources"/>: List resources for organization membership</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.ListOrganizationMembershipResourcesAsync"/>: List resources for organization membership</summary>
     public class AuthorizationListOrganizationMembershipResourcesOptions : ListOptions
     {
         /// <summary>The permission slug to filter by. Only child resources where the organization membership has this permission are returned.</summary>
@@ -63,22 +63,22 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.ListResourcePermissions"/>: List effective permissions for an organization membership on a resource</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.ListResourcePermissionsAsync"/>: List effective permissions for an organization membership on a resource</summary>
     public class AuthorizationListResourcePermissionsOptions : ListOptions
     {
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.ListEffectivePermissionsByExternalId"/>: List effective permissions for an organization membership on a resource by external ID</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.ListEffectivePermissionsByExternalIdAsync"/>: List effective permissions for an organization membership on a resource by external ID</summary>
     public class AuthorizationListEffectivePermissionsByExternalIdOptions : ListOptions
     {
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.ListOrganizationMembershipRoleAssignments"/>: List role assignments</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.ListOrganizationMembershipRoleAssignmentsAsync"/>: List role assignments</summary>
     public class AuthorizationListOrganizationMembershipRoleAssignmentsOptions : ListOptions
     {
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.AssignRole"/>: Assign a role</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.AssignRoleAsync"/>: Assign a role</summary>
     public class AuthorizationAssignRoleOptions : BaseOptions
     {
         /// <summary>The slug of the role to assign.</summary>
@@ -90,7 +90,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.RemoveRole"/>: Remove a role assignment</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.RemoveRoleAsync"/>: Remove a role assignment</summary>
     public class AuthorizationRemoveRoleOptions : BaseOptions
     {
         /// <summary>The slug of the role to remove.</summary>
@@ -102,7 +102,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.CreateOrganizationRole"/>: Create a custom role</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.CreateOrganizationRoleAsync"/>: Create a custom role</summary>
     public class AuthorizationCreateOrganizationRoleOptions : BaseOptions
     {
         /// <summary>A unique identifier for the role within the organization. When provided, must begin with 'org-' and contain only lowercase letters, numbers, hyphens, and underscores. When omitted, a slug is auto-generated from the role name and a random suffix.</summary>
@@ -119,7 +119,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.UpdateOrganizationRole"/>: Update a custom role</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.UpdateOrganizationRoleAsync"/>: Update a custom role</summary>
     public class AuthorizationUpdateOrganizationRoleOptions : BaseOptions
     {
         /// <summary>A descriptive name for the role.</summary>
@@ -130,7 +130,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.CreateRolePermission"/>: Add a permission to a custom role</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.CreateRolePermissionAsync"/>: Add a permission to a custom role</summary>
     public class AuthorizationCreateRolePermissionOptions : BaseOptions
     {
         /// <summary>The slug of the permission to add to the role.</summary>
@@ -138,7 +138,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.UpdateRolePermissions"/>: Set permissions for a custom role</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.UpdateRolePermissionsAsync"/>: Set permissions for a custom role</summary>
     public class AuthorizationUpdateRolePermissionsOptions : BaseOptions
     {
         /// <summary>The permission slugs to assign to the role.</summary>
@@ -146,7 +146,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.UpdateOrganizationResource"/>: Update a resource by external ID</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.UpdateOrganizationResourceAsync"/>: Update a resource by external ID</summary>
     public class AuthorizationUpdateOrganizationResourceOptions : BaseOptions
     {
         /// <summary>A display name for the resource.</summary>
@@ -161,7 +161,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.DeleteOrganizationResource"/>: Delete an authorization resource by external ID</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.DeleteOrganizationResourceAsync"/>: Delete an authorization resource by external ID</summary>
     public class AuthorizationDeleteOrganizationResourceOptions : BaseOptions
     {
         /// <summary>If true, deletes all descendant resources and role assignments. If not set and the resource has children or assignments, the request will fail.</summary>
@@ -169,7 +169,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.ListResourceOrganizationMemberships"/>: List memberships for a resource by external ID</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.ListResourceOrganizationMembershipsAsync"/>: List memberships for a resource by external ID</summary>
     public class AuthorizationListResourceOrganizationMembershipsOptions : ListOptions
     {
         /// <summary>The permission slug to filter by. Only users with this permission on the resource are returned.</summary>
@@ -180,7 +180,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.ListResources"/>: List resources</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.ListResourcesAsync"/>: List resources</summary>
     public class AuthorizationListResourcesOptions : ListOptions
     {
         /// <summary>Filter resources by organization ID.</summary>
@@ -214,7 +214,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.CreateResource"/>: Create an authorization resource</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.CreateResourceAsync"/>: Create an authorization resource</summary>
     public class AuthorizationCreateResourceOptions : BaseOptions
     {
         /// <summary>An external identifier for the resource.</summary>
@@ -238,7 +238,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.UpdateResource"/>: Update a resource</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.UpdateResourceAsync"/>: Update a resource</summary>
     public class AuthorizationUpdateResourceOptions : BaseOptions
     {
         /// <summary>A display name for the resource.</summary>
@@ -253,7 +253,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.DeleteResource"/>: Delete an authorization resource</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.DeleteResourceAsync"/>: Delete an authorization resource</summary>
     public class AuthorizationDeleteResourceOptions : BaseOptions
     {
         /// <summary>If true, deletes all descendant resources and role assignments. If not set and the resource has children or assignments, the request will fail.</summary>
@@ -261,7 +261,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.ListMembershipsForResource"/>: List organization memberships for resource</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.ListMembershipsForResourceAsync"/>: List organization memberships for resource</summary>
     public class AuthorizationListMembershipsForResourceOptions : ListOptions
     {
         /// <summary>The permission slug to filter by. Only users with this permission on the resource are returned.</summary>
@@ -272,7 +272,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.CreateEnvironmentRole"/>: Create an environment role</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.CreateEnvironmentRoleAsync"/>: Create an environment role</summary>
     public class AuthorizationCreateEnvironmentRoleOptions : BaseOptions
     {
         /// <summary>A unique slug for the role.</summary>
@@ -289,7 +289,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.UpdateEnvironmentRole"/>: Update an environment role</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.UpdateEnvironmentRoleAsync"/>: Update an environment role</summary>
     public class AuthorizationUpdateEnvironmentRoleOptions : BaseOptions
     {
         /// <summary>A descriptive name for the role.</summary>
@@ -300,7 +300,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.AddEnvironmentRolePermission"/>: Add a permission to an environment role</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.AddEnvironmentRolePermissionAsync"/>: Add a permission to an environment role</summary>
     public class AuthorizationAddEnvironmentRolePermissionOptions : BaseOptions
     {
         /// <summary>The slug of the permission to add to the role.</summary>
@@ -308,7 +308,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.SetEnvironmentRolePermissions"/>: Set permissions for an environment role</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.SetEnvironmentRolePermissionsAsync"/>: Set permissions for an environment role</summary>
     public class AuthorizationSetEnvironmentRolePermissionsOptions : BaseOptions
     {
         /// <summary>The permission slugs to assign to the role.</summary>
@@ -316,12 +316,12 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.ListPermissions"/>: List permissions</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.ListPermissionsAsync"/>: List permissions</summary>
     public class AuthorizationListPermissionsOptions : ListOptions
     {
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.CreatePermission"/>: Create a permission</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.CreatePermissionAsync"/>: Create a permission</summary>
     public class AuthorizationCreatePermissionOptions : BaseOptions
     {
         /// <summary>A unique key to reference the permission. Must be lowercase and contain only letters, numbers, hyphens, underscores, colons, periods, and asterisks.</summary>
@@ -338,7 +338,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.UpdatePermission"/>: Update a permission</summary>
+    /// <summary>Request options for <see cref="AuthorizationService.UpdatePermissionAsync"/>: Update a permission</summary>
     public class AuthorizationUpdatePermissionOptions : BaseOptions
     {
         /// <summary>A descriptive name for the Permission.</summary>

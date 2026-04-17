@@ -7,7 +7,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="RadarService.CreateAttempt"/>: Create an attempt</summary>
+    /// <summary>Request options for <see cref="RadarService.CreateAttemptAsync"/>: Create an attempt</summary>
     public class RadarCreateAttemptOptions : BaseOptions
     {
         /// <summary>The IP address of the request to assess.</summary>
@@ -37,7 +37,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="RadarService.UpdateAttempt"/>: Update a Radar attempt</summary>
+    /// <summary>Request options for <see cref="RadarService.UpdateAttemptAsync"/>: Update a Radar attempt</summary>
     public class RadarUpdateAttemptOptions : BaseOptions
     {
         /// <summary>Set to `"success"` to mark the challenge as completed.</summary>
@@ -48,7 +48,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="RadarService.AddListEntry"/>: Add an entry to a Radar list</summary>
+    /// <summary>Request options for <see cref="RadarService.AddListEntryAsync"/>: Add an entry to a Radar list</summary>
     public class RadarAddListEntryOptions : BaseOptions
     {
         /// <summary>The value to add to the list. Must match the format of the list type (e.g. a valid IP address for `ip_address`, a valid email for `email`).</summary>
@@ -56,7 +56,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="RadarService.RemoveListEntry"/>: Remove an entry from a Radar list</summary>
+    /// <summary>Request options for <see cref="RadarService.RemoveListEntryAsync"/>: Remove an entry from a Radar list</summary>
     public class RadarRemoveListEntryOptions : BaseOptions
     {
         /// <summary>The value to remove from the list. Must match an existing entry.</summary>

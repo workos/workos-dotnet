@@ -7,7 +7,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="AuditLogsService.UpdateOrganizationAuditLogsRetention"/>: Set Retention</summary>
+    /// <summary>Request options for <see cref="AuditLogsService.UpdateOrganizationAuditLogsRetentionAsync"/>: Set Retention</summary>
     public class AuditLogsUpdateOrganizationAuditLogsRetentionOptions : BaseOptions
     {
         /// <summary>The number of days Audit Log events will be retained. Valid values are `30` and `365`.</summary>
@@ -15,17 +15,17 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuditLogsService.ListActions"/>: List Actions</summary>
+    /// <summary>Request options for <see cref="AuditLogsService.ListActionsAsync"/>: List Actions</summary>
     public class AuditLogsListActionsOptions : ListOptions
     {
     }
 
-    /// <summary>Request options for <see cref="AuditLogsService.ListActionSchemas"/>: List Schemas</summary>
+    /// <summary>Request options for <see cref="AuditLogsService.ListActionSchemasAsync"/>: List Schemas</summary>
     public class AuditLogsListActionSchemasOptions : ListOptions
     {
     }
 
-    /// <summary>Request options for <see cref="AuditLogsService.CreateSchema"/>: Create Schema</summary>
+    /// <summary>Request options for <see cref="AuditLogsService.CreateSchemaAsync"/>: Create Schema</summary>
     public class AuditLogsCreateSchemaOptions : BaseOptions
     {
         /// <summary>The metadata schema for the actor.</summary>
@@ -39,7 +39,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuditLogsService.CreateEvent"/>: Create Event</summary>
+    /// <summary>Request options for <see cref="AuditLogsService.CreateEventAsync"/>: Create Event</summary>
     public class AuditLogsCreateEventOptions : BaseOptions
     {
         /// <summary>The unique ID of the Organization.</summary>
@@ -50,7 +50,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuditLogsService.CreateExport"/>: Create Export</summary>
+    /// <summary>Request options for <see cref="AuditLogsService.CreateExportAsync"/>: Create Export</summary>
     public class AuditLogsCreateExportOptions : BaseOptions
     {
         /// <summary>The unique ID of the Organization.</summary>

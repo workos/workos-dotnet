@@ -7,7 +7,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="DirectorySyncService.List"/>: List Directories</summary>
+    /// <summary>Request options for <see cref="DirectorySyncService.ListAsync"/>: List Directories</summary>
     public class DirectorySyncListOptions : ListOptions
     {
         /// <summary>Filter Directories by their associated organization.</summary>
@@ -22,7 +22,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="DirectorySyncService.ListGroups"/>: List Directory Groups</summary>
+    /// <summary>Request options for <see cref="DirectorySyncService.ListGroupsAsync"/>: List Directory Groups</summary>
     public class DirectorySyncListGroupsOptions : ListOptions
     {
         /// <summary>Unique identifier of the WorkOS Directory. This value can be obtained from the WorkOS dashboard or from the WorkOS API.</summary>
@@ -33,7 +33,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="DirectorySyncService.ListUsers"/>: List Directory Users</summary>
+    /// <summary>Request options for <see cref="DirectorySyncService.ListUsersAsync"/>: List Directory Users</summary>
     public class DirectorySyncListUsersOptions : ListOptions
     {
         /// <summary>Unique identifier of the WorkOS Directory. This value can be obtained from the WorkOS dashboard or from the WorkOS API.</summary>

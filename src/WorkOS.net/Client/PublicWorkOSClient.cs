@@ -86,7 +86,7 @@ namespace WorkOS
         /// <summary>Get the JWKS URL for the current client.</summary>
         public string GetJwksUrl()
         {
-            return $"{this.ApiBaseURL}/sso/jwks/{this.ClientId}";
+            return $"{this.ApiBaseURL}/sso/jwks/{Uri.EscapeDataString(this.ClientId)}";
         }
     }
 }

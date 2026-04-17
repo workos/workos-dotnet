@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -31,9 +32,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="RadarStandaloneResponse"/> result.</returns>
-        public virtual async Task<RadarStandaloneResponse> CreateAttempt(RadarCreateAttemptOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<RadarStandaloneResponse> CreateAttemptAsync(RadarCreateAttemptOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.PostAsync<RadarStandaloneResponse>("/radar/attempts", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateAttemptAsync"/>.</summary>
+        public virtual Task<RadarStandaloneResponse> CreateAttempt(RadarCreateAttemptOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateAttemptAsync(options, requestOptions, cancellationToken);
         }
 
         /// <summary>Update a Radar attempt</summary>
@@ -44,9 +51,15 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task UpdateAttempt(string id, RadarUpdateAttemptOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task UpdateAttemptAsync(string id, RadarUpdateAttemptOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.PutAsync<object>($"/radar/attempts/{id}", options, requestOptions, cancellationToken);
+            await this.PutAsync<object>($"/radar/attempts/{Uri.EscapeDataString(id)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="UpdateAttemptAsync"/>.</summary>
+        public virtual Task UpdateAttempt(string id, RadarUpdateAttemptOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.UpdateAttemptAsync(id, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Add an entry to a Radar list</summary>
@@ -59,9 +72,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="RadarListEntryAlreadyPresentResponse"/> result.</returns>
-        public virtual async Task<RadarListEntryAlreadyPresentResponse> AddListEntry(string type, string action, RadarAddListEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<RadarListEntryAlreadyPresentResponse> AddListEntryAsync(string type, string action, RadarAddListEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<RadarListEntryAlreadyPresentResponse>($"/radar/lists/{type}/{action}", options, requestOptions, cancellationToken);
+            return await this.PostAsync<RadarListEntryAlreadyPresentResponse>($"/radar/lists/{Uri.EscapeDataString(type)}/{Uri.EscapeDataString(action)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="AddListEntryAsync"/>.</summary>
+        public virtual Task<RadarListEntryAlreadyPresentResponse> AddListEntry(string type, string action, RadarAddListEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.AddListEntryAsync(type, action, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Remove an entry from a Radar list</summary>
@@ -73,9 +92,15 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task RemoveListEntry(string type, string action, RadarRemoveListEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task RemoveListEntryAsync(string type, string action, RadarRemoveListEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.DeleteAsync($"/radar/lists/{type}/{action}", options, requestOptions, cancellationToken);
+            await this.DeleteAsync($"/radar/lists/{Uri.EscapeDataString(type)}/{Uri.EscapeDataString(action)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="RemoveListEntryAsync"/>.</summary>
+        public virtual Task RemoveListEntry(string type, string action, RadarRemoveListEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.RemoveListEntryAsync(type, action, options, requestOptions, cancellationToken);
         }
     }
 }

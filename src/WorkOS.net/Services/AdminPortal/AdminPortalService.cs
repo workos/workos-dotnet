@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -31,9 +32,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="PortalLinkResponse"/> result.</returns>
-        public virtual async Task<PortalLinkResponse> GenerateLink(AdminPortalGenerateLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<PortalLinkResponse> GenerateLinkAsync(AdminPortalGenerateLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.PostAsync<PortalLinkResponse>("/portal/generate_link", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GenerateLinkAsync"/>.</summary>
+        public virtual Task<PortalLinkResponse> GenerateLink(AdminPortalGenerateLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GenerateLinkAsync(options, requestOptions, cancellationToken);
         }
     }
 }

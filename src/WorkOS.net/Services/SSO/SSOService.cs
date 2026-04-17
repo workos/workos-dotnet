@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -31,12 +32,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="Connection"/> results.</returns>
-        public virtual async Task<WorkOSList<Connection>> ListConnections(SSOListConnectionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<Connection>> ListConnectionsAsync(SSOListConnectionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.GetAsync<WorkOSList<Connection>>("/connections", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="ListConnections"/>. Yields individual items across all pages.</summary>
+        /// <summary>Compatibility wrapper for <see cref="ListConnectionsAsync"/>.</summary>
+        public virtual Task<WorkOSList<Connection>> ListConnections(SSOListConnectionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListConnectionsAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListConnectionsAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -54,9 +61,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Connection"/> result.</returns>
-        public virtual async Task<Connection> GetConnection(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Connection> GetConnectionAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<Connection>($"/connections/{id}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<Connection>($"/connections/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetConnectionAsync"/>.</summary>
+        public virtual Task<Connection> GetConnection(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetConnectionAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a Connection</summary>
@@ -66,9 +79,15 @@ namespace WorkOS
         /// <param name="id">Unique identifier for the Connection.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteConnection(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteConnectionAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.DeleteAsync($"/connections/{id}", null, requestOptions, cancellationToken);
+            await this.DeleteAsync($"/connections/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteConnectionAsync"/>.</summary>
+        public virtual Task DeleteConnection(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteConnectionAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>Initiate SSO</summary>
@@ -117,9 +136,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="SSOLogoutAuthorizeResponse"/> result.</returns>
-        public virtual async Task<SSOLogoutAuthorizeResponse> AuthorizeLogout(SSOAuthorizeLogoutOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<SSOLogoutAuthorizeResponse> AuthorizeLogoutAsync(SSOAuthorizeLogoutOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.PostAsync<SSOLogoutAuthorizeResponse>("/sso/logout/authorize", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="AuthorizeLogoutAsync"/>.</summary>
+        public virtual Task<SSOLogoutAuthorizeResponse> AuthorizeLogout(SSOAuthorizeLogoutOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.AuthorizeLogoutAsync(options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a User Profile</summary>
@@ -130,7 +155,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Profile"/> result.</returns>
-        public virtual async Task<Profile> GetProfile(string accessToken, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Profile> GetProfileAsync(string accessToken, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -142,6 +167,12 @@ namespace WorkOS
             return await this.Client.MakeAPIRequest<Profile>(request, cancellationToken);
         }
 
+        /// <summary>Compatibility wrapper for <see cref="GetProfileAsync"/>.</summary>
+        public virtual Task<Profile> GetProfile(string accessToken, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetProfileAsync(accessToken, requestOptions, cancellationToken);
+        }
+
         /// <summary>Get a Profile and Token</summary>
         /// <remarks>
         /// Get an access token along with the user [Profile](https://workos.com/docs/reference/sso/profile) using the code passed to your [Redirect URI](https://workos.com/docs/reference/sso/get-authorization-url/redirect-uri).
@@ -150,12 +181,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="SSOTokenResponse"/> result.</returns>
-        public virtual async Task<SSOTokenResponse> GetProfileAndToken(SSOGetProfileAndTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<SSOTokenResponse> GetProfileAndTokenAsync(SSOGetProfileAndTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             options.GrantType = "authorization_code";
             options.ClientId = this.Client.RequireClientId();
             options.ClientSecret = this.Client.ApiKey ?? string.Empty;
             return await this.PostAsync<SSOTokenResponse>("/sso/token", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetProfileAndTokenAsync"/>.</summary>
+        public virtual Task<SSOTokenResponse> GetProfileAndToken(SSOGetProfileAndTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetProfileAndTokenAsync(options, requestOptions, cancellationToken);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="WidgetsService.CreateToken"/>: Generate a widget token</summary>
+    /// <summary>Request options for <see cref="WidgetsService.CreateTokenAsync"/>: Generate a widget token</summary>
     public class WidgetsCreateTokenOptions : BaseOptions
     {
         /// <summary>The ID of the organization to scope the widget session to.</summary>

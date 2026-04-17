@@ -8,126 +8,6 @@ namespace WorkOS
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using Newtonsoft.Json;
-
-    /// <summary>A Vault KV object.</summary>
-    public class VaultObject
-    {
-        [JsonProperty("id")]
-        public string Id { get; set; } = default!;
-
-        [JsonProperty("name")]
-        public string? Name { get; set; }
-
-        [JsonProperty("value")]
-        public string? Value { get; set; }
-
-        [JsonProperty("environment_id")]
-        public string? EnvironmentId { get; set; }
-
-        [JsonProperty("key_id")]
-        public string? KeyId { get; set; }
-
-        [JsonProperty("version_id")]
-        public string? VersionId { get; set; }
-
-        [JsonProperty("updated_at")]
-        public string? UpdatedAt { get; set; }
-
-        [JsonProperty("updated_by")]
-        public string? UpdatedBy { get; set; }
-    }
-
-    /// <summary>A Vault object digest (summary).</summary>
-    public class ObjectDigest
-    {
-        [JsonProperty("id")]
-        public string Id { get; set; } = default!;
-
-        [JsonProperty("name")]
-        public string Name { get; set; } = default!;
-
-        [JsonProperty("updated_at")]
-        public string? UpdatedAt { get; set; }
-    }
-
-    /// <summary>A Vault object version.</summary>
-    public class ObjectVersion
-    {
-        [JsonProperty("version_id")]
-        public string VersionId { get; set; } = default!;
-
-        [JsonProperty("updated_at")]
-        public string? UpdatedAt { get; set; }
-
-        [JsonProperty("updated_by")]
-        public string? UpdatedBy { get; set; }
-    }
-
-    /// <summary>A data key pair from the Vault key service.</summary>
-    public class DataKeyPair
-    {
-        [JsonProperty("context")]
-        public Dictionary<string, string>? Context { get; set; }
-
-        [JsonProperty("data_key")]
-        public DataKey? DataKey { get; set; }
-
-        [JsonProperty("encrypted_keys")]
-        public string EncryptedKeys { get; set; } = default!;
-    }
-
-    /// <summary>A plaintext data key.</summary>
-    public class DataKey
-    {
-        [JsonProperty("id")]
-        public string? Id { get; set; }
-
-        [JsonProperty("key")]
-        public string Key { get; set; } = default!;
-    }
-
-    /// <summary>Options for creating a Vault object.</summary>
-    public class CreateVaultObjectOptions : BaseOptions
-    {
-        [JsonProperty("name")]
-        public string Name { get; set; } = default!;
-
-        [JsonProperty("value")]
-        public string Value { get; set; } = default!;
-
-        [JsonProperty("key_context")]
-        public Dictionary<string, string>? KeyContext { get; set; }
-    }
-
-    /// <summary>Options for updating a Vault object.</summary>
-    public class UpdateVaultObjectOptions : BaseOptions
-    {
-        [JsonProperty("value")]
-        public string Value { get; set; } = default!;
-
-        [JsonProperty("version_check")]
-        public string? VersionCheck { get; set; }
-    }
-
-    /// <summary>Options for listing Vault objects.</summary>
-    public class ListVaultObjectsOptions : ListOptions
-    {
-    }
-
-    /// <summary>Options for creating a data key.</summary>
-    public class CreateDataKeyOptions : BaseOptions
-    {
-        [JsonProperty("context")]
-        public Dictionary<string, string>? Context { get; set; }
-    }
-
-    /// <summary>Options for decrypting a data key.</summary>
-    public class DecryptDataKeyOptions : BaseOptions
-    {
-        [JsonProperty("keys")]
-        public string Keys { get; set; } = default!;
-    }
 
     /// <summary>Vault KV storage, key operations, and client-side AES-GCM encrypt/decrypt.</summary>
     public class VaultService : Service
@@ -185,7 +65,7 @@ namespace WorkOS
             var request = new WorkOSRequest
             {
                 Method = HttpMethod.Get,
-                Path = $"/vault/v1/kv/{objectId}",
+                Path = $"/vault/v1/kv/{Uri.EscapeDataString(objectId)}",
                 RequestOptions = requestOptions,
             };
             return await this.Client.MakeAPIRequest<VaultObject>(request, cancellationToken);
@@ -200,7 +80,7 @@ namespace WorkOS
             var request = new WorkOSRequest
             {
                 Method = HttpMethod.Get,
-                Path = $"/vault/v1/kv/name/{name}",
+                Path = $"/vault/v1/kv/name/{Uri.EscapeDataString(name)}",
                 RequestOptions = requestOptions,
             };
             return await this.Client.MakeAPIRequest<VaultObject>(request, cancellationToken);
@@ -215,7 +95,7 @@ namespace WorkOS
             var request = new WorkOSRequest
             {
                 Method = HttpMethod.Get,
-                Path = $"/vault/v1/kv/{objectId}/metadata",
+                Path = $"/vault/v1/kv/{Uri.EscapeDataString(objectId)}/metadata",
                 RequestOptions = requestOptions,
             };
             return await this.Client.MakeAPIRequest<VaultObject>(request, cancellationToken);
@@ -231,7 +111,7 @@ namespace WorkOS
             var request = new WorkOSRequest
             {
                 Method = HttpMethod.Put,
-                Path = $"/vault/v1/kv/{objectId}",
+                Path = $"/vault/v1/kv/{Uri.EscapeDataString(objectId)}",
                 Options = options,
                 RequestOptions = requestOptions,
             };
@@ -247,7 +127,7 @@ namespace WorkOS
             var request = new WorkOSRequest
             {
                 Method = HttpMethod.Delete,
-                Path = $"/vault/v1/kv/{objectId}",
+                Path = $"/vault/v1/kv/{Uri.EscapeDataString(objectId)}",
                 RequestOptions = requestOptions,
             };
             await this.Client.MakeRawAPIRequest(request, cancellationToken);
@@ -262,7 +142,7 @@ namespace WorkOS
             var request = new WorkOSRequest
             {
                 Method = HttpMethod.Get,
-                Path = $"/vault/v1/kv/{objectId}/versions",
+                Path = $"/vault/v1/kv/{Uri.EscapeDataString(objectId)}/versions",
                 RequestOptions = requestOptions,
             };
             return await this.Client.MakeAPIRequest<List<ObjectVersion>>(request, cancellationToken);

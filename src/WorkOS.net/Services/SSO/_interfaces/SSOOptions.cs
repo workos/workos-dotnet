@@ -7,7 +7,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="SSOService.ListConnections"/>: List Connections</summary>
+    /// <summary>Request options for <see cref="SSOService.ListConnectionsAsync"/>: List Connections</summary>
     public class SSOListConnectionsOptions : ListOptions
     {
         /// <summary>Filter Connections by their type.</summary>
@@ -81,7 +81,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="SSOService.AuthorizeLogout"/>: Logout Authorize</summary>
+    /// <summary>Request options for <see cref="SSOService.AuthorizeLogoutAsync"/>: Logout Authorize</summary>
     public class SSOAuthorizeLogoutOptions : BaseOptions
     {
         /// <summary>The unique ID of the profile to log out.</summary>
@@ -89,7 +89,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="SSOService.GetProfileAndToken"/>: Get a Profile and Token</summary>
+    /// <summary>Request options for <see cref="SSOService.GetProfileAndTokenAsync"/>: Get a Profile and Token</summary>
     public class SSOGetProfileAndTokenOptions : BaseOptions
     {
         /// <summary>The authorization code received from the authorization callback.</summary>
