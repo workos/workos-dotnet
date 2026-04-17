@@ -151,14 +151,25 @@ namespace WorkOS
         /// <summary>The external ID of the user.</summary>
         public string? ExternalId { get; set; }
 
-        /// <summary>The password to set for the user. Mutually exclusive with `password_hash` and `password_hash_type`.</summary>
-        public string? Password { get; set; }
+        [JsonIgnore]
+        [STJS.JsonIgnore]
+        public UserManagementPassword? Password { get; set; }
 
-        /// <summary>The hashed password to set for the user. Required with `password_hash_type`. Mutually exclusive with `password`.</summary>
-        public string? PasswordHash { get; set; }
+    }
 
-        /// <summary>The algorithm originally used to hash the password, used when providing a `password_hash`. Required with `password_hash`. Mutually exclusive with `password`.</summary>
-        public CreateUserPasswordHashType? PasswordHashType { get; set; }
+    public abstract class UserManagementPassword { }
+
+    public class UserManagementPasswordPlaintext : UserManagementPassword
+    {
+        public string Password { get; set; } = default!;
+
+    }
+
+    public class UserManagementPasswordHashed : UserManagementPassword
+    {
+        public string PasswordHash { get; set; } = default!;
+
+        public string PasswordHashType { get; set; } = default!;
 
     }
 
@@ -186,14 +197,9 @@ namespace WorkOS
         /// <summary>The user's preferred locale.</summary>
         public string? Locale { get; set; }
 
-        /// <summary>The password to set for the user. Mutually exclusive with `password_hash` and `password_hash_type`.</summary>
-        public string? Password { get; set; }
-
-        /// <summary>The hashed password to set for the user. Required with `password_hash_type`. Mutually exclusive with `password`.</summary>
-        public string? PasswordHash { get; set; }
-
-        /// <summary>The algorithm originally used to hash the password, used when providing a `password_hash`. Required with `password_hash`. Mutually exclusive with `password`.</summary>
-        public CreateUserPasswordHashType? PasswordHashType { get; set; }
+        [JsonIgnore]
+        [STJS.JsonIgnore]
+        public UserManagementPassword? Password { get; set; }
 
     }
 
@@ -310,22 +316,32 @@ namespace WorkOS
         /// <summary>The ID of the [organization](https://workos.com/docs/reference/organization) which the user belongs to.</summary>
         public string OrganizationId { get; set; } = default!;
 
-        /// <summary>A single role identifier. Defaults to `member` or the explicit default role. Mutually exclusive with `role_slugs`.</summary>
-        public string? RoleSlug { get; set; }
+        [JsonIgnore]
+        [STJS.JsonIgnore]
+        public UserManagementRole? Role { get; set; }
 
-        /// <summary>An array of role identifiers. Limited to one role when Multiple Roles is disabled. Mutually exclusive with `role_slug`.</summary>
-        public List<string>? RoleSlugs { get; set; }
+    }
+
+    public abstract class UserManagementRole { }
+
+    public class UserManagementRoleSingle : UserManagementRole
+    {
+        public string RoleSlug { get; set; } = default!;
+
+    }
+
+    public class UserManagementRoleMultiple : UserManagementRole
+    {
+        public string RoleSlugs { get; set; } = default!;
 
     }
 
     /// <summary>Request options for <see cref="UserManagementService.UpdateOrganizationMembership"/>: Update an organization membership</summary>
     public class UserManagementUpdateOrganizationMembershipOptions : BaseOptions
     {
-        /// <summary>A single role identifier. Defaults to `member` or the explicit default role. Mutually exclusive with `role_slugs`.</summary>
-        public string? RoleSlug { get; set; }
-
-        /// <summary>An array of role identifiers. Limited to one role when Multiple Roles is disabled. Mutually exclusive with `role_slug`.</summary>
-        public List<string>? RoleSlugs { get; set; }
+        [JsonIgnore]
+        [STJS.JsonIgnore]
+        public UserManagementRole? Role { get; set; }
 
     }
 

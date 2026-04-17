@@ -299,7 +299,25 @@ namespace WorkOS
         /// <returns>The <see cref="EmailChangeConfirmationUser"/> result.</returns>
         public virtual async Task<EmailChangeConfirmationUser> Create(UserManagementCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<EmailChangeConfirmationUser>("/user_management/users", options, requestOptions, cancellationToken);
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/user_management/users",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.Password is UserManagementPasswordPlaintext plaintext)
+            {
+                request.AddQueryParam("password", plaintext.Password);
+            }
+            else if (options?.Password is UserManagementPasswordHashed hashed)
+            {
+                request.AddQueryParam("password_hash", hashed.PasswordHash);
+                request.AddQueryParam("password_hash_type", hashed.PasswordHashType);
+            }
+
+            return await this.Client.MakeAPIRequest<EmailChangeConfirmationUser>(request, cancellationToken);
         }
 
         /// <summary>Get a user by external ID</summary>
@@ -339,7 +357,25 @@ namespace WorkOS
         /// <returns>The <see cref="EmailChangeConfirmationUser"/> result.</returns>
         public virtual async Task<EmailChangeConfirmationUser> Update(string id, UserManagementUpdateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<EmailChangeConfirmationUser>($"/user_management/users/{id}", options, requestOptions, cancellationToken);
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Put,
+                Path = $"/user_management/users/{id}",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.Password is UserManagementPasswordPlaintext plaintext)
+            {
+                request.AddQueryParam("password", plaintext.Password);
+            }
+            else if (options?.Password is UserManagementPasswordHashed hashed)
+            {
+                request.AddQueryParam("password_hash", hashed.PasswordHash);
+                request.AddQueryParam("password_hash_type", hashed.PasswordHashType);
+            }
+
+            return await this.Client.MakeAPIRequest<EmailChangeConfirmationUser>(request, cancellationToken);
         }
 
         /// <summary>Delete a user</summary>
@@ -622,7 +658,24 @@ namespace WorkOS
         /// <returns>The <see cref="OrganizationMembership"/> result.</returns>
         public virtual async Task<OrganizationMembership> CreateOrganizationMembership(UserManagementCreateOrganizationMembershipOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<OrganizationMembership>("/user_management/organization_memberships", options, requestOptions, cancellationToken);
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/user_management/organization_memberships",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.Role is UserManagementRoleSingle single)
+            {
+                request.AddQueryParam("role_slug", single.RoleSlug);
+            }
+            else if (options?.Role is UserManagementRoleMultiple multiple)
+            {
+                request.AddQueryParam("role_slugs", multiple.RoleSlugs);
+            }
+
+            return await this.Client.MakeAPIRequest<OrganizationMembership>(request, cancellationToken);
         }
 
         /// <summary>Get an organization membership</summary>
@@ -649,7 +702,24 @@ namespace WorkOS
         /// <returns>The <see cref="OrganizationMembership"/> result.</returns>
         public virtual async Task<OrganizationMembership> UpdateOrganizationMembership(string id, UserManagementUpdateOrganizationMembershipOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<OrganizationMembership>($"/user_management/organization_memberships/{id}", options, requestOptions, cancellationToken);
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Put,
+                Path = $"/user_management/organization_memberships/{id}",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.Role is UserManagementRoleSingle single)
+            {
+                request.AddQueryParam("role_slug", single.RoleSlug);
+            }
+            else if (options?.Role is UserManagementRoleMultiple multiple)
+            {
+                request.AddQueryParam("role_slugs", multiple.RoleSlugs);
+            }
+
+            return await this.Client.MakeAPIRequest<OrganizationMembership>(request, cancellationToken);
         }
 
         /// <summary>Delete an organization membership</summary>

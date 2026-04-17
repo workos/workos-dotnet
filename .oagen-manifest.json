@@ -1,7 +1,7 @@
 {
   "version": 1,
   "language": "dotnet",
-  "generatedAt": "2026-04-16T23:23:46.208Z",
+  "generatedAt": "2026-04-17T15:53:48.914Z",
   "files": [
     "src/WorkOS.net/Client/WorkOSClient.Generated.cs",
     "src/WorkOS.net/Entities/ActionAuthenticationDenied.cs",

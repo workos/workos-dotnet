@@ -34,7 +34,25 @@ namespace WorkOS
         /// <returns>The <see cref="AuthorizationCheck"/> result.</returns>
         public virtual async Task<AuthorizationCheck> Check(string organizationMembershipId, AuthorizationCheckOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<AuthorizationCheck>($"/authorization/organization_memberships/{organizationMembershipId}/check", options, requestOptions, cancellationToken);
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Post,
+                Path = $"/authorization/organization_memberships/{organizationMembershipId}/check",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.ResourceTarget is AuthorizationResourceTargetById byId)
+            {
+                request.AddQueryParam("resource_id", byId.ResourceId);
+            }
+            else if (options?.ResourceTarget is AuthorizationResourceTargetByExternalId byExternalId)
+            {
+                request.AddQueryParam("resource_external_id", byExternalId.ResourceExternalId);
+                request.AddQueryParam("resource_type_slug", byExternalId.ResourceTypeSlug);
+            }
+
+            return await this.Client.MakeAPIRequest<AuthorizationCheck>(request, cancellationToken);
         }
 
         /// <summary>List resources for organization membership</summary>
@@ -57,11 +75,11 @@ namespace WorkOS
                 RequestOptions = requestOptions,
             };
 
-            if (options?.ParentResource is ParentResourceById byId)
+            if (options?.ParentResource is AuthorizationParentResourceById byId)
             {
                 request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
             }
-            else if (options?.ParentResource is ParentResourceByExternalId byExternalId)
+            else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
             {
                 request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
                 request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
@@ -173,7 +191,25 @@ namespace WorkOS
         /// <returns>The <see cref="RoleAssignment"/> result.</returns>
         public virtual async Task<RoleAssignment> AssignRole(string organizationMembershipId, AuthorizationAssignRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<RoleAssignment>($"/authorization/organization_memberships/{organizationMembershipId}/role_assignments", options, requestOptions, cancellationToken);
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Post,
+                Path = $"/authorization/organization_memberships/{organizationMembershipId}/role_assignments",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.ResourceTarget is AuthorizationResourceTargetById byId)
+            {
+                request.AddQueryParam("resource_id", byId.ResourceId);
+            }
+            else if (options?.ResourceTarget is AuthorizationResourceTargetByExternalId byExternalId)
+            {
+                request.AddQueryParam("resource_external_id", byExternalId.ResourceExternalId);
+                request.AddQueryParam("resource_type_slug", byExternalId.ResourceTypeSlug);
+            }
+
+            return await this.Client.MakeAPIRequest<RoleAssignment>(request, cancellationToken);
         }
 
         /// <summary>Remove a role assignment</summary>
@@ -186,7 +222,25 @@ namespace WorkOS
         /// <param name="cancellationToken">Cancellation token.</param>
         public virtual async Task RemoveRole(string organizationMembershipId, AuthorizationRemoveRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            await this.DeleteAsync($"/authorization/organization_memberships/{organizationMembershipId}/role_assignments", options, requestOptions, cancellationToken);
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"/authorization/organization_memberships/{organizationMembershipId}/role_assignments",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.ResourceTarget is AuthorizationResourceTargetById byId)
+            {
+                request.AddQueryParam("resource_id", byId.ResourceId);
+            }
+            else if (options?.ResourceTarget is AuthorizationResourceTargetByExternalId byExternalId)
+            {
+                request.AddQueryParam("resource_external_id", byExternalId.ResourceExternalId);
+                request.AddQueryParam("resource_type_slug", byExternalId.ResourceTypeSlug);
+            }
+
+            await this.Client.MakeRawAPIRequest(request, cancellationToken);
         }
 
         /// <summary>Remove a role assignment by ID</summary>
@@ -343,7 +397,25 @@ namespace WorkOS
         /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
         public virtual async Task<AuthorizationResource> UpdateOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, AuthorizationUpdateOrganizationResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PatchAsync<AuthorizationResource>($"/authorization/organizations/{organizationId}/resources/{resourceTypeSlug}/{externalId}", options, requestOptions, cancellationToken);
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Patch,
+                Path = $"/authorization/organizations/{organizationId}/resources/{resourceTypeSlug}/{externalId}",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.ParentResource is AuthorizationParentResourceById byId)
+            {
+                request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+            }
+            else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
+            {
+                request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
+                request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+            }
+
+            return await this.Client.MakeAPIRequest<AuthorizationResource>(request, cancellationToken);
         }
 
         /// <summary>Delete an authorization resource by external ID</summary>
@@ -400,7 +472,25 @@ namespace WorkOS
         /// <returns>A page of <see cref="AuthorizationResource"/> results.</returns>
         public virtual async Task<WorkOSList<AuthorizationResource>> ListResources(AuthorizationListResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<AuthorizationResource>>("/authorization/resources", options, requestOptions, cancellationToken);
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/authorization/resources",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.Parent is AuthorizationParentById byId)
+            {
+                request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+            }
+            else if (options?.Parent is AuthorizationParentByExternalId byExternalId)
+            {
+                request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                request.AddQueryParam("parent_external_id", byExternalId.ParentExternalId);
+            }
+
+            return await this.Client.MakeAPIRequest<WorkOSList<AuthorizationResource>>(request, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListResources"/>. Yields individual items across all pages.</summary>
@@ -423,7 +513,25 @@ namespace WorkOS
         /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
         public virtual async Task<AuthorizationResource> CreateResource(AuthorizationCreateResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<AuthorizationResource>("/authorization/resources", options, requestOptions, cancellationToken);
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/authorization/resources",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.ParentResource is AuthorizationParentResourceById byId)
+            {
+                request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+            }
+            else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
+            {
+                request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
+                request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+            }
+
+            return await this.Client.MakeAPIRequest<AuthorizationResource>(request, cancellationToken);
         }
 
         /// <summary>Get a resource</summary>
@@ -450,7 +558,25 @@ namespace WorkOS
         /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
         public virtual async Task<AuthorizationResource> UpdateResource(string resourceId, AuthorizationUpdateResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PatchAsync<AuthorizationResource>($"/authorization/resources/{resourceId}", options, requestOptions, cancellationToken);
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Patch,
+                Path = $"/authorization/resources/{resourceId}",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.ParentResource is AuthorizationParentResourceById byId)
+            {
+                request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+            }
+            else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
+            {
+                request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
+                request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+            }
+
+            return await this.Client.MakeAPIRequest<AuthorizationResource>(request, cancellationToken);
         }
 
         /// <summary>Delete an authorization resource</summary>

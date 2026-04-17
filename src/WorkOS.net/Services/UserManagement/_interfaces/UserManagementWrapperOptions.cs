@@ -36,16 +36,22 @@ namespace WorkOS
 
     public class AuthenticateWithCodeOptions : BaseOptions
     {
+        /// <summary>The authorization code received from the redirect.</summary>
         public string Code { get; set; } = default!;
 
+        /// <summary>The PKCE code verifier used to derive the code challenge passed to the authorization URL.</summary>
         public string? CodeVerifier { get; set; }
 
+        /// <summary>An invitation token to accept during authentication.</summary>
         public string? InvitationToken { get; set; }
 
+        /// <summary>The IP address of the user's request.</summary>
         public string? IpAddress { get; set; }
 
+        /// <summary>A unique identifier for the device.</summary>
         public string? DeviceId { get; set; }
 
+        /// <summary>The user agent string from the user's browser.</summary>
         public string? UserAgent { get; set; }
 
         internal string GrantType { get; set; } = default!;

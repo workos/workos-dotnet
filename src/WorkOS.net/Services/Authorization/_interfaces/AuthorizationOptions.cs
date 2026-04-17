@@ -13,14 +13,25 @@ namespace WorkOS
         /// <summary>The slug of the permission to check.</summary>
         public string PermissionSlug { get; set; } = default!;
 
-        /// <summary>The ID of the resource. Mutually exclusive with `resource_external_id` and `resource_type_slug`.</summary>
-        public string? ResourceId { get; set; }
+        [JsonIgnore]
+        [STJS.JsonIgnore]
+        public AuthorizationResourceTarget ResourceTarget { get; set; } = default!;
 
-        /// <summary>The external ID of the resource. Required with `resource_type_slug`. Mutually exclusive with `resource_id`.</summary>
-        public string? ResourceExternalId { get; set; }
+    }
 
-        /// <summary>The slug of the resource type. Required with `resource_external_id`. Mutually exclusive with `resource_id`.</summary>
-        public string? ResourceTypeSlug { get; set; }
+    public abstract class AuthorizationResourceTarget { }
+
+    public class AuthorizationResourceTargetById : AuthorizationResourceTarget
+    {
+        public string ResourceId { get; set; } = default!;
+
+    }
+
+    public class AuthorizationResourceTargetByExternalId : AuthorizationResourceTarget
+    {
+        public string ResourceExternalId { get; set; } = default!;
+
+        public string ResourceTypeSlug { get; set; } = default!;
 
     }
 
@@ -32,19 +43,19 @@ namespace WorkOS
 
         [JsonIgnore]
         [STJS.JsonIgnore]
-        public ParentResource ParentResource { get; set; } = default!;
+        public AuthorizationParentResource ParentResource { get; set; } = default!;
 
     }
 
-    public abstract class ParentResource { }
+    public abstract class AuthorizationParentResource { }
 
-    public class ParentResourceById : ParentResource
+    public class AuthorizationParentResourceById : AuthorizationParentResource
     {
         public string ParentResourceId { get; set; } = default!;
 
     }
 
-    public class ParentResourceByExternalId : ParentResource
+    public class AuthorizationParentResourceByExternalId : AuthorizationParentResource
     {
         public string ParentResourceTypeSlug { get; set; } = default!;
 
@@ -73,14 +84,9 @@ namespace WorkOS
         /// <summary>The slug of the role to assign.</summary>
         public string RoleSlug { get; set; } = default!;
 
-        /// <summary>The ID of the resource. Mutually exclusive with `resource_external_id` and `resource_type_slug`.</summary>
-        public string? ResourceId { get; set; }
-
-        /// <summary>The external ID of the resource. Required with `resource_type_slug`. Mutually exclusive with `resource_id`.</summary>
-        public string? ResourceExternalId { get; set; }
-
-        /// <summary>The resource type slug. Required with `resource_external_id`. Mutually exclusive with `resource_id`.</summary>
-        public string? ResourceTypeSlug { get; set; }
+        [JsonIgnore]
+        [STJS.JsonIgnore]
+        public AuthorizationResourceTarget ResourceTarget { get; set; } = default!;
 
     }
 
@@ -90,14 +96,9 @@ namespace WorkOS
         /// <summary>The slug of the role to remove.</summary>
         public string RoleSlug { get; set; } = default!;
 
-        /// <summary>The ID of the resource. Mutually exclusive with `resource_external_id` and `resource_type_slug`.</summary>
-        public string? ResourceId { get; set; }
-
-        /// <summary>The external ID of the resource. Required with `resource_type_slug`. Mutually exclusive with `resource_id`.</summary>
-        public string? ResourceExternalId { get; set; }
-
-        /// <summary>The resource type slug. Required with `resource_external_id`. Mutually exclusive with `resource_id`.</summary>
-        public string? ResourceTypeSlug { get; set; }
+        [JsonIgnore]
+        [STJS.JsonIgnore]
+        public AuthorizationResourceTarget ResourceTarget { get; set; } = default!;
 
     }
 
@@ -154,14 +155,9 @@ namespace WorkOS
         /// <summary>An optional description of the resource.</summary>
         public string? Description { get; set; }
 
-        /// <summary>The ID of the parent resource. Mutually exclusive with `parent_resource_external_id` and `parent_resource_type_slug`.</summary>
-        public string? ParentResourceId { get; set; }
-
-        /// <summary>The external ID of the parent resource. Required with `parent_resource_type_slug`. Mutually exclusive with `parent_resource_id`.</summary>
-        public string? ParentResourceExternalId { get; set; }
-
-        /// <summary>The resource type slug of the parent resource. Required with `parent_resource_external_id`. Mutually exclusive with `parent_resource_id`.</summary>
-        public string? ParentResourceTypeSlug { get; set; }
+        [JsonIgnore]
+        [STJS.JsonIgnore]
+        public AuthorizationParentResource? ParentResource { get; set; }
 
     }
 
@@ -193,17 +189,28 @@ namespace WorkOS
         /// <summary>Filter resources by resource type slug.</summary>
         public string? ResourceTypeSlug { get; set; }
 
-        /// <summary>Filter resources by parent resource ID.</summary>
-        public string? ParentResourceId { get; set; }
-
-        /// <summary>Filter resources by parent resource type slug.</summary>
-        public string? ParentResourceTypeSlug { get; set; }
-
-        /// <summary>Filter resources by parent external ID.</summary>
-        public string? ParentExternalId { get; set; }
-
         /// <summary>Search resources by name.</summary>
         public string? Search { get; set; }
+
+        [JsonIgnore]
+        [STJS.JsonIgnore]
+        public AuthorizationParent? Parent { get; set; }
+
+    }
+
+    public abstract class AuthorizationParent { }
+
+    public class AuthorizationParentById : AuthorizationParent
+    {
+        public string ParentResourceId { get; set; } = default!;
+
+    }
+
+    public class AuthorizationParentByExternalId : AuthorizationParent
+    {
+        public string ParentResourceTypeSlug { get; set; } = default!;
+
+        public string ParentExternalId { get; set; } = default!;
 
     }
 
@@ -225,14 +232,9 @@ namespace WorkOS
         /// <summary>The ID of the organization this resource belongs to.</summary>
         public string OrganizationId { get; set; } = default!;
 
-        /// <summary>The ID of the parent resource. Mutually exclusive with `parent_resource_external_id` and `parent_resource_type_slug`.</summary>
-        public string? ParentResourceId { get; set; }
-
-        /// <summary>The external ID of the parent resource. Required with `parent_resource_type_slug`. Mutually exclusive with `parent_resource_id`.</summary>
-        public string? ParentResourceExternalId { get; set; }
-
-        /// <summary>The resource type slug of the parent resource. Required with `parent_resource_external_id`. Mutually exclusive with `parent_resource_id`.</summary>
-        public string? ParentResourceTypeSlug { get; set; }
+        [JsonIgnore]
+        [STJS.JsonIgnore]
+        public AuthorizationParentResource? ParentResource { get; set; }
 
     }
 
@@ -245,14 +247,9 @@ namespace WorkOS
         /// <summary>An optional description of the resource.</summary>
         public string? Description { get; set; }
 
-        /// <summary>The ID of the parent resource. Mutually exclusive with `parent_resource_external_id` and `parent_resource_type_slug`.</summary>
-        public string? ParentResourceId { get; set; }
-
-        /// <summary>The external ID of the parent resource. Required with `parent_resource_type_slug`. Mutually exclusive with `parent_resource_id`.</summary>
-        public string? ParentResourceExternalId { get; set; }
-
-        /// <summary>The resource type slug of the parent resource. Required with `parent_resource_external_id`. Mutually exclusive with `parent_resource_id`.</summary>
-        public string? ParentResourceTypeSlug { get; set; }
+        [JsonIgnore]
+        [STJS.JsonIgnore]
+        public AuthorizationParentResource? ParentResource { get; set; }
 
     }
 

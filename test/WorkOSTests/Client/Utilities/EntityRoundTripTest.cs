@@ -19,6 +19,22 @@ namespace WorkOSTests
     /// </summary>
     public class EntityRoundTripTest
     {
+        private static readonly JsonSerializerSettings NewtonsoftSettings = new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+            ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver
+            {
+                NamingStrategy = new Newtonsoft.Json.Serialization.SnakeCaseNamingStrategy(),
+            },
+        };
+
+        private static readonly STJ.JsonSerializerOptions StjOptions = new STJ.JsonSerializerOptions
+        {
+            PropertyNamingPolicy = STJ.JsonNamingPolicy.SnakeCaseLower,
+            DefaultIgnoreCondition = STJ.Serialization.JsonIgnoreCondition.WhenWritingNull,
+            Converters = { new WorkOSStringEnumConverterFactory() },
+        };
+
         [Fact]
         public void Newtonsoft_Organization_RoundTrips()
         {
@@ -43,15 +59,6 @@ namespace WorkOSTests
             AssertStjRoundTrip<Connection>("testdata/connection.json");
         }
 
-        private static readonly JsonSerializerSettings NewtonsoftSettings = new JsonSerializerSettings
-        {
-            NullValueHandling = NullValueHandling.Ignore,
-            ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver
-            {
-                NamingStrategy = new Newtonsoft.Json.Serialization.SnakeCaseNamingStrategy(),
-            },
-        };
-
         private static void AssertNewtonsoftRoundTrip<T>(string fixturePath)
         {
             var raw = File.ReadAllText(fixturePath);
@@ -60,13 +67,6 @@ namespace WorkOSTests
             var reserialized = JsonConvert.SerializeObject(entity, NewtonsoftSettings);
             AssertStructurallyEqual(raw, reserialized, $"{typeof(T).Name} (Newtonsoft)");
         }
-
-        private static readonly STJ.JsonSerializerOptions StjOptions = new STJ.JsonSerializerOptions
-        {
-            PropertyNamingPolicy = STJ.JsonNamingPolicy.SnakeCaseLower,
-            DefaultIgnoreCondition = STJ.Serialization.JsonIgnoreCondition.WhenWritingNull,
-            Converters = { new WorkOSStringEnumConverterFactory() },
-        };
 
         private static void AssertStjRoundTrip<T>(string fixturePath)
         {
@@ -130,6 +130,13 @@ namespace WorkOSTests
                         $"{label}: at {path} expected object, got {actual.Type}");
                     foreach (var prop in (JObject)expected)
                     {
+                        // Serializers are configured to ignore nulls, so null
+                        // values in the fixture are legitimately dropped.
+                        if (prop.Value!.Type == JTokenType.Null)
+                        {
+                            continue;
+                        }
+
                         var actualProp = ((JObject)actual)[prop.Key];
                         Assert.True(
                             actualProp != null,
