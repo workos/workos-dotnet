@@ -154,6 +154,69 @@ namespace WorkOSTests
             Assert.Single(httpMock.CapturedRequests);
         }
 
+        [Fact]
+        public async Task StructuredError_ParsesCodeAndMessage()
+        {
+            var httpMock = new HttpMock();
+            httpMock.MockResponseForAnyRequest(
+                (HttpStatusCode)422,
+                "{\"message\":\"Validation failed\",\"code\":\"invalid_field\"}");
+            var client = CreateClient(httpMock);
+
+            var ex = await Assert.ThrowsAsync<UnprocessableEntityException>(() =>
+                client.MakeRawAPIRequest(new WorkOSRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = "/test",
+                }));
+
+            Assert.Equal("invalid_field", ex.Code);
+            Assert.Equal("Validation failed", ex.ErrorMessage);
+            Assert.Empty(ex.Errors);
+        }
+
+        [Fact]
+        public async Task StructuredError_ParsesErrorsArray()
+        {
+            var httpMock = new HttpMock();
+            httpMock.MockResponseForAnyRequest(
+                (HttpStatusCode)422,
+                "{\"message\":\"Validation failed\",\"code\":\"invalid_field\",\"errors\":[{\"instancePath\":\"/name\"}]}");
+            var client = CreateClient(httpMock);
+
+            var ex = await Assert.ThrowsAsync<UnprocessableEntityException>(() =>
+                client.MakeRawAPIRequest(new WorkOSRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = "/test",
+                }));
+
+            Assert.Single(ex.Errors);
+            Assert.Equal("/name", ex.Errors[0]["instancePath"]);
+        }
+
+        [Fact]
+        public async Task StructuredError_NonJsonBody_DoesNotThrow()
+        {
+            var httpMock = new HttpMock();
+            httpMock.MockResponseForAnyRequest(
+                HttpStatusCode.InternalServerError,
+                "plain text error");
+            var client = CreateClient(httpMock);
+
+            var ex = await Assert.ThrowsAsync<ServerException>(() =>
+                client.MakeRawAPIRequest(new WorkOSRequest
+                {
+                    Method = HttpMethod.Get,
+                    Path = "/test",
+                }));
+
+            Assert.Null(ex.Code);
+            Assert.Null(ex.ErrorMessage);
+            Assert.Empty(ex.Errors);
+            Assert.Equal("plain text error", ex.RawBody);
+        }
+
         private static WorkOSClient CreateClient(HttpMock httpMock)
         {
             return new WorkOSClient(new WorkOSOptions

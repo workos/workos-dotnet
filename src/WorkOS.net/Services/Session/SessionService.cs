@@ -14,7 +14,7 @@ namespace WorkOS
     using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
 
-    /// <summary>Sealed session cookie management, JWT validation, and JWKS helpers (H04-H07, H13).</summary>
+    /// <summary>Sealed session cookie management, JWT validation, and JWKS helpers.</summary>
     public class SessionService : Service
     {
         private const int SealVersion = 2;
