@@ -67,7 +67,7 @@ namespace WorkOSTests
         {
             var fixture = "{\"id\":\"obj_01\",\"name\":\"my-secret\",\"environment_id\":\"env_01\"}";
             this.httpMock.MockResponse(HttpMethod.Post, "/vault/v1/kv", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateObject(new CreateVaultObjectOptions { Name = "my-secret", Value = "secret-value" });
+            var result = await this.service.CreateObjectAsync(new CreateVaultObjectOptions { Name = "my-secret", Value = "secret-value" });
             Assert.NotNull(result);
             Assert.Equal("obj_01", result.Id);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/vault/v1/kv");
@@ -78,7 +78,7 @@ namespace WorkOSTests
         {
             var fixture = "{\"id\":\"obj_01\",\"name\":\"my-secret\",\"value\":\"secret-value\"}";
             this.httpMock.MockResponse(HttpMethod.Get, "/vault/v1/kv/obj_01", HttpStatusCode.OK, fixture);
-            var result = await this.service.ReadObject("obj_01");
+            var result = await this.service.ReadObjectAsync("obj_01");
             Assert.NotNull(result);
             Assert.Equal("secret-value", result.Value);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/vault/v1/kv/obj_01");
@@ -88,7 +88,7 @@ namespace WorkOSTests
         public async Task TestDeleteObject()
         {
             this.httpMock.MockResponse(HttpMethod.Delete, "/vault/v1/kv/obj_01", HttpStatusCode.NoContent, "");
-            await this.service.DeleteObject("obj_01");
+            await this.service.DeleteObjectAsync("obj_01");
             this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/vault/v1/kv/obj_01");
         }
 
@@ -97,7 +97,7 @@ namespace WorkOSTests
         {
             var fixture = "{\"data\":[{\"id\":\"obj_01\",\"name\":\"secret-1\"}],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockResponse(HttpMethod.Get, "/vault/v1/kv", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListObjects();
+            var result = await this.service.ListObjectsAsync();
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/vault/v1/kv");
@@ -108,7 +108,7 @@ namespace WorkOSTests
         {
             var fixture = "{\"context\":{\"env\":\"test\"},\"data_key\":{\"id\":\"key_01\",\"key\":\"dGVzdC1rZXk=\"},\"encrypted_keys\":\"encrypted_blob\"}";
             this.httpMock.MockResponse(HttpMethod.Post, "/vault/v1/keys/data-key", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateDataKey(new CreateDataKeyOptions { Context = new Dictionary<string, string> { { "env", "test" } } });
+            var result = await this.service.CreateDataKeyAsync(new CreateDataKeyOptions { Context = new Dictionary<string, string> { { "env", "test" } } });
             Assert.NotNull(result);
             Assert.Equal("encrypted_blob", result.EncryptedKeys);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/vault/v1/keys/data-key");
@@ -119,7 +119,7 @@ namespace WorkOSTests
         {
             var fixture = "{\"id\":\"key_01\",\"key\":\"dGVzdC1rZXk=\"}";
             this.httpMock.MockResponse(HttpMethod.Post, "/vault/v1/keys/decrypt", HttpStatusCode.OK, fixture);
-            var result = await this.service.DecryptDataKey(new DecryptDataKeyOptions { Keys = "encrypted_blob" });
+            var result = await this.service.DecryptDataKeyAsync(new DecryptDataKeyOptions { Keys = "encrypted_blob" });
             Assert.NotNull(result);
             Assert.Equal("dGVzdC1rZXk=", result.Key);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/vault/v1/keys/decrypt");

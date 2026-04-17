@@ -15,16 +15,15 @@ namespace WorkOS
     using Newtonsoft.Json;
 
     /// <summary>Sealed session cookie management, JWT validation, and JWKS helpers (H04-H07, H13).</summary>
-    public class SessionService
+    public class SessionService : Service
     {
         private const int SealVersion = 2;
         private const string VersionDelimiter = "~";
-        private readonly WorkOSClient client;
         private ConfigurationManager<OpenIdConnectConfiguration>? jwksManager;
 
         public SessionService(WorkOSClient client)
+            : base(client)
         {
-            this.client = client;
         }
 
         /// <summary>Get the JWKS URL for the current client.</summary>
@@ -32,13 +31,13 @@ namespace WorkOS
         /// <returns>The JWKS URL string.</returns>
         public virtual string GetJwksUrl(string? clientId = null)
         {
-            var id = clientId ?? this.client.ClientId;
+            var id = clientId ?? this.Client.ClientId;
             if (string.IsNullOrEmpty(id))
             {
                 throw new InvalidOperationException("Client ID is required to build JWKS URL.");
             }
 
-            return $"{this.client.ApiBaseURL}/sso/jwks/{Uri.EscapeDataString(id)}";
+            return $"{this.Client.ApiBaseURL}/sso/jwks/{Uri.EscapeDataString(id)}";
         }
 
         /// <summary>Authenticate a sealed session cookie.</summary>
@@ -46,7 +45,7 @@ namespace WorkOS
         /// <param name="cookiePassword">The password used to seal the session.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The authentication result.</returns>
-        public virtual async Task<SessionAuthResult> Authenticate(
+        public virtual async Task<SessionAuthResult> AuthenticateAsync(
             string sessionData,
             string cookiePassword,
             CancellationToken cancellationToken = default)
@@ -105,6 +104,15 @@ namespace WorkOS
                     Reason = SessionFailureReason.InvalidJwt,
                 };
             }
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="AuthenticateAsync"/>.</summary>
+        public virtual Task<SessionAuthResult> Authenticate(
+            string sessionData,
+            string cookiePassword,
+            CancellationToken cancellationToken = default)
+        {
+            return this.AuthenticateAsync(sessionData, cookiePassword, cancellationToken);
         }
 
         /// <summary>Seal session data from an authentication response.</summary>

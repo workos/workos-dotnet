@@ -152,11 +152,11 @@ catch (ApiException ex)
 
 ### Retry behavior
 
-The SDK **does not** automatically retry failed requests. Rate limits (429) and
-transient server errors (5xx) surface as exceptions and must be handled by the
-caller. If you need resilience, wrap calls in a retry policy (for example using
-[Polly](https://github.com/App-vNext/Polly)) and honor the `Retry-After` header
-when present.
+The SDK automatically retries failed requests that receive a **429** (rate limit)
+or **5xx** (server error) response. Retries use exponential backoff with full
+jitter and honor the `Retry-After` header when present. By default the SDK
+retries up to **2** times; you can change this via `WorkOSOptions.MaxRetries`
+or disable retries entirely by setting it to `0`.
 
 ## Development and Testing
 

@@ -197,7 +197,7 @@ namespace WorkOS
                 {
                     propValue = prop.GetValue(value);
                 }
-                catch
+                catch (TargetInvocationException)
                 {
                     continue;
                 }
