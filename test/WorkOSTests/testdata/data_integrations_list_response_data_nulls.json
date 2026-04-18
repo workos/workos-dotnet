@@ -1,0 +1,18 @@
+{
+  "object": "data_provider",
+  "id": "data_integration_01EHZNVPK3SFK441A1RGBFSHRT",
+  "name": "GitHub",
+  "description": null,
+  "slug": "github",
+  "integration_type": "github",
+  "credentials_type": "oauth2",
+  "scopes": null,
+  "ownership": "userland_user",
+  "created_at": "2024-01-15T10:30:00.000Z",
+  "updated_at": "2024-01-15T10:30:00.000Z",
+  "integrationType": null,
+  "credentialsType": null,
+  "createdAt": null,
+  "updatedAt": null,
+  "connected_account": null
+}

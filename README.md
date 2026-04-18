@@ -37,7 +37,7 @@ Install-Package WorkOS.net
 To use the WorkOS client, you must provide an API key from the WorkOS dashboard.
 
 ```c#
-WorkOS.SetApiKey("sk_key123");
+WorkOSConfiguration.SetApiKey("sk_key123");
 ```
 
 You can also optionally provide a custom [HttpClient](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient).
@@ -49,8 +49,114 @@ var client = new WorkOSClient(
         ApiKey = "sk_key123",
         HttpClient = ...,
     });
-WorkOS.WorkOSClient = client;
+WorkOSConfiguration.WorkOSClient = client;
 ```
+
+### Client ID
+
+SSO and User Management endpoints that accept a `client_id` parameter (for example,
+`UserManagement.AuthenticateWithPassword` and `SSO.GetAuthorizationUrl`) require the
+WorkOS Client ID. Provide it via `WorkOSOptions.ClientId`:
+
+```c#
+var client = new WorkOSClient(
+    new WorkOSOptions
+    {
+        ApiKey = "sk_key123",
+        ClientId = "client_01H...",
+    });
+WorkOSConfiguration.WorkOSClient = client;
+```
+
+Operations that require a Client ID throw `InvalidOperationException` if one was not
+configured, instead of silently sending an empty string to the API.
+
+## JSON serialization
+
+The SDK ships JSON metadata for **both** [Newtonsoft.Json](https://www.newtonsoft.com/json)
+(used by the runtime to talk to the WorkOS API) and
+[`System.Text.Json`](https://learn.microsoft.com/dotnet/api/system.text.json)
+(STJ). All generated DTOs, enums, `AnyOf<T...>` values, and webhook envelopes
+work under either serializer:
+
+```c#
+// Both round-trip the same payload.
+var newtonsoft = JsonConvert.DeserializeObject<Organization>(json);
+var stj = System.Text.Json.JsonSerializer.Deserialize<Organization>(json);
+```
+
+Enum forward compatibility is identical on both stacks: an enum value the SDK
+hasn't seen before deserializes to the type's `Unknown` member instead of
+throwing.
+
+## Services
+
+Most services on `WorkOSClient` are generated from the WorkOS OpenAPI
+specification (`Organizations`, `UserManagement`, `DirectorySync`, `SSO`,
+`AuditLogs`, `Events`, `Webhooks`, etc.). In addition, the SDK ships a handful
+of **hand-maintained** services that do not correspond to a single REST
+endpoint:
+
+| Service                      | Purpose                                                           |
+| ---------------------------- | ----------------------------------------------------------------- |
+| `client.Passwordless`        | Magic-link / passwordless session helpers.                        |
+| `client.Vault`               | Key-value storage and envelope encryption helpers.                |
+| `client.Actions`             | AuthKit Actions signing-secret verification and payload signing.  |
+| `client.Session`             | Sealed-session management, cookie helpers, and JWT validation.    |
+
+These services are fully supported and are accessed the same way as generated
+services:
+
+```c#
+var payload = client.Actions.VerifyAndParse(rawBody, signatureHeader);
+var session = client.Session.LoadSealedSession(cookieValue);
+```
+
+## Error handling
+
+All non-2xx responses from the WorkOS API raise subclasses of `WorkOS.ApiException`.
+The SDK maps well-known status codes to specific exception types so you can
+`catch` exactly what you care about:
+
+| HTTP status | Exception type                  |
+| ----------- | ------------------------------- |
+| 401         | `AuthenticationException`       |
+| 404         | `NotFoundException`             |
+| 422         | `UnprocessableEntityException`  |
+| 429         | `RateLimitExceededException`    |
+| 5xx         | `ServerException`               |
+| other       | `ApiException`                  |
+
+Every exception exposes a `StatusCode` property and carries the raw response
+body in `Exception.Message`.
+
+```c#
+try
+{
+    var org = await client.Organizations.GetOrganization("org_01H...");
+}
+catch (NotFoundException)
+{
+    // organization does not exist
+}
+catch (RateLimitExceededException)
+{
+    // back off per Retry-After and retry
+}
+catch (ApiException ex)
+{
+    Console.Error.WriteLine($"WorkOS API error {(int)ex.StatusCode}: {ex.Message}");
+    throw;
+}
+```
+
+### Retry behavior
+
+The SDK automatically retries failed requests that receive a **429** (rate limit)
+or **5xx** (server error) response. Retries use exponential backoff with full
+jitter and honor the `Retry-After` header when present. By default the SDK
+retries up to **2** times; you can change this via `WorkOSOptions.MaxRetries`
+or disable retries entirely by setting it to `0`.
 
 ## Development and Testing
 

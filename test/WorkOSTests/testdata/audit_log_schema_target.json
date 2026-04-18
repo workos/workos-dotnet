@@ -1,0 +1,12 @@
+{
+  "type": "invoice",
+  "metadata": {
+    "type": "object",
+    "properties": {
+      "cost": {
+        "type": "number"
+      }
+    },
+    "key": {}
+  }
+}

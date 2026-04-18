@@ -1,0 +1,12 @@
+{
+  "type": "email_verification",
+  "status": "failed",
+  "ip_address": null,
+  "user_agent": null,
+  "user_id": null,
+  "email": null,
+  "error": {
+    "code": "mfa_challenge_failed",
+    "message": "The MFA challenge has failed."
+  }
+}

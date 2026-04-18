@@ -1,9 +1,11 @@
+// @oagen-ignore-file
 namespace WorkOS
 {
     using Newtonsoft.Json;
+    using STJS = System.Text.Json.Serialization;
 
     /// <summary>
-    /// Describes the webhook records associated with a Webhook Event.
+    /// Describes the webhook records associated with a webhook event.
     /// </summary>
     public class Webhook
     {
@@ -11,24 +13,28 @@ namespace WorkOS
         /// Unique identifier for the object.
         /// </summary>
         [JsonProperty("id")]
-        public string Id { get; set; }
+        [STJS.JsonPropertyName("id")]
+        public string Id { get; set; } = default!;
 
         /// <summary>
-        /// The event of webhook.
+        /// The event type.
         /// </summary>
         [JsonProperty("event")]
-        public string Event { get; set; }
+        [STJS.JsonPropertyName("event")]
+        public string Event { get; set; } = default!;
 
         /// <summary>
-        /// The raw data webhook.
+        /// The raw webhook payload data.
         /// </summary>
         [JsonProperty("data")]
-        public object Data { get; set; }
+        [STJS.JsonPropertyName("data")]
+        public object? Data { get; set; }
 
         /// <summary>
         /// The timestamp of when the event was created.
         /// </summary>
         [JsonProperty("created_at")]
-        public string CreatedAt { get; set; }
+        [STJS.JsonPropertyName("created_at")]
+        public string? CreatedAt { get; set; }
     }
 }

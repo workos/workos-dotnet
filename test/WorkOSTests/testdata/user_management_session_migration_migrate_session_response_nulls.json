@@ -1,0 +1,12 @@
+{
+  "user": {
+    "id": "user_01HRSF1G3DQWG4X8BPJMVK9Z5N"
+  },
+  "organization_id": null,
+  "authkit_authorization_code": null,
+  "access_token": null,
+  "refresh_token": null,
+  "authentication_method": null,
+  "impersonator": null,
+  "oauth_tokens": null
+}

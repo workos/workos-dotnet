@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "object": "api_key",
+      "id": "api_key_01HRSF1G3DQWG4X8BPJMVK9Z5N",
+      "owner": {
+        "type": "organization",
+        "id": "org_01EHQMYV6MBK39QC5PZXHY59C3"
+      },
+      "name": "My API Key",
+      "obfuscated_value": "key_live_...ABCD",
+      "last_used_at": "2024-01-15T10:30:00.000Z",
+      "permissions": [
+        "test_permissions"
+      ],
+      "created_at": "2024-01-15T10:30:00.000Z",
+      "updated_at": "2024-01-15T10:30:00.000Z"
+    }
+  ],
+  "list_metadata": {
+    "before": null,
+    "after": null
+  }
+}

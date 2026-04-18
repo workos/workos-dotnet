@@ -1,0 +1,7 @@
+{
+  "verdict": "allow",
+  "reason": "No risk detected.",
+  "attempt_id": "radar_attempt_01HRSF1G3DQWG4X8BPJMVK9Z5N",
+  "control": "bot_detection",
+  "blocklist_type": "ip_address"
+}

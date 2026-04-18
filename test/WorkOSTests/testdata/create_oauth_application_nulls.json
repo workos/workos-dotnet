@@ -1,0 +1,10 @@
+{
+  "name": "My Application",
+  "application_type": "oauth",
+  "description": null,
+  "scopes": null,
+  "redirect_uris": null,
+  "uses_pkce": null,
+  "is_first_party": true,
+  "organization_id": null
+}

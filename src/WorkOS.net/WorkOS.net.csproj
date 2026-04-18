@@ -1,18 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
     <Description>WorkOS.net is the official .NET client for the WorkOS API.</Description>
     <AssemblyName>WorkOS.net</AssemblyName>
     <Authors>WorkOS</Authors>
     <Copyright>Copyright © WorkOS</Copyright>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <IncludeSymbols>true</IncludeSymbols>
-    <NeutralLanguage>en-US</NeutralLanguage>
     <PackageId>WorkOS.net</PackageId>
-    <PackageTags>workos;sso;audit;trail;directory;sync;portal;passwordless;magic;link</PackageTags>
     <PackageProjectUrl>https://github.com/workos-inc/workos-dotnet</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <NeutralLanguage>en-US</NeutralLanguage>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RootNamespace>WorkOS</RootNamespace>
     <SignAssembly>True</SignAssembly>
@@ -27,7 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.17.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.17.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="OneOf" Version="3.0.271" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.17.0" />
   </ItemGroup>
 
   <ItemGroup>

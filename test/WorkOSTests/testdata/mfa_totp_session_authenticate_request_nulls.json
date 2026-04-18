@@ -1,0 +1,11 @@
+{
+  "client_id": "client_01HXYZ123456789ABCDEFGHIJ",
+  "client_secret": "sk_test_....",
+  "grant_type": "urn:workos:oauth:grant-type:mfa-totp",
+  "code": "123456",
+  "pending_authentication_token": "cTDQJTTkTkkVYxbn...",
+  "authentication_challenge_id": "auth_challenge_01HXYZ123456789ABCDEFGHIJ",
+  "ip_address": null,
+  "device_id": null,
+  "user_agent": null
+}

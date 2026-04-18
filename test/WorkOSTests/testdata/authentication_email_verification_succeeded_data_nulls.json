@@ -1,0 +1,8 @@
+{
+  "type": "email_verification",
+  "status": "succeeded",
+  "ip_address": null,
+  "user_agent": null,
+  "user_id": "user_01E4ZCR3C56J083X43JQXF3JK5",
+  "email": "user@example.com"
+}

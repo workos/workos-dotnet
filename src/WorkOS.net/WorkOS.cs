@@ -1,3 +1,4 @@
+// @oagen-ignore-file
 namespace WorkOS
 {
     using System;
@@ -5,11 +6,11 @@ namespace WorkOS
     /// <summary>
     /// Global configuration class for interacting with the WorkOS API.
     /// </summary>
-    public static class WorkOS
+    public static class WorkOSConfiguration
     {
-        private static string _apiKey;
+        private static string? _apiKey;
 
-        private static WorkOSClient _workOSClient;
+        private static WorkOSClient? _workOSClient;
 
         /// <summary>
         /// Gets or sets a default or custom <see cref="WorkOSClient"/>.

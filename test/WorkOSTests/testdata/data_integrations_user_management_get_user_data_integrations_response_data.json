@@ -1,0 +1,16 @@
+{
+  "object": "data_provider",
+  "id": "data_provider_01HRSF1G3DQWG4X8BPJMVK9Z5N",
+  "name": "Google Drive",
+  "description": "Google Drive integration",
+  "slug": "google-drive",
+  "integrationType": "oauth",
+  "ownership": "userland_user",
+  "credentialsType": "api_key",
+  "scopes": [
+    "test_scopes"
+  ],
+  "createdAt": "2024-01-15T10:30:00.000Z",
+  "updatedAt": "2024-01-15T10:30:00.000Z",
+  "connected_account": {}
+}
