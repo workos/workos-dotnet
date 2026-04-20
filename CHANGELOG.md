@@ -2,19 +2,22 @@
 
 ## [3.0.0](https://github.com/workos/workos-dotnet/compare/v2.12.0...v3.0.0) (2026-04-20)
 
+This is the next major release of the WorkOS .NET SDK (`v3`), rebuilt on top of our OpenAPI specifications for a more consistent and maintainable API surface.
 
-### ⚠ BREAKING CHANGES
+### High-Level Changes
 
-* Release next major version of SDK relying on OpenAPI spec ([#229](https://github.com/workos/workos-dotnet/issues/229))
+- **Runtime target raised to .NET 8** — `netstandard2.0` and `net461` are no longer supported
+- **Global configuration renamed** — `WorkOS` → `WorkOSConfiguration`
+- **`ClientId` configured once on the client** — no longer passed per-call for SSO/AuthKit/UserManagement auth helpers
+- **Standardized method names** — services now expose `List`, `Create`, `Get`, `Update`, `Delete` instead of service-prefixed variants (e.g. `GetOrganization` → `Get`)
+- **Option classes follow `{Service}{Action}Options` convention** — e.g. `CreateOrganizationOptions` → `OrganizationsCreateOptions`
+- **Path identifiers moved to method arguments** — IDs are no longer embedded in option objects
+- **Typed exceptions for API errors** — `ApiException`, `NotFoundException`, `RateLimitExceededException`, etc.
+- **Automatic retries and idempotency headers** — the client runtime handles retries and adds `Idempotency-Key` to POST requests by default
+- **`RequestOptions` replaces ad hoc idempotency arguments** — supports per-request API key and retry overrides
+- **Service renames** — `PortalService` → `AdminPortalService`, `MfaService` → `MultiFactorAuthService`, `AuditTrailService` split into `AuditLogsService` + `EventsService`
 
-### Features
-
-* Release next major version of SDK relying on OpenAPI spec ([#229](https://github.com/workos/workos-dotnet/issues/229)) ([a904d48](https://github.com/workos/workos-dotnet/commit/a904d4881843b19838c1280b846dbbd6f0fc0e6a))
-
-
-### Bug Fixes
-
-* Remove extractVersion from matchUpdateTypes rules ([#233](https://github.com/workos/workos-dotnet/issues/233)) ([e15ac15](https://github.com/workos/workos-dotnet/commit/e15ac15eda91ee02e34891459e1a3a1f2d7ac716))
+For detailed before/after code examples and step-by-step upgrade instructions, see the [V3 Migration Guide](./docs/V3_MIGRATION_GUIDE.md).
 
 ## [2.12.0](https://github.com/workos/workos-dotnet/compare/v2.11.0...v2.12.0) (2026-03-30)
 
