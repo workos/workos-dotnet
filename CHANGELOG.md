@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.0.0](https://github.com/workos/workos-dotnet/compare/v2.12.0...v3.0.0) (2026-04-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* Release next major version of SDK relying on OpenAPI spec ([#229](https://github.com/workos/workos-dotnet/issues/229))
+
+### Features
+
+* Release next major version of SDK relying on OpenAPI spec ([#229](https://github.com/workos/workos-dotnet/issues/229)) ([a904d48](https://github.com/workos/workos-dotnet/commit/a904d4881843b19838c1280b846dbbd6f0fc0e6a))
+
+
+### Bug Fixes
+
+* Remove extractVersion from matchUpdateTypes rules ([#233](https://github.com/workos/workos-dotnet/issues/233)) ([e15ac15](https://github.com/workos/workos-dotnet/commit/e15ac15eda91ee02e34891459e1a3a1f2d7ac716))
+
 ## [2.12.0](https://github.com/workos/workos-dotnet/compare/v2.11.0...v2.12.0) (2026-03-30)
 
 
