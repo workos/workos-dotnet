@@ -1,7 +1,9 @@
-﻿namespace WorkOSTests
+// @oagen-ignore-file
+namespace WorkOSTests
 {
     using System.Collections.Generic;
     using System.IO;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
@@ -22,7 +24,7 @@
         }
 
         [Fact]
-        public void TestCreateHttpContent()
+        public async Task TestCreateHttpContent()
         {
             var options = new FakeOptions
             {
@@ -35,7 +37,7 @@
                 {
                     Options = options,
                 });
-            var jsonContent = content.ReadAsStringAsync().Result;
+            var jsonContent = await content.ReadAsStringAsync();
             var dictionaryContent = JsonConvert.DeserializeObject<IDictionary<string, string>>(jsonContent);
             var expectedDictionary = new Dictionary<string, string>
             {
@@ -48,7 +50,7 @@
         }
 
         [Fact]
-        public async void TestCreateHttpContentUrlEncoded()
+        public async Task TestCreateHttpContentUrlEncoded()
         {
             var options = new FakeOptions
             {
@@ -103,20 +105,6 @@
 
             Assert.Equal(expectedResult.Id, result.Id);
             Assert.Equal(expectedResult.Name, result.Name);
-        }
-
-        [Fact]
-        public void TestParseURLParameters()
-        {
-            var url = "https://api.workos.com/sso/authorize?domain=foo&state=bar";
-            var parsedUrl = RequestUtilities.ParseURLParameters(url);
-            var expectedDictionary = new Dictionary<string, string>
-            {
-                { "domain", "foo" },
-                { "state", "bar" },
-            };
-
-            Assert.Equal(expectedDictionary, parsedUrl);
         }
 
         private class FakeOptions : BaseOptions

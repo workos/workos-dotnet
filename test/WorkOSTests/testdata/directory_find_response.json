@@ -1,0 +1,19 @@
+{
+  "object": "directory",
+  "id": "directory_01HRSF1G3DQWG4X8BPJMVK9Z5N",
+  "organization_id": "org_01EHQMYV6MBK39QC5PZXHY59C3",
+  "external_key": "external_key_12345",
+  "type": "pending",
+  "state": "requires_type",
+  "name": "My Directory",
+  "domain": "example.com",
+  "metadata": {
+    "users": {
+      "active": 50,
+      "inactive": 10
+    },
+    "groups": 10
+  },
+  "created_at": "2024-01-15T10:30:00.000Z",
+  "updated_at": "2024-01-15T10:30:00.000Z"
+}

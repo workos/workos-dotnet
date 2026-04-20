@@ -1,0 +1,7 @@
+{
+  "name": "My Updated Application",
+  "description": "An updated description",
+  "scopes": [
+    "test_scopes"
+  ]
+}

@@ -1,6 +1,8 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.0.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkOS.net", "src\WorkOS.net\WorkOS.net.csproj", "{42EC96E8-57C0-4CF0-BE4B-6FC62F5D87E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkOSTests", "test\WorkOSTests\WorkOSTests.csproj", "{894F057C-5E32-4F60-8E05-595287FA02D8}"

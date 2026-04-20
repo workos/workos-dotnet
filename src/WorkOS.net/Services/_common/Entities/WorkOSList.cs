@@ -1,7 +1,9 @@
-﻿namespace WorkOS
+// @oagen-ignore-file
+namespace WorkOS
 {
     using System.Collections.Generic;
     using Newtonsoft.Json;
+    using STJS = System.Text.Json.Serialization;
 
     /// <summary>
     /// Represents a paginated list of WorkOS records.
@@ -14,12 +16,14 @@
         /// List of WorkOS records.
         /// </summary>
         [JsonProperty("data")]
-        public List<T> Data { get; set; }
+        [STJS.JsonPropertyName("data")]
+        public List<T>? Data { get; set; }
 
         /// <summary>
         /// Pagination cursor options.
         /// </summary>
         [JsonProperty("list_metadata")]
-        public ListMetadata ListMetadata { get; set; }
+        [STJS.JsonPropertyName("list_metadata")]
+        public ListMetadata? ListMetadata { get; set; }
     }
 }

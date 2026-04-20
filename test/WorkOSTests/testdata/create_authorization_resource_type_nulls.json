@@ -1,0 +1,8 @@
+{
+  "name": "Document",
+  "slug": "document",
+  "description": null,
+  "parent_type_slugs": [
+    "test_parent_type_slugs"
+  ]
+}

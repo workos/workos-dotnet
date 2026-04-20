@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "type": "object",
+    "properties": {
+      "role": {
+        "type": "string"
+      }
+    },
+    "key": {}
+  }
+}

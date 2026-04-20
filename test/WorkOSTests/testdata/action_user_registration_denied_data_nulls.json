@@ -1,0 +1,10 @@
+{
+  "action_endpoint_id": "action_endpoint_01EHWNCE74X7JSDV0X3SZ3KJNY",
+  "action_execution_id": "action_execution_01EHWNCE74X7JSDV0X3SZ3KJNY",
+  "type": "user_registration",
+  "verdict": "Deny",
+  "organization_id": null,
+  "email": "user@example.com",
+  "ip_address": null,
+  "user_agent": null
+}

@@ -1,0 +1,10 @@
+{
+  "client_id": "client_01HXYZ123456789ABCDEFGHIJ",
+  "client_secret": "sk_test_....",
+  "grant_type": "urn:workos:oauth:grant-type:organization-selection",
+  "pending_authentication_token": "cTDQJTTkTkkVYxbn...",
+  "organization_id": "org_01EHQMYV6MBK39QC5PZXHY59C3",
+  "ip_address": null,
+  "device_id": null,
+  "user_agent": null
+}

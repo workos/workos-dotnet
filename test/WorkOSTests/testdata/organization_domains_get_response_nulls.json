@@ -1,0 +1,12 @@
+{
+  "object": "organization_domain",
+  "id": "org_domain_01HRSF1G3DQWG4X8BPJMVK9Z5N",
+  "organization_id": "org_01EHQMYV6MBK39QC5PZXHY59C3",
+  "domain": "example.com",
+  "state": null,
+  "verification_prefix": null,
+  "verification_token": null,
+  "verification_strategy": null,
+  "created_at": "2024-01-15T10:30:00.000Z",
+  "updated_at": "2024-01-15T10:30:00.000Z"
+}
