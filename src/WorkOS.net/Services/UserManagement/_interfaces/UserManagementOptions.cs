@@ -161,7 +161,7 @@ namespace WorkOS
 
     public class UserManagementPasswordPlaintext : UserManagementPassword
     {
-        public string Password { get; set; } = default!;
+        public string? Password { get; set; } = default!;
 
     }
 
@@ -169,7 +169,7 @@ namespace WorkOS
     {
         public string PasswordHash { get; set; } = default!;
 
-        public string PasswordHashType { get; set; } = default!;
+        public CreateUserPasswordHashType PasswordHashType { get; set; } = default!;
 
     }
 
@@ -332,7 +332,7 @@ namespace WorkOS
 
     public class UserManagementRoleMultiple : UserManagementRole
     {
-        public string RoleSlugs { get; set; } = default!;
+        public List<string> RoleSlugs { get; set; } = default!;
 
     }
 

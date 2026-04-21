@@ -45,12 +45,22 @@ namespace WorkOS
 
             if (options?.ResourceTarget is AuthorizationResourceTargetById byId)
             {
-                request.AddQueryParam("resource_id", byId.ResourceId);
+                if (byId.ResourceId != null)
+                {
+                    request.AddQueryParam("resource_id", byId.ResourceId);
+                }
             }
             else if (options?.ResourceTarget is AuthorizationResourceTargetByExternalId byExternalId)
             {
-                request.AddQueryParam("resource_external_id", byExternalId.ResourceExternalId);
-                request.AddQueryParam("resource_type_slug", byExternalId.ResourceTypeSlug);
+                if (byExternalId.ResourceExternalId != null)
+                {
+                    request.AddQueryParam("resource_external_id", byExternalId.ResourceExternalId);
+                }
+
+                if (byExternalId.ResourceTypeSlug != null)
+                {
+                    request.AddQueryParam("resource_type_slug", byExternalId.ResourceTypeSlug);
+                }
             }
 
             return await this.Client.MakeAPIRequest<AuthorizationCheck>(request, cancellationToken);
@@ -84,12 +94,22 @@ namespace WorkOS
 
             if (options?.ParentResource is AuthorizationParentResourceById byId)
             {
-                request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                if (byId.ParentResourceId != null)
+                {
+                    request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                }
             }
             else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
             {
-                request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
-                request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
+                if (byExternalId.ParentResourceTypeSlug != null)
+                {
+                    request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                }
+
+                if (byExternalId.ParentResourceExternalId != null)
+                {
+                    request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
+                }
             }
 
             return await this.Client.MakeAPIRequest<WorkOSList<AuthorizationResource>>(request, cancellationToken);
@@ -232,12 +252,22 @@ namespace WorkOS
 
             if (options?.ResourceTarget is AuthorizationResourceTargetById byId)
             {
-                request.AddQueryParam("resource_id", byId.ResourceId);
+                if (byId.ResourceId != null)
+                {
+                    request.AddQueryParam("resource_id", byId.ResourceId);
+                }
             }
             else if (options?.ResourceTarget is AuthorizationResourceTargetByExternalId byExternalId)
             {
-                request.AddQueryParam("resource_external_id", byExternalId.ResourceExternalId);
-                request.AddQueryParam("resource_type_slug", byExternalId.ResourceTypeSlug);
+                if (byExternalId.ResourceExternalId != null)
+                {
+                    request.AddQueryParam("resource_external_id", byExternalId.ResourceExternalId);
+                }
+
+                if (byExternalId.ResourceTypeSlug != null)
+                {
+                    request.AddQueryParam("resource_type_slug", byExternalId.ResourceTypeSlug);
+                }
             }
 
             return await this.Client.MakeAPIRequest<RoleAssignment>(request, cancellationToken);
@@ -269,12 +299,22 @@ namespace WorkOS
 
             if (options?.ResourceTarget is AuthorizationResourceTargetById byId)
             {
-                request.AddQueryParam("resource_id", byId.ResourceId);
+                if (byId.ResourceId != null)
+                {
+                    request.AddQueryParam("resource_id", byId.ResourceId);
+                }
             }
             else if (options?.ResourceTarget is AuthorizationResourceTargetByExternalId byExternalId)
             {
-                request.AddQueryParam("resource_external_id", byExternalId.ResourceExternalId);
-                request.AddQueryParam("resource_type_slug", byExternalId.ResourceTypeSlug);
+                if (byExternalId.ResourceExternalId != null)
+                {
+                    request.AddQueryParam("resource_external_id", byExternalId.ResourceExternalId);
+                }
+
+                if (byExternalId.ResourceTypeSlug != null)
+                {
+                    request.AddQueryParam("resource_type_slug", byExternalId.ResourceTypeSlug);
+                }
             }
 
             await this.Client.MakeRawAPIRequest(request, cancellationToken);
@@ -510,12 +550,22 @@ namespace WorkOS
 
             if (options?.ParentResource is AuthorizationParentResourceById byId)
             {
-                request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                if (byId.ParentResourceId != null)
+                {
+                    request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                }
             }
             else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
             {
-                request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
-                request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                if (byExternalId.ParentResourceExternalId != null)
+                {
+                    request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
+                }
+
+                if (byExternalId.ParentResourceTypeSlug != null)
+                {
+                    request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                }
             }
 
             return await this.Client.MakeAPIRequest<AuthorizationResource>(request, cancellationToken);
@@ -603,12 +653,22 @@ namespace WorkOS
 
             if (options?.Parent is AuthorizationParentById byId)
             {
-                request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                if (byId.ParentResourceId != null)
+                {
+                    request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                }
             }
             else if (options?.Parent is AuthorizationParentByExternalId byExternalId)
             {
-                request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
-                request.AddQueryParam("parent_external_id", byExternalId.ParentExternalId);
+                if (byExternalId.ParentResourceTypeSlug != null)
+                {
+                    request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                }
+
+                if (byExternalId.ParentExternalId != null)
+                {
+                    request.AddQueryParam("parent_external_id", byExternalId.ParentExternalId);
+                }
             }
 
             return await this.Client.MakeAPIRequest<WorkOSList<AuthorizationResource>>(request, cancellationToken);
@@ -650,12 +710,22 @@ namespace WorkOS
 
             if (options?.ParentResource is AuthorizationParentResourceById byId)
             {
-                request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                if (byId.ParentResourceId != null)
+                {
+                    request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                }
             }
             else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
             {
-                request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
-                request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                if (byExternalId.ParentResourceExternalId != null)
+                {
+                    request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
+                }
+
+                if (byExternalId.ParentResourceTypeSlug != null)
+                {
+                    request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                }
             }
 
             return await this.Client.MakeAPIRequest<AuthorizationResource>(request, cancellationToken);
@@ -707,12 +777,22 @@ namespace WorkOS
 
             if (options?.ParentResource is AuthorizationParentResourceById byId)
             {
-                request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                if (byId.ParentResourceId != null)
+                {
+                    request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                }
             }
             else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
             {
-                request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
-                request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                if (byExternalId.ParentResourceExternalId != null)
+                {
+                    request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
+                }
+
+                if (byExternalId.ParentResourceTypeSlug != null)
+                {
+                    request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                }
             }
 
             return await this.Client.MakeAPIRequest<AuthorizationResource>(request, cancellationToken);

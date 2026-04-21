@@ -7,6 +7,7 @@ namespace WorkOS
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using Newtonsoft.Json;
 
     /// <summary>Service that exposes the user management API operations on <see cref="WorkOSClient"/>.</summary>
     public class UserManagementService : Service
@@ -412,12 +413,19 @@ namespace WorkOS
 
             if (options?.Password is UserManagementPasswordPlaintext plaintext)
             {
-                request.AddQueryParam("password", plaintext.Password);
+                if (plaintext.Password != null)
+                {
+                    request.AddQueryParam("password", plaintext.Password);
+                }
             }
             else if (options?.Password is UserManagementPasswordHashed hashed)
             {
-                request.AddQueryParam("password_hash", hashed.PasswordHash);
-                request.AddQueryParam("password_hash_type", hashed.PasswordHashType);
+                if (hashed.PasswordHash != null)
+                {
+                    request.AddQueryParam("password_hash", hashed.PasswordHash);
+                }
+
+                request.AddQueryParam("password_hash_type", JsonConvert.SerializeObject(hashed.PasswordHashType).Trim('"'));
             }
 
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
@@ -488,12 +496,19 @@ namespace WorkOS
 
             if (options?.Password is UserManagementPasswordPlaintext plaintext)
             {
-                request.AddQueryParam("password", plaintext.Password);
+                if (plaintext.Password != null)
+                {
+                    request.AddQueryParam("password", plaintext.Password);
+                }
             }
             else if (options?.Password is UserManagementPasswordHashed hashed)
             {
-                request.AddQueryParam("password_hash", hashed.PasswordHash);
-                request.AddQueryParam("password_hash_type", hashed.PasswordHashType);
+                if (hashed.PasswordHash != null)
+                {
+                    request.AddQueryParam("password_hash", hashed.PasswordHash);
+                }
+
+                request.AddQueryParam("password_hash_type", JsonConvert.SerializeObject(hashed.PasswordHashType).Trim('"'));
             }
 
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
@@ -903,11 +918,17 @@ namespace WorkOS
 
             if (options?.Role is UserManagementRoleSingle single)
             {
-                request.AddQueryParam("role_slug", single.RoleSlug);
+                if (single.RoleSlug != null)
+                {
+                    request.AddQueryParam("role_slug", single.RoleSlug);
+                }
             }
             else if (options?.Role is UserManagementRoleMultiple multiple)
             {
-                request.AddQueryParam("role_slugs", multiple.RoleSlugs);
+                if (multiple.RoleSlugs != null)
+                {
+                    request.AddQueryParam("role_slugs", string.Join(",", multiple.RoleSlugs));
+                }
             }
 
             return await this.Client.MakeAPIRequest<OrganizationMembership>(request, cancellationToken);
@@ -959,11 +980,17 @@ namespace WorkOS
 
             if (options?.Role is UserManagementRoleSingle single)
             {
-                request.AddQueryParam("role_slug", single.RoleSlug);
+                if (single.RoleSlug != null)
+                {
+                    request.AddQueryParam("role_slug", single.RoleSlug);
+                }
             }
             else if (options?.Role is UserManagementRoleMultiple multiple)
             {
-                request.AddQueryParam("role_slugs", multiple.RoleSlugs);
+                if (multiple.RoleSlugs != null)
+                {
+                    request.AddQueryParam("role_slugs", string.Join(",", multiple.RoleSlugs));
+                }
             }
 
             return await this.Client.MakeAPIRequest<OrganizationMembership>(request, cancellationToken);
