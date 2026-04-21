@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/workos/workos-dotnet/compare/v3.0.0...v3.0.1) (2026-04-21)
+
+
+### Bug Fixes
+
+* adjust type definitions ([f119a1d](https://github.com/workos/workos-dotnet/commit/f119a1d34a84de50e65483c92727461f3e8c65de))
+
 ## [3.0.0](https://github.com/workos/workos-dotnet/compare/v2.12.0...v3.0.0) (2026-04-20)
 
 This is the next major release of the WorkOS .NET SDK (`v3`), rebuilt on top of our OpenAPI specifications for a more consistent and maintainable API surface.
