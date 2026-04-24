@@ -53,12 +53,29 @@ namespace WorkOS
         internal Dictionary<string, string>? ExtraQueryParams { get; set; }
 
         /// <summary>
+        /// Extra body parameters injected by parameter-group dispatch
+        /// (e.g. password variants for user creation). These are merged
+        /// into the JSON request body alongside the options-derived fields.
+        /// </summary>
+        internal Dictionary<string, string>? ExtraBodyParams { get; set; }
+
+        /// <summary>
         /// Append an extra query parameter to the request.
         /// </summary>
         internal void AddQueryParam(string key, string value)
         {
             this.ExtraQueryParams ??= new Dictionary<string, string>();
             this.ExtraQueryParams[key] = value;
+        }
+
+        /// <summary>
+        /// Append an extra body parameter to the request. The value is
+        /// merged into the serialized JSON body.
+        /// </summary>
+        internal void AddBodyParam(string key, string value)
+        {
+            this.ExtraBodyParams ??= new Dictionary<string, string>();
+            this.ExtraBodyParams[key] = value;
         }
     }
 }
