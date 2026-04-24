@@ -14,6 +14,7 @@ namespace WorkOS
     using System.Reflection;
     using System.Text;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using Newtonsoft.Json.Serialization;
 
     /// <summary>
@@ -67,6 +68,21 @@ namespace WorkOS
             if (request.IsJsonContentType)
             {
                 var jsonOptions = ToJsonString(options);
+
+                // Merge extra body params (from parameter-group dispatch) into
+                // the serialized JSON so that fields like password / password_hash
+                // appear as top-level body keys instead of query parameters.
+                if (request.ExtraBodyParams != null && request.ExtraBodyParams.Count > 0)
+                {
+                    var jobj = JObject.Parse(jsonOptions);
+                    foreach (var kvp in request.ExtraBodyParams)
+                    {
+                        jobj[kvp.Key] = JToken.FromObject(kvp.Value, JsonSerializer.Create(JsonSettings));
+                    }
+
+                    jsonOptions = jobj.ToString(Formatting.None);
+                }
+
                 var content = new StringContent(jsonOptions, Encoding.UTF8);
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return content;

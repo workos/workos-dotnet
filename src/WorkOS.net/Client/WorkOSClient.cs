@@ -291,6 +291,8 @@ namespace WorkOS
                 AccessToken = request.AccessToken,
                 Options = workingOptions,
                 RequestOptions = request.RequestOptions,
+                ExtraQueryParams = request.ExtraQueryParams,
+                ExtraBodyParams = request.ExtraBodyParams,
             };
 
             string? afterCursor = null;

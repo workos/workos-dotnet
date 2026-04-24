@@ -415,17 +415,17 @@ namespace WorkOS
             {
                 if (plaintext.Password != null)
                 {
-                    request.AddQueryParam("password", plaintext.Password);
+                    request.AddBodyParam("password", plaintext.Password);
                 }
             }
             else if (options?.Password is UserManagementPasswordHashed hashed)
             {
                 if (hashed.PasswordHash != null)
                 {
-                    request.AddQueryParam("password_hash", hashed.PasswordHash);
+                    request.AddBodyParam("password_hash", hashed.PasswordHash);
                 }
 
-                request.AddQueryParam("password_hash_type", JsonConvert.SerializeObject(hashed.PasswordHashType).Trim('"'));
+                request.AddBodyParam("password_hash_type", JsonConvert.SerializeObject(hashed.PasswordHashType).Trim('"'));
             }
 
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
@@ -498,17 +498,17 @@ namespace WorkOS
             {
                 if (plaintext.Password != null)
                 {
-                    request.AddQueryParam("password", plaintext.Password);
+                    request.AddBodyParam("password", plaintext.Password);
                 }
             }
             else if (options?.Password is UserManagementPasswordHashed hashed)
             {
                 if (hashed.PasswordHash != null)
                 {
-                    request.AddQueryParam("password_hash", hashed.PasswordHash);
+                    request.AddBodyParam("password_hash", hashed.PasswordHash);
                 }
 
-                request.AddQueryParam("password_hash_type", JsonConvert.SerializeObject(hashed.PasswordHashType).Trim('"'));
+                request.AddBodyParam("password_hash_type", JsonConvert.SerializeObject(hashed.PasswordHashType).Trim('"'));
             }
 
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
@@ -920,14 +920,14 @@ namespace WorkOS
             {
                 if (single.RoleSlug != null)
                 {
-                    request.AddQueryParam("role_slug", single.RoleSlug);
+                    request.AddBodyParam("role_slug", single.RoleSlug);
                 }
             }
             else if (options?.Role is UserManagementRoleMultiple multiple)
             {
                 if (multiple.RoleSlugs != null)
                 {
-                    request.AddQueryParam("role_slugs", string.Join(",", multiple.RoleSlugs));
+                    request.AddBodyParam("role_slugs", multiple.RoleSlugs);
                 }
             }
 
@@ -982,14 +982,14 @@ namespace WorkOS
             {
                 if (single.RoleSlug != null)
                 {
-                    request.AddQueryParam("role_slug", single.RoleSlug);
+                    request.AddBodyParam("role_slug", single.RoleSlug);
                 }
             }
             else if (options?.Role is UserManagementRoleMultiple multiple)
             {
                 if (multiple.RoleSlugs != null)
                 {
-                    request.AddQueryParam("role_slugs", string.Join(",", multiple.RoleSlugs));
+                    request.AddBodyParam("role_slugs", multiple.RoleSlugs);
                 }
             }
 

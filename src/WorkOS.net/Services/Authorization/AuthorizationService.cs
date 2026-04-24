@@ -47,19 +47,19 @@ namespace WorkOS
             {
                 if (byId.ResourceId != null)
                 {
-                    request.AddQueryParam("resource_id", byId.ResourceId);
+                    request.AddBodyParam("resource_id", byId.ResourceId);
                 }
             }
             else if (options?.ResourceTarget is AuthorizationResourceTargetByExternalId byExternalId)
             {
                 if (byExternalId.ResourceExternalId != null)
                 {
-                    request.AddQueryParam("resource_external_id", byExternalId.ResourceExternalId);
+                    request.AddBodyParam("resource_external_id", byExternalId.ResourceExternalId);
                 }
 
                 if (byExternalId.ResourceTypeSlug != null)
                 {
-                    request.AddQueryParam("resource_type_slug", byExternalId.ResourceTypeSlug);
+                    request.AddBodyParam("resource_type_slug", byExternalId.ResourceTypeSlug);
                 }
             }
 
@@ -254,19 +254,19 @@ namespace WorkOS
             {
                 if (byId.ResourceId != null)
                 {
-                    request.AddQueryParam("resource_id", byId.ResourceId);
+                    request.AddBodyParam("resource_id", byId.ResourceId);
                 }
             }
             else if (options?.ResourceTarget is AuthorizationResourceTargetByExternalId byExternalId)
             {
                 if (byExternalId.ResourceExternalId != null)
                 {
-                    request.AddQueryParam("resource_external_id", byExternalId.ResourceExternalId);
+                    request.AddBodyParam("resource_external_id", byExternalId.ResourceExternalId);
                 }
 
                 if (byExternalId.ResourceTypeSlug != null)
                 {
-                    request.AddQueryParam("resource_type_slug", byExternalId.ResourceTypeSlug);
+                    request.AddBodyParam("resource_type_slug", byExternalId.ResourceTypeSlug);
                 }
             }
 
@@ -552,19 +552,19 @@ namespace WorkOS
             {
                 if (byId.ParentResourceId != null)
                 {
-                    request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                    request.AddBodyParam("parent_resource_id", byId.ParentResourceId);
                 }
             }
             else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
             {
                 if (byExternalId.ParentResourceExternalId != null)
                 {
-                    request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
+                    request.AddBodyParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
                 }
 
                 if (byExternalId.ParentResourceTypeSlug != null)
                 {
-                    request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                    request.AddBodyParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
                 }
             }
 
@@ -712,19 +712,19 @@ namespace WorkOS
             {
                 if (byId.ParentResourceId != null)
                 {
-                    request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                    request.AddBodyParam("parent_resource_id", byId.ParentResourceId);
                 }
             }
             else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
             {
                 if (byExternalId.ParentResourceExternalId != null)
                 {
-                    request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
+                    request.AddBodyParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
                 }
 
                 if (byExternalId.ParentResourceTypeSlug != null)
                 {
-                    request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                    request.AddBodyParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
                 }
             }
 
@@ -779,19 +779,19 @@ namespace WorkOS
             {
                 if (byId.ParentResourceId != null)
                 {
-                    request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                    request.AddBodyParam("parent_resource_id", byId.ParentResourceId);
                 }
             }
             else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
             {
                 if (byExternalId.ParentResourceExternalId != null)
                 {
-                    request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
+                    request.AddBodyParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
                 }
 
                 if (byExternalId.ParentResourceTypeSlug != null)
                 {
-                    request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                    request.AddBodyParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
                 }
             }
 
