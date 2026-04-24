@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/workos/workos-dotnet/compare/v3.0.1...v3.0.2) (2026-04-24)
+
+
+### Bug Fixes
+
+* Correct request param placement for POST endpoints ([#237](https://github.com/workos/workos-dotnet/issues/237)) ([c6e307a](https://github.com/workos/workos-dotnet/commit/c6e307a3db6e93a77bd29f36ad6fa34f6b9412a3))
+
 ## [3.0.1](https://github.com/workos/workos-dotnet/compare/v3.0.0...v3.0.1) (2026-04-21)
 
 
