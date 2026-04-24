@@ -301,19 +301,19 @@ namespace WorkOS
             {
                 if (byId.ResourceId != null)
                 {
-                    request.AddBodyParam("resource_id", byId.ResourceId);
+                    request.AddQueryParam("resource_id", byId.ResourceId);
                 }
             }
             else if (options?.ResourceTarget is AuthorizationResourceTargetByExternalId byExternalId)
             {
                 if (byExternalId.ResourceExternalId != null)
                 {
-                    request.AddBodyParam("resource_external_id", byExternalId.ResourceExternalId);
+                    request.AddQueryParam("resource_external_id", byExternalId.ResourceExternalId);
                 }
 
                 if (byExternalId.ResourceTypeSlug != null)
                 {
-                    request.AddBodyParam("resource_type_slug", byExternalId.ResourceTypeSlug);
+                    request.AddQueryParam("resource_type_slug", byExternalId.ResourceTypeSlug);
                 }
             }
 
