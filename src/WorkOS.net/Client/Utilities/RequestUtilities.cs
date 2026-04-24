@@ -77,7 +77,7 @@ namespace WorkOS
                     var jobj = JObject.Parse(jsonOptions);
                     foreach (var kvp in request.ExtraBodyParams)
                     {
-                        jobj[kvp.Key] = kvp.Value;
+                        jobj[kvp.Key] = JToken.FromObject(kvp.Value, JsonSerializer.Create(JsonSettings));
                     }
 
                     jsonOptions = jobj.ToString(Formatting.None);

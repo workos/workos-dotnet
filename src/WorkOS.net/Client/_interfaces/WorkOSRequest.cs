@@ -57,7 +57,7 @@ namespace WorkOS
         /// (e.g. password variants for user creation). These are merged
         /// into the JSON request body alongside the options-derived fields.
         /// </summary>
-        internal Dictionary<string, string>? ExtraBodyParams { get; set; }
+        internal Dictionary<string, object>? ExtraBodyParams { get; set; }
 
         /// <summary>
         /// Append an extra query parameter to the request.
@@ -70,11 +70,12 @@ namespace WorkOS
 
         /// <summary>
         /// Append an extra body parameter to the request. The value is
-        /// merged into the serialized JSON body.
+        /// merged into the serialized JSON body. Accepts strings, arrays,
+        /// or other objects that will be serialized as their native JSON type.
         /// </summary>
-        internal void AddBodyParam(string key, string value)
+        internal void AddBodyParam(string key, object value)
         {
-            this.ExtraBodyParams ??= new Dictionary<string, string>();
+            this.ExtraBodyParams ??= new Dictionary<string, object>();
             this.ExtraBodyParams[key] = value;
         }
     }

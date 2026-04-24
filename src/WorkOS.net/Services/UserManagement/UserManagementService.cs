@@ -927,7 +927,7 @@ namespace WorkOS
             {
                 if (multiple.RoleSlugs != null)
                 {
-                    request.AddBodyParam("role_slugs", string.Join(",", multiple.RoleSlugs));
+                    request.AddBodyParam("role_slugs", multiple.RoleSlugs);
                 }
             }
 
@@ -989,7 +989,7 @@ namespace WorkOS
             {
                 if (multiple.RoleSlugs != null)
                 {
-                    request.AddBodyParam("role_slugs", string.Join(",", multiple.RoleSlugs));
+                    request.AddBodyParam("role_slugs", multiple.RoleSlugs);
                 }
             }
 
