@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.3](https://github.com/workos/workos-dotnet/compare/v3.0.2...v3.0.3) (2026-04-25)
+
+
+### Bug Fixes
+
+* Update test to match renamed DeleteResourceByExternalId method ([4ceb3de](https://github.com/workos/workos-dotnet/commit/4ceb3dea35a7886cbcdb48b9dcfb74865b79000e))
+
 ## [3.0.2](https://github.com/workos/workos-dotnet/compare/v3.0.1...v3.0.2) (2026-04-24)
 
 
