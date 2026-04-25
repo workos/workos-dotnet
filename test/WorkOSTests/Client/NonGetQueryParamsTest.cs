@@ -31,11 +31,11 @@ namespace WorkOSTests
                 HttpStatusCode.NoContent,
                 "{}");
 
-            await client.Authorization.DeleteOrganizationResource(
+            await client.Authorization.DeleteResourceByExternalId(
                 "org_1",
                 "file",
                 "ext_42",
-                new AuthorizationDeleteOrganizationResourceOptions { CascadeDelete = true });
+                new AuthorizationDeleteResourceByExternalIdOptions { CascadeDelete = true });
 
             var last = Assert.Single(httpMock.CapturedRequests);
             Assert.Equal(HttpMethod.Delete, last.Method);
@@ -60,11 +60,11 @@ namespace WorkOSTests
                 HttpStatusCode.NoContent,
                 "{}");
 
-            await client.Authorization.DeleteOrganizationResource(
+            await client.Authorization.DeleteResourceByExternalId(
                 "org_1",
                 "file",
                 "ext_42",
-                new AuthorizationDeleteOrganizationResourceOptions { CascadeDelete = false });
+                new AuthorizationDeleteResourceByExternalIdOptions { CascadeDelete = false });
 
             var last = Assert.Single(httpMock.CapturedRequests);
             Assert.Contains("cascade_delete=false", last.RequestUri!.Query);
