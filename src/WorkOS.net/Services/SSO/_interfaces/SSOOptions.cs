@@ -37,7 +37,7 @@ namespace WorkOS
         [System.Obsolete("Deprecated. Use `connection` or `organization` instead.")]
         public string? Domain { get; set; }
 
-        /// <summary>Used to initiate OAuth authentication with Google, Microsoft, GitHub, or Apple.</summary>
+        /// <summary>Used to initiate OAuth authentication with various providers.</summary>
         public SSOProvider? Provider { get; set; }
 
         /// <summary>Where to redirect the user after they complete the authentication process. You must use one of the redirect URIs configured via the [Redirects](https://dashboard.workos.com/redirects) page on the dashboard.</summary>

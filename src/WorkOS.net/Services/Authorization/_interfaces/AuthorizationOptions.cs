@@ -35,8 +35,8 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.ListOrganizationMembershipResourcesAsync"/>: List resources for organization membership</summary>
-    public class AuthorizationListOrganizationMembershipResourcesOptions : ListOptions
+    /// <summary>Request options for <see cref="AuthorizationService.ListResourcesForMembershipAsync"/>: List resources for organization membership</summary>
+    public class AuthorizationListResourcesForMembershipOptions : ListOptions
     {
         /// <summary>The permission slug to filter by. Only child resources where the organization membership has this permission are returned.</summary>
         public string PermissionSlug { get; set; } = default!;
@@ -63,8 +63,8 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.ListResourcePermissionsAsync"/>: List effective permissions for an organization membership on a resource</summary>
-    public class AuthorizationListResourcePermissionsOptions : ListOptions
+    /// <summary>Request options for <see cref="AuthorizationService.ListEffectivePermissionsAsync"/>: List effective permissions for an organization membership on a resource</summary>
+    public class AuthorizationListEffectivePermissionsOptions : ListOptions
     {
     }
 
@@ -73,8 +73,8 @@ namespace WorkOS
     {
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.ListOrganizationMembershipRoleAssignmentsAsync"/>: List role assignments</summary>
-    public class AuthorizationListOrganizationMembershipRoleAssignmentsOptions : ListOptions
+    /// <summary>Request options for <see cref="AuthorizationService.ListRoleAssignmentsAsync"/>: List role assignments</summary>
+    public class AuthorizationListRoleAssignmentsOptions : ListOptions
     {
     }
 
@@ -130,24 +130,24 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.CreateRolePermissionAsync"/>: Add a permission to a custom role</summary>
-    public class AuthorizationCreateRolePermissionOptions : BaseOptions
+    /// <summary>Request options for <see cref="AuthorizationService.AddOrganizationRolePermissionAsync"/>: Add a permission to a custom role</summary>
+    public class AuthorizationAddOrganizationRolePermissionOptions : BaseOptions
     {
         /// <summary>The slug of the permission to add to the role.</summary>
         public string Slug { get; set; } = default!;
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.UpdateRolePermissionsAsync"/>: Set permissions for a custom role</summary>
-    public class AuthorizationUpdateRolePermissionsOptions : BaseOptions
+    /// <summary>Request options for <see cref="AuthorizationService.SetOrganizationRolePermissionsAsync"/>: Set permissions for a custom role</summary>
+    public class AuthorizationSetOrganizationRolePermissionsOptions : BaseOptions
     {
         /// <summary>The permission slugs to assign to the role.</summary>
         public List<string> Permissions { get; set; } = default!;
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.UpdateOrganizationResourceAsync"/>: Update a resource by external ID</summary>
-    public class AuthorizationUpdateOrganizationResourceOptions : BaseOptions
+    /// <summary>Request options for <see cref="AuthorizationService.UpdateResourceByExternalIdAsync"/>: Update a resource by external ID</summary>
+    public class AuthorizationUpdateResourceByExternalIdOptions : BaseOptions
     {
         /// <summary>A display name for the resource.</summary>
         public string? Name { get; set; }
@@ -161,16 +161,16 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.DeleteOrganizationResourceAsync"/>: Delete an authorization resource by external ID</summary>
-    public class AuthorizationDeleteOrganizationResourceOptions : BaseOptions
+    /// <summary>Request options for <see cref="AuthorizationService.DeleteResourceByExternalIdAsync"/>: Delete an authorization resource by external ID</summary>
+    public class AuthorizationDeleteResourceByExternalIdOptions : BaseOptions
     {
         /// <summary>If true, deletes all descendant resources and role assignments. If not set and the resource has children or assignments, the request will fail.</summary>
         public bool? CascadeDelete { get; set; }
 
     }
 
-    /// <summary>Request options for <see cref="AuthorizationService.ListResourceOrganizationMembershipsAsync"/>: List memberships for a resource by external ID</summary>
-    public class AuthorizationListResourceOrganizationMembershipsOptions : ListOptions
+    /// <summary>Request options for <see cref="AuthorizationService.ListMembershipsForResourceByExternalIdAsync"/>: List memberships for a resource by external ID</summary>
+    public class AuthorizationListMembershipsForResourceByExternalIdOptions : ListOptions
     {
         /// <summary>The permission slug to filter by. Only users with this permission on the resource are returned.</summary>
         public string PermissionSlug { get; set; } = default!;
@@ -188,6 +188,9 @@ namespace WorkOS
 
         /// <summary>Filter resources by resource type slug.</summary>
         public string? ResourceTypeSlug { get; set; }
+
+        /// <summary>Filter resources by external ID.</summary>
+        public string? ResourceExternalId { get; set; }
 
         /// <summary>Search resources by name.</summary>
         public string? Search { get; set; }
