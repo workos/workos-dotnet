@@ -32,7 +32,7 @@ namespace WorkOS
         /// <summary>Options to configure the Admin Portal based on the intent.</summary>
         public IntentOptions? IntentOptions { get; set; }
 
-        /// <summary>The email addresses of the IT admins to grant access to the Admin Portal for the given organization. Accepts up to 20 emails.</summary>
-        public List<string>? AdminEmails { get; set; }
+        /// <summary>The email addresses of the IT contacts to grant access to the Admin Portal for the given organization. Accepts up to 20 emails.</summary>
+        public List<string>? ItContactEmails { get; set; }
     }
 }
