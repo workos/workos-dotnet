@@ -62,6 +62,11 @@ namespace WorkOS
         /// <summary>Gets the <see cref="OrganizationsService"/> for organizations API operations.</summary>
         public virtual OrganizationsService Organizations => this.organizations ??= new OrganizationsService(this);
 
+        private GroupsService groups;
+
+        /// <summary>Gets the <see cref="GroupsService"/> for groups API operations.</summary>
+        public virtual GroupsService Groups => this.groups ??= new GroupsService(this);
+
         private AdminPortalService adminPortal;
 
         /// <summary>Gets the <see cref="AdminPortalService"/> for admin portal API operations.</summary>
@@ -76,6 +81,11 @@ namespace WorkOS
 
         /// <summary>Gets the <see cref="UserManagementService"/> for user management API operations.</summary>
         public virtual UserManagementService UserManagement => this.userManagement ??= new UserManagementService(this);
+
+        private UserManagementOrganizationMembershipGroupsService userManagementOrganizationMembershipGroups;
+
+        /// <summary>Gets the <see cref="UserManagementOrganizationMembershipGroupsService"/> for user management organization membership groups API operations.</summary>
+        public virtual UserManagementOrganizationMembershipGroupsService UserManagementOrganizationMembershipGroups => this.userManagementOrganizationMembershipGroups ??= new UserManagementOrganizationMembershipGroupsService(this);
 
         private WebhooksService webhooks;
 

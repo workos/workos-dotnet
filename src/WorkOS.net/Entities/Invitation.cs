@@ -42,6 +42,9 @@ namespace WorkOS
         /// <summary>The ID of the user who accepted the invitation, once accepted.</summary>
         public string? AcceptedUserId { get; set; }
 
+        /// <summary>Slug of the role the invitee will be assigned on acceptance. Reflects the current role on the invitee's organization membership. null when the invitation has no associated organization.</summary>
+        public string? RoleSlug { get; set; }
+
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }
 
