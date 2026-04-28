@@ -17,8 +17,8 @@
     <SignAssembly>True</SignAssembly>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <VersionPrefix>3.0.2</VersionPrefix> <!--x-release-please-version -->
-    <Version>3.0.2</Version> <!--x-release-please-version -->
+    <VersionPrefix>3.1.0</VersionPrefix> <!--x-release-please-version -->
+    <Version>3.1.0</Version> <!--x-release-please-version -->
   </PropertyGroup>
 
   <ItemGroup>
