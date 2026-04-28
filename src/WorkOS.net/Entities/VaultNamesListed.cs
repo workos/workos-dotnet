@@ -5,21 +5,11 @@ namespace WorkOS
     using System;
 
     /// <summary>Represents a vault names listed.</summary>
-    public class VaultNamesListed
+    public class VaultNamesListed : EventSchema
     {
 
-        /// <summary>Unique identifier for the event.</summary>
-        public string Id { get; set; } = default!;
-        public string Event { get; internal set; } = "vault.names.listed";
-
         /// <summary>The event payload.</summary>
-        public VaultNamesListedData Data { get; set; } = default!;
-
-        /// <summary>An ISO 8601 timestamp.</summary>
-        public DateTimeOffset CreatedAt { get; set; }
-        public EventContext? Context { get; set; }
-
-        /// <summary>Distinguishes the Event object.</summary>
-        public string Object { get; internal set; } = "event";
+        public new VaultNamesListedData Data { get; set; } = default!;
+        public new EventContext? Context { get; set; }
     }
 }

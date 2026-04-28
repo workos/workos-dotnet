@@ -5,21 +5,11 @@ namespace WorkOS
     using System;
 
     /// <summary>Represents a dsync user created.</summary>
-    public class DsyncUserCreated
+    public class DsyncUserCreated : EventSchema
     {
 
-        /// <summary>Unique identifier for the event.</summary>
-        public string Id { get; set; } = default!;
-        public string Event { get; internal set; } = "dsync.user.created";
-
         /// <summary>The event payload.</summary>
-        public DirectoryUser Data { get; set; } = default!;
-
-        /// <summary>An ISO 8601 timestamp.</summary>
-        public DateTimeOffset CreatedAt { get; set; }
-        public EventContext? Context { get; set; }
-
-        /// <summary>Distinguishes the Event object.</summary>
-        public string Object { get; internal set; } = "event";
+        public new DirectoryUser Data { get; set; } = default!;
+        public new EventContext? Context { get; set; }
     }
 }

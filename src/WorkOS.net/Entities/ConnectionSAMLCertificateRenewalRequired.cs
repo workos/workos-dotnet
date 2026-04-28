@@ -5,21 +5,11 @@ namespace WorkOS
     using System;
 
     /// <summary>Represents a connection SAML certificate renewal required.</summary>
-    public class ConnectionSAMLCertificateRenewalRequired
+    public class ConnectionSAMLCertificateRenewalRequired : EventSchema
     {
 
-        /// <summary>Unique identifier for the event.</summary>
-        public string Id { get; set; } = default!;
-        public string Event { get; internal set; } = "connection.saml_certificate_renewal_required";
-
         /// <summary>The event payload.</summary>
-        public ConnectionSAMLCertificateRenewalRequiredData Data { get; set; } = default!;
-
-        /// <summary>An ISO 8601 timestamp.</summary>
-        public DateTimeOffset CreatedAt { get; set; }
-        public EventContext? Context { get; set; }
-
-        /// <summary>Distinguishes the Event object.</summary>
-        public string Object { get; internal set; } = "event";
+        public new ConnectionSAMLCertificateRenewalRequiredData Data { get; set; } = default!;
+        public new EventContext? Context { get; set; }
     }
 }
