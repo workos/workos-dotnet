@@ -1,7 +1,7 @@
 {
   "version": 2,
   "language": "dotnet",
-  "generatedAt": "2026-04-28T16:13:45.820Z",
+  "generatedAt": "2026-04-28T16:33:51.142Z",
   "files": [
     "src/WorkOS.net/Client/Utilities/EventSchemaDiscriminatorConverter.cs",
     "src/WorkOS.net/Client/WorkOSClient.Generated.cs",

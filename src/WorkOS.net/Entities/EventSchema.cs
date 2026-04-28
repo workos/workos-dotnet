@@ -17,7 +17,7 @@ namespace WorkOS
         public string Id { get; set; } = default!;
 
         /// <summary>The type of event that occurred.</summary>
-        public string Event { get; set; } = default!;
+        public string Event { get; internal set; } = default!;
 
         /// <summary>The event payload.</summary>
         public Dictionary<string, object> Data { get; set; } = default!;
@@ -33,6 +33,12 @@ namespace WorkOS
         /// <paramref name="key"/> coerced to <typeparamref name="T"/>, or the default
         /// value when the key is missing or the value is not convertible.
         /// </summary>
+        /// <remarks>
+        /// Variant subclasses provide strongly-typed <c>Data</c> properties that
+        /// shadow this dictionary. This accessor is intended for forward-compatible handling
+        /// of types not yet known to this SDK version. For recognized types, cast to the
+        /// specific subclass and access its typed <c>Data</c> property directly.
+        /// </remarks>
         /// <typeparam name="T">Expected value type.</typeparam>
         /// <param name="key">The key to look up.</param>
         public T? GetDataAttribute<T>(string key)
@@ -70,6 +76,12 @@ namespace WorkOS
         /// <paramref name="key"/> coerced to <typeparamref name="T"/>, or the default
         /// value when the key is missing or the value is not convertible.
         /// </summary>
+        /// <remarks>
+        /// Variant subclasses provide strongly-typed <c>Context</c> properties that
+        /// shadow this dictionary. This accessor is intended for forward-compatible handling
+        /// of types not yet known to this SDK version. For recognized types, cast to the
+        /// specific subclass and access its typed <c>Context</c> property directly.
+        /// </remarks>
         /// <typeparam name="T">Expected value type.</typeparam>
         /// <param name="key">The key to look up.</param>
         public T? GetContextAttribute<T>(string key)
