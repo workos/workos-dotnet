@@ -5,21 +5,11 @@ namespace WorkOS
     using System;
 
     /// <summary>Represents an action authentication denied.</summary>
-    public class ActionAuthenticationDenied
+    public class ActionAuthenticationDenied : EventSchema
     {
 
-        /// <summary>Unique identifier for the event.</summary>
-        public string Id { get; set; } = default!;
-        public string Event { get; internal set; } = "action.authentication.denied";
-
         /// <summary>The event payload.</summary>
-        public ActionAuthenticationDeniedData Data { get; set; } = default!;
-        public EventContext? Context { get; set; }
-
-        /// <summary>An ISO 8601 timestamp.</summary>
-        public DateTimeOffset CreatedAt { get; set; }
-
-        /// <summary>Distinguishes the Event object.</summary>
-        public string Object { get; internal set; } = "event";
+        public new ActionAuthenticationDeniedData Data { get; set; } = default!;
+        public new EventContext? Context { get; set; }
     }
 }

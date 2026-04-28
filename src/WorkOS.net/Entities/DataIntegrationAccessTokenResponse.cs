@@ -8,7 +8,7 @@ namespace WorkOS
     {
 
         /// <summary>Indicates whether the access token is valid and ready for use, or if reauthorization is required.</summary>
-        public bool Active { get; internal set; } = true;
+        public bool? Active { get; set; }
 
         /// <summary>The [access token](https://workos.com/docs/reference/pipes/access-token) object, present when `active` is `true`.</summary>
         public DataIntegrationAccessTokenResponseAccessToken? AccessToken { get; set; }

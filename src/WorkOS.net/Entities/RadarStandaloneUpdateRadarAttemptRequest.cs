@@ -8,9 +8,9 @@ namespace WorkOS
     {
 
         /// <summary>Set to `"success"` to mark the challenge as completed.</summary>
-        public string ChallengeStatus { get; internal set; } = "success";
+        public string? ChallengeStatus { get; set; }
 
         /// <summary>Set to `"success"` to mark the authentication attempt as successful.</summary>
-        public string AttemptStatus { get; internal set; } = "success";
+        public string? AttemptStatus { get; set; }
     }
 }

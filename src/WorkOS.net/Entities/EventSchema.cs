@@ -6,6 +6,7 @@ namespace WorkOS
     using System.Collections.Generic;
 
     /// <summary>An event emitted by WorkOS.</summary>
+    [Newtonsoft.Json.JsonConverter(typeof(EventSchemaDiscriminatorConverter))]
     public class EventSchema
     {
 

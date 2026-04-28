@@ -5,23 +5,13 @@ namespace WorkOS
     using System;
 
     /// <summary>Represents a flag rule updated.</summary>
-    public class FlagRuleUpdated
+    public class FlagRuleUpdated : EventSchema
     {
 
-        /// <summary>Unique identifier for the event.</summary>
-        public string Id { get; set; } = default!;
-        public string Event { get; internal set; } = "flag.rule_updated";
-
         /// <summary>The event payload.</summary>
-        public FlagCreatedData Data { get; set; } = default!;
-
-        /// <summary>An ISO 8601 timestamp.</summary>
-        public DateTimeOffset CreatedAt { get; set; }
+        public new FlagCreatedData Data { get; set; } = default!;
 
         /// <summary>Additional context about the event.</summary>
-        public FlagRuleUpdatedContext Context { get; set; } = default!;
-
-        /// <summary>Distinguishes the Event object.</summary>
-        public string Object { get; internal set; } = "event";
+        public new FlagRuleUpdatedContext Context { get; set; } = default!;
     }
 }

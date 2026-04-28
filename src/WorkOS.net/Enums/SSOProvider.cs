@@ -16,11 +16,29 @@ namespace WorkOS
 
         [EnumMember(Value = "AppleOAuth")]
         AppleOAuth,
+        [EnumMember(Value = "BitbucketOAuth")]
+        BitbucketOAuth,
         [EnumMember(Value = "GitHubOAuth")]
         GitHubOAuth,
+        [EnumMember(Value = "GitLabOAuth")]
+        GitLabOAuth,
         [EnumMember(Value = "GoogleOAuth")]
         GoogleOAuth,
+        [EnumMember(Value = "IntuitOAuth")]
+        IntuitOAuth,
+        [EnumMember(Value = "LinkedInOAuth")]
+        LinkedInOAuth,
         [EnumMember(Value = "MicrosoftOAuth")]
         MicrosoftOAuth,
+        [EnumMember(Value = "SalesforceOAuth")]
+        SalesforceOAuth,
+        [EnumMember(Value = "SlackOAuth")]
+        SlackOAuth,
+        [EnumMember(Value = "VercelMarketplaceOAuth")]
+        VercelMarketplaceOAuth,
+        [EnumMember(Value = "VercelOAuth")]
+        VercelOAuth,
+        [EnumMember(Value = "XeroOAuth")]
+        XeroOAuth,
     }
 }

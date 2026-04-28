@@ -162,5 +162,11 @@ namespace WorkOS
         SessionCreated,
         [EnumMember(Value = "session.revoked")]
         SessionRevoked,
+        [EnumMember(Value = "waitlist_user.approved")]
+        WaitlistUserApproved,
+        [EnumMember(Value = "waitlist_user.created")]
+        WaitlistUserCreated,
+        [EnumMember(Value = "waitlist_user.denied")]
+        WaitlistUserDenied,
     }
 }

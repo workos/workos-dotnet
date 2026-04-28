@@ -5,21 +5,11 @@ namespace WorkOS
     using System;
 
     /// <summary>Represents an organization domain verification failed.</summary>
-    public class OrganizationDomainVerificationFailed
+    public class OrganizationDomainVerificationFailed : EventSchema
     {
 
-        /// <summary>Unique identifier for the event.</summary>
-        public string Id { get; set; } = default!;
-        public string Event { get; internal set; } = "organization_domain.verification_failed";
-
         /// <summary>The event payload.</summary>
-        public OrganizationDomainVerificationFailedData Data { get; set; } = default!;
-
-        /// <summary>An ISO 8601 timestamp.</summary>
-        public DateTimeOffset CreatedAt { get; set; }
-        public EventContext? Context { get; set; }
-
-        /// <summary>Distinguishes the Event object.</summary>
-        public string Object { get; internal set; } = "event";
+        public new OrganizationDomainVerificationFailedData Data { get; set; } = default!;
+        public new EventContext? Context { get; set; }
     }
 }

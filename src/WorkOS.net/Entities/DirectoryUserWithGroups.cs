@@ -69,7 +69,8 @@ namespace WorkOS
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset UpdatedAt { get; set; }
 
-        /// <summary>The directory groups the user belongs to.</summary>
+        /// <summary>The directory groups the user belongs to. Use the List Directory Groups endpoint with a user filter instead.</summary>
+        [System.Obsolete("This field is deprecated.")]
         public List<DirectoryGroup> Groups { get; set; } = default!;
 
         /// <summary>
