@@ -11,6 +11,6 @@ namespace WorkOS
         public string? BookmarkSlug { get; set; }
 
         /// <summary>The SSO provider type to configure.</summary>
-        public string ProviderType { get; internal set; } = "GoogleSAML";
+        public string? ProviderType { get; set; }
     }
 }

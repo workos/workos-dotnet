@@ -5,21 +5,11 @@ namespace WorkOS
     using System;
 
     /// <summary>Represents an authentication o auth failed.</summary>
-    public class AuthenticationOAuthFailed
+    public class AuthenticationOAuthFailed : EventSchema
     {
 
-        /// <summary>Unique identifier for the event.</summary>
-        public string Id { get; set; } = default!;
-        public string Event { get; internal set; } = "authentication.oauth_failed";
-
         /// <summary>The event payload.</summary>
-        public AuthenticationOAuthFailedData Data { get; set; } = default!;
-
-        /// <summary>An ISO 8601 timestamp.</summary>
-        public DateTimeOffset CreatedAt { get; set; }
-        public EventContext? Context { get; set; }
-
-        /// <summary>Distinguishes the Event object.</summary>
-        public string Object { get; internal set; } = "event";
+        public new AuthenticationOAuthFailedData Data { get; set; } = default!;
+        public new EventContext? Context { get; set; }
     }
 }

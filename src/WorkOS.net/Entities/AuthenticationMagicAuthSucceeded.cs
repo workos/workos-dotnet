@@ -5,21 +5,11 @@ namespace WorkOS
     using System;
 
     /// <summary>Represents an authentication magic auth succeeded.</summary>
-    public class AuthenticationMagicAuthSucceeded
+    public class AuthenticationMagicAuthSucceeded : EventSchema
     {
 
-        /// <summary>Unique identifier for the event.</summary>
-        public string Id { get; set; } = default!;
-        public string Event { get; internal set; } = "authentication.magic_auth_succeeded";
-
         /// <summary>The event payload.</summary>
-        public AuthenticationMagicAuthSucceededData Data { get; set; } = default!;
-
-        /// <summary>An ISO 8601 timestamp.</summary>
-        public DateTimeOffset CreatedAt { get; set; }
-        public EventContext? Context { get; set; }
-
-        /// <summary>Distinguishes the Event object.</summary>
-        public string Object { get; internal set; } = "event";
+        public new AuthenticationMagicAuthSucceededData Data { get; set; } = default!;
+        public new EventContext? Context { get; set; }
     }
 }

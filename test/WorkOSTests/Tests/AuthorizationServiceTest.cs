@@ -40,41 +40,41 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListOrganizationMembershipResourcesAsync()
+        public async Task TestListResourcesForMembershipAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_authorization_resource.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/resources", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListOrganizationMembershipResourcesAsync("test_organization_membership_id", new AuthorizationListOrganizationMembershipResourcesOptions());
+            var result = await this.service.ListResourcesForMembershipAsync("test_organization_membership_id", new AuthorizationListResourcesForMembershipOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/resources");
         }
 
         [Fact]
-        public async Task TestListOrganizationMembershipResourcesAsyncEmpty()
+        public async Task TestListResourcesForMembershipAsyncEmpty()
         {
             this.httpMock.MockResponse(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/resources", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListOrganizationMembershipResourcesAsync("test_organization_membership_id", new AuthorizationListOrganizationMembershipResourcesOptions());
+            var result = await this.service.ListResourcesForMembershipAsync("test_organization_membership_id", new AuthorizationListResourcesForMembershipOptions());
             Assert.NotNull(result);
             Assert.Empty(result.Data);
         }
 
         [Fact]
-        public async Task TestListResourcePermissionsAsync()
+        public async Task TestListEffectivePermissionsAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_authorization_permission.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/resources/test_resource_id/permissions", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListResourcePermissionsAsync("test_organization_membership_id", "test_resource_id", new AuthorizationListResourcePermissionsOptions());
+            var result = await this.service.ListEffectivePermissionsAsync("test_organization_membership_id", "test_resource_id", new AuthorizationListEffectivePermissionsOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/resources/test_resource_id/permissions");
         }
 
         [Fact]
-        public async Task TestListResourcePermissionsAsyncEmpty()
+        public async Task TestListEffectivePermissionsAsyncEmpty()
         {
             this.httpMock.MockResponse(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/resources/test_resource_id/permissions", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListResourcePermissionsAsync("test_organization_membership_id", "test_resource_id", new AuthorizationListResourcePermissionsOptions());
+            var result = await this.service.ListEffectivePermissionsAsync("test_organization_membership_id", "test_resource_id", new AuthorizationListEffectivePermissionsOptions());
             Assert.NotNull(result);
             Assert.Empty(result.Data);
         }
@@ -100,21 +100,21 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListOrganizationMembershipRoleAssignmentsAsync()
+        public async Task TestListRoleAssignmentsAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_role_assignment.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/role_assignments", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListOrganizationMembershipRoleAssignmentsAsync("test_organization_membership_id", new AuthorizationListOrganizationMembershipRoleAssignmentsOptions());
+            var result = await this.service.ListRoleAssignmentsAsync("test_organization_membership_id", new AuthorizationListRoleAssignmentsOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/role_assignments");
         }
 
         [Fact]
-        public async Task TestListOrganizationMembershipRoleAssignmentsAsyncEmpty()
+        public async Task TestListRoleAssignmentsAsyncEmpty()
         {
             this.httpMock.MockResponse(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/role_assignments", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListOrganizationMembershipRoleAssignmentsAsync("test_organization_membership_id", new AuthorizationListOrganizationMembershipRoleAssignmentsOptions());
+            var result = await this.service.ListRoleAssignmentsAsync("test_organization_membership_id", new AuthorizationListRoleAssignmentsOptions());
             Assert.NotNull(result);
             Assert.Empty(result.Data);
         }
@@ -142,10 +142,10 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestDeleteOrganizationMembershipRoleAssignmentAsync()
+        public async Task TestRemoveRoleAssignmentAsync()
         {
             this.httpMock.MockResponse(HttpMethod.Delete, "/authorization/organization_memberships/test_organization_membership_id/role_assignments/test_role_assignment_id", HttpStatusCode.NoContent, "");
-            await this.service.DeleteOrganizationMembershipRoleAssignmentAsync("test_organization_membership_id", "test_role_assignment_id");
+            await this.service.RemoveRoleAssignmentAsync("test_organization_membership_id", "test_role_assignment_id");
             this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/authorization/organization_memberships/test_organization_membership_id/role_assignments/test_role_assignment_id");
         }
 
@@ -210,13 +210,13 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestCreateRolePermissionAsync()
+        public async Task TestAddOrganizationRolePermissionAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/role.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/authorization/organizations/test_organizationId/roles/test_slug/permissions", HttpStatusCode.OK, fixture);
-            var options = new AuthorizationCreateRolePermissionOptions();
+            var options = new AuthorizationAddOrganizationRolePermissionOptions();
             options.Slug = "test_slug";
-            var result = await this.service.CreateRolePermissionAsync("test_organizationId", "test_slug", options);
+            var result = await this.service.AddOrganizationRolePermissionAsync("test_organizationId", "test_slug", options);
             Assert.NotNull(result);
             Assert.Equal("role_01EHQMYV6MBK39QC5PZXHY59C3", result.Id);
             Assert.Equal("admin", result.Slug);
@@ -226,11 +226,11 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestUpdateRolePermissionsAsync()
+        public async Task TestSetOrganizationRolePermissionsAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/role.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/authorization/organizations/test_organizationId/roles/test_slug/permissions", HttpStatusCode.OK, fixture);
-            var result = await this.service.UpdateRolePermissionsAsync("test_organizationId", "test_slug", new AuthorizationUpdateRolePermissionsOptions());
+            var result = await this.service.SetOrganizationRolePermissionsAsync("test_organizationId", "test_slug", new AuthorizationSetOrganizationRolePermissionsOptions());
             Assert.NotNull(result);
             Assert.Equal("role_01EHQMYV6MBK39QC5PZXHY59C3", result.Id);
             Assert.Equal("admin", result.Slug);
@@ -239,19 +239,19 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestDeleteRolePermissionAsync()
+        public async Task TestRemoveOrganizationRolePermissionAsync()
         {
             this.httpMock.MockResponse(HttpMethod.Delete, "/authorization/organizations/test_organizationId/roles/test_slug/permissions/test_permissionSlug", HttpStatusCode.NoContent, "");
-            await this.service.DeleteRolePermissionAsync("test_organizationId", "test_slug", "test_permissionSlug");
+            await this.service.RemoveOrganizationRolePermissionAsync("test_organizationId", "test_slug", "test_permissionSlug");
             this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/authorization/organizations/test_organizationId/roles/test_slug/permissions/test_permissionSlug");
         }
 
         [Fact]
-        public async Task TestGetOrganizationResourceAsync()
+        public async Task TestGetResourceByExternalIdAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/authorization_resource.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/authorization/organizations/test_organization_id/resources/test_resource_type_slug/test_external_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.GetOrganizationResourceAsync("test_organization_id", "test_resource_type_slug", "test_external_id");
+            var result = await this.service.GetResourceByExternalIdAsync("test_organization_id", "test_resource_type_slug", "test_external_id");
             Assert.NotNull(result);
             Assert.Equal("authz_resource_01HXYZ123456789ABCDEFGH", result.Id);
             Assert.Equal("Website Redesign", result.Name);
@@ -260,11 +260,11 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestUpdateOrganizationResourceAsync()
+        public async Task TestUpdateResourceByExternalIdAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/authorization_resource.json");
             this.httpMock.MockResponse(HttpMethod.Patch, "/authorization/organizations/test_organization_id/resources/test_resource_type_slug/test_external_id", HttpStatusCode.OK, fixture);
-            var result = await this.service.UpdateOrganizationResourceAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationUpdateOrganizationResourceOptions());
+            var result = await this.service.UpdateResourceByExternalIdAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationUpdateResourceByExternalIdOptions());
             Assert.NotNull(result);
             Assert.Equal("authz_resource_01HXYZ123456789ABCDEFGH", result.Id);
             Assert.Equal("Website Redesign", result.Name);
@@ -273,29 +273,29 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestDeleteOrganizationResourceAsync()
+        public async Task TestDeleteResourceByExternalIdAsync()
         {
             this.httpMock.MockResponse(HttpMethod.Delete, "/authorization/organizations/test_organization_id/resources/test_resource_type_slug/test_external_id", HttpStatusCode.NoContent, "");
-            await this.service.DeleteOrganizationResourceAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationDeleteOrganizationResourceOptions());
+            await this.service.DeleteResourceByExternalIdAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationDeleteResourceByExternalIdOptions());
             this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/authorization/organizations/test_organization_id/resources/test_resource_type_slug/test_external_id");
         }
 
         [Fact]
-        public async Task TestListResourceOrganizationMembershipsAsync()
+        public async Task TestListMembershipsForResourceByExternalIdAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_user_organization_membership_base_list_data.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/authorization/organizations/test_organization_id/resources/test_resource_type_slug/test_external_id/organization_memberships", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListResourceOrganizationMembershipsAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationListResourceOrganizationMembershipsOptions());
+            var result = await this.service.ListMembershipsForResourceByExternalIdAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationListMembershipsForResourceByExternalIdOptions());
             Assert.NotNull(result);
             Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/authorization/organizations/test_organization_id/resources/test_resource_type_slug/test_external_id/organization_memberships");
         }
 
         [Fact]
-        public async Task TestListResourceOrganizationMembershipsAsyncEmpty()
+        public async Task TestListMembershipsForResourceByExternalIdAsyncEmpty()
         {
             this.httpMock.MockResponse(HttpMethod.Get, "/authorization/organizations/test_organization_id/resources/test_resource_type_slug/test_external_id/organization_memberships", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListResourceOrganizationMembershipsAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationListResourceOrganizationMembershipsOptions());
+            var result = await this.service.ListMembershipsForResourceByExternalIdAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationListMembershipsForResourceByExternalIdOptions());
             Assert.NotNull(result);
             Assert.Empty(result.Data);
         }
@@ -548,7 +548,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListOrganizationMembershipResourcesAutoPagingAsync()
+        public async Task TestListResourcesForMembershipAutoPagingAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/authorization_resource.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
@@ -556,7 +556,7 @@ namespace WorkOSTests
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/resources", HttpStatusCode.OK, new[] { page1, page2 });
 
             var items = new List<AuthorizationResource>();
-            await foreach (var item in this.service.ListOrganizationMembershipResourcesAutoPagingAsync("test_organization_membership_id", new AuthorizationListOrganizationMembershipResourcesOptions()))
+            await foreach (var item in this.service.ListResourcesForMembershipAutoPagingAsync("test_organization_membership_id", new AuthorizationListResourcesForMembershipOptions()))
             {
                 items.Add(item);
             }
@@ -565,13 +565,13 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListOrganizationMembershipResourcesAutoPagingAsyncEmpty()
+        public async Task TestListResourcesForMembershipAutoPagingAsyncEmpty()
         {
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/resources", HttpStatusCode.OK, new[] { empty });
 
             var items = new List<AuthorizationResource>();
-            await foreach (var item in this.service.ListOrganizationMembershipResourcesAutoPagingAsync("test_organization_membership_id", new AuthorizationListOrganizationMembershipResourcesOptions()))
+            await foreach (var item in this.service.ListResourcesForMembershipAutoPagingAsync("test_organization_membership_id", new AuthorizationListResourcesForMembershipOptions()))
             {
                 items.Add(item);
             }
@@ -580,7 +580,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListResourcePermissionsAutoPagingAsync()
+        public async Task TestListEffectivePermissionsAutoPagingAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/authorization_permission.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
@@ -588,7 +588,7 @@ namespace WorkOSTests
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/resources/test_resource_id/permissions", HttpStatusCode.OK, new[] { page1, page2 });
 
             var items = new List<AuthorizationPermission>();
-            await foreach (var item in this.service.ListResourcePermissionsAutoPagingAsync("test_organization_membership_id", "test_resource_id", new AuthorizationListResourcePermissionsOptions()))
+            await foreach (var item in this.service.ListEffectivePermissionsAutoPagingAsync("test_organization_membership_id", "test_resource_id", new AuthorizationListEffectivePermissionsOptions()))
             {
                 items.Add(item);
             }
@@ -597,13 +597,13 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListResourcePermissionsAutoPagingAsyncEmpty()
+        public async Task TestListEffectivePermissionsAutoPagingAsyncEmpty()
         {
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/resources/test_resource_id/permissions", HttpStatusCode.OK, new[] { empty });
 
             var items = new List<AuthorizationPermission>();
-            await foreach (var item in this.service.ListResourcePermissionsAutoPagingAsync("test_organization_membership_id", "test_resource_id", new AuthorizationListResourcePermissionsOptions()))
+            await foreach (var item in this.service.ListEffectivePermissionsAutoPagingAsync("test_organization_membership_id", "test_resource_id", new AuthorizationListEffectivePermissionsOptions()))
             {
                 items.Add(item);
             }
@@ -644,7 +644,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListOrganizationMembershipRoleAssignmentsAutoPagingAsync()
+        public async Task TestListRoleAssignmentsAutoPagingAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/role_assignment.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
@@ -652,7 +652,7 @@ namespace WorkOSTests
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/role_assignments", HttpStatusCode.OK, new[] { page1, page2 });
 
             var items = new List<RoleAssignment>();
-            await foreach (var item in this.service.ListOrganizationMembershipRoleAssignmentsAutoPagingAsync("test_organization_membership_id", new AuthorizationListOrganizationMembershipRoleAssignmentsOptions()))
+            await foreach (var item in this.service.ListRoleAssignmentsAutoPagingAsync("test_organization_membership_id", new AuthorizationListRoleAssignmentsOptions()))
             {
                 items.Add(item);
             }
@@ -661,13 +661,13 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListOrganizationMembershipRoleAssignmentsAutoPagingAsyncEmpty()
+        public async Task TestListRoleAssignmentsAutoPagingAsyncEmpty()
         {
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/role_assignments", HttpStatusCode.OK, new[] { empty });
 
             var items = new List<RoleAssignment>();
-            await foreach (var item in this.service.ListOrganizationMembershipRoleAssignmentsAutoPagingAsync("test_organization_membership_id", new AuthorizationListOrganizationMembershipRoleAssignmentsOptions()))
+            await foreach (var item in this.service.ListRoleAssignmentsAutoPagingAsync("test_organization_membership_id", new AuthorizationListRoleAssignmentsOptions()))
             {
                 items.Add(item);
             }
@@ -676,7 +676,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListResourceOrganizationMembershipsAutoPagingAsync()
+        public async Task TestListMembershipsForResourceByExternalIdAutoPagingAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/user_organization_membership_base_list_data.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
@@ -684,7 +684,7 @@ namespace WorkOSTests
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/organizations/test_organization_id/resources/test_resource_type_slug/test_external_id/organization_memberships", HttpStatusCode.OK, new[] { page1, page2 });
 
             var items = new List<UserOrganizationMembershipBaseListData>();
-            await foreach (var item in this.service.ListResourceOrganizationMembershipsAutoPagingAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationListResourceOrganizationMembershipsOptions()))
+            await foreach (var item in this.service.ListMembershipsForResourceByExternalIdAutoPagingAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationListMembershipsForResourceByExternalIdOptions()))
             {
                 items.Add(item);
             }
@@ -693,13 +693,13 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestListResourceOrganizationMembershipsAutoPagingAsyncEmpty()
+        public async Task TestListMembershipsForResourceByExternalIdAutoPagingAsyncEmpty()
         {
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/organizations/test_organization_id/resources/test_resource_type_slug/test_external_id/organization_memberships", HttpStatusCode.OK, new[] { empty });
 
             var items = new List<UserOrganizationMembershipBaseListData>();
-            await foreach (var item in this.service.ListResourceOrganizationMembershipsAutoPagingAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationListResourceOrganizationMembershipsOptions()))
+            await foreach (var item in this.service.ListMembershipsForResourceByExternalIdAutoPagingAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationListMembershipsForResourceByExternalIdOptions()))
             {
                 items.Add(item);
             }

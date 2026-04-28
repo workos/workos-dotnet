@@ -5,21 +5,11 @@ namespace WorkOS
     using System;
 
     /// <summary>Represents an authentication mfa succeeded.</summary>
-    public class AuthenticationMfaSucceeded
+    public class AuthenticationMfaSucceeded : EventSchema
     {
 
-        /// <summary>Unique identifier for the event.</summary>
-        public string Id { get; set; } = default!;
-        public string Event { get; internal set; } = "authentication.mfa_succeeded";
-
         /// <summary>The event payload.</summary>
-        public AuthenticationMfaSucceededData Data { get; set; } = default!;
-
-        /// <summary>An ISO 8601 timestamp.</summary>
-        public DateTimeOffset CreatedAt { get; set; }
-        public EventContext? Context { get; set; }
-
-        /// <summary>Distinguishes the Event object.</summary>
-        public string Object { get; internal set; } = "event";
+        public new AuthenticationMfaSucceededData Data { get; set; } = default!;
+        public new EventContext? Context { get; set; }
     }
 }

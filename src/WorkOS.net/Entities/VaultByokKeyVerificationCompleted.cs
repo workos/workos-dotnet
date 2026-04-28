@@ -5,21 +5,11 @@ namespace WorkOS
     using System;
 
     /// <summary>Represents a vault byok key verification completed.</summary>
-    public class VaultByokKeyVerificationCompleted
+    public class VaultByokKeyVerificationCompleted : EventSchema
     {
 
-        /// <summary>Unique identifier for the event.</summary>
-        public string Id { get; set; } = default!;
-        public string Event { get; internal set; } = "vault.byok_key.verification_completed";
-
         /// <summary>The event payload.</summary>
-        public VaultByokKeyVerificationCompletedData Data { get; set; } = default!;
-
-        /// <summary>An ISO 8601 timestamp.</summary>
-        public DateTimeOffset CreatedAt { get; set; }
-        public EventContext? Context { get; set; }
-
-        /// <summary>Distinguishes the Event object.</summary>
-        public string Object { get; internal set; } = "event";
+        public new VaultByokKeyVerificationCompletedData Data { get; set; } = default!;
+        public new EventContext? Context { get; set; }
     }
 }
