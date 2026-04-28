@@ -5,21 +5,11 @@ namespace WorkOS
     using System;
 
     /// <summary>Represents an authentication radar risk detected.</summary>
-    public class AuthenticationRadarRiskDetected
+    public class AuthenticationRadarRiskDetected : EventSchema
     {
 
-        /// <summary>Unique identifier for the event.</summary>
-        public string Id { get; set; } = default!;
-        public string Event { get; internal set; } = "authentication.radar_risk_detected";
-
         /// <summary>The event payload.</summary>
-        public AuthenticationRadarRiskDetectedData Data { get; set; } = default!;
-
-        /// <summary>An ISO 8601 timestamp.</summary>
-        public DateTimeOffset CreatedAt { get; set; }
-        public EventContext? Context { get; set; }
-
-        /// <summary>Distinguishes the Event object.</summary>
-        public string Object { get; internal set; } = "event";
+        public new AuthenticationRadarRiskDetectedData Data { get; set; } = default!;
+        public new EventContext? Context { get; set; }
     }
 }

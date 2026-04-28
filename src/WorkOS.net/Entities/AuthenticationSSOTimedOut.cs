@@ -5,21 +5,11 @@ namespace WorkOS
     using System;
 
     /// <summary>Represents an authentication SSO timed out.</summary>
-    public class AuthenticationSSOTimedOut
+    public class AuthenticationSSOTimedOut : EventSchema
     {
 
-        /// <summary>Unique identifier for the event.</summary>
-        public string Id { get; set; } = default!;
-        public string Event { get; internal set; } = "authentication.sso_timed_out";
-
         /// <summary>The event payload.</summary>
-        public AuthenticationSSOTimedOutData Data { get; set; } = default!;
-
-        /// <summary>An ISO 8601 timestamp.</summary>
-        public DateTimeOffset CreatedAt { get; set; }
-        public EventContext? Context { get; set; }
-
-        /// <summary>Distinguishes the Event object.</summary>
-        public string Object { get; internal set; } = "event";
+        public new AuthenticationSSOTimedOutData Data { get; set; } = default!;
+        public new EventContext? Context { get; set; }
     }
 }

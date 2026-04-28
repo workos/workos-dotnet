@@ -82,7 +82,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="AuthorizationResource"/> results.</returns>
-        public virtual async Task<WorkOSList<AuthorizationResource>> ListOrganizationMembershipResourcesAsync(string organizationMembershipId, AuthorizationListOrganizationMembershipResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<AuthorizationResource>> ListResourcesForMembershipAsync(string organizationMembershipId, AuthorizationListResourcesForMembershipOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -115,19 +115,19 @@ namespace WorkOS
             return await this.Client.MakeAPIRequest<WorkOSList<AuthorizationResource>>(request, cancellationToken);
         }
 
-        /// <summary>Compatibility wrapper for <see cref="ListOrganizationMembershipResourcesAsync"/>.</summary>
-        public virtual Task<WorkOSList<AuthorizationResource>> ListOrganizationMembershipResources(string organizationMembershipId, AuthorizationListOrganizationMembershipResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>Compatibility wrapper for <see cref="ListResourcesForMembershipAsync"/>.</summary>
+        public virtual Task<WorkOSList<AuthorizationResource>> ListResourcesForMembership(string organizationMembershipId, AuthorizationListResourcesForMembershipOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListOrganizationMembershipResourcesAsync(organizationMembershipId, options, requestOptions, cancellationToken);
+            return this.ListResourcesForMembershipAsync(organizationMembershipId, options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="ListOrganizationMembershipResourcesAsync"/>. Yields individual items across all pages.</summary>
+        /// <summary>Auto-paging variant of <see cref="ListResourcesForMembershipAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="organizationMembershipId">The ID of the organization membership.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="AuthorizationResource"/> items.</returns>
-        public virtual IAsyncEnumerable<AuthorizationResource> ListOrganizationMembershipResourcesAutoPagingAsync(string organizationMembershipId, AuthorizationListOrganizationMembershipResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual IAsyncEnumerable<AuthorizationResource> ListResourcesForMembershipAutoPagingAsync(string organizationMembershipId, AuthorizationListResourcesForMembershipOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.ListAutoPagingAsync<AuthorizationResource>($"/authorization/organization_memberships/{Uri.EscapeDataString(organizationMembershipId)}/resources", options, requestOptions, cancellationToken);
         }
@@ -142,25 +142,25 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="AuthorizationPermission"/> results.</returns>
-        public virtual async Task<WorkOSList<AuthorizationPermission>> ListResourcePermissionsAsync(string organizationMembershipId, string resourceId, AuthorizationListResourcePermissionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<AuthorizationPermission>> ListEffectivePermissionsAsync(string organizationMembershipId, string resourceId, AuthorizationListEffectivePermissionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.GetAsync<WorkOSList<AuthorizationPermission>>($"/authorization/organization_memberships/{Uri.EscapeDataString(organizationMembershipId)}/resources/{Uri.EscapeDataString(resourceId)}/permissions", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Compatibility wrapper for <see cref="ListResourcePermissionsAsync"/>.</summary>
-        public virtual Task<WorkOSList<AuthorizationPermission>> ListResourcePermissions(string organizationMembershipId, string resourceId, AuthorizationListResourcePermissionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>Compatibility wrapper for <see cref="ListEffectivePermissionsAsync"/>.</summary>
+        public virtual Task<WorkOSList<AuthorizationPermission>> ListEffectivePermissions(string organizationMembershipId, string resourceId, AuthorizationListEffectivePermissionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListResourcePermissionsAsync(organizationMembershipId, resourceId, options, requestOptions, cancellationToken);
+            return this.ListEffectivePermissionsAsync(organizationMembershipId, resourceId, options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="ListResourcePermissionsAsync"/>. Yields individual items across all pages.</summary>
+        /// <summary>Auto-paging variant of <see cref="ListEffectivePermissionsAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="organizationMembershipId">The ID of the organization membership.</param>
         /// <param name="resourceId">The ID of the authorization resource.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="AuthorizationPermission"/> items.</returns>
-        public virtual IAsyncEnumerable<AuthorizationPermission> ListResourcePermissionsAutoPagingAsync(string organizationMembershipId, string resourceId, AuthorizationListResourcePermissionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual IAsyncEnumerable<AuthorizationPermission> ListEffectivePermissionsAutoPagingAsync(string organizationMembershipId, string resourceId, AuthorizationListEffectivePermissionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.ListAutoPagingAsync<AuthorizationPermission>($"/authorization/organization_memberships/{Uri.EscapeDataString(organizationMembershipId)}/resources/{Uri.EscapeDataString(resourceId)}/permissions", options, requestOptions, cancellationToken);
         }
@@ -209,24 +209,24 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="RoleAssignment"/> results.</returns>
-        public virtual async Task<WorkOSList<RoleAssignment>> ListOrganizationMembershipRoleAssignmentsAsync(string organizationMembershipId, AuthorizationListOrganizationMembershipRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<RoleAssignment>> ListRoleAssignmentsAsync(string organizationMembershipId, AuthorizationListRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.GetAsync<WorkOSList<RoleAssignment>>($"/authorization/organization_memberships/{Uri.EscapeDataString(organizationMembershipId)}/role_assignments", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Compatibility wrapper for <see cref="ListOrganizationMembershipRoleAssignmentsAsync"/>.</summary>
-        public virtual Task<WorkOSList<RoleAssignment>> ListOrganizationMembershipRoleAssignments(string organizationMembershipId, AuthorizationListOrganizationMembershipRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>Compatibility wrapper for <see cref="ListRoleAssignmentsAsync"/>.</summary>
+        public virtual Task<WorkOSList<RoleAssignment>> ListRoleAssignments(string organizationMembershipId, AuthorizationListRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListOrganizationMembershipRoleAssignmentsAsync(organizationMembershipId, options, requestOptions, cancellationToken);
+            return this.ListRoleAssignmentsAsync(organizationMembershipId, options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="ListOrganizationMembershipRoleAssignmentsAsync"/>. Yields individual items across all pages.</summary>
+        /// <summary>Auto-paging variant of <see cref="ListRoleAssignmentsAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="organizationMembershipId">The ID of the organization membership.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="RoleAssignment"/> items.</returns>
-        public virtual IAsyncEnumerable<RoleAssignment> ListOrganizationMembershipRoleAssignmentsAutoPagingAsync(string organizationMembershipId, AuthorizationListOrganizationMembershipRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual IAsyncEnumerable<RoleAssignment> ListRoleAssignmentsAutoPagingAsync(string organizationMembershipId, AuthorizationListRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.ListAutoPagingAsync<RoleAssignment>($"/authorization/organization_memberships/{Uri.EscapeDataString(organizationMembershipId)}/role_assignments", options, requestOptions, cancellationToken);
         }
@@ -334,15 +334,15 @@ namespace WorkOS
         /// <param name="roleAssignmentId">The ID of the role assignment to remove.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteOrganizationMembershipRoleAssignmentAsync(string organizationMembershipId, string roleAssignmentId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task RemoveRoleAssignmentAsync(string organizationMembershipId, string roleAssignmentId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             await this.DeleteAsync($"/authorization/organization_memberships/{Uri.EscapeDataString(organizationMembershipId)}/role_assignments/{Uri.EscapeDataString(roleAssignmentId)}", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>Compatibility wrapper for <see cref="DeleteOrganizationMembershipRoleAssignmentAsync"/>.</summary>
-        public virtual Task DeleteOrganizationMembershipRoleAssignment(string organizationMembershipId, string roleAssignmentId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>Compatibility wrapper for <see cref="RemoveRoleAssignmentAsync"/>.</summary>
+        public virtual Task RemoveRoleAssignment(string organizationMembershipId, string roleAssignmentId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.DeleteOrganizationMembershipRoleAssignmentAsync(organizationMembershipId, roleAssignmentId, requestOptions, cancellationToken);
+            return this.RemoveRoleAssignmentAsync(organizationMembershipId, roleAssignmentId, requestOptions, cancellationToken);
         }
 
         /// <summary>List custom roles</summary>
@@ -454,15 +454,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Role"/> result.</returns>
-        public virtual async Task<Role> CreateRolePermissionAsync(string organizationId, string slug, AuthorizationCreateRolePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Role> AddOrganizationRolePermissionAsync(string organizationId, string slug, AuthorizationAddOrganizationRolePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.PostAsync<Role>($"/authorization/organizations/{Uri.EscapeDataString(organizationId)}/roles/{Uri.EscapeDataString(slug)}/permissions", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Compatibility wrapper for <see cref="CreateRolePermissionAsync"/>.</summary>
-        public virtual Task<Role> CreateRolePermission(string organizationId, string slug, AuthorizationCreateRolePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>Compatibility wrapper for <see cref="AddOrganizationRolePermissionAsync"/>.</summary>
+        public virtual Task<Role> AddOrganizationRolePermission(string organizationId, string slug, AuthorizationAddOrganizationRolePermissionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.CreateRolePermissionAsync(organizationId, slug, options, requestOptions, cancellationToken);
+            return this.AddOrganizationRolePermissionAsync(organizationId, slug, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Set permissions for a custom role</summary>
@@ -475,15 +475,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="Role"/> result.</returns>
-        public virtual async Task<Role> UpdateRolePermissionsAsync(string organizationId, string slug, AuthorizationUpdateRolePermissionsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Role> SetOrganizationRolePermissionsAsync(string organizationId, string slug, AuthorizationSetOrganizationRolePermissionsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.PutAsync<Role>($"/authorization/organizations/{Uri.EscapeDataString(organizationId)}/roles/{Uri.EscapeDataString(slug)}/permissions", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Compatibility wrapper for <see cref="UpdateRolePermissionsAsync"/>.</summary>
-        public virtual Task<Role> UpdateRolePermissions(string organizationId, string slug, AuthorizationUpdateRolePermissionsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>Compatibility wrapper for <see cref="SetOrganizationRolePermissionsAsync"/>.</summary>
+        public virtual Task<Role> SetOrganizationRolePermissions(string organizationId, string slug, AuthorizationSetOrganizationRolePermissionsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.UpdateRolePermissionsAsync(organizationId, slug, options, requestOptions, cancellationToken);
+            return this.SetOrganizationRolePermissionsAsync(organizationId, slug, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Remove a permission from a custom role</summary>
@@ -495,15 +495,15 @@ namespace WorkOS
         /// <param name="permissionSlug">The slug of the permission to remove.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteRolePermissionAsync(string organizationId, string slug, string permissionSlug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task RemoveOrganizationRolePermissionAsync(string organizationId, string slug, string permissionSlug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             await this.DeleteAsync($"/authorization/organizations/{Uri.EscapeDataString(organizationId)}/roles/{Uri.EscapeDataString(slug)}/permissions/{Uri.EscapeDataString(permissionSlug)}", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>Compatibility wrapper for <see cref="DeleteRolePermissionAsync"/>.</summary>
-        public virtual Task DeleteRolePermission(string organizationId, string slug, string permissionSlug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>Compatibility wrapper for <see cref="RemoveOrganizationRolePermissionAsync"/>.</summary>
+        public virtual Task RemoveOrganizationRolePermission(string organizationId, string slug, string permissionSlug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.DeleteRolePermissionAsync(organizationId, slug, permissionSlug, requestOptions, cancellationToken);
+            return this.RemoveOrganizationRolePermissionAsync(organizationId, slug, permissionSlug, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a resource by external ID</summary>
@@ -516,15 +516,15 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
-        public virtual async Task<AuthorizationResource> GetOrganizationResourceAsync(string organizationId, string resourceTypeSlug, string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<AuthorizationResource> GetResourceByExternalIdAsync(string organizationId, string resourceTypeSlug, string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.GetAsync<AuthorizationResource>($"/authorization/organizations/{Uri.EscapeDataString(organizationId)}/resources/{Uri.EscapeDataString(resourceTypeSlug)}/{Uri.EscapeDataString(externalId)}", null, requestOptions, cancellationToken);
         }
 
-        /// <summary>Compatibility wrapper for <see cref="GetOrganizationResourceAsync"/>.</summary>
-        public virtual Task<AuthorizationResource> GetOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>Compatibility wrapper for <see cref="GetResourceByExternalIdAsync"/>.</summary>
+        public virtual Task<AuthorizationResource> GetResourceByExternalId(string organizationId, string resourceTypeSlug, string externalId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.GetOrganizationResourceAsync(organizationId, resourceTypeSlug, externalId, requestOptions, cancellationToken);
+            return this.GetResourceByExternalIdAsync(organizationId, resourceTypeSlug, externalId, requestOptions, cancellationToken);
         }
 
         /// <summary>Update a resource by external ID</summary>
@@ -538,7 +538,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="AuthorizationResource"/> result.</returns>
-        public virtual async Task<AuthorizationResource> UpdateOrganizationResourceAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationUpdateOrganizationResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<AuthorizationResource> UpdateResourceByExternalIdAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationUpdateResourceByExternalIdOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -571,10 +571,10 @@ namespace WorkOS
             return await this.Client.MakeAPIRequest<AuthorizationResource>(request, cancellationToken);
         }
 
-        /// <summary>Compatibility wrapper for <see cref="UpdateOrganizationResourceAsync"/>.</summary>
-        public virtual Task<AuthorizationResource> UpdateOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, AuthorizationUpdateOrganizationResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>Compatibility wrapper for <see cref="UpdateResourceByExternalIdAsync"/>.</summary>
+        public virtual Task<AuthorizationResource> UpdateResourceByExternalId(string organizationId, string resourceTypeSlug, string externalId, AuthorizationUpdateResourceByExternalIdOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.UpdateOrganizationResourceAsync(organizationId, resourceTypeSlug, externalId, options, requestOptions, cancellationToken);
+            return this.UpdateResourceByExternalIdAsync(organizationId, resourceTypeSlug, externalId, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete an authorization resource by external ID</summary>
@@ -587,15 +587,15 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task DeleteOrganizationResourceAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationDeleteOrganizationResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteResourceByExternalIdAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationDeleteResourceByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             await this.DeleteAsync($"/authorization/organizations/{Uri.EscapeDataString(organizationId)}/resources/{Uri.EscapeDataString(resourceTypeSlug)}/{Uri.EscapeDataString(externalId)}", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Compatibility wrapper for <see cref="DeleteOrganizationResourceAsync"/>.</summary>
-        public virtual Task DeleteOrganizationResource(string organizationId, string resourceTypeSlug, string externalId, AuthorizationDeleteOrganizationResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>Compatibility wrapper for <see cref="DeleteResourceByExternalIdAsync"/>.</summary>
+        public virtual Task DeleteResourceByExternalId(string organizationId, string resourceTypeSlug, string externalId, AuthorizationDeleteResourceByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.DeleteOrganizationResourceAsync(organizationId, resourceTypeSlug, externalId, options, requestOptions, cancellationToken);
+            return this.DeleteResourceByExternalIdAsync(organizationId, resourceTypeSlug, externalId, options, requestOptions, cancellationToken);
         }
 
         /// <summary>List memberships for a resource by external ID</summary>
@@ -609,18 +609,18 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="UserOrganizationMembershipBaseListData"/> results.</returns>
-        public virtual async Task<WorkOSList<UserOrganizationMembershipBaseListData>> ListResourceOrganizationMembershipsAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListResourceOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<UserOrganizationMembershipBaseListData>> ListMembershipsForResourceByExternalIdAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListMembershipsForResourceByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return await this.GetAsync<WorkOSList<UserOrganizationMembershipBaseListData>>($"/authorization/organizations/{Uri.EscapeDataString(organizationId)}/resources/{Uri.EscapeDataString(resourceTypeSlug)}/{Uri.EscapeDataString(externalId)}/organization_memberships", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Compatibility wrapper for <see cref="ListResourceOrganizationMembershipsAsync"/>.</summary>
-        public virtual Task<WorkOSList<UserOrganizationMembershipBaseListData>> ListResourceOrganizationMemberships(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListResourceOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>Compatibility wrapper for <see cref="ListMembershipsForResourceByExternalIdAsync"/>.</summary>
+        public virtual Task<WorkOSList<UserOrganizationMembershipBaseListData>> ListMembershipsForResourceByExternalId(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListMembershipsForResourceByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListResourceOrganizationMembershipsAsync(organizationId, resourceTypeSlug, externalId, options, requestOptions, cancellationToken);
+            return this.ListMembershipsForResourceByExternalIdAsync(organizationId, resourceTypeSlug, externalId, options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Auto-paging variant of <see cref="ListResourceOrganizationMembershipsAsync"/>. Yields individual items across all pages.</summary>
+        /// <summary>Auto-paging variant of <see cref="ListMembershipsForResourceByExternalIdAsync"/>. Yields individual items across all pages.</summary>
         /// <param name="organizationId">The ID of the organization that owns the resource.</param>
         /// <param name="resourceTypeSlug">The slug of the resource type this resource belongs to.</param>
         /// <param name="externalId">An identifier you provide to reference the resource in your system.</param>
@@ -628,7 +628,7 @@ namespace WorkOS
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="UserOrganizationMembershipBaseListData"/> items.</returns>
-        public virtual IAsyncEnumerable<UserOrganizationMembershipBaseListData> ListResourceOrganizationMembershipsAutoPagingAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListResourceOrganizationMembershipsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual IAsyncEnumerable<UserOrganizationMembershipBaseListData> ListMembershipsForResourceByExternalIdAutoPagingAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListMembershipsForResourceByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.ListAutoPagingAsync<UserOrganizationMembershipBaseListData>($"/authorization/organizations/{Uri.EscapeDataString(organizationId)}/resources/{Uri.EscapeDataString(resourceTypeSlug)}/{Uri.EscapeDataString(externalId)}/organization_memberships", options, requestOptions, cancellationToken);
         }

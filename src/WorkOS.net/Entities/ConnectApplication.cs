@@ -34,7 +34,7 @@ namespace WorkOS
         public DateTimeOffset UpdatedAt { get; set; }
 
         /// <summary>The type of the application.</summary>
-        public string ApplicationType { get; internal set; } = "m2m";
+        public string? ApplicationType { get; set; }
 
         /// <summary>The ID of the organization the application belongs to.</summary>
         public string? OrganizationId { get; set; }
@@ -46,9 +46,9 @@ namespace WorkOS
         public bool? UsesPkce { get; set; }
 
         /// <summary>Whether the application is a first-party application.</summary>
-        public bool IsFirstParty { get; internal set; } = true;
+        public bool? IsFirstParty { get; set; }
 
         /// <summary>Whether the application was dynamically registered.</summary>
-        public bool WasDynamicallyRegistered { get; internal set; } = false;
+        public bool? WasDynamicallyRegistered { get; set; }
     }
 }

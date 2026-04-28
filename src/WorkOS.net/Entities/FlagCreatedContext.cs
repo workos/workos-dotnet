@@ -4,7 +4,7 @@ namespace WorkOS
 {
 
     /// <summary>Additional context about the event.</summary>
-    public class EventSchemaContext
+    public class FlagCreatedContext
     {
 
         /// <summary>The client ID associated with the flag event.</summary>

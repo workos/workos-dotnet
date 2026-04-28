@@ -8,6 +8,9 @@ namespace WorkOS
     {
 
         /// <summary>SSO-specific options for the Admin Portal.</summary>
-        public SSOIntentOptions SSO { get; set; } = default!;
+        public SSOIntentOptions? SSO { get; set; }
+
+        /// <summary>Domain verification-specific options for the Admin Portal.</summary>
+        public DomainVerificationIntentOptions? DomainVerification { get; set; }
     }
 }
