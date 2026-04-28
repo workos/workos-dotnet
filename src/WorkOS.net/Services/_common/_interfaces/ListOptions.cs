@@ -35,6 +35,6 @@ namespace WorkOS
         /// </summary>
         [JsonProperty("order")]
         [STJS.JsonPropertyName("order")]
-        public PaginationOrder Order { get; set; } = PaginationOrder.Desc;
+        public PaginationOrder? Order { get; set; } = PaginationOrder.Desc;
     }
 }

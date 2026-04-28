@@ -12,6 +12,7 @@ namespace WorkOS
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Reflection;
+    using System.Runtime.Serialization;
     using System.Text;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
@@ -353,7 +354,7 @@ namespace WorkOS
                     rendered = dto.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
                     break;
                 case Enum en:
-                    rendered = en.ToString();
+                    rendered = ResolveEnumWireValue(en);
                     break;
                 case double d:
                     rendered = d.ToString("R", CultureInfo.InvariantCulture);
@@ -370,6 +371,26 @@ namespace WorkOS
             }
 
             result.Add(new KeyValuePair<string, string>(key, rendered));
+        }
+
+        /// <summary>
+        /// Return the wire value for an enum member by reading its
+        /// <see cref="EnumMemberAttribute.Value"/>. Falls back to
+        /// <c>ToString()</c> when the attribute is absent.
+        /// </summary>
+        private static string ResolveEnumWireValue(Enum value)
+        {
+            var member = value.GetType().GetField(value.ToString());
+            if (member != null)
+            {
+                var attr = member.GetCustomAttribute<EnumMemberAttribute>();
+                if (attr != null && attr.Value != null)
+                {
+                    return attr.Value;
+                }
+            }
+
+            return value.ToString();
         }
 
         /// <summary>

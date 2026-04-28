@@ -27,15 +27,13 @@ namespace WorkOSTests
 
             httpMock.MockResponse(
                 HttpMethod.Delete,
-                "/authorization/organizations/org_1/resources/file/ext_42",
+                "/authorization/resources/res_1",
                 HttpStatusCode.NoContent,
                 "{}");
 
-            await client.Authorization.DeleteResourceByExternalId(
-                "org_1",
-                "file",
-                "ext_42",
-                new AuthorizationDeleteResourceByExternalIdOptions { CascadeDelete = true });
+            await client.Authorization.DeleteResource(
+                "res_1",
+                new AuthorizationDeleteResourceOptions { CascadeDelete = true });
 
             var last = Assert.Single(httpMock.CapturedRequests);
             Assert.Equal(HttpMethod.Delete, last.Method);
@@ -56,15 +54,13 @@ namespace WorkOSTests
 
             httpMock.MockResponse(
                 HttpMethod.Delete,
-                "/authorization/organizations/org_1/resources/file/ext_42",
+                "/authorization/resources/res_1",
                 HttpStatusCode.NoContent,
                 "{}");
 
-            await client.Authorization.DeleteResourceByExternalId(
-                "org_1",
-                "file",
-                "ext_42",
-                new AuthorizationDeleteResourceByExternalIdOptions { CascadeDelete = false });
+            await client.Authorization.DeleteResource(
+                "res_1",
+                new AuthorizationDeleteResourceOptions { CascadeDelete = false });
 
             var last = Assert.Single(httpMock.CapturedRequests);
             Assert.Contains("cascade_delete=false", last.RequestUri!.Query);
