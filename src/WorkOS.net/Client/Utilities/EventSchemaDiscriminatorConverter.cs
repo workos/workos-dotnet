@@ -12,6 +12,8 @@ namespace WorkOS
     /// </summary>
     public class EventSchemaDiscriminatorConverter : Newtonsoft.Json.JsonConverter
     {
+        public override bool CanWrite => false;
+
         public override bool CanConvert(Type objectType) => typeof(EventSchema).IsAssignableFrom(objectType);
 
         public override object ReadJson(Newtonsoft.Json.JsonReader reader, Type objectType, object? existingValue, Newtonsoft.Json.JsonSerializer serializer)
@@ -120,8 +122,6 @@ namespace WorkOS
             serializer.Populate(jObject.CreateReader(), target);
             return target;
         }
-
-        public override bool CanWrite => false;
 
         public override void WriteJson(Newtonsoft.Json.JsonWriter writer, object? value, Newtonsoft.Json.JsonSerializer serializer)
         {
