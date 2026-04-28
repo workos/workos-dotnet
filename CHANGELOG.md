@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.1.0](https://github.com/workos/workos-dotnet/compare/v3.0.2...v3.1.0) (2026-04-28)
+
+
+### Features
+
+* **generated:** Add Groups and Waitlist APIs, improve event deserialization ([#245](https://github.com/workos/workos-dotnet/issues/245)) ([63e939d](https://github.com/workos/workos-dotnet/commit/63e939d243150812f2a94a0602e298ea1e919b31))
+
+
+### Bug Fixes
+
+* Honor EnumMember attribute in query-string serialization ([#241](https://github.com/workos/workos-dotnet/issues/241)) ([6c2789a](https://github.com/workos/workos-dotnet/commit/6c2789ae005b9668368b36523f5e30196742e911))
+* Update test to match renamed DeleteResourceByExternalId method ([4ceb3de](https://github.com/workos/workos-dotnet/commit/4ceb3dea35a7886cbcdb48b9dcfb74865b79000e))
+
 ## [3.0.2](https://github.com/workos/workos-dotnet/compare/v3.0.1...v3.0.2) (2026-04-24)
 
 
