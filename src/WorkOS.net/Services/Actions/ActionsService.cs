@@ -47,10 +47,10 @@ namespace WorkOS
         public void VerifyHeader(string payload, string sigHeader, string secret, int tolerance = DefaultTolerance)
         {
             var (timestamp, signature) = ParseSignatureHeader(sigHeader);
-            var timestampSeconds = long.Parse(timestamp);
+            var timestampMs = long.Parse(timestamp);
             var nowMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
-            if (Math.Abs(nowMs - timestampSeconds) > tolerance * 1000L)
+            if (Math.Abs(nowMs - timestampMs) > tolerance * 1000L)
             {
                 throw new InvalidOperationException("Timestamp outside of the tolerance zone.");
             }
