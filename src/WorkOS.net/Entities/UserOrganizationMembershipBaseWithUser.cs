@@ -7,8 +7,8 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents an organization membership.</summary>
-    public class OrganizationMembership
+    /// <summary>Represents an user organization membership base with user.</summary>
+    public class UserOrganizationMembershipBaseWithUser
     {
 
         /// <summary>Distinguishes the organization membership object.</summary>
@@ -42,9 +42,6 @@ namespace WorkOS
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset UpdatedAt { get; set; }
-
-        /// <summary>The primary role assigned to the user within the organization.</summary>
-        public AddRolePermission Role { get; set; } = default!;
 
         /// <summary>The user that belongs to the organization through this membership.</summary>
         public User User { get; set; } = default!;

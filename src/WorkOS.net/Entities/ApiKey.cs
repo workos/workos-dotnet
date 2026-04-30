@@ -5,7 +5,7 @@ namespace WorkOS
     using System;
     using System.Collections.Generic;
 
-    /// <summary>The API Key object if the value is valid, or `null` if invalid.</summary>
+    /// <summary>Represents an api key.</summary>
     public class ApiKey
     {
 

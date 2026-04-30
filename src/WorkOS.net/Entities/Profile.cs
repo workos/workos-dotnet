@@ -39,6 +39,9 @@ namespace WorkOS
         /// <summary>The user's last name.</summary>
         public string? LastName { get; set; }
 
+        /// <summary>The user's full name.</summary>
+        public string? Name { get; set; }
+
         /// <summary>The role assigned to the user within the organization, if applicable.</summary>
         public AddRolePermission? Role { get; set; }
 

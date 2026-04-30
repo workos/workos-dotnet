@@ -283,7 +283,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListMembershipsForResourceByExternalIdAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_user_organization_membership_base_list_data.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_user_organization_membership_base_with_user.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/authorization/organizations/test_organization_id/resources/test_resource_type_slug/test_external_id/organization_memberships", HttpStatusCode.OK, fixture);
             var result = await this.service.ListMembershipsForResourceByExternalIdAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationListMembershipsForResourceByExternalIdOptions());
             Assert.NotNull(result);
@@ -375,7 +375,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListMembershipsForResourceAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_user_organization_membership_base_list_data.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_user_organization_membership_base_with_user.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/authorization/resources/test_resource_id/organization_memberships", HttpStatusCode.OK, fixture);
             var result = await this.service.ListMembershipsForResourceAsync("test_resource_id", new AuthorizationListMembershipsForResourceOptions());
             Assert.NotNull(result);
@@ -678,12 +678,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListMembershipsForResourceByExternalIdAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user_organization_membership_base_list_data.json");
+            var fixture = System.IO.File.ReadAllText("testdata/user_organization_membership_base_with_user.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/organizations/test_organization_id/resources/test_resource_type_slug/test_external_id/organization_memberships", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<UserOrganizationMembershipBaseListData>();
+            var items = new List<UserOrganizationMembershipBaseWithUser>();
             await foreach (var item in this.service.ListMembershipsForResourceByExternalIdAutoPagingAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationListMembershipsForResourceByExternalIdOptions()))
             {
                 items.Add(item);
@@ -698,7 +698,7 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/organizations/test_organization_id/resources/test_resource_type_slug/test_external_id/organization_memberships", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<UserOrganizationMembershipBaseListData>();
+            var items = new List<UserOrganizationMembershipBaseWithUser>();
             await foreach (var item in this.service.ListMembershipsForResourceByExternalIdAutoPagingAsync("test_organization_id", "test_resource_type_slug", "test_external_id", new AuthorizationListMembershipsForResourceByExternalIdOptions()))
             {
                 items.Add(item);
@@ -742,12 +742,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListMembershipsForResourceAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/user_organization_membership_base_list_data.json");
+            var fixture = System.IO.File.ReadAllText("testdata/user_organization_membership_base_with_user.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/resources/test_resource_id/organization_memberships", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<UserOrganizationMembershipBaseListData>();
+            var items = new List<UserOrganizationMembershipBaseWithUser>();
             await foreach (var item in this.service.ListMembershipsForResourceAutoPagingAsync("test_resource_id", new AuthorizationListMembershipsForResourceOptions()))
             {
                 items.Add(item);
@@ -762,7 +762,7 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/resources/test_resource_id/organization_memberships", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<UserOrganizationMembershipBaseListData>();
+            var items = new List<UserOrganizationMembershipBaseWithUser>();
             await foreach (var item in this.service.ListMembershipsForResourceAutoPagingAsync("test_resource_id", new AuthorizationListMembershipsForResourceOptions()))
             {
                 items.Add(item);
