@@ -608,14 +608,14 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="UserOrganizationMembershipBaseListData"/> results.</returns>
-        public virtual async Task<WorkOSList<UserOrganizationMembershipBaseListData>> ListMembershipsForResourceByExternalIdAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListMembershipsForResourceByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="UserOrganizationMembershipBaseWithUser"/> results.</returns>
+        public virtual async Task<WorkOSList<UserOrganizationMembershipBaseWithUser>> ListMembershipsForResourceByExternalIdAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListMembershipsForResourceByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<UserOrganizationMembershipBaseListData>>($"/authorization/organizations/{Uri.EscapeDataString(organizationId)}/resources/{Uri.EscapeDataString(resourceTypeSlug)}/{Uri.EscapeDataString(externalId)}/organization_memberships", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<UserOrganizationMembershipBaseWithUser>>($"/authorization/organizations/{Uri.EscapeDataString(organizationId)}/resources/{Uri.EscapeDataString(resourceTypeSlug)}/{Uri.EscapeDataString(externalId)}/organization_memberships", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="ListMembershipsForResourceByExternalIdAsync"/>.</summary>
-        public virtual Task<WorkOSList<UserOrganizationMembershipBaseListData>> ListMembershipsForResourceByExternalId(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListMembershipsForResourceByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<WorkOSList<UserOrganizationMembershipBaseWithUser>> ListMembershipsForResourceByExternalId(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListMembershipsForResourceByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.ListMembershipsForResourceByExternalIdAsync(organizationId, resourceTypeSlug, externalId, options, requestOptions, cancellationToken);
         }
@@ -627,10 +627,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="UserOrganizationMembershipBaseListData"/> items.</returns>
-        public virtual IAsyncEnumerable<UserOrganizationMembershipBaseListData> ListMembershipsForResourceByExternalIdAutoPagingAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListMembershipsForResourceByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="UserOrganizationMembershipBaseWithUser"/> items.</returns>
+        public virtual IAsyncEnumerable<UserOrganizationMembershipBaseWithUser> ListMembershipsForResourceByExternalIdAutoPagingAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListMembershipsForResourceByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<UserOrganizationMembershipBaseListData>($"/authorization/organizations/{Uri.EscapeDataString(organizationId)}/resources/{Uri.EscapeDataString(resourceTypeSlug)}/{Uri.EscapeDataString(externalId)}/organization_memberships", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<UserOrganizationMembershipBaseWithUser>($"/authorization/organizations/{Uri.EscapeDataString(organizationId)}/resources/{Uri.EscapeDataString(resourceTypeSlug)}/{Uri.EscapeDataString(externalId)}/organization_memberships", options, requestOptions, cancellationToken);
         }
 
         /// <summary>List resources</summary>
@@ -831,14 +831,14 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="UserOrganizationMembershipBaseListData"/> results.</returns>
-        public virtual async Task<WorkOSList<UserOrganizationMembershipBaseListData>> ListMembershipsForResourceAsync(string resourceId, AuthorizationListMembershipsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="UserOrganizationMembershipBaseWithUser"/> results.</returns>
+        public virtual async Task<WorkOSList<UserOrganizationMembershipBaseWithUser>> ListMembershipsForResourceAsync(string resourceId, AuthorizationListMembershipsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<UserOrganizationMembershipBaseListData>>($"/authorization/resources/{Uri.EscapeDataString(resourceId)}/organization_memberships", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<UserOrganizationMembershipBaseWithUser>>($"/authorization/resources/{Uri.EscapeDataString(resourceId)}/organization_memberships", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="ListMembershipsForResourceAsync"/>.</summary>
-        public virtual Task<WorkOSList<UserOrganizationMembershipBaseListData>> ListMembershipsForResource(string resourceId, AuthorizationListMembershipsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<WorkOSList<UserOrganizationMembershipBaseWithUser>> ListMembershipsForResource(string resourceId, AuthorizationListMembershipsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.ListMembershipsForResourceAsync(resourceId, options, requestOptions, cancellationToken);
         }
@@ -848,10 +848,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="UserOrganizationMembershipBaseListData"/> items.</returns>
-        public virtual IAsyncEnumerable<UserOrganizationMembershipBaseListData> ListMembershipsForResourceAutoPagingAsync(string resourceId, AuthorizationListMembershipsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="UserOrganizationMembershipBaseWithUser"/> items.</returns>
+        public virtual IAsyncEnumerable<UserOrganizationMembershipBaseWithUser> ListMembershipsForResourceAutoPagingAsync(string resourceId, AuthorizationListMembershipsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<UserOrganizationMembershipBaseListData>($"/authorization/resources/{Uri.EscapeDataString(resourceId)}/organization_memberships", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<UserOrganizationMembershipBaseWithUser>($"/authorization/resources/{Uri.EscapeDataString(resourceId)}/organization_memberships", options, requestOptions, cancellationToken);
         }
 
         /// <summary>List environment roles</summary>

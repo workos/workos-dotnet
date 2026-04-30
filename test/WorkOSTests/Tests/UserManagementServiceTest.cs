@@ -418,7 +418,7 @@ namespace WorkOSTests
             options.Content = "test_content";
             var result = await this.service.UpdateJWTTemplateAsync(options);
             Assert.NotNull(result);
-            Assert.Equal("{\"iss\": \"{{environment.id}}\", \"sub\": \"{{user.id}}\"}", result.Content);
+            Assert.Equal("{\"urn:myapp:full_name\": \"{{user.first_name}} {{user.last_name}}\", \"urn:myapp:email\": \"{{user.email}}\"}", result.Content);
             Assert.Equal("2026-01-15T12:00:00.000Z", result.CreatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/user_management/jwt_template");
             await this.httpMock.AssertRequestBodyContainsAsync("content", "test_content");

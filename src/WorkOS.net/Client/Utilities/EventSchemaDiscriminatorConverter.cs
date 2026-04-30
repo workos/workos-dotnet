@@ -56,6 +56,8 @@ namespace WorkOS
                 case "dsync.group.created": target = new DsyncGroupCreated(); break;
                 case "dsync.group.deleted": target = new DsyncGroupDeleted(); break;
                 case "dsync.group.updated": target = new DsyncGroupUpdated(); break;
+                case "dsync.token.created": target = new DsyncTokenCreated(); break;
+                case "dsync.token.deleted": target = new DsyncTokenDeleted(); break;
                 case "dsync.group.user_added": target = new DsyncGroupUserAdded(); break;
                 case "dsync.user.created": target = new DsyncUserCreated(); break;
                 case "dsync.user.deleted": target = new DsyncUserDeleted(); break;
