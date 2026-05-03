@@ -35,6 +35,9 @@ namespace WorkOS
         /// <summary>The last name of the user.</summary>
         public string? LastName { get; set; }
 
+        /// <summary>The full name of the user.</summary>
+        public string? Name { get; set; }
+
         /// <summary>A list of email addresses for the user.</summary>
         [System.Obsolete("This field is deprecated.")]
         public List<DirectoryUserEmail>? Emails { get; set; }
@@ -69,8 +72,8 @@ namespace WorkOS
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset UpdatedAt { get; set; }
 
-        /// <summary>The directory groups the user belongs to. Use the List Directory Groups endpoint with a user filter instead.</summary>
-        [System.Obsolete("This field is deprecated.")]
+        /// <summary>The directory groups the user belongs to. Deprecated: starting May 1, 2026, this field returns an empty array by default for newly created teams. Existing teams currently depending on this field should migrate to the new access pattern for better throughput performance — the field is unbounded by user, so users with many group memberships produce large, slow response payloads. Use the List Directory Groups endpoint with a `user` filter to fetch a user's group memberships.</summary>
+        [System.Obsolete("Deprecated. starting May 1, 2026, this field returns an empty array by default for newly created teams.")]
         public List<DirectoryGroup> Groups { get; set; } = default!;
 
         /// <summary>

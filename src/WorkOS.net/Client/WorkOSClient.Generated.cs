@@ -7,11 +7,6 @@ namespace WorkOS
     /// </summary>
     public partial class WorkOSClient
     {
-        private ApiKeysService apiKeys;
-
-        /// <summary>Gets the <see cref="ApiKeysService"/> for api keys API operations.</summary>
-        public virtual ApiKeysService ApiKeys => this.apiKeys ??= new ApiKeysService(this);
-
         private MultiFactorAuthService multiFactorAuth;
 
         /// <summary>Gets the <see cref="MultiFactorAuthService"/> for multi factor auth API operations.</summary>
@@ -61,6 +56,11 @@ namespace WorkOS
 
         /// <summary>Gets the <see cref="OrganizationsService"/> for organizations API operations.</summary>
         public virtual OrganizationsService Organizations => this.organizations ??= new OrganizationsService(this);
+
+        private ApiKeysService apiKeys;
+
+        /// <summary>Gets the <see cref="ApiKeysService"/> for api keys API operations.</summary>
+        public virtual ApiKeysService ApiKeys => this.apiKeys ??= new ApiKeysService(this);
 
         private GroupsService groups;
 

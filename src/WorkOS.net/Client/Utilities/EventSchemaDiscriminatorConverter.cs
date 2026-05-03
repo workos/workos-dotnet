@@ -103,6 +103,7 @@ namespace WorkOS
                 case "user.created": target = new UserCreated(); break;
                 case "user.deleted": target = new UserDeleted(); break;
                 case "user.updated": target = new UserUpdated(); break;
+                case "vault.byok_key.deleted": target = new VaultByokKeyDeleted(); break;
                 case "vault.byok_key.verification_completed": target = new VaultByokKeyVerificationCompleted(); break;
                 case "vault.data.created": target = new VaultDataCreated(); break;
                 case "vault.data.deleted": target = new VaultDataDeleted(); break;

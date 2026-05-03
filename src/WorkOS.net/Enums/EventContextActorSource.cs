@@ -18,6 +18,8 @@ namespace WorkOS
         Api,
         [EnumMember(Value = "dashboard")]
         Dashboard,
+        [EnumMember(Value = "admin_portal")]
+        AdminPortal,
         [EnumMember(Value = "system")]
         System,
     }
