@@ -1,7 +1,7 @@
 {
   "version": 2,
   "language": "dotnet",
-  "generatedAt": "2026-04-28T16:33:51.142Z",
+  "generatedAt": "2026-05-03T22:58:09.919Z",
   "files": [
     "src/WorkOS.net/Client/Utilities/EventSchemaDiscriminatorConverter.cs",
     "src/WorkOS.net/Client/WorkOSClient.Generated.cs",
@@ -16,7 +16,6 @@
     "src/WorkOS.net/Entities/ApiKeyCreatedDataOwner.cs",
     "src/WorkOS.net/Entities/ApiKeyRevoked.cs",
     "src/WorkOS.net/Entities/ApiKeyValidationResponse.cs",
-    "src/WorkOS.net/Entities/ApiKeyWithValue.cs",
     "src/WorkOS.net/Entities/ApplicationCredentialsListItem.cs",
     "src/WorkOS.net/Entities/AssignRole.cs",
     "src/WorkOS.net/Entities/AuditLogActionJson.cs",
@@ -124,6 +123,7 @@
     "src/WorkOS.net/Entities/CreatePasswordResetToken.cs",
     "src/WorkOS.net/Entities/CreateRedirectUri.cs",
     "src/WorkOS.net/Entities/CreateUser.cs",
+    "src/WorkOS.net/Entities/CreateUserApiKey.cs",
     "src/WorkOS.net/Entities/CreateUserInviteOptions.cs",
     "src/WorkOS.net/Entities/CreateUserOrganizationMembership.cs",
     "src/WorkOS.net/Entities/CreateWebhookEndpoint.cs",
@@ -218,6 +218,8 @@
     "src/WorkOS.net/Entities/MfaTotpSessionAuthenticateRequest.cs",
     "src/WorkOS.net/Entities/NewConnectApplicationSecret.cs",
     "src/WorkOS.net/Entities/Organization.cs",
+    "src/WorkOS.net/Entities/OrganizationApiKey.cs",
+    "src/WorkOS.net/Entities/OrganizationApiKeyWithValue.cs",
     "src/WorkOS.net/Entities/OrganizationCreated.cs",
     "src/WorkOS.net/Entities/OrganizationCreatedData.cs",
     "src/WorkOS.net/Entities/OrganizationCreatedDataDomain.cs",
@@ -293,6 +295,9 @@
     "src/WorkOS.net/Entities/UpdateUserOrganizationMembership.cs",
     "src/WorkOS.net/Entities/UpdateWebhookEndpoint.cs",
     "src/WorkOS.net/Entities/User.cs",
+    "src/WorkOS.net/Entities/UserApiKey.cs",
+    "src/WorkOS.net/Entities/UserApiKeyOwner.cs",
+    "src/WorkOS.net/Entities/UserApiKeyWithValue.cs",
     "src/WorkOS.net/Entities/UserAuthenticationFactorEnrollResponse.cs",
     "src/WorkOS.net/Entities/UserConsentOption.cs",
     "src/WorkOS.net/Entities/UserConsentOptionChoice.cs",
@@ -304,6 +309,8 @@
     "src/WorkOS.net/Entities/UserOrganizationMembershipBaseListData.cs",
     "src/WorkOS.net/Entities/UserUpdated.cs",
     "src/WorkOS.net/Entities/ValidateApiKey.cs",
+    "src/WorkOS.net/Entities/VaultByokKeyDeleted.cs",
+    "src/WorkOS.net/Entities/VaultByokKeyDeletedData.cs",
     "src/WorkOS.net/Entities/VaultByokKeyVerificationCompleted.cs",
     "src/WorkOS.net/Entities/VaultByokKeyVerificationCompletedData.cs",
     "src/WorkOS.net/Entities/VaultDataCreated.cs",
@@ -329,7 +336,7 @@
     "src/WorkOS.net/Entities/WebhookEndpointJson.cs",
     "src/WorkOS.net/Entities/WidgetSessionToken.cs",
     "src/WorkOS.net/Entities/WidgetSessionTokenResponse.cs",
-    "src/WorkOS.net/Enums/ApplicationsOrder.cs",
+    "src/WorkOS.net/Enums/ApiKeysOrder.cs",
     "src/WorkOS.net/Enums/AuditLogConfigurationLogStreamState.cs",
     "src/WorkOS.net/Enums/AuditLogConfigurationLogStreamType.cs",
     "src/WorkOS.net/Enums/AuditLogConfigurationState.cs",
@@ -380,7 +387,7 @@
     "src/WorkOS.net/Enums/UserIdentitiesGetItemProvider.cs",
     "src/WorkOS.net/Enums/UserManagementAuthenticationProvider.cs",
     "src/WorkOS.net/Enums/UserManagementAuthenticationScreenHint.cs",
-    "src/WorkOS.net/Enums/VaultByokKeyVerificationCompletedDataKeyProvider.cs",
+    "src/WorkOS.net/Enums/VaultByokKeyDeletedDataKeyProvider.cs",
     "src/WorkOS.net/Enums/VaultDataCreatedDataActorSource.cs",
     "src/WorkOS.net/Enums/WaitlistUserState.cs",
     "src/WorkOS.net/Enums/WidgetSessionTokenScopes.cs",
@@ -467,9 +474,6 @@
     "test/WorkOSTests/testdata/api_key_revoked_nulls.json",
     "test/WorkOSTests/testdata/api_key_validation_response.json",
     "test/WorkOSTests/testdata/api_key_validation_response_nulls.json",
-    "test/WorkOSTests/testdata/api_key_with_value.json",
-    "test/WorkOSTests/testdata/api_key_with_value_nulls.json",
-    "test/WorkOSTests/testdata/api_key_with_value_owner.json",
     "test/WorkOSTests/testdata/application_credentials_list_item.json",
     "test/WorkOSTests/testdata/application_credentials_list_item_nulls.json",
     "test/WorkOSTests/testdata/assign_role.json",
@@ -684,6 +688,8 @@
     "test/WorkOSTests/testdata/create_role.json",
     "test/WorkOSTests/testdata/create_role_nulls.json",
     "test/WorkOSTests/testdata/create_user.json",
+    "test/WorkOSTests/testdata/create_user_api_key.json",
+    "test/WorkOSTests/testdata/create_user_api_key_nulls.json",
     "test/WorkOSTests/testdata/create_user_invite_options.json",
     "test/WorkOSTests/testdata/create_user_invite_options_nulls.json",
     "test/WorkOSTests/testdata/create_user_nulls.json",
@@ -881,7 +887,6 @@
     "test/WorkOSTests/testdata/jwks_response.json",
     "test/WorkOSTests/testdata/jwks_response_keys.json",
     "test/WorkOSTests/testdata/jwt_template_response.json",
-    "test/WorkOSTests/testdata/list_api_key.json",
     "test/WorkOSTests/testdata/list_audit_log_action_json.json",
     "test/WorkOSTests/testdata/list_audit_log_schema_json.json",
     "test/WorkOSTests/testdata/list_authentication_factor.json",
@@ -893,7 +898,6 @@
     "test/WorkOSTests/testdata/list_directory.json",
     "test/WorkOSTests/testdata/list_directory_group.json",
     "test/WorkOSTests/testdata/list_directory_user_with_groups.json",
-    "test/WorkOSTests/testdata/list_empty_api_key.json",
     "test/WorkOSTests/testdata/list_empty_audit_log_action_json.json",
     "test/WorkOSTests/testdata/list_empty_audit_log_schema_json.json",
     "test/WorkOSTests/testdata/list_empty_authentication_factor.json",
@@ -909,8 +913,10 @@
     "test/WorkOSTests/testdata/list_empty_flag.json",
     "test/WorkOSTests/testdata/list_empty_group.json",
     "test/WorkOSTests/testdata/list_empty_organization.json",
+    "test/WorkOSTests/testdata/list_empty_organization_api_key.json",
     "test/WorkOSTests/testdata/list_empty_role_assignment.json",
     "test/WorkOSTests/testdata/list_empty_user.json",
+    "test/WorkOSTests/testdata/list_empty_user_api_key.json",
     "test/WorkOSTests/testdata/list_empty_user_invite.json",
     "test/WorkOSTests/testdata/list_empty_user_organization_membership.json",
     "test/WorkOSTests/testdata/list_empty_user_organization_membership_base_list_data.json",
@@ -920,8 +926,10 @@
     "test/WorkOSTests/testdata/list_flag.json",
     "test/WorkOSTests/testdata/list_group.json",
     "test/WorkOSTests/testdata/list_organization.json",
+    "test/WorkOSTests/testdata/list_organization_api_key.json",
     "test/WorkOSTests/testdata/list_role_assignment.json",
     "test/WorkOSTests/testdata/list_user.json",
+    "test/WorkOSTests/testdata/list_user_api_key.json",
     "test/WorkOSTests/testdata/list_user_invite.json",
     "test/WorkOSTests/testdata/list_user_organization_membership.json",
     "test/WorkOSTests/testdata/list_user_organization_membership_base_list_data.json",
@@ -938,6 +946,12 @@
     "test/WorkOSTests/testdata/new_connect_application_secret.json",
     "test/WorkOSTests/testdata/new_connect_application_secret_nulls.json",
     "test/WorkOSTests/testdata/organization.json",
+    "test/WorkOSTests/testdata/organization_api_key.json",
+    "test/WorkOSTests/testdata/organization_api_key_nulls.json",
+    "test/WorkOSTests/testdata/organization_api_key_owner.json",
+    "test/WorkOSTests/testdata/organization_api_key_with_value.json",
+    "test/WorkOSTests/testdata/organization_api_key_with_value_nulls.json",
+    "test/WorkOSTests/testdata/organization_api_key_with_value_owner.json",
     "test/WorkOSTests/testdata/organization_created.json",
     "test/WorkOSTests/testdata/organization_created_data.json",
     "test/WorkOSTests/testdata/organization_created_data_domain.json",
@@ -1126,6 +1140,12 @@
     "test/WorkOSTests/testdata/update_webhook_endpoint.json",
     "test/WorkOSTests/testdata/update_webhook_endpoint_nulls.json",
     "test/WorkOSTests/testdata/user.json",
+    "test/WorkOSTests/testdata/user_api_key.json",
+    "test/WorkOSTests/testdata/user_api_key_nulls.json",
+    "test/WorkOSTests/testdata/user_api_key_owner.json",
+    "test/WorkOSTests/testdata/user_api_key_with_value.json",
+    "test/WorkOSTests/testdata/user_api_key_with_value_nulls.json",
+    "test/WorkOSTests/testdata/user_api_key_with_value_owner.json",
     "test/WorkOSTests/testdata/user_authentication_factor_enroll_response.json",
     "test/WorkOSTests/testdata/user_consent_option.json",
     "test/WorkOSTests/testdata/user_consent_option_choice.json",
@@ -1153,6 +1173,9 @@
     "test/WorkOSTests/testdata/user_updated.json",
     "test/WorkOSTests/testdata/user_updated_nulls.json",
     "test/WorkOSTests/testdata/validate_api_key.json",
+    "test/WorkOSTests/testdata/vault_byok_key_deleted.json",
+    "test/WorkOSTests/testdata/vault_byok_key_deleted_data.json",
+    "test/WorkOSTests/testdata/vault_byok_key_deleted_nulls.json",
     "test/WorkOSTests/testdata/vault_byok_key_verification_completed.json",
     "test/WorkOSTests/testdata/vault_byok_key_verification_completed_data.json",
     "test/WorkOSTests/testdata/vault_byok_key_verification_completed_nulls.json",
@@ -1199,14 +1222,6 @@
     "test/WorkOSTests/testdata/widget_session_token_response.json"
   ],
   "operations": {
-    "POST /api_keys/validations": {
-      "sdkMethod": "CreateValidationAsync",
-      "service": "api_keys"
-    },
-    "DELETE /api_keys/{id}": {
-      "sdkMethod": "DeleteAsync",
-      "service": "api_keys"
-    },
     "POST /auth/challenges/{id}/verify": {
       "sdkMethod": "VerifyChallengeAsync",
       "service": "multi_factor_auth"
@@ -1743,6 +1758,10 @@
       "sdkMethod": "RevokeInvitationAsync",
       "service": "user_management"
     },
+    "GET /user_management/jwt_template": {
+      "sdkMethod": "ListJWTTemplateAsync",
+      "service": "user_management"
+    },
     "PUT /user_management/jwt_template": {
       "sdkMethod": "UpdateJWTTemplateAsync",
       "service": "user_management"
@@ -1842,6 +1861,22 @@
     "POST /widgets/token": {
       "sdkMethod": "CreateTokenAsync",
       "service": "widgets"
+    },
+    "POST /api_keys/validations": {
+      "sdkMethod": "CreateValidationAsync",
+      "service": "api_keys"
+    },
+    "DELETE /api_keys/{id}": {
+      "sdkMethod": "DeleteAsync",
+      "service": "api_keys"
+    },
+    "GET /user_management/users/{userId}/api_keys": {
+      "sdkMethod": "ListApiKeysAsync",
+      "service": "user_management"
+    },
+    "POST /user_management/users/{userId}/api_keys": {
+      "sdkMethod": "CreateApiKeyAsync",
+      "service": "user_management"
     },
     "GET /audit_logs/actions": {
       "sdkMethod": "ListActionsAsync",

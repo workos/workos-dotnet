@@ -7,14 +7,6 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="ApiKeysService.CreateValidationAsync"/>: Validate API key</summary>
-    public class ApiKeysCreateValidationOptions : BaseOptions
-    {
-        /// <summary>The value for an API key.</summary>
-        public string Value { get; set; } = default!;
-
-    }
-
     /// <summary>Request options for <see cref="ApiKeysService.ListOrganizationApiKeysAsync"/>: List API keys for an organization</summary>
     public class ApiKeysListOrganizationApiKeysOptions : ListOptions
     {
@@ -28,6 +20,14 @@ namespace WorkOS
 
         /// <summary>The permission slugs to assign to the API key.</summary>
         public List<string>? Permissions { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="ApiKeysService.CreateValidationAsync"/>: Validate API key</summary>
+    public class ApiKeysCreateValidationOptions : BaseOptions
+    {
+        /// <summary>The value for an API key.</summary>
+        public string Value { get; set; } = default!;
 
     }
 }

@@ -6,19 +6,19 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents vault byok key verification completed data key provider values.</summary>
+    /// <summary>Represents api keys order values.</summary>
     [JsonConverter(typeof(WorkOSNewtonsoftStringEnumConverter))]
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
-    public enum VaultByokKeyVerificationCompletedDataKeyProvider
+    public enum ApiKeysOrder
     {
         [EnumMember(Value = "unknown")]
         Unknown,
 
-        [EnumMember(Value = "AWS_KMS")]
-        AwsKms,
-        [EnumMember(Value = "GCP_KMS")]
-        GcpKms,
-        [EnumMember(Value = "AZURE_KEY_VAULT")]
-        AzureKeyVault,
+        [EnumMember(Value = "normal")]
+        Normal,
+        [EnumMember(Value = "desc")]
+        Desc,
+        [EnumMember(Value = "asc")]
+        Asc,
     }
 }

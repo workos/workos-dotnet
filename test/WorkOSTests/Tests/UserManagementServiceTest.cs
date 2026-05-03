@@ -410,6 +410,18 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListJWTTemplateAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/jwt_template_response.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/jwt_template", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListJWTTemplateAsync();
+            Assert.NotNull(result);
+            Assert.Equal("{\"urn:myapp:full_name\": \"{{user.first_name}} {{user.last_name}}\", \"urn:myapp:email\": \"{{user.email}}\"}", result.Content);
+            Assert.Equal("2026-01-15T12:00:00.000Z", result.CreatedAt);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/jwt_template");
+        }
+
+        [Fact]
         public async Task TestUpdateJWTTemplateAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/jwt_template_response.json");
@@ -418,7 +430,7 @@ namespace WorkOSTests
             options.Content = "test_content";
             var result = await this.service.UpdateJWTTemplateAsync(options);
             Assert.NotNull(result);
-            Assert.Equal("{\"iss\": \"{{environment.id}}\", \"sub\": \"{{user.id}}\"}", result.Content);
+            Assert.Equal("{\"urn:myapp:full_name\": \"{{user.first_name}} {{user.last_name}}\", \"urn:myapp:email\": \"{{user.email}}\"}", result.Content);
             Assert.Equal("2026-01-15T12:00:00.000Z", result.CreatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/user_management/jwt_template");
             await this.httpMock.AssertRequestBodyContainsAsync("content", "test_content");
@@ -596,6 +608,44 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListApiKeysAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/list_user_api_key.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_userId/api_keys", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListApiKeysAsync("test_userId", new UserManagementListApiKeysOptions());
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/users/test_userId/api_keys");
+        }
+
+        [Fact]
+        public async Task TestListApiKeysAsyncEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/users/test_userId/api_keys", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListApiKeysAsync("test_userId", new UserManagementListApiKeysOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
+        public async Task TestCreateApiKeyAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/user_api_key_with_value.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/users/test_userId/api_keys", HttpStatusCode.OK, fixture);
+            var options = new UserManagementCreateApiKeyOptions();
+            options.Name = "test_name";
+            options.OrganizationId = "test_organization_id";
+            var result = await this.service.CreateApiKeyAsync("test_userId", options);
+            Assert.NotNull(result);
+            Assert.Equal("api_key_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("Production API Key", result.Name);
+            Assert.Equal("sk_...3456", result.ObfuscatedValue);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users/test_userId/api_keys");
+            await this.httpMock.AssertRequestBodyContainsAsync("name", "test_name");
+            await this.httpMock.AssertRequestBodyContainsAsync("organization_id", "test_organization_id");
+        }
+
+        [Fact]
         public async Task TestListAutoPagingAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/email_change_confirmation_user.json");
@@ -748,6 +798,38 @@ namespace WorkOSTests
 
             var items = new List<AuthorizedConnectApplicationListData>();
             await foreach (var item in this.service.ListAuthorizedApplicationsAutoPagingAsync("test_user_id", new UserManagementListAuthorizedApplicationsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
+        public async Task TestListApiKeysAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/user_api_key.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_userId/api_keys", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<UserApiKey>();
+            await foreach (var item in this.service.ListApiKeysAutoPagingAsync("test_userId", new UserManagementListApiKeysOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListApiKeysAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/users/test_userId/api_keys", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<UserApiKey>();
+            await foreach (var item in this.service.ListApiKeysAutoPagingAsync("test_userId", new UserManagementListApiKeysOptions()))
             {
                 items.Add(item);
             }

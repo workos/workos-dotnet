@@ -5,8 +5,8 @@ namespace WorkOS
     using System;
     using System.Collections.Generic;
 
-    /// <summary>Represents an api key with value.</summary>
-    public class ApiKeyWithValue
+    /// <summary>Represents an user api key with value.</summary>
+    public class UserApiKeyWithValue
     {
 
         /// <summary>Distinguishes the API Key object.</summary>
@@ -16,7 +16,7 @@ namespace WorkOS
         public string Id { get; set; } = default!;
 
         /// <summary>The entity that owns the API Key.</summary>
-        public ApiKeyCreatedDataOwner Owner { get; set; } = default!;
+        public UserApiKeyOwner Owner { get; set; } = default!;
 
         /// <summary>A descriptive name for the API Key.</summary>
         public string Name { get; set; } = default!;
