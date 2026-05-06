@@ -15,7 +15,8 @@ namespace WorkOS
         public string Id { get; set; } = default!;
 
         /// <summary>The owner of the API key.</summary>
-        public ApiKeyCreatedDataOwner Owner { get; set; } = default!;
+        [Newtonsoft.Json.JsonConverter(typeof(ApiKeyCreatedDataOwnerDiscriminatorConverter))]
+        public object Owner { get; set; } = default!;
 
         /// <summary>The name of the API key.</summary>
         public string Name { get; set; } = default!;

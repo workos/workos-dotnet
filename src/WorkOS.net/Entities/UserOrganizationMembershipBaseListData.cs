@@ -43,6 +43,9 @@ namespace WorkOS
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset UpdatedAt { get; set; }
 
+        /// <summary>The user that belongs to the organization through this membership.</summary>
+        public User User { get; set; } = default!;
+
         /// <summary>
         /// Typed accessor for <see cref="CustomAttributes"/>. Returns the value stored under
         /// <paramref name="key"/> coerced to <typeparamref name="T"/>, or the default

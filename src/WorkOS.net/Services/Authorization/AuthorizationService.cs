@@ -208,14 +208,14 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="RoleAssignment"/> results.</returns>
-        public virtual async Task<WorkOSList<RoleAssignment>> ListRoleAssignmentsAsync(string organizationMembershipId, AuthorizationListRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="UserRoleAssignment"/> results.</returns>
+        public virtual async Task<WorkOSList<UserRoleAssignment>> ListRoleAssignmentsAsync(string organizationMembershipId, AuthorizationListRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<RoleAssignment>>($"/authorization/organization_memberships/{Uri.EscapeDataString(organizationMembershipId)}/role_assignments", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<UserRoleAssignment>>($"/authorization/organization_memberships/{Uri.EscapeDataString(organizationMembershipId)}/role_assignments", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="ListRoleAssignmentsAsync"/>.</summary>
-        public virtual Task<WorkOSList<RoleAssignment>> ListRoleAssignments(string organizationMembershipId, AuthorizationListRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<WorkOSList<UserRoleAssignment>> ListRoleAssignments(string organizationMembershipId, AuthorizationListRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.ListRoleAssignmentsAsync(organizationMembershipId, options, requestOptions, cancellationToken);
         }
@@ -225,10 +225,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="RoleAssignment"/> items.</returns>
-        public virtual IAsyncEnumerable<RoleAssignment> ListRoleAssignmentsAutoPagingAsync(string organizationMembershipId, AuthorizationListRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="UserRoleAssignment"/> items.</returns>
+        public virtual IAsyncEnumerable<UserRoleAssignment> ListRoleAssignmentsAutoPagingAsync(string organizationMembershipId, AuthorizationListRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<RoleAssignment>($"/authorization/organization_memberships/{Uri.EscapeDataString(organizationMembershipId)}/role_assignments", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<UserRoleAssignment>($"/authorization/organization_memberships/{Uri.EscapeDataString(organizationMembershipId)}/role_assignments", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Assign a role</summary>
@@ -239,8 +239,8 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="RoleAssignment"/> result.</returns>
-        public virtual async Task<RoleAssignment> AssignRoleAsync(string organizationMembershipId, AuthorizationAssignRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="UserRoleAssignment"/> result.</returns>
+        public virtual async Task<UserRoleAssignment> AssignRoleAsync(string organizationMembershipId, AuthorizationAssignRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -270,11 +270,11 @@ namespace WorkOS
                 }
             }
 
-            return await this.Client.MakeAPIRequest<RoleAssignment>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<UserRoleAssignment>(request, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="AssignRoleAsync"/>.</summary>
-        public virtual Task<RoleAssignment> AssignRole(string organizationMembershipId, AuthorizationAssignRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<UserRoleAssignment> AssignRole(string organizationMembershipId, AuthorizationAssignRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.AssignRoleAsync(organizationMembershipId, options, requestOptions, cancellationToken);
         }
@@ -633,6 +633,41 @@ namespace WorkOS
             return this.ListAutoPagingAsync<UserOrganizationMembershipBaseListData>($"/authorization/organizations/{Uri.EscapeDataString(organizationId)}/resources/{Uri.EscapeDataString(resourceTypeSlug)}/{Uri.EscapeDataString(externalId)}/organization_memberships", options, requestOptions, cancellationToken);
         }
 
+        /// <summary>List role assignments for a resource by external ID</summary>
+        /// <remarks>
+        /// List all role assignments granted on a resource, identified by its external ID. Each assignment includes the organization membership it was granted to.
+        /// </remarks>
+        /// <param name="organizationId">The ID of the organization that owns the resource.</param>
+        /// <param name="resourceTypeSlug">The slug of the resource type.</param>
+        /// <param name="externalId">An identifier you provide to reference the resource in your system.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="UserRoleAssignment"/> results.</returns>
+        public virtual async Task<WorkOSList<UserRoleAssignment>> ListRoleAssignmentsForResourceByExternalIdAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListRoleAssignmentsForResourceByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<UserRoleAssignment>>($"/authorization/organizations/{Uri.EscapeDataString(organizationId)}/resources/{Uri.EscapeDataString(resourceTypeSlug)}/{Uri.EscapeDataString(externalId)}/role_assignments", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListRoleAssignmentsForResourceByExternalIdAsync"/>.</summary>
+        public virtual Task<WorkOSList<UserRoleAssignment>> ListRoleAssignmentsForResourceByExternalId(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListRoleAssignmentsForResourceByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListRoleAssignmentsForResourceByExternalIdAsync(organizationId, resourceTypeSlug, externalId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListRoleAssignmentsForResourceByExternalIdAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="organizationId">The ID of the organization that owns the resource.</param>
+        /// <param name="resourceTypeSlug">The slug of the resource type.</param>
+        /// <param name="externalId">An identifier you provide to reference the resource in your system.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="UserRoleAssignment"/> items.</returns>
+        public virtual IAsyncEnumerable<UserRoleAssignment> ListRoleAssignmentsForResourceByExternalIdAutoPagingAsync(string organizationId, string resourceTypeSlug, string externalId, AuthorizationListRoleAssignmentsForResourceByExternalIdOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<UserRoleAssignment>($"/authorization/organizations/{Uri.EscapeDataString(organizationId)}/resources/{Uri.EscapeDataString(resourceTypeSlug)}/{Uri.EscapeDataString(externalId)}/role_assignments", options, requestOptions, cancellationToken);
+        }
+
         /// <summary>List resources</summary>
         /// <remarks>
         /// Get a paginated list of authorization resources.
@@ -852,6 +887,37 @@ namespace WorkOS
         public virtual IAsyncEnumerable<UserOrganizationMembershipBaseListData> ListMembershipsForResourceAutoPagingAsync(string resourceId, AuthorizationListMembershipsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.ListAutoPagingAsync<UserOrganizationMembershipBaseListData>($"/authorization/resources/{Uri.EscapeDataString(resourceId)}/organization_memberships", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List role assignments for a resource</summary>
+        /// <remarks>
+        /// List all role assignments granted on a specific resource instance. Each assignment includes the organization membership it was granted to.
+        /// </remarks>
+        /// <param name="resourceId">The ID of the authorization resource.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="UserRoleAssignment"/> results.</returns>
+        public virtual async Task<WorkOSList<UserRoleAssignment>> ListRoleAssignmentsForResourceAsync(string resourceId, AuthorizationListRoleAssignmentsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<UserRoleAssignment>>($"/authorization/resources/{Uri.EscapeDataString(resourceId)}/role_assignments", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListRoleAssignmentsForResourceAsync"/>.</summary>
+        public virtual Task<WorkOSList<UserRoleAssignment>> ListRoleAssignmentsForResource(string resourceId, AuthorizationListRoleAssignmentsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListRoleAssignmentsForResourceAsync(resourceId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListRoleAssignmentsForResourceAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="resourceId">The ID of the authorization resource.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="UserRoleAssignment"/> items.</returns>
+        public virtual IAsyncEnumerable<UserRoleAssignment> ListRoleAssignmentsForResourceAutoPagingAsync(string resourceId, AuthorizationListRoleAssignmentsForResourceOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<UserRoleAssignment>($"/authorization/resources/{Uri.EscapeDataString(resourceId)}/role_assignments", options, requestOptions, cancellationToken);
         }
 
         /// <summary>List environment roles</summary>

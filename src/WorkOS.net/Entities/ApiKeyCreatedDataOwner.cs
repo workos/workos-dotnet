@@ -3,7 +3,7 @@
 namespace WorkOS
 {
 
-    /// <summary>The owner of the API key.</summary>
+    /// <summary>Represents an api key created data owner.</summary>
     public class ApiKeyCreatedDataOwner
     {
 

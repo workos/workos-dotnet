@@ -811,6 +811,24 @@ namespace WorkOS
             return this.RevokeInvitationAsync(id, requestOptions, cancellationToken);
         }
 
+        /// <summary>Get JWT template</summary>
+        /// <remarks>
+        /// Get the JWT template for the current environment.
+        /// </remarks>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="JWTTemplateResponse"/> result.</returns>
+        public virtual async Task<JWTTemplateResponse> ListJWTTemplateAsync(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<JWTTemplateResponse>("/user_management/jwt_template", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListJWTTemplateAsync"/>.</summary>
+        public virtual Task<JWTTemplateResponse> ListJWTTemplate(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListJWTTemplateAsync(requestOptions, cancellationToken);
+        }
+
         /// <summary>Update JWT template</summary>
         /// <remarks>
         /// Update the JWT template for the current environment.
@@ -1131,6 +1149,57 @@ namespace WorkOS
         public virtual Task DeleteAuthorizedApplication(string userId, string applicationId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.DeleteAuthorizedApplicationAsync(userId, applicationId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List API keys for a user</summary>
+        /// <remarks>
+        /// Get a list of API keys owned by a specific user.
+        /// </remarks>
+        /// <param name="userId">Unique identifier of the user.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="UserApiKey"/> results.</returns>
+        public virtual async Task<WorkOSList<UserApiKey>> ListApiKeysAsync(string userId, UserManagementListApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<UserApiKey>>($"/user_management/users/{Uri.EscapeDataString(userId)}/api_keys", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListApiKeysAsync"/>.</summary>
+        public virtual Task<WorkOSList<UserApiKey>> ListApiKeys(string userId, UserManagementListApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListApiKeysAsync(userId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListApiKeysAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="userId">Unique identifier of the user.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="UserApiKey"/> items.</returns>
+        public virtual IAsyncEnumerable<UserApiKey> ListApiKeysAutoPagingAsync(string userId, UserManagementListApiKeysOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<UserApiKey>($"/user_management/users/{Uri.EscapeDataString(userId)}/api_keys", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create an API key for a user</summary>
+        /// <remarks>
+        /// Create a new API key owned by a user. The user must have an active membership in the specified organization.
+        /// </remarks>
+        /// <param name="userId">Unique identifier of the user.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="UserApiKeyWithValue"/> result.</returns>
+        public virtual async Task<UserApiKeyWithValue> CreateApiKeyAsync(string userId, UserManagementCreateApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<UserApiKeyWithValue>($"/user_management/users/{Uri.EscapeDataString(userId)}/api_keys", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateApiKeyAsync"/>.</summary>
+        public virtual Task<UserApiKeyWithValue> CreateApiKey(string userId, UserManagementCreateApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateApiKeyAsync(userId, options, requestOptions, cancellationToken);
         }
     }
 }

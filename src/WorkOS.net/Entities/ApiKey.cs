@@ -5,7 +5,7 @@ namespace WorkOS
     using System;
     using System.Collections.Generic;
 
-    /// <summary>The API Key object if the value is valid, or `null` if invalid.</summary>
+    /// <summary>Represents an api key.</summary>
     public class ApiKey
     {
 
@@ -16,7 +16,8 @@ namespace WorkOS
         public string Id { get; set; } = default!;
 
         /// <summary>The entity that owns the API Key.</summary>
-        public ApiKeyCreatedDataOwner Owner { get; set; } = default!;
+        [Newtonsoft.Json.JsonConverter(typeof(ApiKeyOwnerDiscriminatorConverter))]
+        public object Owner { get; set; } = default!;
 
         /// <summary>A descriptive name for the API Key.</summary>
         public string Name { get; set; } = default!;
