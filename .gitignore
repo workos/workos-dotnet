@@ -11,3 +11,7 @@ project.lock.json
 *.log
 *.swp
 
+# DocFX generated output
+docs/_site/
+api/
+

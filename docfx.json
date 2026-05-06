@@ -1,0 +1,53 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": ".",
+          "files": [
+            "src/WorkOS.net/WorkOS.net.csproj"
+          ]
+        }
+      ],
+      "dest": "api",
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/**.yml",
+          "api/**.md"
+        ]
+      },
+      {
+        "files": [
+          "index.md",
+          "toc.yml"
+        ],
+        "src": "docfx"
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ],
+        "src": "docfx"
+      }
+    ],
+    "output": "docs/_site",
+    "globalMetadata": {
+      "_appName": "WorkOS .NET SDK",
+      "_appTitle": "WorkOS .NET SDK",
+      "_enableSearch": false,
+      "_disableContribution": true
+    },
+    "template": [
+      "default",
+      "modern"
+    ]
+  }
+}

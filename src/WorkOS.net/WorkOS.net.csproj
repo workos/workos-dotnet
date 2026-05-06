@@ -7,7 +7,7 @@
     <Authors>WorkOS</Authors>
     <Copyright>Copyright © WorkOS</Copyright>
     <PackageId>WorkOS.net</PackageId>
-    <PackageProjectUrl>https://github.com/workos-inc/workos-dotnet</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/workos/workos-dotnet</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>

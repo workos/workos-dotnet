@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+cd "$(dirname "$0")/.."
+exec dotnet docfx serve docs/_site -p 4000

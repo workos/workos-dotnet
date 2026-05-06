@@ -1,0 +1,28 @@
+#!/bin/sh
+set -eu
+cd "$(dirname "$0")/.."
+dotnet tool restore
+dotnet docfx docfx.json
+dotnet build src/WorkOS.net/WorkOS.net.csproj -c Release
+dotnet defaultdocumentation \
+  --AssemblyFilePath src/WorkOS.net/bin/Release/net8.0/WorkOS.net.dll \
+  --DocumentationFilePath src/WorkOS.net/bin/Release/net8.0/WorkOS.net.xml \
+  --OutputDirectoryPath docs/_site/api/ \
+  --FileNameFactory FullName \
+  --GeneratedAccessModifiers Public,Protected
+
+find docs/_site/api -name '*.md' -exec sed -i.bak 's/&#129106;/->/g' {} +
+find docs/_site/api -name '*.md.bak' -delete
+
+{
+  echo "# WorkOS .NET SDK"
+  echo
+  echo "> Auto-generated API reference for the WorkOS .NET SDK. Each entry links to a raw markdown file describing a public type."
+  echo
+  echo "## API"
+  echo
+  for f in docs/_site/api/*.md; do
+    name=$(basename "$f" .md)
+    printf -- "- [%s](https://workos.github.io/workos-dotnet/api/%s.md)\n" "$name" "$name"
+  done
+} > docs/_site/llms.txt
