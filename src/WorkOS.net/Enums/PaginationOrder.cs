@@ -11,14 +11,14 @@ namespace WorkOS
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
     public enum PaginationOrder
     {
-        [EnumMember(Value = "unknown")]
-        Unknown,
-
-        [EnumMember(Value = "normal")]
-        Normal,
         [EnumMember(Value = "desc")]
-        Desc,
+        Desc = 0,
+        [EnumMember(Value = "normal")]
+        Normal = 1,
         [EnumMember(Value = "asc")]
-        Asc,
+        Asc = 2,
+
+        [EnumMember(Value = "unknown")]
+        Unknown = 99,
     }
 }
