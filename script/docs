@@ -8,7 +8,7 @@ dotnet defaultdocumentation \
   --AssemblyFilePath src/WorkOS.net/bin/Release/net8.0/WorkOS.net.dll \
   --DocumentationFilePath src/WorkOS.net/bin/Release/net8.0/WorkOS.net.xml \
   --OutputDirectoryPath docs/_site/api/ \
-  --FileNameFactory FullName \
+  --FileNameFactory Name \
   --GeneratedAccessModifiers Public,Protected
 
 find docs/_site/api -name '*.md' -exec sed -i.bak 's/&#129106;/->/g' {} +
