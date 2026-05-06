@@ -180,6 +180,11 @@ namespace WorkOS
 
     }
 
+    /// <summary>Request options for <see cref="AuthorizationService.ListRoleAssignmentsForResourceByExternalIdAsync"/>: List role assignments for a resource by external ID</summary>
+    public class AuthorizationListRoleAssignmentsForResourceByExternalIdOptions : ListOptions
+    {
+    }
+
     /// <summary>Request options for <see cref="AuthorizationService.ListResourcesAsync"/>: List resources</summary>
     public class AuthorizationListResourcesOptions : ListOptions
     {
@@ -273,6 +278,11 @@ namespace WorkOS
         /// <summary>Filter by assignment type. Use `direct` for direct assignments only, or `indirect` to include inherited assignments.</summary>
         public AuthorizationAssignment? Assignment { get; set; }
 
+    }
+
+    /// <summary>Request options for <see cref="AuthorizationService.ListRoleAssignmentsForResourceAsync"/>: List role assignments for a resource</summary>
+    public class AuthorizationListRoleAssignmentsForResourceOptions : ListOptions
+    {
     }
 
     /// <summary>Request options for <see cref="AuthorizationService.CreateEnvironmentRoleAsync"/>: Create an environment role</summary>

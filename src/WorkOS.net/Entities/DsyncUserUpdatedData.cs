@@ -35,6 +35,9 @@ namespace WorkOS
         /// <summary>The last name of the user.</summary>
         public string? LastName { get; set; }
 
+        /// <summary>The full name of the user.</summary>
+        public string? Name { get; set; }
+
         /// <summary>A list of email addresses for the user.</summary>
         [System.Obsolete("This field is deprecated.")]
         public List<DirectoryUserEmail>? Emails { get; set; }

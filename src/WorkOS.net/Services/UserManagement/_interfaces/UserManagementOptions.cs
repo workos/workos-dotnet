@@ -357,4 +357,26 @@ namespace WorkOS
     public class UserManagementListAuthorizedApplicationsOptions : ListOptions
     {
     }
+
+    /// <summary>Request options for <see cref="UserManagementService.ListApiKeysAsync"/>: List API keys for a user</summary>
+    public class UserManagementListApiKeysOptions : ListOptions
+    {
+        /// <summary>The ID of the organization to filter user API keys by. When provided, only API keys created against that organization membership are returned.</summary>
+        public string? OrganizationId { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="UserManagementService.CreateApiKeyAsync"/>: Create an API key for a user</summary>
+    public class UserManagementCreateApiKeyOptions : BaseOptions
+    {
+        /// <summary>A descriptive name for the API key.</summary>
+        public string Name { get; set; } = default!;
+
+        /// <summary>The ID of the organization the user API key is associated with. The user must have an active membership in this organization.</summary>
+        public string OrganizationId { get; set; } = default!;
+
+        /// <summary>The permission slugs to assign to the API key. Each permission must be enabled for user API keys.</summary>
+        public List<string>? Permissions { get; set; }
+
+    }
 }
