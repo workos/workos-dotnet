@@ -1,5 +1,23 @@
 # Changelog
 
+## [4.0.0](https://github.com/workos/workos-dotnet/compare/v3.1.0...v4.0.0) (2026-05-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **user_management:** add user API key management and update models
+* **api_keys:** refactor API key models for organization and user ownership
+* **authorization:** replace RoleAssignment with UserRoleAssignment
+
+### Features
+
+* **api_keys:** refactor API key models for organization and user ownership ([b6f8e6e](https://github.com/workos/workos-dotnet/commit/b6f8e6e26927b161c51a3885a4e2ede833cadfe5))
+* **authorization:** replace RoleAssignment with UserRoleAssignment ([b6f8e6e](https://github.com/workos/workos-dotnet/commit/b6f8e6e26927b161c51a3885a4e2ede833cadfe5))
+* **docs:** add DocFX-based API reference site ([#251](https://github.com/workos/workos-dotnet/issues/251)) ([e19ff24](https://github.com/workos/workos-dotnet/commit/e19ff242a85d929107b47231fce1e5c48e2f4cd1))
+* **events:** add admin_portal event actor source ([b6f8e6e](https://github.com/workos/workos-dotnet/commit/b6f8e6e26927b161c51a3885a4e2ede833cadfe5))
+* **user_management:** add user API key management and update models ([b6f8e6e](https://github.com/workos/workos-dotnet/commit/b6f8e6e26927b161c51a3885a4e2ede833cadfe5))
+* **vault:** add BYOK key deleted event and consolidate key provider enum ([b6f8e6e](https://github.com/workos/workos-dotnet/commit/b6f8e6e26927b161c51a3885a4e2ede833cadfe5))
+
 ## [3.1.0](https://github.com/workos/workos-dotnet/compare/v3.0.2...v3.1.0) (2026-04-28)
 
 
