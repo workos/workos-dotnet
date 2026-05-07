@@ -26,6 +26,34 @@ namespace WorkOS
         {
         }
 
+        /// <summary>
+        /// Optional override for the expected JWT issuer. When null, defaults to
+        /// <c>{ApiBaseURL}/user_management/{clientId}</c>.
+        /// </summary>
+        /// <remarks>
+        /// TODO: confirm the literal documented WorkOS access-token issuer
+        /// before locking this default. See security-fix-plan.md "Open
+        /// questions / follow-ups" entry on .NET #57.
+        /// </remarks>
+        public string? ValidIssuer { get; set; }
+
+        /// <summary>
+        /// Optional override for the expected JWT audience. When null, defaults
+        /// to the configured client ID.
+        /// </summary>
+        /// <remarks>
+        /// TODO: confirm the literal documented WorkOS access-token audience
+        /// before locking this default. See security-fix-plan.md "Open
+        /// questions / follow-ups" entry on .NET #57.
+        /// </remarks>
+        public string? ValidAudience { get; set; }
+
+        /// <summary>
+        /// Optional override for the JWT signing algorithms accepted during
+        /// access-token validation. Defaults to <c>RS256</c>.
+        /// </summary>
+        public IList<string>? ValidAlgorithms { get; set; }
+
         /// <summary>Get the JWKS URL for the current client.</summary>
         /// <param name="clientId">Optional client ID override.</param>
         /// <returns>The JWKS URL string.</returns>
@@ -222,11 +250,28 @@ namespace WorkOS
 
             var config = await this.jwksManager.GetConfigurationAsync(cancellationToken);
             var handler = new JwtSecurityTokenHandler();
+
+            // Defaults are derived from the configured client. Callers can
+            // override via the additive ValidIssuer / ValidAudience /
+            // ValidAlgorithms properties for non-standard deployments.
+            // TODO: confirm the literal documented WorkOS issuer/audience
+            // strings — see security-fix-plan.md open question on .NET #57.
+            var clientId = this.Client.ClientId;
+            var defaultIssuer = !string.IsNullOrEmpty(clientId)
+                ? $"{this.Client.ApiBaseURL}/user_management/{clientId}"
+                : null;
+            var effectiveIssuer = this.ValidIssuer ?? defaultIssuer;
+            var effectiveAudience = this.ValidAudience ?? clientId;
+            var effectiveAlgorithms = this.ValidAlgorithms ?? new[] { "RS256" };
+
             var validationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = false,
-                ValidateAudience = false,
+                ValidateIssuer = !string.IsNullOrEmpty(effectiveIssuer),
+                ValidIssuer = effectiveIssuer,
+                ValidateAudience = !string.IsNullOrEmpty(effectiveAudience),
+                ValidAudience = effectiveAudience,
                 ValidateLifetime = true,
+                ValidAlgorithms = effectiveAlgorithms,
                 IssuerSigningKeys = config.SigningKeys,
             };
 
