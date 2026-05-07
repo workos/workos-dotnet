@@ -118,14 +118,10 @@ namespace WorkOS
                 throw new WorkOSWebhookException("Webhook timestamp is not a valid integer.");
             }
 
-            try
-            {
-                return this.UnixTimeToDateTime(timestampMs) >= DateTime.Now.AddSeconds(tolerance * -1);
-            }
-            catch (Exception ex) when (ex is ArgumentOutOfRangeException || ex is OverflowException)
-            {
-                throw new WorkOSWebhookException("Webhook timestamp is out of representable range.");
-            }
+            // Symmetric tolerance — reject timestamps that are too far in
+            // either direction. Matches ActionsService.VerifyHeader.
+            var nowMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            return Math.Abs(nowMs - timestampMs) <= tolerance * 1000L;
         }
 
         /// <summary>
@@ -171,11 +167,5 @@ namespace WorkOS
             return ConstantTimeAreEqual(a, b);
         }
 
-        private DateTime UnixTimeToDateTime(long unixtime)
-        {
-            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dtDateTime = dtDateTime.AddMilliseconds(unixtime).ToLocalTime();
-            return dtDateTime;
-        }
     }
 }
