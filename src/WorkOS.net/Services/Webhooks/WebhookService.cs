@@ -75,13 +75,24 @@ namespace WorkOS
         /// <returns>The timestamp and signature hash.</returns>
         public (string TimeStamp, string SignatureHash) GetTimestampAndSignature(string signatureHeader)
         {
+            if (signatureHeader == null)
+            {
+                throw new ArgumentException("Unable to extract timestamp and signature hash from header");
+            }
+
             var timeAndSig = signatureHeader.Split(',');
-            var timeStamp = timeAndSig[0];
-            var signatureHash = timeAndSig[1];
+            if (timeAndSig.Length != 2)
+            {
+                throw new ArgumentException("Unable to extract timestamp and signature hash from header");
+            }
+
             if (!signatureHeader.Contains("t=") || !signatureHeader.Contains("v1="))
             {
                 throw new ArgumentException("Unable to extract timestamp and signature hash from header");
             }
+
+            var timeStamp = timeAndSig[0];
+            var signatureHash = timeAndSig[1];
 
             timeStamp = timeStamp.Substring(timeStamp.IndexOf("t=", StringComparison.Ordinal) + 2).Trim();
             signatureHash = signatureHash.Substring(signatureHash.IndexOf("v1=", StringComparison.Ordinal) + 3).Trim();
@@ -97,7 +108,24 @@ namespace WorkOS
         /// <returns><c>true</c> if the timestamp is valid.</returns>
         public bool VerifyTimeTolerance(string timeStamp, long tolerance)
         {
-            return this.UnixTimeToDateTime(long.Parse(timeStamp)) >= DateTime.Now.AddSeconds(tolerance * -1);
+            long timestampMs;
+            try
+            {
+                timestampMs = long.Parse(timeStamp);
+            }
+            catch (Exception ex) when (ex is FormatException || ex is OverflowException || ex is ArgumentNullException)
+            {
+                throw new WorkOSWebhookException("Webhook timestamp is not a valid integer.");
+            }
+
+            try
+            {
+                return this.UnixTimeToDateTime(timestampMs) >= DateTime.Now.AddSeconds(tolerance * -1);
+            }
+            catch (Exception ex) when (ex is ArgumentOutOfRangeException || ex is OverflowException)
+            {
+                throw new WorkOSWebhookException("Webhook timestamp is out of representable range.");
+            }
         }
 
         /// <summary>
