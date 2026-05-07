@@ -176,6 +176,16 @@ namespace WorkOS
         {
             var maxRetries = request.RequestOptions?.MaxRetries ?? this.MaxRetries;
 
+            // Resolve the idempotency key once, outside the retry loop, so every
+            // attempt for a given logical request reuses the same key. Generating
+            // a fresh GUID per attempt would defeat the server-side dedup that
+            // makes retries safe.
+            var idempotencyKey = request.RequestOptions?.IdempotencyKey;
+            if (string.IsNullOrWhiteSpace(idempotencyKey) && request.Method == HttpMethod.Post)
+            {
+                idempotencyKey = Guid.NewGuid().ToString();
+            }
+
             HttpResponseMessage? response = null;
             Exception? lastException = null;
 
@@ -189,7 +199,7 @@ namespace WorkOS
 
                 // Must build a fresh HttpRequestMessage per attempt because
                 // HttpClient disposes the content after sending.
-                var requestMessage = this.CreateHttpRequestMessage(request);
+                var requestMessage = this.CreateHttpRequestMessage(request, idempotencyKey);
 
                 try
                 {
@@ -410,7 +420,7 @@ namespace WorkOS
         private static bool UsesQueryString(HttpMethod method) =>
             method == HttpMethod.Get || method == HttpMethod.Delete;
 
-        private HttpRequestMessage CreateHttpRequestMessage(WorkOSRequest request)
+        private HttpRequestMessage CreateHttpRequestMessage(WorkOSRequest request, string? idempotencyKey = null)
         {
             Uri uri = this.BuildUri(request);
             HttpContent? content = null;
@@ -436,17 +446,15 @@ namespace WorkOS
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
             }
 
-            // Idempotency key: use explicit value if provided, otherwise auto-generate
-            // for POST requests to ensure safe retries (per sdk-runtime-contract §2).
-            var idempotencyKey = request.RequestOptions?.IdempotencyKey;
-            if (string.IsNullOrWhiteSpace(idempotencyKey) && request.Method == HttpMethod.Post)
+            // Idempotency key is resolved once per logical request in
+            // MakeRawAPIRequest (outside the retry loop) and passed in here so
+            // that every retry attempt sends the same value (per
+            // sdk-runtime-contract §2). Fall back to the explicit
+            // RequestOptions value for callers that invoke this directly.
+            var effectiveIdempotencyKey = idempotencyKey ?? request.RequestOptions?.IdempotencyKey;
+            if (!string.IsNullOrWhiteSpace(effectiveIdempotencyKey))
             {
-                idempotencyKey = Guid.NewGuid().ToString();
-            }
-
-            if (!string.IsNullOrWhiteSpace(idempotencyKey))
-            {
-                requestMessage.Headers.TryAddWithoutValidation("Idempotency-Key", idempotencyKey);
+                requestMessage.Headers.TryAddWithoutValidation("Idempotency-Key", effectiveIdempotencyKey);
             }
 
             requestMessage.Headers.TryAddWithoutValidation("User-Agent", userAgentString);
