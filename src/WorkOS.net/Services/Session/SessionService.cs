@@ -251,24 +251,28 @@ namespace WorkOS
             var config = await this.jwksManager.GetConfigurationAsync(cancellationToken);
             var handler = new JwtSecurityTokenHandler();
 
-            // Defaults are derived from the configured client. Callers can
-            // override via the additive ValidIssuer / ValidAudience /
-            // ValidAlgorithms properties for non-standard deployments.
-            // TODO: confirm the literal documented WorkOS issuer/audience
-            // strings — see security-fix-plan.md open question on .NET #57.
+            // Audience defaults to the configured clientId, which is the
+            // conventional WorkOS access-token audience. Issuer has no
+            // default — the literal WorkOS issuer string is not yet
+            // confirmed for this SDK, so issuer validation is opt-in via
+            // the additive ValidIssuer property until that is verified.
+            // ValidAudience / ValidAlgorithms remain overridable.
             var clientId = this.Client.ClientId;
-            var defaultIssuer = !string.IsNullOrEmpty(clientId)
-                ? $"{this.Client.ApiBaseURL}/user_management/{clientId}"
-                : null;
-            var effectiveIssuer = this.ValidIssuer ?? defaultIssuer;
             var effectiveAudience = this.ValidAudience ?? clientId;
+            if (string.IsNullOrEmpty(effectiveAudience))
+            {
+                throw new InvalidOperationException(
+                    "JWT audience validation requires a configured ClientId or an explicit SessionService.ValidAudience.");
+            }
+
             var effectiveAlgorithms = this.ValidAlgorithms ?? new[] { "RS256" };
+            var validateIssuer = !string.IsNullOrEmpty(this.ValidIssuer);
 
             var validationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = !string.IsNullOrEmpty(effectiveIssuer),
-                ValidIssuer = effectiveIssuer,
-                ValidateAudience = !string.IsNullOrEmpty(effectiveAudience),
+                ValidateIssuer = validateIssuer,
+                ValidIssuer = this.ValidIssuer,
+                ValidateAudience = true,
                 ValidAudience = effectiveAudience,
                 ValidateLifetime = true,
                 ValidAlgorithms = effectiveAlgorithms,
