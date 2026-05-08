@@ -77,18 +77,18 @@ namespace WorkOS
         {
             if (signatureHeader == null)
             {
-                throw new ArgumentException("Unable to extract timestamp and signature hash from header");
+                throw new WorkOSWebhookException("Unable to extract timestamp and signature hash from header");
             }
 
             var timeAndSig = signatureHeader.Split(',');
             if (timeAndSig.Length != 2)
             {
-                throw new ArgumentException("Unable to extract timestamp and signature hash from header");
+                throw new WorkOSWebhookException("Unable to extract timestamp and signature hash from header");
             }
 
             if (!signatureHeader.Contains("t=") || !signatureHeader.Contains("v1="))
             {
-                throw new ArgumentException("Unable to extract timestamp and signature hash from header");
+                throw new WorkOSWebhookException("Unable to extract timestamp and signature hash from header");
             }
 
             var timeStamp = timeAndSig[0];
