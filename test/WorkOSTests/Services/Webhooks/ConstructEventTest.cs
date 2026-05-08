@@ -83,7 +83,7 @@ namespace WorkOSTests
         public void ConstructEvent_MalformedHeader_Throws()
         {
             var service = new WebhookService();
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<WorkOSWebhookException>(
                 () => service.ConstructEvent(Payload, "garbage-header,without-components", Secret));
         }
     }
