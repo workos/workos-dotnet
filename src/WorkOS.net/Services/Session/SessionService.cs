@@ -251,29 +251,22 @@ namespace WorkOS
             var config = await this.jwksManager.GetConfigurationAsync(cancellationToken);
             var handler = new JwtSecurityTokenHandler();
 
-            // Audience defaults to the configured clientId, which is the
-            // conventional WorkOS access-token audience. Issuer has no
-            // default — the literal WorkOS issuer string is not yet
-            // confirmed for this SDK, so issuer validation is opt-in via
-            // the additive ValidIssuer property until that is verified.
-            // ValidAudience / ValidAlgorithms remain overridable.
-            var clientId = this.Client.ClientId;
-            var effectiveAudience = this.ValidAudience ?? clientId;
-            if (string.IsNullOrEmpty(effectiveAudience))
-            {
-                throw new InvalidOperationException(
-                    "JWT audience validation requires a configured ClientId or an explicit SessionService.ValidAudience.");
-            }
-
+            // Issuer and audience validation are opt-in via ValidIssuer /
+            // ValidAudience. The canonical WorkOS `iss` and `aud` claim
+            // values are not documented across SDKs (workos-node validates
+            // only sig+alg+exp; Ruby/Python skip `aud`), so hard-coding a
+            // default would risk rejecting every legitimate token on
+            // upgrade. Signature + algorithm + lifetime are enforced
+            // unconditionally; callers can layer on iss/aud once the
+            // canonical strings for their deployment are confirmed.
             var effectiveAlgorithms = this.ValidAlgorithms ?? new[] { "RS256" };
-            var validateIssuer = !string.IsNullOrEmpty(this.ValidIssuer);
 
             var validationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = validateIssuer,
+                ValidateIssuer = !string.IsNullOrEmpty(this.ValidIssuer),
                 ValidIssuer = this.ValidIssuer,
-                ValidateAudience = true,
-                ValidAudience = effectiveAudience,
+                ValidateAudience = !string.IsNullOrEmpty(this.ValidAudience),
+                ValidAudience = this.ValidAudience,
                 ValidateLifetime = true,
                 ValidAlgorithms = effectiveAlgorithms,
                 IssuerSigningKeys = config.SigningKeys,
