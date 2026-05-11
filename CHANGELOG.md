@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.1](https://github.com/workos/workos-dotnet/compare/v4.0.0...v4.0.1) (2026-05-11)
+
+
+### Bug Fixes
+
+* **docs:** use Name FileNameFactory to avoid PathTooLongException ([a09ddde](https://github.com/workos/workos-dotnet/commit/a09ddde1d3508db689c498ae672e2adacabe96a1))
+* hardening across webhooks, session, client, vault, passwordless ([#253](https://github.com/workos/workos-dotnet/issues/253)) ([6e4570c](https://github.com/workos/workos-dotnet/commit/6e4570ceecaa07ae6bd85dd21a844abcffb5d911))
+
 ## [4.0.0](https://github.com/workos/workos-dotnet/compare/v3.1.0...v4.0.0) (2026-05-06)
 
 
