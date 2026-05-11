@@ -259,7 +259,9 @@ namespace WorkOS
             // upgrade. Signature + algorithm + lifetime are enforced
             // unconditionally; callers can layer on iss/aud once the
             // canonical strings for their deployment are confirmed.
-            var effectiveAlgorithms = this.ValidAlgorithms ?? new[] { "RS256" };
+            var effectiveAlgorithms = this.ValidAlgorithms is { Count: > 0 }
+                ? this.ValidAlgorithms
+                : new[] { "RS256" };
 
             var validationParameters = new TokenValidationParameters
             {
