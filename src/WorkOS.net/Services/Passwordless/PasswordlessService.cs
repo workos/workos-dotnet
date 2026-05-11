@@ -1,6 +1,7 @@
 // @oagen-ignore-file
 namespace WorkOS
 {
+    using System;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
@@ -81,7 +82,7 @@ namespace WorkOS
             var request = new WorkOSRequest
             {
                 Method = HttpMethod.Post,
-                Path = $"/passwordless/sessions/{sessionId}/send",
+                Path = $"/passwordless/sessions/{Uri.EscapeDataString(sessionId)}/send",
                 RequestOptions = requestOptions,
             };
             await this.Client.MakeRawAPIRequest(request, cancellationToken);

@@ -75,13 +75,24 @@ namespace WorkOS
         /// <returns>The timestamp and signature hash.</returns>
         public (string TimeStamp, string SignatureHash) GetTimestampAndSignature(string signatureHeader)
         {
+            if (signatureHeader == null)
+            {
+                throw new WorkOSWebhookException("Unable to extract timestamp and signature hash from header");
+            }
+
             var timeAndSig = signatureHeader.Split(',');
-            var timeStamp = timeAndSig[0];
-            var signatureHash = timeAndSig[1];
+            if (timeAndSig.Length != 2)
+            {
+                throw new WorkOSWebhookException("Unable to extract timestamp and signature hash from header");
+            }
+
             if (!signatureHeader.Contains("t=") || !signatureHeader.Contains("v1="))
             {
-                throw new ArgumentException("Unable to extract timestamp and signature hash from header");
+                throw new WorkOSWebhookException("Unable to extract timestamp and signature hash from header");
             }
+
+            var timeStamp = timeAndSig[0];
+            var signatureHash = timeAndSig[1];
 
             timeStamp = timeStamp.Substring(timeStamp.IndexOf("t=", StringComparison.Ordinal) + 2).Trim();
             signatureHash = signatureHash.Substring(signatureHash.IndexOf("v1=", StringComparison.Ordinal) + 3).Trim();
@@ -97,7 +108,20 @@ namespace WorkOS
         /// <returns><c>true</c> if the timestamp is valid.</returns>
         public bool VerifyTimeTolerance(string timeStamp, long tolerance)
         {
-            return this.UnixTimeToDateTime(long.Parse(timeStamp)) >= DateTime.Now.AddSeconds(tolerance * -1);
+            long timestampMs;
+            try
+            {
+                timestampMs = long.Parse(timeStamp);
+            }
+            catch (Exception ex) when (ex is FormatException || ex is OverflowException || ex is ArgumentNullException)
+            {
+                throw new WorkOSWebhookException("Webhook timestamp is not a valid integer.");
+            }
+
+            // Symmetric tolerance — reject timestamps that are too far in
+            // either direction. Matches ActionsService.VerifyHeader.
+            var nowMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            return Math.Abs(nowMs - timestampMs) <= tolerance * 1000L;
         }
 
         /// <summary>
@@ -143,11 +167,5 @@ namespace WorkOS
             return ConstantTimeAreEqual(a, b);
         }
 
-        private DateTime UnixTimeToDateTime(long unixtime)
-        {
-            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dtDateTime = dtDateTime.AddMilliseconds(unixtime).ToLocalTime();
-            return dtDateTime;
-        }
     }
 }

@@ -326,6 +326,11 @@ namespace WorkOS
             var (keyLen, bytesRead) = DecodeLeb128(combined, offset);
             offset += bytesRead;
 
+            if (keyLen > (uint)(combined.Length - offset))
+            {
+                throw new InvalidOperationException("Encrypted payload is malformed: key length exceeds remaining buffer.");
+            }
+
             var encryptedKeys = new byte[keyLen];
             Buffer.BlockCopy(combined, offset, encryptedKeys, 0, (int)keyLen);
             offset += (int)keyLen;
@@ -382,6 +387,16 @@ namespace WorkOS
             int bytesRead = 0;
             while (true)
             {
+                if (bytesRead >= 4)
+                {
+                    throw new InvalidOperationException("LEB128 length prefix exceeds 4 bytes; payload is malformed.");
+                }
+
+                if (offset + bytesRead >= data.Length)
+                {
+                    throw new InvalidOperationException("LEB128 length prefix is truncated.");
+                }
+
                 byte b = data[offset + bytesRead];
                 result |= (uint)(b & 0x7F) << shift;
                 bytesRead++;

@@ -26,6 +26,34 @@ namespace WorkOS
         {
         }
 
+        /// <summary>
+        /// Optional override for the expected JWT issuer. When null, defaults to
+        /// <c>{ApiBaseURL}/user_management/{clientId}</c>.
+        /// </summary>
+        /// <remarks>
+        /// TODO: confirm the literal documented WorkOS access-token issuer
+        /// before locking this default. See security-fix-plan.md "Open
+        /// questions / follow-ups" entry on .NET #57.
+        /// </remarks>
+        public string? ValidIssuer { get; set; }
+
+        /// <summary>
+        /// Optional override for the expected JWT audience. When null, defaults
+        /// to the configured client ID.
+        /// </summary>
+        /// <remarks>
+        /// TODO: confirm the literal documented WorkOS access-token audience
+        /// before locking this default. See security-fix-plan.md "Open
+        /// questions / follow-ups" entry on .NET #57.
+        /// </remarks>
+        public string? ValidAudience { get; set; }
+
+        /// <summary>
+        /// Optional override for the JWT signing algorithms accepted during
+        /// access-token validation. Defaults to <c>RS256</c>.
+        /// </summary>
+        public IList<string>? ValidAlgorithms { get; set; }
+
         /// <summary>Get the JWKS URL for the current client.</summary>
         /// <param name="clientId">Optional client ID override.</param>
         /// <returns>The JWKS URL string.</returns>
@@ -222,11 +250,27 @@ namespace WorkOS
 
             var config = await this.jwksManager.GetConfigurationAsync(cancellationToken);
             var handler = new JwtSecurityTokenHandler();
+
+            // Issuer and audience validation are opt-in via ValidIssuer /
+            // ValidAudience. The canonical WorkOS `iss` and `aud` claim
+            // values are not documented across SDKs (workos-node validates
+            // only sig+alg+exp; Ruby/Python skip `aud`), so hard-coding a
+            // default would risk rejecting every legitimate token on
+            // upgrade. Signature + algorithm + lifetime are enforced
+            // unconditionally; callers can layer on iss/aud once the
+            // canonical strings for their deployment are confirmed.
+            var effectiveAlgorithms = this.ValidAlgorithms is { Count: > 0 }
+                ? this.ValidAlgorithms
+                : new[] { "RS256" };
+
             var validationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = false,
-                ValidateAudience = false,
+                ValidateIssuer = !string.IsNullOrEmpty(this.ValidIssuer),
+                ValidIssuer = this.ValidIssuer,
+                ValidateAudience = !string.IsNullOrEmpty(this.ValidAudience),
+                ValidAudience = this.ValidAudience,
                 ValidateLifetime = true,
+                ValidAlgorithms = effectiveAlgorithms,
                 IssuerSigningKeys = config.SigningKeys,
             };
 
