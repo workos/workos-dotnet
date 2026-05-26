@@ -29,12 +29,6 @@ namespace WorkOS
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public RadarStandaloneAssessRequestAction Action { get; set; }
 
-        /// <summary>An optional device fingerprint for the request.</summary>
-        public string? DeviceFingerprint { get; set; }
-
-        /// <summary>An optional bot detection score for the request.</summary>
-        public string? BotScore { get; set; }
-
     }
 
     /// <summary>Request options for <see cref="RadarService.UpdateAttemptAsync"/>: Update a Radar attempt</summary>
