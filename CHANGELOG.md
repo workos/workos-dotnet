@@ -1,5 +1,32 @@
 # Changelog
 
+## [5.0.0](https://github.com/workos/workos-dotnet/compare/v4.0.1...v5.0.0) (2026-05-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* **application_credentials:** Change LastUsedAt type from string to DateTimeOffset ([#259](https://github.com/workos/workos-dotnet/issues/259))
+* **organization_membership:** Relocate organization membership operations to dedicated service ([#259](https://github.com/workos/workos-dotnet/issues/259))
+* **radar:** Remove device_fingerprint and bot_score from Radar assessment ([#259](https://github.com/workos/workos-dotnet/issues/259))
+* **user_management:** Change ScreenHint type from custom enum to RadarStandaloneAssessRequestAction ([#259](https://github.com/workos/workos-dotnet/issues/259))
+* **api_keys:** Add expires_at field to API key models ([#259](https://github.com/workos/workos-dotnet/issues/259))
+
+### Features
+
+* **api_keys:** Add expires_at field to API key models ([#259](https://github.com/workos/workos-dotnet/issues/259)) ([eb608f5](https://github.com/workos/workos-dotnet/commit/eb608f55a346ec58665480cce25c2d05f8e454a9))
+* **application_credentials:** Change LastUsedAt type from string to DateTimeOffset ([#259](https://github.com/workos/workos-dotnet/issues/259)) ([eb608f5](https://github.com/workos/workos-dotnet/commit/eb608f55a346ec58665480cce25c2d05f8e454a9))
+* **organization_membership:** Relocate organization membership operations to dedicated service ([#259](https://github.com/workos/workos-dotnet/issues/259)) ([eb608f5](https://github.com/workos/workos-dotnet/commit/eb608f55a346ec58665480cce25c2d05f8e454a9))
+* **radar:** Remove device_fingerprint and bot_score from Radar assessment ([#259](https://github.com/workos/workos-dotnet/issues/259)) ([eb608f5](https://github.com/workos/workos-dotnet/commit/eb608f55a346ec58665480cce25c2d05f8e454a9))
+* **user_management:** Change ScreenHint type from custom enum to RadarStandaloneAssessRequestAction ([#259](https://github.com/workos/workos-dotnet/issues/259)) ([eb608f5](https://github.com/workos/workos-dotnet/commit/eb608f55a346ec58665480cce25c2d05f8e454a9))
+* **vault:** Add new Vault service for encrypted object and key management ([#259](https://github.com/workos/workos-dotnet/issues/259)) ([eb608f5](https://github.com/workos/workos-dotnet/commit/eb608f55a346ec58665480cce25c2d05f8e454a9))
+* **webhooks:** Add pipes connected account events to webhook endpoint events ([#259](https://github.com/workos/workos-dotnet/issues/259)) ([eb608f5](https://github.com/workos/workos-dotnet/commit/eb608f55a346ec58665480cce25c2d05f8e454a9))
+
+
+### Bug Fixes
+
+* **authorization:** Update role assignment listing options with filter parameters ([#259](https://github.com/workos/workos-dotnet/issues/259)) ([eb608f5](https://github.com/workos/workos-dotnet/commit/eb608f55a346ec58665480cce25c2d05f8e454a9))
+* **sso:** Update loginHint documentation for custom SAML support ([#259](https://github.com/workos/workos-dotnet/issues/259)) ([eb608f5](https://github.com/workos/workos-dotnet/commit/eb608f55a346ec58665480cce25c2d05f8e454a9))
+
 ## [4.0.1](https://github.com/workos/workos-dotnet/compare/v4.0.0...v4.0.1) (2026-05-11)
 
 
