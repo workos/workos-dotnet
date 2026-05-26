@@ -76,6 +76,15 @@ namespace WorkOS
     /// <summary>Request options for <see cref="AuthorizationService.ListRoleAssignmentsAsync"/>: List role assignments</summary>
     public class AuthorizationListRoleAssignmentsOptions : ListOptions
     {
+        /// <summary>Filter assignments by the ID of the resource.</summary>
+        public string? ResourceId { get; set; }
+
+        /// <summary>Filter assignments by the external ID of the resource.</summary>
+        public string? ResourceExternalId { get; set; }
+
+        /// <summary>Filter assignments by the slug of the resource type.</summary>
+        public string? ResourceTypeSlug { get; set; }
+
     }
 
     /// <summary>Request options for <see cref="AuthorizationService.AssignRoleAsync"/>: Assign a role</summary>
@@ -183,6 +192,9 @@ namespace WorkOS
     /// <summary>Request options for <see cref="AuthorizationService.ListRoleAssignmentsForResourceByExternalIdAsync"/>: List role assignments for a resource by external ID</summary>
     public class AuthorizationListRoleAssignmentsForResourceByExternalIdOptions : ListOptions
     {
+        /// <summary>Filter assignments by the slug of the role.</summary>
+        public string? RoleSlug { get; set; }
+
     }
 
     /// <summary>Request options for <see cref="AuthorizationService.ListResourcesAsync"/>: List resources</summary>
@@ -196,9 +208,6 @@ namespace WorkOS
 
         /// <summary>Filter resources by external ID.</summary>
         public string? ResourceExternalId { get; set; }
-
-        /// <summary>Search resources by name.</summary>
-        public string? Search { get; set; }
 
         [JsonIgnore]
         [STJS.JsonIgnore]
@@ -283,6 +292,9 @@ namespace WorkOS
     /// <summary>Request options for <see cref="AuthorizationService.ListRoleAssignmentsForResourceAsync"/>: List role assignments for a resource</summary>
     public class AuthorizationListRoleAssignmentsForResourceOptions : ListOptions
     {
+        /// <summary>Filter assignments by the slug of the role.</summary>
+        public string? RoleSlug { get; set; }
+
     }
 
     /// <summary>Request options for <see cref="AuthorizationService.CreateEnvironmentRoleAsync"/>: Create an environment role</summary>
