@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>The event payload.</summary>
@@ -26,6 +27,9 @@ namespace WorkOS
 
         /// <summary>The timestamp when the API key was last used.</summary>
         public string? LastUsedAt { get; set; }
+
+        /// <summary>Timestamp when the API Key expires. Null means the key does not expire.</summary>
+        public DateTimeOffset? ExpiresAt { get; set; }
 
         /// <summary>The permissions granted to the API key.</summary>
         public List<string> Permissions { get; set; } = default!;

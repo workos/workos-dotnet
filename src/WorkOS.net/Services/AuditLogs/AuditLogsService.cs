@@ -31,14 +31,14 @@ namespace WorkOS
         /// <param name="id">Unique identifier of the Organization.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuditLogsRetentionJson"/> result.</returns>
-        public virtual async Task<AuditLogsRetentionJson> GetOrganizationAuditLogsRetentionAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuditLogsRetention"/> result.</returns>
+        public virtual async Task<AuditLogsRetention> GetOrganizationAuditLogsRetentionAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<AuditLogsRetentionJson>($"/organizations/{Uri.EscapeDataString(id)}/audit_logs_retention", null, requestOptions, cancellationToken);
+            return await this.GetAsync<AuditLogsRetention>($"/organizations/{Uri.EscapeDataString(id)}/audit_logs_retention", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="GetOrganizationAuditLogsRetentionAsync"/>.</summary>
-        public virtual Task<AuditLogsRetentionJson> GetOrganizationAuditLogsRetention(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<AuditLogsRetention> GetOrganizationAuditLogsRetention(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.GetOrganizationAuditLogsRetentionAsync(id, requestOptions, cancellationToken);
         }
@@ -51,14 +51,14 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuditLogsRetentionJson"/> result.</returns>
-        public virtual async Task<AuditLogsRetentionJson> UpdateOrganizationAuditLogsRetentionAsync(string id, AuditLogsUpdateOrganizationAuditLogsRetentionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuditLogsRetention"/> result.</returns>
+        public virtual async Task<AuditLogsRetention> UpdateOrganizationAuditLogsRetentionAsync(string id, AuditLogsUpdateOrganizationAuditLogsRetentionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<AuditLogsRetentionJson>($"/organizations/{Uri.EscapeDataString(id)}/audit_logs_retention", options, requestOptions, cancellationToken);
+            return await this.PutAsync<AuditLogsRetention>($"/organizations/{Uri.EscapeDataString(id)}/audit_logs_retention", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="UpdateOrganizationAuditLogsRetentionAsync"/>.</summary>
-        public virtual Task<AuditLogsRetentionJson> UpdateOrganizationAuditLogsRetention(string id, AuditLogsUpdateOrganizationAuditLogsRetentionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<AuditLogsRetention> UpdateOrganizationAuditLogsRetention(string id, AuditLogsUpdateOrganizationAuditLogsRetentionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.UpdateOrganizationAuditLogsRetentionAsync(id, options, requestOptions, cancellationToken);
         }
@@ -70,14 +70,14 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="AuditLogActionJson"/> results.</returns>
-        public virtual async Task<WorkOSList<AuditLogActionJson>> ListActionsAsync(AuditLogsListActionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="AuditLogAction"/> results.</returns>
+        public virtual async Task<WorkOSList<AuditLogAction>> ListActionsAsync(AuditLogsListActionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<AuditLogActionJson>>("/audit_logs/actions", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<AuditLogAction>>("/audit_logs/actions", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="ListActionsAsync"/>.</summary>
-        public virtual Task<WorkOSList<AuditLogActionJson>> ListActions(AuditLogsListActionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<WorkOSList<AuditLogAction>> ListActions(AuditLogsListActionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.ListActionsAsync(options, requestOptions, cancellationToken);
         }
@@ -86,10 +86,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="AuditLogActionJson"/> items.</returns>
-        public virtual IAsyncEnumerable<AuditLogActionJson> ListActionsAutoPagingAsync(AuditLogsListActionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="AuditLogAction"/> items.</returns>
+        public virtual IAsyncEnumerable<AuditLogAction> ListActionsAutoPagingAsync(AuditLogsListActionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<AuditLogActionJson>("/audit_logs/actions", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<AuditLogAction>("/audit_logs/actions", options, requestOptions, cancellationToken);
         }
 
         /// <summary>List Schemas</summary>
@@ -100,14 +100,14 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="AuditLogSchemaJson"/> results.</returns>
-        public virtual async Task<WorkOSList<AuditLogSchemaJson>> ListActionSchemasAsync(string actionName, AuditLogsListActionSchemasOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="AuditLogSchema"/> results.</returns>
+        public virtual async Task<WorkOSList<AuditLogSchema>> ListActionSchemasAsync(string actionName, AuditLogsListActionSchemasOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<AuditLogSchemaJson>>($"/audit_logs/actions/{Uri.EscapeDataString(actionName)}/schemas", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<AuditLogSchema>>($"/audit_logs/actions/{Uri.EscapeDataString(actionName)}/schemas", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="ListActionSchemasAsync"/>.</summary>
-        public virtual Task<WorkOSList<AuditLogSchemaJson>> ListActionSchemas(string actionName, AuditLogsListActionSchemasOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<WorkOSList<AuditLogSchema>> ListActionSchemas(string actionName, AuditLogsListActionSchemasOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.ListActionSchemasAsync(actionName, options, requestOptions, cancellationToken);
         }
@@ -117,10 +117,10 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="AuditLogSchemaJson"/> items.</returns>
-        public virtual IAsyncEnumerable<AuditLogSchemaJson> ListActionSchemasAutoPagingAsync(string actionName, AuditLogsListActionSchemasOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="AuditLogSchema"/> items.</returns>
+        public virtual IAsyncEnumerable<AuditLogSchema> ListActionSchemasAutoPagingAsync(string actionName, AuditLogsListActionSchemasOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<AuditLogSchemaJson>($"/audit_logs/actions/{Uri.EscapeDataString(actionName)}/schemas", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<AuditLogSchema>($"/audit_logs/actions/{Uri.EscapeDataString(actionName)}/schemas", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Create Schema</summary>
@@ -131,14 +131,14 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuditLogSchemaJson"/> result.</returns>
-        public virtual async Task<AuditLogSchemaJson> CreateSchemaAsync(string actionName, AuditLogsCreateSchemaOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuditLogSchema"/> result.</returns>
+        public virtual async Task<AuditLogSchema> CreateSchemaAsync(string actionName, AuditLogsCreateSchemaOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<AuditLogSchemaJson>($"/audit_logs/actions/{Uri.EscapeDataString(actionName)}/schemas", options, requestOptions, cancellationToken);
+            return await this.PostAsync<AuditLogSchema>($"/audit_logs/actions/{Uri.EscapeDataString(actionName)}/schemas", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="CreateSchemaAsync"/>.</summary>
-        public virtual Task<AuditLogSchemaJson> CreateSchema(string actionName, AuditLogsCreateSchemaOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<AuditLogSchema> CreateSchema(string actionName, AuditLogsCreateSchemaOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.CreateSchemaAsync(actionName, options, requestOptions, cancellationToken);
         }
@@ -172,14 +172,14 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuditLogExportJson"/> result.</returns>
-        public virtual async Task<AuditLogExportJson> CreateExportAsync(AuditLogsCreateExportOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuditLogExport"/> result.</returns>
+        public virtual async Task<AuditLogExport> CreateExportAsync(AuditLogsCreateExportOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<AuditLogExportJson>("/audit_logs/exports", options, requestOptions, cancellationToken);
+            return await this.PostAsync<AuditLogExport>("/audit_logs/exports", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="CreateExportAsync"/>.</summary>
-        public virtual Task<AuditLogExportJson> CreateExport(AuditLogsCreateExportOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<AuditLogExport> CreateExport(AuditLogsCreateExportOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.CreateExportAsync(options, requestOptions, cancellationToken);
         }
@@ -191,14 +191,14 @@ namespace WorkOS
         /// <param name="auditLogExportId">The unique ID of the Audit Log Export.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="AuditLogExportJson"/> result.</returns>
-        public virtual async Task<AuditLogExportJson> GetExportAsync(string auditLogExportId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="AuditLogExport"/> result.</returns>
+        public virtual async Task<AuditLogExport> GetExportAsync(string auditLogExportId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<AuditLogExportJson>($"/audit_logs/exports/{Uri.EscapeDataString(auditLogExportId)}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<AuditLogExport>($"/audit_logs/exports/{Uri.EscapeDataString(auditLogExportId)}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="GetExportAsync"/>.</summary>
-        public virtual Task<AuditLogExportJson> GetExport(string auditLogExportId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<AuditLogExport> GetExport(string auditLogExportId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.GetExportAsync(auditLogExportId, requestOptions, cancellationToken);
         }

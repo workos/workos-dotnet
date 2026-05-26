@@ -158,6 +158,12 @@ namespace WorkOS
         PermissionDeleted,
         [EnumMember(Value = "permission.updated")]
         PermissionUpdated,
+        [EnumMember(Value = "pipes.connected_account.connected")]
+        PipesConnectedAccountConnected,
+        [EnumMember(Value = "pipes.connected_account.disconnected")]
+        PipesConnectedAccountDisconnected,
+        [EnumMember(Value = "pipes.connected_account.reauthorization_needed")]
+        PipesConnectedAccountReauthorizationNeeded,
         [EnumMember(Value = "session.created")]
         SessionCreated,
         [EnumMember(Value = "session.revoked")]

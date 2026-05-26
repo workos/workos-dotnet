@@ -21,6 +21,9 @@ namespace WorkOS
         /// <summary>The permission slugs to assign to the API key.</summary>
         public List<string>? Permissions { get; set; }
 
+        /// <summary>The timestamp when the API key should expire. Must be a future timestamp. If omitted, the key does not expire.</summary>
+        public DateTimeOffset? ExpiresAt { get; set; }
+
     }
 
     /// <summary>Request options for <see cref="ApiKeysService.CreateValidationAsync"/>: Validate API key</summary>

@@ -29,7 +29,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListEndpointsAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_webhook_endpoint_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_webhook_endpoint.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/webhook_endpoints", HttpStatusCode.OK, fixture);
             var result = await this.service.ListEndpointsAsync(new WebhooksListEndpointsOptions());
             Assert.NotNull(result);
@@ -49,7 +49,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateEndpointAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/webhook_endpoint_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/webhook_endpoint.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/webhook_endpoints", HttpStatusCode.OK, fixture);
             var options = new WebhooksCreateEndpointOptions();
             options.EndpointUrl = "test_endpoint_url";
@@ -65,7 +65,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestUpdateEndpointAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/webhook_endpoint_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/webhook_endpoint.json");
             this.httpMock.MockResponse(HttpMethod.Patch, "/webhook_endpoints/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.UpdateEndpointAsync("test_id", new WebhooksUpdateEndpointOptions());
             Assert.NotNull(result);
@@ -86,12 +86,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListEndpointsAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/webhook_endpoint_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/webhook_endpoint.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/webhook_endpoints", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<WebhookEndpointJson>();
+            var items = new List<WebhookEndpoint>();
             await foreach (var item in this.service.ListEndpointsAutoPagingAsync(new WebhooksListEndpointsOptions()))
             {
                 items.Add(item);
@@ -106,7 +106,7 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/webhook_endpoints", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<WebhookEndpointJson>();
+            var items = new List<WebhookEndpoint>();
             await foreach (var item in this.service.ListEndpointsAutoPagingAsync(new WebhooksListEndpointsOptions()))
             {
                 items.Add(item);

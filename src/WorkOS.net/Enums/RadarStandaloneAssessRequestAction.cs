@@ -14,21 +14,9 @@ namespace WorkOS
         [EnumMember(Value = "unknown")]
         Unknown,
 
-        [EnumMember(Value = "login")]
-        Login,
-        [EnumMember(Value = "signup")]
-        Signup,
         [EnumMember(Value = "sign-up")]
         SignUp,
         [EnumMember(Value = "sign-in")]
         SignIn,
-        [EnumMember(Value = "sign_up")]
-        SignUp2,
-        [EnumMember(Value = "sign_in")]
-        SignIn2,
-        [EnumMember(Value = "sign in")]
-        SignIn3,
-        [EnumMember(Value = "sign up")]
-        SignUp3,
     }
 }

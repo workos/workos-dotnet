@@ -4,11 +4,11 @@ namespace WorkOS
 {
     using System.Collections.Generic;
 
-    /// <summary>Represents an audit log schema actor.</summary>
+    /// <summary>The metadata schema for the actor.</summary>
     public class AuditLogSchemaActor
     {
 
-        /// <summary>JSON schema for actor metadata.</summary>
+        /// <summary>The JSON Schema definition for actor metadata.</summary>
         public Dictionary<string, object> Metadata { get; set; } = default!;
 
         /// <summary>

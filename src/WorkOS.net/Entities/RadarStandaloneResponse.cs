@@ -24,6 +24,6 @@ namespace WorkOS
         public RadarStandaloneResponseControl? Control { get; set; }
 
         /// <summary>The type of blocklist entry that triggered the verdict. Only present if the control is `restriction`.</summary>
-        public RadarStandaloneResponseBlocklistType? BlocklistType { get; set; }
+        public RadarListType? BlocklistType { get; set; }
     }
 }

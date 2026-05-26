@@ -36,9 +36,6 @@ namespace WorkOS
         /// <summary>The type of the application.</summary>
         public string? ApplicationType { get; set; }
 
-        /// <summary>The ID of the organization the application belongs to.</summary>
-        public string? OrganizationId { get; set; }
-
         /// <summary>The redirect URIs configured for this application.</summary>
         public List<ConnectApplicationRedirectUri>? RedirectUris { get; set; }
 
@@ -50,5 +47,8 @@ namespace WorkOS
 
         /// <summary>Whether the application was dynamically registered.</summary>
         public bool? WasDynamicallyRegistered { get; set; }
+
+        /// <summary>The ID of the organization the application belongs to.</summary>
+        public string? OrganizationId { get; set; }
     }
 }
