@@ -5,8 +5,8 @@ namespace WorkOS
     using System;
     using System.Collections.Generic;
 
-    /// <summary>Represents a connect application.</summary>
-    public class ConnectApplication
+    /// <summary>Represents a connect application o auth.</summary>
+    public class ConnectApplicationOAuth
     {
 
         /// <summary>Distinguishes the connect application object.</summary>
@@ -34,16 +34,16 @@ namespace WorkOS
         public DateTimeOffset UpdatedAt { get; set; }
 
         /// <summary>The type of the application.</summary>
-        public string? ApplicationType { get; set; }
+        public string ApplicationType { get; internal set; } = "oauth";
 
         /// <summary>The redirect URIs configured for this application.</summary>
-        public List<ConnectApplicationRedirectUri>? RedirectUris { get; set; }
+        public List<ConnectApplicationOAuthRedirectUris> RedirectUris { get; set; } = default!;
 
         /// <summary>Whether the application uses PKCE for authorization.</summary>
-        public bool? UsesPkce { get; set; }
+        public bool UsesPkce { get; set; }
 
         /// <summary>Whether the application is a first-party application.</summary>
-        public bool? IsFirstParty { get; set; }
+        public bool IsFirstParty { get; set; }
 
         /// <summary>Whether the application was dynamically registered.</summary>
         public bool? WasDynamicallyRegistered { get; set; }

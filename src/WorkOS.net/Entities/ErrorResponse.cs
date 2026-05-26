@@ -4,7 +4,7 @@ namespace WorkOS
 {
 
     /// <summary>Error response body.</summary>
-    public class Error
+    public class ErrorResponse
     {
 
         /// <summary>A human-readable description of the error.</summary>

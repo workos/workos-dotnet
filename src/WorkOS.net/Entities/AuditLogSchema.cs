@@ -2,17 +2,30 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
 
-    /// <summary>Represents an audit log schema json target.</summary>
-    public class AuditLogSchemaJsonTarget
+    /// <summary>Represents an audit log schema.</summary>
+    public class AuditLogSchema
     {
 
-        /// <summary>The type of the target resource.</summary>
-        public string Type { get; set; } = default!;
+        /// <summary>Distinguishes the Audit Log Schema object.</summary>
+        public string Object { get; internal set; } = "audit_log_schema";
+
+        /// <summary>The version of the schema.</summary>
+        public long Version { get; set; }
+
+        /// <summary>The metadata schema for the actor.</summary>
+        public AuditLogSchemaActor? Actor { get; set; }
+
+        /// <summary>The list of targets for the schema.</summary>
+        public List<AuditLogSchemaTarget> Targets { get; set; } = default!;
 
         /// <summary>Additional data associated with the event or entity.</summary>
         public Dictionary<string, object>? Metadata { get; set; }
+
+        /// <summary>The timestamp when the Audit Log Schema was created.</summary>
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>
         /// Typed accessor for <see cref="Metadata"/>. Returns the value stored under

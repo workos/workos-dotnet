@@ -5,8 +5,8 @@ namespace WorkOS
     using System;
     using System.Collections.Generic;
 
-    /// <summary>Represents a connect application.</summary>
-    public class ConnectApplication
+    /// <summary>Represents a connect application M2 m.</summary>
+    public class ConnectApplicationM2M
     {
 
         /// <summary>Distinguishes the connect application object.</summary>
@@ -34,21 +34,9 @@ namespace WorkOS
         public DateTimeOffset UpdatedAt { get; set; }
 
         /// <summary>The type of the application.</summary>
-        public string? ApplicationType { get; set; }
-
-        /// <summary>The redirect URIs configured for this application.</summary>
-        public List<ConnectApplicationRedirectUri>? RedirectUris { get; set; }
-
-        /// <summary>Whether the application uses PKCE for authorization.</summary>
-        public bool? UsesPkce { get; set; }
-
-        /// <summary>Whether the application is a first-party application.</summary>
-        public bool? IsFirstParty { get; set; }
-
-        /// <summary>Whether the application was dynamically registered.</summary>
-        public bool? WasDynamicallyRegistered { get; set; }
+        public string ApplicationType { get; internal set; } = "m2m";
 
         /// <summary>The ID of the organization the application belongs to.</summary>
-        public string? OrganizationId { get; set; }
+        public string OrganizationId { get; set; } = default!;
     }
 }

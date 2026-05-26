@@ -21,7 +21,6 @@ namespace WorkOS
 
         // Non-spec service backing fields (hand-maintained)
         private PasswordlessService? passwordless;
-        private VaultService? vault;
         private ActionsService? actions;
         private SessionService? session;
         private bool disposed;
@@ -91,9 +90,6 @@ namespace WorkOS
 
         /// <summary>Gets the Passwordless service for magic-link sessions.</summary>
         public virtual PasswordlessService Passwordless => this.passwordless ??= new PasswordlessService(this);
-
-        /// <summary>Gets the Vault service for KV storage and encryption.</summary>
-        public virtual VaultService Vault => this.vault ??= new VaultService(this);
 
         /// <summary>Gets the Actions service for AuthKit Actions verification and signing.</summary>
         public virtual ActionsService Actions => this.actions ??= new ActionsService();

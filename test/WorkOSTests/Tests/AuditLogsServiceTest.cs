@@ -69,7 +69,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListActionSchemasAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_audit_log_schema_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_audit_log_schema.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, fixture);
             var result = await this.service.ListActionSchemasAsync("test_actionName", new AuditLogsListActionSchemasOptions());
             Assert.NotNull(result);
@@ -89,7 +89,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateSchemaAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_log_schema_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_schema.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, fixture);
             var result = await this.service.CreateSchemaAsync("test_actionName", new AuditLogsCreateSchemaOptions());
             Assert.NotNull(result);
@@ -171,12 +171,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListActionSchemasAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_log_schema_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_schema.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<AuditLogSchemaJson>();
+            var items = new List<AuditLogSchema>();
             await foreach (var item in this.service.ListActionSchemasAutoPagingAsync("test_actionName", new AuditLogsListActionSchemasOptions()))
             {
                 items.Add(item);
@@ -191,7 +191,7 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/audit_logs/actions/test_actionName/schemas", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<AuditLogSchemaJson>();
+            var items = new List<AuditLogSchema>();
             await foreach (var item in this.service.ListActionSchemasAutoPagingAsync("test_actionName", new AuditLogsListActionSchemasOptions()))
             {
                 items.Add(item);

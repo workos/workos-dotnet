@@ -15,7 +15,7 @@ namespace WorkOS
         public string Name { get; set; } = default!;
 
         /// <summary>The schema associated with the action.</summary>
-        public AuditLogSchemaJson Schema { get; set; } = default!;
+        public AuditLogSchema Schema { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }
