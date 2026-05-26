@@ -28,6 +28,9 @@ namespace WorkOS
         /// <summary>Timestamp of when the API Key was last used.</summary>
         public DateTimeOffset? LastUsedAt { get; set; }
 
+        /// <summary>Timestamp when the API Key expires. Null means the key does not expire.</summary>
+        public DateTimeOffset? ExpiresAt { get; set; }
+
         /// <summary>The permission slugs assigned to the API Key.</summary>
         public List<string> Permissions { get; set; } = default!;
 

@@ -32,7 +32,7 @@ namespace WorkOS
         public string? InvitationToken { get; set; }
 
         /// <summary>Used to specify which screen to display when the provider is `authkit`.</summary>
-        public UserManagementAuthenticationScreenHint? ScreenHint { get; set; }
+        public RadarStandaloneAssessRequestAction? ScreenHint { get; set; }
 
         /// <summary>A hint to the authorization server about the login identifier the user might use.</summary>
         public string? LoginHint { get; set; }
@@ -293,58 +293,6 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="UserManagementService.ListOrganizationMembershipsAsync"/>: List organization memberships</summary>
-    public class UserManagementListOrganizationMembershipsOptions : ListOptions
-    {
-        /// <summary>The ID of the [organization](https://workos.com/docs/reference/organization) which the user belongs to.</summary>
-        public string? OrganizationId { get; set; }
-
-        /// <summary>Filter by the status of the organization membership. Array including any of `active`, `inactive`, or `pending`.</summary>
-        public List<OrganizationMembershipCreatedDataStatus>? Statuses { get; set; }
-
-        /// <summary>The ID of the [user](https://workos.com/docs/reference/authkit/user).</summary>
-        public string? UserId { get; set; }
-
-    }
-
-    /// <summary>Request options for <see cref="UserManagementService.CreateOrganizationMembershipAsync"/>: Create an organization membership</summary>
-    public class UserManagementCreateOrganizationMembershipOptions : BaseOptions
-    {
-        /// <summary>The ID of the [user](https://workos.com/docs/reference/authkit/user).</summary>
-        public string UserId { get; set; } = default!;
-
-        /// <summary>The ID of the [organization](https://workos.com/docs/reference/organization) which the user belongs to.</summary>
-        public string OrganizationId { get; set; } = default!;
-
-        [JsonIgnore]
-        [STJS.JsonIgnore]
-        public UserManagementRole? Role { get; set; }
-
-    }
-
-    public abstract class UserManagementRole { }
-
-    public class UserManagementRoleSingle : UserManagementRole
-    {
-        public string RoleSlug { get; set; } = default!;
-
-    }
-
-    public class UserManagementRoleMultiple : UserManagementRole
-    {
-        public List<string> RoleSlugs { get; set; } = default!;
-
-    }
-
-    /// <summary>Request options for <see cref="UserManagementService.UpdateOrganizationMembershipAsync"/>: Update an organization membership</summary>
-    public class UserManagementUpdateOrganizationMembershipOptions : BaseOptions
-    {
-        [JsonIgnore]
-        [STJS.JsonIgnore]
-        public UserManagementRole? Role { get; set; }
-
-    }
-
     /// <summary>Request options for <see cref="UserManagementService.CreateRedirectUriAsync"/>: Create a redirect URI</summary>
     public class UserManagementCreateRedirectUriOptions : BaseOptions
     {
@@ -377,6 +325,9 @@ namespace WorkOS
 
         /// <summary>The permission slugs to assign to the API key. Each permission must be enabled for user API keys.</summary>
         public List<string>? Permissions { get; set; }
+
+        /// <summary>The timestamp when the API key should expire. Must be a future timestamp. If omitted, the key does not expire.</summary>
+        public DateTimeOffset? ExpiresAt { get; set; }
 
     }
 }
