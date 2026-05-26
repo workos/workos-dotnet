@@ -82,10 +82,15 @@ namespace WorkOS
         /// <summary>Gets the <see cref="UserManagementService"/> for user management API operations.</summary>
         public virtual UserManagementService UserManagement => this.userManagement ??= new UserManagementService(this);
 
-        private UserManagementOrganizationMembershipGroupsService userManagementOrganizationMembershipGroups;
+        private OrganizationMembershipService organizationMembership;
 
-        /// <summary>Gets the <see cref="UserManagementOrganizationMembershipGroupsService"/> for user management organization membership groups API operations.</summary>
-        public virtual UserManagementOrganizationMembershipGroupsService UserManagementOrganizationMembershipGroups => this.userManagementOrganizationMembershipGroups ??= new UserManagementOrganizationMembershipGroupsService(this);
+        /// <summary>Gets the <see cref="OrganizationMembershipService"/> for organization membership API operations.</summary>
+        public virtual OrganizationMembershipService OrganizationMembership => this.organizationMembership ??= new OrganizationMembershipService(this);
+
+        private VaultService vault;
+
+        /// <summary>Gets the <see cref="VaultService"/> for vault API operations.</summary>
+        public virtual VaultService Vault => this.vault ??= new VaultService(this);
 
         private WebhooksService webhooks;
 
