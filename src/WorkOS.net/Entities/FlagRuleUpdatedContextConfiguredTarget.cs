@@ -9,7 +9,7 @@ namespace WorkOS
     {
 
         /// <summary>The organizations targeted by the flag rule.</summary>
-        public List<FlagRuleUpdatedContextConfiguredTargetOrganization> Organizations { get; set; } = default!;
+        public List<Actor> Organizations { get; set; } = default!;
 
         /// <summary>The users targeted by the flag rule.</summary>
         public List<FlagRuleUpdatedContextConfiguredTargetUser> Users { get; set; } = default!;

@@ -29,7 +29,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGetOrganizationAuditLogsRetentionAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_logs_retention_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_logs_retention.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_id/audit_logs_retention", HttpStatusCode.OK, fixture);
             var result = await this.service.GetOrganizationAuditLogsRetentionAsync("test_id");
             Assert.NotNull(result);
@@ -39,7 +39,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestUpdateOrganizationAuditLogsRetentionAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_logs_retention_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_logs_retention.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/organizations/test_id/audit_logs_retention", HttpStatusCode.OK, fixture);
             var result = await this.service.UpdateOrganizationAuditLogsRetentionAsync("test_id", new AuditLogsUpdateOrganizationAuditLogsRetentionOptions());
             Assert.NotNull(result);
@@ -49,7 +49,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListActionsAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_audit_log_action_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/list_audit_log_action.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/actions", HttpStatusCode.OK, fixture);
             var result = await this.service.ListActionsAsync(new AuditLogsListActionsOptions());
             Assert.NotNull(result);
@@ -112,7 +112,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateExportAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_log_export_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_export.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/audit_logs/exports", HttpStatusCode.OK, fixture);
             var options = new AuditLogsCreateExportOptions();
             options.OrganizationId = "test_organization_id";
@@ -128,7 +128,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGetExportAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_log_export_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_export.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/audit_logs/exports/test_auditLogExportId", HttpStatusCode.OK, fixture);
             var result = await this.service.GetExportAsync("test_auditLogExportId");
             Assert.NotNull(result);
@@ -139,12 +139,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListActionsAutoPagingAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/audit_log_action_json.json");
+            var fixture = System.IO.File.ReadAllText("testdata/audit_log_action.json");
             var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
             var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/audit_logs/actions", HttpStatusCode.OK, new[] { page1, page2 });
 
-            var items = new List<AuditLogActionJson>();
+            var items = new List<AuditLogAction>();
             await foreach (var item in this.service.ListActionsAutoPagingAsync(new AuditLogsListActionsOptions()))
             {
                 items.Add(item);
@@ -159,7 +159,7 @@ namespace WorkOSTests
             var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
             this.httpMock.MockSequentialResponses(HttpMethod.Get, "/audit_logs/actions", HttpStatusCode.OK, new[] { empty });
 
-            var items = new List<AuditLogActionJson>();
+            var items = new List<AuditLogAction>();
             await foreach (var item in this.service.ListActionsAutoPagingAsync(new AuditLogsListActionsOptions()))
             {
                 items.Add(item);
