@@ -5,12 +5,24 @@ namespace WorkOS
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
+
+    // @oagen-ignore-start
+    using System.Security.Cryptography;
+    using System.Text;
+
+    // @oagen-ignore-end
     using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>Service that exposes the vault API operations on <see cref="WorkOSClient"/>.</summary>
     public class VaultService : Service
     {
+        // @oagen-ignore-start
+        private const int IvSize = 12;
+        private const int TagSize = 16;
+
+        // @oagen-ignore-end
+
         /// <summary>
         /// Initializes a new instance of the <see cref="VaultService"/> class for mocking. The service uses the singleton
         /// client configured via <see cref="WorkOSConfiguration.WorkOSClient"/>.
@@ -243,5 +255,163 @@ namespace WorkOS
         {
             return this.ListKvVersionsAsync(id, requestOptions, cancellationToken);
         }
+
+        // @oagen-ignore-start
+
+        /// <summary>Encrypt data locally using AES-256-GCM with a server-generated data key.</summary>
+        public virtual async Task<string> EncryptAsync(
+            string data,
+            Dictionary<string, string> keyContext,
+            string? associatedData = null,
+            CancellationToken cancellationToken = default)
+        {
+            var keyPair = await this.CreateDataKeyAsync(
+                new VaultCreateDataKeyOptions { Context = keyContext },
+                cancellationToken: cancellationToken);
+
+            var plainKey = Convert.FromBase64String(keyPair.DataKey);
+            var encryptedKeys = Encoding.UTF8.GetBytes(keyPair.EncryptedKeys);
+            var iv = RandomNumberGenerator.GetBytes(IvSize);
+            var plaintext = Encoding.UTF8.GetBytes(data);
+            var ciphertext = new byte[plaintext.Length];
+            var tag = new byte[TagSize];
+            byte[] aad = associatedData != null ? Encoding.UTF8.GetBytes(associatedData) : Array.Empty<byte>();
+
+            using var aes = new AesGcm(plainKey, TagSize);
+            aes.Encrypt(iv, plaintext, ciphertext, tag, aad);
+
+            var keyLenBytes = EncodeLeb128((uint)encryptedKeys.Length);
+
+            var combined = new byte[IvSize + TagSize + keyLenBytes.Length + encryptedKeys.Length + ciphertext.Length];
+            int offset = 0;
+            Buffer.BlockCopy(iv, 0, combined, offset, IvSize);
+            offset += IvSize;
+            Buffer.BlockCopy(tag, 0, combined, offset, TagSize);
+            offset += TagSize;
+            Buffer.BlockCopy(keyLenBytes, 0, combined, offset, keyLenBytes.Length);
+            offset += keyLenBytes.Length;
+            Buffer.BlockCopy(encryptedKeys, 0, combined, offset, encryptedKeys.Length);
+            offset += encryptedKeys.Length;
+            Buffer.BlockCopy(ciphertext, 0, combined, offset, ciphertext.Length);
+
+            return Convert.ToBase64String(combined);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="EncryptAsync"/>.</summary>
+        public virtual Task<string> Encrypt(
+            string data,
+            Dictionary<string, string> keyContext,
+            string? associatedData = null,
+            CancellationToken cancellationToken = default)
+        {
+            return this.EncryptAsync(data, keyContext, associatedData, cancellationToken);
+        }
+
+        /// <summary>Decrypt data encrypted with <see cref="EncryptAsync"/>.</summary>
+        public virtual async Task<string> DecryptAsync(
+            string encryptedData,
+            string? associatedData = null,
+            CancellationToken cancellationToken = default)
+        {
+            var combined = Convert.FromBase64String(encryptedData);
+            int offset = 0;
+
+            var iv = new byte[IvSize];
+            Buffer.BlockCopy(combined, offset, iv, 0, IvSize);
+            offset += IvSize;
+
+            var tag = new byte[TagSize];
+            Buffer.BlockCopy(combined, offset, tag, 0, TagSize);
+            offset += TagSize;
+
+            var (keyLen, bytesRead) = DecodeLeb128(combined, offset);
+            offset += bytesRead;
+
+            if (keyLen > (uint)(combined.Length - offset))
+            {
+                throw new InvalidOperationException("Encrypted payload is malformed: key length exceeds remaining buffer.");
+            }
+
+            var encryptedKeys = new byte[keyLen];
+            Buffer.BlockCopy(combined, offset, encryptedKeys, 0, (int)keyLen);
+            offset += (int)keyLen;
+
+            var ciphertext = new byte[combined.Length - offset];
+            Buffer.BlockCopy(combined, offset, ciphertext, 0, ciphertext.Length);
+
+            var keyString = Encoding.UTF8.GetString(encryptedKeys);
+            var decryptedKey = await this.CreateDecryptAsync(
+                new VaultCreateDecryptOptions { Keys = keyString },
+                cancellationToken: cancellationToken);
+
+            var plainKey = Convert.FromBase64String(decryptedKey.DataKey);
+            var plaintext = new byte[ciphertext.Length];
+            byte[] aad = associatedData != null ? Encoding.UTF8.GetBytes(associatedData) : Array.Empty<byte>();
+
+            using var aes = new AesGcm(plainKey, TagSize);
+            aes.Decrypt(iv, ciphertext, tag, plaintext, aad);
+
+            return Encoding.UTF8.GetString(plaintext);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DecryptAsync"/>.</summary>
+        public virtual Task<string> Decrypt(
+            string encryptedData,
+            string? associatedData = null,
+            CancellationToken cancellationToken = default)
+        {
+            return this.DecryptAsync(encryptedData, associatedData, cancellationToken);
+        }
+
+        private static byte[] EncodeLeb128(uint value)
+        {
+            var result = new List<byte>();
+            do
+            {
+                byte b = (byte)(value & 0x7F);
+                value >>= 7;
+                if (value != 0)
+                {
+                    b |= 0x80;
+                }
+
+                result.Add(b);
+            }
+            while (value != 0);
+            return result.ToArray();
+        }
+
+        private static (uint Value, int BytesRead) DecodeLeb128(byte[] data, int offset)
+        {
+            uint result = 0;
+            int shift = 0;
+            int bytesRead = 0;
+            while (true)
+            {
+                if (bytesRead >= 4)
+                {
+                    throw new InvalidOperationException("LEB128 length prefix exceeds 4 bytes; payload is malformed.");
+                }
+
+                if (offset + bytesRead >= data.Length)
+                {
+                    throw new InvalidOperationException("LEB128 length prefix is truncated.");
+                }
+
+                byte b = data[offset + bytesRead];
+                result |= (uint)(b & 0x7F) << shift;
+                bytesRead++;
+                if ((b & 0x80) == 0)
+                {
+                    break;
+                }
+
+                shift += 7;
+            }
+
+            return (result, bytesRead);
+        }
+
+        // @oagen-ignore-end
     }
 }
