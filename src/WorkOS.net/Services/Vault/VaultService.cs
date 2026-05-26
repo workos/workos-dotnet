@@ -17,6 +17,7 @@ namespace WorkOS
     /// <summary>Service that exposes the vault API operations on <see cref="WorkOSClient"/>.</summary>
     public class VaultService : Service
     {
+
         // @oagen-ignore-start
         private const int IvSize = 12;
         private const int TagSize = 16;
