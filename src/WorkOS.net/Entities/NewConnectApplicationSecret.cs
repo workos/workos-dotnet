@@ -18,7 +18,7 @@ namespace WorkOS
         public string SecretHint { get; set; } = default!;
 
         /// <summary>The timestamp when the client secret was last used, or null if never used.</summary>
-        public string? LastUsedAt { get; set; }
+        public DateTimeOffset? LastUsedAt { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }
