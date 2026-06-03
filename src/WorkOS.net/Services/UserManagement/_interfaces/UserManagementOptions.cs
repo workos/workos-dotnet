@@ -69,10 +69,10 @@ namespace WorkOS
     /// <summary>Request options for <see cref="UserManagementService.GetLogoutUrl"/>: Logout</summary>
     public class UserManagementGetLogoutUrlOptions : BaseOptions
     {
-        /// <summary>The ID of the session to revoke. This can be extracted from the `sid` claim of the access token.</summary>
+        /// <summary>The ID of the session. This can be extracted from the `sid` claim of the access token.</summary>
         public string SessionId { get; set; } = default!;
 
-        /// <summary>The URL to redirect the user to after session revocation.</summary>
+        /// <summary>The URL to redirect the user to after logout.</summary>
         public string? ReturnTo { get; set; }
 
     }
@@ -82,9 +82,6 @@ namespace WorkOS
     {
         /// <summary>The ID of the session to revoke. This can be extracted from the `sid` claim of the access token.</summary>
         public string SessionId { get; set; } = default!;
-
-        /// <summary>The URL to redirect the user to after session revocation.</summary>
-        public string? ReturnTo { get; set; }
 
     }
 
@@ -142,6 +139,9 @@ namespace WorkOS
         /// <summary>The last name of the user.</summary>
         public string? LastName { get; set; }
 
+        /// <summary>The user's full name.</summary>
+        public string? Name { get; set; }
+
         /// <summary>Whether the user's email has been verified.</summary>
         public bool? EmailVerified { get; set; }
 
@@ -184,6 +184,9 @@ namespace WorkOS
 
         /// <summary>The last name of the user.</summary>
         public string? LastName { get; set; }
+
+        /// <summary>The user's full name.</summary>
+        public string? Name { get; set; }
 
         /// <summary>Whether the user's email has been verified.</summary>
         public bool? EmailVerified { get; set; }
