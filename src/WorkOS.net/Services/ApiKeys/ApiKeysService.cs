@@ -111,5 +111,25 @@ namespace WorkOS
         {
             return this.DeleteAsync(id, requestOptions, cancellationToken);
         }
+
+        /// <summary>Expire an API key</summary>
+        /// <remarks>
+        /// Expire an API key immediately, schedule a future expiration, or clear a scheduled future expiration.
+        /// </remarks>
+        /// <param name="id">The unique ID of the API key.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ApiKey"/> result.</returns>
+        public virtual async Task<ApiKey> CreateExpireAsync(string id, ApiKeysCreateExpireOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<ApiKey>($"/api_keys/{Uri.EscapeDataString(id)}/expire", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateExpireAsync"/>.</summary>
+        public virtual Task<ApiKey> CreateExpire(string id, ApiKeysCreateExpireOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateExpireAsync(id, options, requestOptions, cancellationToken);
+        }
     }
 }
