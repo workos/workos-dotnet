@@ -20,6 +20,9 @@ namespace WorkOS
         /// <summary>The user's last name.</summary>
         public string? LastName { get; set; }
 
+        /// <summary>The user's full name.</summary>
+        public string? Name { get; set; }
+
         /// <summary>A set of key-value pairs to attach to the user.</summary>
         public Dictionary<string, string>? Metadata { get; set; }
     }
