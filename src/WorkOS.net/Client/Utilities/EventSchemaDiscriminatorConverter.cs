@@ -28,6 +28,7 @@ namespace WorkOS
                 case "action.user_registration.denied": target = new ActionUserRegistrationDenied(); break;
                 case "api_key.created": target = new ApiKeyCreated(); break;
                 case "api_key.revoked": target = new ApiKeyRevoked(); break;
+                case "api_key.updated": target = new ApiKeyUpdated(); break;
                 case "authentication.email_verification_failed": target = new AuthenticationEmailVerificationFailed(); break;
                 case "authentication.email_verification_succeeded": target = new AuthenticationEmailVerificationSucceeded(); break;
                 case "authentication.magic_auth_failed": target = new AuthenticationMagicAuthFailed(); break;
@@ -51,11 +52,12 @@ namespace WorkOS
                 case "connection.saml_certificate_renewal_required": target = new ConnectionSAMLCertificateRenewalRequired(); break;
                 case "connection.saml_certificate_renewed": target = new ConnectionSAMLCertificateRenewed(); break;
                 case "dsync.activated": target = new DsyncActivated(); break;
-                case "dsync.deactivated": target = new DsyncDeactivated(); break;
                 case "dsync.deleted": target = new DsyncDeleted(); break;
                 case "dsync.group.created": target = new DsyncGroupCreated(); break;
                 case "dsync.group.deleted": target = new DsyncGroupDeleted(); break;
                 case "dsync.group.updated": target = new DsyncGroupUpdated(); break;
+                case "dsync.token.created": target = new DsyncTokenCreated(); break;
+                case "dsync.token.revoked": target = new DsyncTokenRevoked(); break;
                 case "dsync.group.user_added": target = new DsyncGroupUserAdded(); break;
                 case "dsync.user.created": target = new DsyncUserCreated(); break;
                 case "dsync.user.deleted": target = new DsyncUserDeleted(); break;
