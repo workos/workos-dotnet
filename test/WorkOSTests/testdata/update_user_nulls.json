@@ -8,5 +8,6 @@
   "password_hash_type": null,
   "metadata": null,
   "external_id": null,
-  "locale": null
+  "locale": null,
+  "name": null
 }
