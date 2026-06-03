@@ -111,7 +111,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGetNameAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/object.json");
+            var fixture = System.IO.File.ReadAllText("testdata/vault_object.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/vault/v1/kv/name/test_name", HttpStatusCode.OK, fixture);
             var result = await this.service.GetNameAsync("test_name");
             Assert.NotNull(result);
@@ -124,7 +124,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestGetKvAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/object.json");
+            var fixture = System.IO.File.ReadAllText("testdata/vault_object.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/vault/v1/kv/test_id", HttpStatusCode.OK, fixture);
             var result = await this.service.GetKvAsync("test_id");
             Assert.NotNull(result);
