@@ -43,4 +43,10 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\_stylecop\StyleCopRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>WorkOSTests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>

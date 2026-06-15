@@ -227,6 +227,11 @@ namespace WorkOS
             return JsonConvert.DeserializeObject<Dictionary<string, object>>(json)!;
         }
 
+        internal void SetJwksManagerForTesting(ConfigurationManager<OpenIdConnectConfiguration> manager)
+        {
+            this.jwksManager = manager;
+        }
+
         private static byte[] DeriveKey(string password, byte[] salt)
         {
             using var pbkdf2 = new Rfc2898DeriveBytes(
@@ -244,7 +249,7 @@ namespace WorkOS
                 var jwksUrl = this.GetJwksUrl();
                 this.jwksManager = new ConfigurationManager<OpenIdConnectConfiguration>(
                     jwksUrl,
-                    new OpenIdConnectConfigurationRetriever(),
+                    new JwksConfigurationRetriever(),
                     new HttpDocumentRetriever());
             }
 
