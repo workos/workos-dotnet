@@ -1,22 +1,94 @@
 // @oagen-ignore-file
 namespace WorkOSTests
 {
+    using System;
+    using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
+    using System.Security.Claims;
     using System.Security.Cryptography;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.IdentityModel.Protocols;
+    using Microsoft.IdentityModel.Protocols.OpenIdConnect;
     using Microsoft.IdentityModel.Tokens;
     using WorkOS;
     using Xunit;
 
     public class SessionServiceTest
     {
+        private const string CookiePassword = "test-password-at-least-32-chars!";
+        private const string ClientId = "client_01TESTCLIENT";
+
+        /// <summary>
+        /// End-to-end repro for #266: a valid sealed session created by
+        /// SealSessionFromAuthResponse must authenticate successfully when
+        /// the JWKS endpoint returns a raw JWKS document.
+        /// </summary>
+        [Fact]
+        public async Task AuthenticateAsync_ValidJwt_WithRawJwks_ReturnsAuthenticated()
+        {
+            using var rsa = RSA.Create(2048);
+            var rsaSecurityKey = new RsaSecurityKey(rsa) { KeyId = "test-key-id" };
+
+            var jwk = JsonWebKeyConverter.ConvertFromRSASecurityKey(rsaSecurityKey);
+            jwk.Use = "sig";
+            jwk.Alg = "RS256";
+            var jwksJson = System.Text.Json.JsonSerializer.Serialize(new
+            {
+                keys = new[] { jwk },
+            });
+
+            var now = DateTime.UtcNow;
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim("sid", "session_01TEST"),
+                    new Claim("org_id", "org_01TEST"),
+                    new Claim("role", "admin"),
+                    new Claim("sub", "user_01TEST"),
+                }),
+                Expires = now.AddHours(1),
+                NotBefore = now.AddSeconds(-5),
+                IssuedAt = now,
+                SigningCredentials = new SigningCredentials(rsaSecurityKey, SecurityAlgorithms.RsaSha256),
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var accessToken = tokenHandler.CreateEncodedJwt(tokenDescriptor);
+
+            var sealedSession = SessionService.SealSessionFromAuthResponse(
+                accessToken,
+                "refresh_token_value",
+                CookiePassword);
+
+            var client = new WorkOSClient(new WorkOSOptions
+            {
+                ApiKey = "sk_test",
+                ClientId = ClientId,
+            });
+
+            var sessionService = client.Session;
+            sessionService.SetJwksManagerForTesting(new ConfigurationManager<OpenIdConnectConfiguration>(
+                $"https://api.workos.com/sso/jwks/{ClientId}",
+                new JwksConfigurationRetriever(),
+                new StaticDocumentRetriever(jwksJson)));
+
+            var result = await sessionService.AuthenticateAsync(
+                sealedSession,
+                CookiePassword,
+                CancellationToken.None);
+
+            Assert.True(result.Authenticated);
+            Assert.Equal("session_01TEST", result.SessionId);
+            Assert.Equal("org_01TEST", result.OrganizationId);
+            Assert.Equal("admin", result.Role);
+            Assert.Equal(accessToken, result.AccessToken);
+            Assert.Null(result.Reason);
+        }
+
         /// <summary>
         /// Verifies that JwksConfigurationRetriever correctly parses a raw JWKS
-        /// document and returns the expected signing keys. This is the exact
-        /// scenario that was broken before the fix: the endpoint serves
-        /// { "keys": [...] } directly (not an OIDC discovery document).
+        /// document and returns the expected signing keys.
         /// </summary>
         [Fact]
         public async Task JwksConfigurationRetriever_ParsesRawJwks_ReturnsSigningKeys()
