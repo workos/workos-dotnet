@@ -227,14 +227,6 @@ namespace WorkOS
             return JsonConvert.DeserializeObject<Dictionary<string, object>>(json)!;
         }
 
-        /// <summary>
-        /// Sets the JWKS configuration manager (for testing only).
-        /// </summary>
-        internal void SetJwksManagerForTesting(ConfigurationManager<OpenIdConnectConfiguration> manager)
-        {
-            this.jwksManager = manager;
-        }
-
         private static byte[] DeriveKey(string password, byte[] salt)
         {
             using var pbkdf2 = new Rfc2898DeriveBytes(

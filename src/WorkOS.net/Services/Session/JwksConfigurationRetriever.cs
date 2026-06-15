@@ -12,7 +12,7 @@ namespace WorkOS
     /// endpoint (one that returns <c>{ "keys": [...] }</c> directly) rather than
     /// from an OIDC discovery document.
     /// </summary>
-    internal sealed class JwksConfigurationRetriever : IConfigurationRetriever<OpenIdConnectConfiguration>
+    public sealed class JwksConfigurationRetriever : IConfigurationRetriever<OpenIdConnectConfiguration>
     {
         /// <inheritdoc/>
         public async Task<OpenIdConnectConfiguration> GetConfigurationAsync(
