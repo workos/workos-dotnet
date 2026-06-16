@@ -4,12 +4,12 @@ namespace WorkOS
 {
     using System;
 
-    /// <summary>Represents a dsync deactivated.</summary>
-    public class DsyncDeactivated : EventSchema
+    /// <summary>Represents a dsync token revoked.</summary>
+    public class DsyncTokenRevoked : EventSchema
     {
 
         /// <summary>The event payload.</summary>
-        public new DsyncActivatedData Data { get; set; } = default!;
+        public new DsyncTokenCreatedData Data { get; set; } = default!;
         public new EventContext? Context { get; set; }
     }
 }

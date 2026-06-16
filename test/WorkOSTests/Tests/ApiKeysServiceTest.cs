@@ -84,6 +84,19 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestCreateExpireAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/api_key.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/api_keys/test_id/expire", HttpStatusCode.OK, fixture);
+            var result = await this.service.CreateExpireAsync("test_id", new ApiKeysCreateExpireOptions());
+            Assert.NotNull(result);
+            Assert.Equal("api_key_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("Production API Key", result.Name);
+            Assert.Equal("sk_...3456", result.ObfuscatedValue);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/api_keys/test_id/expire");
+        }
+
+        [Fact]
         public async Task TestListOrganizationApiKeysAutoPagingAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/organization_api_key.json");

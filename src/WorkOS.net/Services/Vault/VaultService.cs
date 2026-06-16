@@ -149,14 +149,14 @@ namespace WorkOS
         /// <param name="name">Unique name of the object.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Object"/> result.</returns>
-        public virtual async Task<Object> GetNameAsync(string name, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="VaultObject"/> result.</returns>
+        public virtual async Task<VaultObject> GetNameAsync(string name, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<Object>($"/vault/v1/kv/name/{Uri.EscapeDataString(name)}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<VaultObject>($"/vault/v1/kv/name/{Uri.EscapeDataString(name)}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="GetNameAsync"/>.</summary>
-        public virtual Task<Object> GetName(string name, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<VaultObject> GetName(string name, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.GetNameAsync(name, requestOptions, cancellationToken);
         }
@@ -168,14 +168,14 @@ namespace WorkOS
         /// <param name="id">Unique identifier of the object.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="Object"/> result.</returns>
-        public virtual async Task<Object> GetKvAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="VaultObject"/> result.</returns>
+        public virtual async Task<VaultObject> GetKvAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<Object>($"/vault/v1/kv/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<VaultObject>($"/vault/v1/kv/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="GetKvAsync"/>.</summary>
-        public virtual Task<Object> GetKv(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<VaultObject> GetKv(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.GetKvAsync(id, requestOptions, cancellationToken);
         }

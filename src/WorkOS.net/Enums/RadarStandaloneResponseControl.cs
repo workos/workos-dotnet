@@ -18,8 +18,6 @@ namespace WorkOS
         BotDetection,
         [EnumMember(Value = "brute_force_attack")]
         BruteForceAttack,
-        [EnumMember(Value = "domain_sign_up_rate_limit")]
-        DomainSignUpRateLimit,
         [EnumMember(Value = "impossible_travel")]
         ImpossibleTravel,
         [EnumMember(Value = "repeat_sign_up")]

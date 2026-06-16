@@ -33,4 +33,12 @@ namespace WorkOS
         public string Value { get; set; } = default!;
 
     }
+
+    /// <summary>Request options for <see cref="ApiKeysService.CreateExpireAsync"/>: Expire an API key</summary>
+    public class ApiKeysCreateExpireOptions : BaseOptions
+    {
+        /// <summary>When the API key should expire. If omitted or in the past, the key expires immediately. Use null to clear a scheduled future expiration.</summary>
+        public DateTimeOffset? ExpiresAt { get; set; }
+
+    }
 }

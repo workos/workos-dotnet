@@ -24,6 +24,8 @@ namespace WorkOS
         GoogleCloudStorage,
         [EnumMember(Value = "S3")]
         S3,
+        [EnumMember(Value = "Snowflake")]
+        Snowflake,
         [EnumMember(Value = "Splunk")]
         Splunk,
     }

@@ -21,6 +21,9 @@ namespace WorkOS
         /// <summary>The last name of the user.</summary>
         public string? LastName { get; set; }
 
+        /// <summary>The user's full name.</summary>
+        public string? Name { get; set; }
+
         /// <summary>A URL reference to an image representing the user.</summary>
         public string? ProfilePictureUrl { get; set; }
 

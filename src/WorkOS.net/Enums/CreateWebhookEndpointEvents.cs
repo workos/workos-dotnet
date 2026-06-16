@@ -48,6 +48,8 @@ namespace WorkOS
         ApiKeyCreated,
         [EnumMember(Value = "api_key.revoked")]
         ApiKeyRevoked,
+        [EnumMember(Value = "api_key.updated")]
+        ApiKeyUpdated,
         [EnumMember(Value = "connection.activated")]
         ConnectionActivated,
         [EnumMember(Value = "connection.deactivated")]
