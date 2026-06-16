@@ -1,5 +1,39 @@
 # Changelog
 
+## [5.1.0](https://github.com/workos/workos-dotnet/compare/v5.0.0...v5.1.0) (2026-06-16)
+
+### Bug Fixes
+
+* **renovate:** explicitly enable minor and patch updates ([#261](https://github.com/workos/workos-dotnet/issues/261)) ([a8dd75f](https://github.com/workos/workos-dotnet/commit/a8dd75fb7b90840610bb2ea4dba40fab12e47426))
+* use raw JWKS retriever instead of OIDC discovery retriever ([#267](https://github.com/workos/workos-dotnet/issues/267)) ([03c3b3d](https://github.com/workos/workos-dotnet/commit/03c3b3d248dbf5187c99d9b49828782e459efd20))
+
+- [#263](https://github.com/workos/workos-dotnet/pull/263) feat(generated): regenerate from spec (9 changes)
+
+**Features**
+
+- **[api_keys](https://workos.com/docs/reference/authkit/api-keys)**:
+  - Added model `ExpireApiKey`
+  - Added model `ApiKeyUpdated`
+  - Added model `ApiKeyUpdatedData`
+  - Added model `ApiKeyUpdatedDataOwner`
+  - Added model `UserApiKeyUpdatedDataOwner`
+  - Added model `ApiKeyUpdatedDataPreviousAttribute`
+  - Added endpoint `POST /api_keys/{id}/expire`
+- **[audit_logs](https://workos.com/docs/reference/audit-logs)**:
+  - Added `Snowflake` to `AuditLogConfigurationLogStreamType`
+- **[connect](https://workos.com/docs/reference/workos-connect/standalone)**:
+  - Added `name` to `UserObject`
+- **[directory_sync](https://workos.com/docs/reference/directory-sync)**:
+  - Added model `DsyncTokenCreated`
+  - Added model `DsyncTokenCreatedData`
+  - Added model `DsyncTokenRevoked`
+  - Added model `DsyncTokenRevokedData`
+- **[user_management](https://workos.com/docs/reference/authkit/user)**:
+  - Added `name` to user management models
+- **[webhooks](https://workos.com/docs/reference/webhooks)**:
+  - Added `api_key.updated` to `CreateWebhookEndpointEvents`
+  - Added `api_key.updated` to `UpdateWebhookEndpointEvents`
+
 ## [5.0.0](https://github.com/workos/workos-dotnet/compare/v4.0.1...v5.0.0) (2026-05-26)
 
 
