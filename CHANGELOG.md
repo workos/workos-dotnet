@@ -2,25 +2,62 @@
 
 ## [6.0.0](https://github.com/workos/workos-dotnet/compare/v5.1.0...v6.0.0) (2026-06-17)
 
+- [#268](https://github.com/workos/workos-dotnet/pull/268) feat(generated)!: regenerate from spec (12 changes)
+  **⚠️ Breaking**
+  - **[organization_membership](https://workos.com/docs/reference/authkit/organization-membership)**:
+    - Changed response of `UserManagementOrganizationMembership.list` from `UserOrganizationMembership` to `UserOrganizationMembershipList`
+  - **[pipes](https://workos.com/docs/reference/pipes)**:
+    - SDK surface change: Type changed for "DataIntegrationAccessTokenResponseAccessToken.ExpiresAt" from "string?" to "DateTimeOffset?"
+  - **[user_management](https://workos.com/docs/reference/authkit/user)**:
+    - Changed response of `UserManagementInvitations.list` from `UserInvite` to `UserInviteList`
+  - **[widgets](https://workos.com/docs/reference/widgets)**:
+    - SDK surface change: Symbol "WidgetSessionTokenResponse" was removed
 
-### ⚠ BREAKING CHANGES
-
-* **pipes:** SDK surface change: Type changed for "DataIntegrationAccessTokenResponseAccessToken.ExpiresAt" from "string?" to "DateTimeOffset?" ([#268](https://github.com/workos/workos-dotnet/issues/268))
-
-### Features
-
-* **authorization:** Add authorization operations and models ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
-* **client:** Add client API surface ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
-* **connect:** Add Connect API surface ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
-* **groups:** Add groups API surface ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
-* **organization_membership:** Add organization membership API surface ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
-* **organization_membership:** Change response for `UserManagementOrganizationMembership.list` ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
-* **pipes:** Add Pipes API surface ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
-* **pipes:** SDK surface change: Type changed for "DataIntegrationAccessTokenResponseAccessToken.ExpiresAt" from "string?" to "DateTimeOffset?" ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
-* **user_management:** Change response for `UserManagementInvitations.list` ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
-* **user_management:** Update user management API surface ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
-* **widgets:** Add `widgets:pipes:manage` to `WidgetSessionTokenScopes` ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
-* **widgets:** SDK surface change: Symbol "WidgetSessionTokenResponse" was removed ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
+  **Features**
+  - **[authorization](https://workos.com/docs/reference/fga)**:
+    - Added model `ReplaceGroupRoleAssignmentEntry`
+    - Added model `ReplaceGroupRoleAssignments`
+    - Added model `DeleteGroupRoleAssignmentsByCriteria`
+    - Added endpoint `POST /authorization/groups/{group_id}/role_assignments`
+    - Added endpoint `PUT /authorization/groups/{group_id}/role_assignments`
+    - Added endpoint `DELETE /authorization/groups/{group_id}/role_assignments`
+    - Added endpoint `GET /authorization/groups/{group_id}/role_assignments/{role_assignment_id}`
+    - Added endpoint `DELETE /authorization/groups/{group_id}/role_assignments/{role_assignment_id}`
+  - **[client](https://workos.com/docs/reference)**:
+    - Added model `ClientApiToken`
+    - Added model `ClientApiTokenResponse`
+    - Added service `Client`
+  - **[connect](https://workos.com/docs/reference/workos-connect/standalone)**:
+    - Added `auth_method` to `ConnectedAccount`
+    - Added `api_key_last_4` to `ConnectedAccount`
+    - Added enum `ConnectedAccountAuthMethod`
+  - **[groups](https://workos.com/docs/reference/groups)**:
+    - Added model `CreateGroupRoleAssignment`
+    - Added model `GroupRoleAssignment`
+    - Added model `GroupRoleAssignmentList`
+    - Added model `GroupRoleAssignmentResource`
+  - **[organization_membership](https://workos.com/docs/reference/authkit/organization-membership)**:
+    - Added model `UserOrganizationMembershipList`
+    - Added model `UserOrganizationMembershipListListMetadata`
+  - **[pipes](https://workos.com/docs/reference/pipes)**:
+    - Added model `DataIntegrationCredentials`
+    - Added model `DataIntegrationConfigurationResponse`
+    - Added model `DataIntegrationConfigurationListResponse`
+    - Added model `ConfigureDataIntegrationBody`
+    - Added `auth_methods` to `DataIntegrationsListResponseData`
+    - Added `auth_method` to `DataIntegrationsListResponseDataConnectedAccount`
+    - Added `api_key_last_4` to `DataIntegrationsListResponseDataConnectedAccount`
+    - Added enum `DataIntegrationCredentialsCredentialsType`
+    - Added enum `DataIntegrationsListResponseDataAuthMethods`
+    - Added enum `DataIntegrationsListResponseDataConnectedAccountAuthMethod`
+    - Added service `PipesProvider`
+  - **[user_management](https://workos.com/docs/reference/authkit/user)**:
+    - Added model `UserInviteList`
+    - Added model `UserInviteListListMetadata`
+    - Made `AuthorizationCodeSessionAuthenticateRequest.client_secret` optional
+    - Made `RefreshTokenSessionAuthenticateRequest.client_secret` optional
+  - **[widgets](https://workos.com/docs/reference/widgets)**:
+    - Added `widgets:pipes:manage` to `WidgetSessionTokenScopes`
 
 ## [5.1.0](https://github.com/workos/workos-dotnet/compare/v5.0.0...v5.1.0) (2026-06-16)
 
