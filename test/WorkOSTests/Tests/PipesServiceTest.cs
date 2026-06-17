@@ -41,15 +41,15 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestCreateDataIntegrationTokenAsync()
+        public async Task TestGetAccessTokenAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/data_integration_access_token_response.json");
-            this.httpMock.MockResponse(HttpMethod.Post, "/data-integrations/test_slug/token", HttpStatusCode.OK, fixture);
-            var options = new PipesCreateDataIntegrationTokenOptions();
+            this.httpMock.MockResponse(HttpMethod.Post, "/data-integrations/test_provider/token", HttpStatusCode.OK, fixture);
+            var options = new PipesGetAccessTokenOptions();
             options.UserId = "test_user_id";
-            var result = await this.service.CreateDataIntegrationTokenAsync("test_slug", options);
+            var result = await this.service.GetAccessTokenAsync("test_provider", options);
             Assert.NotNull(result);
-            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/data-integrations/test_slug/token");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/data-integrations/test_provider/token");
             await this.httpMock.AssertRequestBodyContainsAsync("user_id", "test_user_id");
         }
 

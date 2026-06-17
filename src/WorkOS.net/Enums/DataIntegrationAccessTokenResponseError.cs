@@ -14,9 +14,9 @@ namespace WorkOS
         [EnumMember(Value = "unknown")]
         Unknown,
 
-        [EnumMember(Value = "needs_reauthorization")]
-        NeedsReauthorization,
         [EnumMember(Value = "not_installed")]
         NotInstalled,
+        [EnumMember(Value = "needs_reauthorization")]
+        NeedsReauthorization,
     }
 }

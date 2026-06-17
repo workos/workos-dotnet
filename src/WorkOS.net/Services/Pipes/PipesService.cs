@@ -48,20 +48,20 @@ namespace WorkOS
         /// <remarks>
         /// Fetches a valid OAuth access token for a user's connected account. WorkOS automatically handles token refresh, ensuring you always receive a valid, non-expired token.
         /// </remarks>
-        /// <param name="slug">The identifier of the integration.</param>
+        /// <param name="provider">The identifier of the integration.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="DataIntegrationAccessTokenResponse"/> result.</returns>
-        public virtual async Task<DataIntegrationAccessTokenResponse> CreateDataIntegrationTokenAsync(string slug, PipesCreateDataIntegrationTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<DataIntegrationAccessTokenResponse> GetAccessTokenAsync(string provider, PipesGetAccessTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<DataIntegrationAccessTokenResponse>($"/data-integrations/{Uri.EscapeDataString(slug)}/token", options, requestOptions, cancellationToken);
+            return await this.PostAsync<DataIntegrationAccessTokenResponse>($"/data-integrations/{Uri.EscapeDataString(provider)}/token", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Compatibility wrapper for <see cref="CreateDataIntegrationTokenAsync"/>.</summary>
-        public virtual Task<DataIntegrationAccessTokenResponse> CreateDataIntegrationToken(string slug, PipesCreateDataIntegrationTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>Compatibility wrapper for <see cref="GetAccessTokenAsync"/>.</summary>
+        public virtual Task<DataIntegrationAccessTokenResponse> GetAccessToken(string provider, PipesGetAccessTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.CreateDataIntegrationTokenAsync(slug, options, requestOptions, cancellationToken);
+            return this.GetAccessTokenAsync(provider, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a connected account</summary>
@@ -105,7 +105,7 @@ namespace WorkOS
             return this.DeleteUserConnectedAccountAsync(userId, slug, options, requestOptions, cancellationToken);
         }
 
-        /// <summary>List providers</summary>
+        /// <summary>List providers for a user</summary>
         /// <remarks>
         /// Retrieves a list of available providers and the user's connection status for each. Returns all providers configured for your environment, along with the user's [connected account](https://workos.com/docs/reference/pipes/connected-account) information where applicable.
         /// </remarks>

@@ -21,8 +21,8 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="PipesService.CreateDataIntegrationTokenAsync"/>: Get an access token for a connected account</summary>
-    public class PipesCreateDataIntegrationTokenOptions : BaseOptions
+    /// <summary>Request options for <see cref="PipesService.GetAccessTokenAsync"/>: Get an access token for a connected account</summary>
+    public class PipesGetAccessTokenOptions : BaseOptions
     {
         /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>
         public string UserId { get; set; } = default!;
@@ -48,7 +48,7 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="PipesService.ListUserDataProvidersAsync"/>: List providers</summary>
+    /// <summary>Request options for <see cref="PipesService.ListUserDataProvidersAsync"/>: List providers for a user</summary>
     public class PipesListUserDataProvidersOptions : BaseOptions
     {
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to filter connections for a specific organization.</summary>
