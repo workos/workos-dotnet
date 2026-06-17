@@ -1,5 +1,27 @@
 # Changelog
 
+## [6.0.0](https://github.com/workos/workos-dotnet/compare/v5.1.0...v6.0.0) (2026-06-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* **pipes:** SDK surface change: Type changed for "DataIntegrationAccessTokenResponseAccessToken.ExpiresAt" from "string?" to "DateTimeOffset?" ([#268](https://github.com/workos/workos-dotnet/issues/268))
+
+### Features
+
+* **authorization:** Add authorization operations and models ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
+* **client:** Add client API surface ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
+* **connect:** Add Connect API surface ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
+* **groups:** Add groups API surface ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
+* **organization_membership:** Add organization membership API surface ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
+* **organization_membership:** Change response for `UserManagementOrganizationMembership.list` ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
+* **pipes:** Add Pipes API surface ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
+* **pipes:** SDK surface change: Type changed for "DataIntegrationAccessTokenResponseAccessToken.ExpiresAt" from "string?" to "DateTimeOffset?" ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
+* **user_management:** Change response for `UserManagementInvitations.list` ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
+* **user_management:** Update user management API surface ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
+* **widgets:** Add `widgets:pipes:manage` to `WidgetSessionTokenScopes` ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
+* **widgets:** SDK surface change: Symbol "WidgetSessionTokenResponse" was removed ([#268](https://github.com/workos/workos-dotnet/issues/268)) ([362bf62](https://github.com/workos/workos-dotnet/commit/362bf62246b6d0c4d0da4799ba9edc1907b8b6a4))
+
 ## [5.1.0](https://github.com/workos/workos-dotnet/compare/v5.0.0...v5.1.0) (2026-06-16)
 
 ### Bug Fixes
