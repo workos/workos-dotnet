@@ -26,5 +26,7 @@ namespace WorkOS
         WidgetsDsyncManage,
         [EnumMember(Value = "widgets:audit-log-streaming:manage")]
         WidgetsAuditLogStreamingManage,
+        [EnumMember(Value = "widgets:pipes:manage")]
+        WidgetsPipesManage,
     }
 }

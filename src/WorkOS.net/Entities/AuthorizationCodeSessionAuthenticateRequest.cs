@@ -10,8 +10,8 @@ namespace WorkOS
         /// <summary>The client ID of the application.</summary>
         public string ClientId { get; set; } = default!;
 
-        /// <summary>The client secret of the application.</summary>
-        public string ClientSecret { get; set; } = default!;
+        /// <summary>The client secret of the application. May be omitted by public clients that authenticate through other means, such as a PKCE `code_verifier`.</summary>
+        public string? ClientSecret { get; set; }
         public string GrantType { get; internal set; } = "authorization_code";
 
         /// <summary>The authorization code received from the redirect.</summary>

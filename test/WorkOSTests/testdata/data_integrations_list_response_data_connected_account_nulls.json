@@ -13,5 +13,7 @@
   "userlandUserId": null,
   "organizationId": null,
   "createdAt": null,
-  "updatedAt": null
+  "updatedAt": null,
+  "auth_method": null,
+  "api_key_last_4": null
 }

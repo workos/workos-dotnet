@@ -14,5 +14,6 @@
   "credentialsType": null,
   "createdAt": null,
   "updatedAt": null,
-  "connected_account": null
+  "connected_account": null,
+  "auth_methods": null
 }

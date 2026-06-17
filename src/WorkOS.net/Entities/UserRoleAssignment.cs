@@ -21,7 +21,7 @@ namespace WorkOS
         public AddRolePermission Role { get; set; } = default!;
 
         /// <summary>The resource the role is assigned on.</summary>
-        public UserRoleAssignmentResource Resource { get; set; } = default!;
+        public GroupRoleAssignmentResource Resource { get; set; } = default!;
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

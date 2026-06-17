@@ -22,6 +22,11 @@ namespace WorkOS
         /// <summary>Gets the <see cref="AuthorizationService"/> for authorization API operations.</summary>
         public virtual AuthorizationService Authorization => this.authorization ??= new AuthorizationService(this);
 
+        private ClientApiService clientApi;
+
+        /// <summary>Gets the <see cref="ClientApiService"/> for client api API operations.</summary>
+        public virtual ClientApiService ClientApi => this.clientApi ??= new ClientApiService(this);
+
         private SSOService sSO;
 
         /// <summary>Gets the <see cref="SSOService"/> for SSO API operations.</summary>
@@ -61,6 +66,11 @@ namespace WorkOS
 
         /// <summary>Gets the <see cref="ApiKeysService"/> for api keys API operations.</summary>
         public virtual ApiKeysService ApiKeys => this.apiKeys ??= new ApiKeysService(this);
+
+        private PipesProviderService pipesProvider;
+
+        /// <summary>Gets the <see cref="PipesProviderService"/> for pipes provider API operations.</summary>
+        public virtual PipesProviderService PipesProvider => this.pipesProvider ??= new PipesProviderService(this);
 
         private GroupsService groups;
 

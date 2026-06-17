@@ -1,7 +1,7 @@
 {
   "version": 2,
   "language": "dotnet",
-  "generatedAt": "2026-06-03T19:19:59.584Z",
+  "generatedAt": "2026-06-17T20:55:38.959Z",
   "files": [
     "src/WorkOS.net/Client/Utilities/ApiKeyCreatedDataOwnerDiscriminatorConverter.cs",
     "src/WorkOS.net/Client/Utilities/ApiKeyOwnerDiscriminatorConverter.cs",
@@ -24,6 +24,7 @@
     "src/WorkOS.net/Entities/ApiKeyUpdatedDataPreviousAttribute.cs",
     "src/WorkOS.net/Entities/ApiKeyValidationResponse.cs",
     "src/WorkOS.net/Entities/ApplicationCredentialsListItem.cs",
+    "src/WorkOS.net/Entities/AssignRole.cs",
     "src/WorkOS.net/Entities/AuditLogAction.cs",
     "src/WorkOS.net/Entities/AuditLogConfiguration.cs",
     "src/WorkOS.net/Entities/AuditLogConfigurationLogStream.cs",
@@ -87,6 +88,7 @@
     "src/WorkOS.net/Entities/AuthorizationPermission.cs",
     "src/WorkOS.net/Entities/AuthorizationResource.cs",
     "src/WorkOS.net/Entities/AuthorizedConnectApplicationListData.cs",
+    "src/WorkOS.net/Entities/ClientApiTokenResponse.cs",
     "src/WorkOS.net/Entities/ConnectApplication.cs",
     "src/WorkOS.net/Entities/ConnectApplicationM2M.cs",
     "src/WorkOS.net/Entities/ConnectApplicationOAuth.cs",
@@ -115,6 +117,9 @@
     "src/WorkOS.net/Entities/DataIntegrationAccessTokenResponse.cs",
     "src/WorkOS.net/Entities/DataIntegrationAccessTokenResponseAccessToken.cs",
     "src/WorkOS.net/Entities/DataIntegrationAuthorizeUrlResponse.cs",
+    "src/WorkOS.net/Entities/DataIntegrationConfigurationListResponse.cs",
+    "src/WorkOS.net/Entities/DataIntegrationConfigurationResponse.cs",
+    "src/WorkOS.net/Entities/DataIntegrationCredentials.cs",
     "src/WorkOS.net/Entities/DataIntegrationsListResponse.cs",
     "src/WorkOS.net/Entities/DataIntegrationsListResponseData.cs",
     "src/WorkOS.net/Entities/DataIntegrationsListResponseDataConnectedAccount.cs",
@@ -185,6 +190,9 @@
     "src/WorkOS.net/Entities/GroupMemberAdded.cs",
     "src/WorkOS.net/Entities/GroupMemberAddedData.cs",
     "src/WorkOS.net/Entities/GroupMemberRemoved.cs",
+    "src/WorkOS.net/Entities/GroupRoleAssignment.cs",
+    "src/WorkOS.net/Entities/GroupRoleAssignmentList.cs",
+    "src/WorkOS.net/Entities/GroupRoleAssignmentResource.cs",
     "src/WorkOS.net/Entities/GroupUpdated.cs",
     "src/WorkOS.net/Entities/IntentOptions.cs",
     "src/WorkOS.net/Entities/Invitation.cs",
@@ -278,7 +286,6 @@
     "src/WorkOS.net/Entities/UserObject.cs",
     "src/WorkOS.net/Entities/UserOrganizationMembershipBaseListData.cs",
     "src/WorkOS.net/Entities/UserRoleAssignment.cs",
-    "src/WorkOS.net/Entities/UserRoleAssignmentResource.cs",
     "src/WorkOS.net/Entities/UserUpdated.cs",
     "src/WorkOS.net/Entities/VaultByokKeyDeleted.cs",
     "src/WorkOS.net/Entities/VaultByokKeyDeletedData.cs",
@@ -307,7 +314,6 @@
     "src/WorkOS.net/Entities/WaitlistUserCreated.cs",
     "src/WorkOS.net/Entities/WaitlistUserDenied.cs",
     "src/WorkOS.net/Entities/WebhookEndpoint.cs",
-    "src/WorkOS.net/Entities/WidgetSessionTokenResponse.cs",
     "src/WorkOS.net/Enums/AuditLogConfigurationLogStreamState.cs",
     "src/WorkOS.net/Enums/AuditLogConfigurationLogStreamType.cs",
     "src/WorkOS.net/Enums/AuditLogConfigurationState.cs",
@@ -317,6 +323,7 @@
     "src/WorkOS.net/Enums/AuthenticationFactorsCreateRequestType.cs",
     "src/WorkOS.net/Enums/AuthenticationRadarRiskDetectedDataAction.cs",
     "src/WorkOS.net/Enums/AuthorizationAssignment.cs",
+    "src/WorkOS.net/Enums/ConnectedAccountAuthMethod.cs",
     "src/WorkOS.net/Enums/ConnectedAccountState.cs",
     "src/WorkOS.net/Enums/ConnectionActivatedDataConnectionType.cs",
     "src/WorkOS.net/Enums/ConnectionActivatedDataState.cs",
@@ -329,6 +336,7 @@
     "src/WorkOS.net/Enums/CreateUserPasswordHashType.cs",
     "src/WorkOS.net/Enums/CreateWebhookEndpointEvents.cs",
     "src/WorkOS.net/Enums/DataIntegrationAccessTokenResponseError.cs",
+    "src/WorkOS.net/Enums/DataIntegrationCredentialsCredentialsType.cs",
     "src/WorkOS.net/Enums/DataIntegrationsListResponseDataOwnership.cs",
     "src/WorkOS.net/Enums/DirectoryState.cs",
     "src/WorkOS.net/Enums/DirectoryType.cs",
@@ -372,6 +380,8 @@
     "src/WorkOS.net/Services/AuditLogs/_interfaces/AuditLogsOptions.cs",
     "src/WorkOS.net/Services/Authorization/AuthorizationService.cs",
     "src/WorkOS.net/Services/Authorization/_interfaces/AuthorizationOptions.cs",
+    "src/WorkOS.net/Services/ClientApi/ClientApiService.cs",
+    "src/WorkOS.net/Services/ClientApi/_interfaces/ClientApiOptions.cs",
     "src/WorkOS.net/Services/Connect/ConnectService.cs",
     "src/WorkOS.net/Services/Connect/_interfaces/ConnectOptions.cs",
     "src/WorkOS.net/Services/Connect/_interfaces/ConnectWrapperOptions.cs",
@@ -393,6 +403,8 @@
     "src/WorkOS.net/Services/Organizations/_interfaces/OrganizationsOptions.cs",
     "src/WorkOS.net/Services/Pipes/PipesService.cs",
     "src/WorkOS.net/Services/Pipes/_interfaces/PipesOptions.cs",
+    "src/WorkOS.net/Services/PipesProvider/PipesProviderService.cs",
+    "src/WorkOS.net/Services/PipesProvider/_interfaces/PipesProviderOptions.cs",
     "src/WorkOS.net/Services/Radar/RadarService.cs",
     "src/WorkOS.net/Services/Radar/_interfaces/RadarOptions.cs",
     "src/WorkOS.net/Services/SSO/SSOService.cs",
@@ -410,6 +422,7 @@
     "test/WorkOSTests/Tests/ApiKeysServiceTest.cs",
     "test/WorkOSTests/Tests/AuditLogsServiceTest.cs",
     "test/WorkOSTests/Tests/AuthorizationServiceTest.cs",
+    "test/WorkOSTests/Tests/ClientApiServiceTest.cs",
     "test/WorkOSTests/Tests/ConnectServiceTest.cs",
     "test/WorkOSTests/Tests/DirectorySyncServiceTest.cs",
     "test/WorkOSTests/Tests/EventsServiceTest.cs",
@@ -419,6 +432,7 @@
     "test/WorkOSTests/Tests/OrganizationDomainsServiceTest.cs",
     "test/WorkOSTests/Tests/OrganizationMembershipServiceTest.cs",
     "test/WorkOSTests/Tests/OrganizationsServiceTest.cs",
+    "test/WorkOSTests/Tests/PipesProviderServiceTest.cs",
     "test/WorkOSTests/Tests/PipesServiceTest.cs",
     "test/WorkOSTests/Tests/RadarServiceTest.cs",
     "test/WorkOSTests/Tests/SSOServiceTest.cs",
@@ -609,6 +623,10 @@
     "test/WorkOSTests/testdata/challenge_authentication_factor_nulls.json",
     "test/WorkOSTests/testdata/check_authorization.json",
     "test/WorkOSTests/testdata/check_authorization_nulls.json",
+    "test/WorkOSTests/testdata/client_api_token.json",
+    "test/WorkOSTests/testdata/client_api_token_response.json",
+    "test/WorkOSTests/testdata/configure_data_integration_body.json",
+    "test/WorkOSTests/testdata/configure_data_integration_body_nulls.json",
     "test/WorkOSTests/testdata/confirm_email_change.json",
     "test/WorkOSTests/testdata/connect_application.json",
     "test/WorkOSTests/testdata/connect_application_m2m.json",
@@ -662,6 +680,8 @@
     "test/WorkOSTests/testdata/create_group.json",
     "test/WorkOSTests/testdata/create_group_membership.json",
     "test/WorkOSTests/testdata/create_group_nulls.json",
+    "test/WorkOSTests/testdata/create_group_role_assignment.json",
+    "test/WorkOSTests/testdata/create_group_role_assignment_nulls.json",
     "test/WorkOSTests/testdata/create_m2m_application.json",
     "test/WorkOSTests/testdata/create_m2m_application_nulls.json",
     "test/WorkOSTests/testdata/create_magic_code_and_return.json",
@@ -693,6 +713,11 @@
     "test/WorkOSTests/testdata/data_integration_access_token_response_access_token_nulls.json",
     "test/WorkOSTests/testdata/data_integration_access_token_response_nulls.json",
     "test/WorkOSTests/testdata/data_integration_authorize_url_response.json",
+    "test/WorkOSTests/testdata/data_integration_configuration_list_response.json",
+    "test/WorkOSTests/testdata/data_integration_configuration_response.json",
+    "test/WorkOSTests/testdata/data_integration_configuration_response_nulls.json",
+    "test/WorkOSTests/testdata/data_integration_credentials.json",
+    "test/WorkOSTests/testdata/data_integration_credentials_nulls.json",
     "test/WorkOSTests/testdata/data_integrations_get_data_integration_authorize_url_request.json",
     "test/WorkOSTests/testdata/data_integrations_get_data_integration_authorize_url_request_nulls.json",
     "test/WorkOSTests/testdata/data_integrations_get_user_token_request.json",
@@ -704,6 +729,8 @@
     "test/WorkOSTests/testdata/data_integrations_list_response_data_nulls.json",
     "test/WorkOSTests/testdata/decrypt_request.json",
     "test/WorkOSTests/testdata/decrypt_response.json",
+    "test/WorkOSTests/testdata/delete_group_role_assignments_by_criteria.json",
+    "test/WorkOSTests/testdata/delete_group_role_assignments_by_criteria_nulls.json",
     "test/WorkOSTests/testdata/delete_object_response.json",
     "test/WorkOSTests/testdata/device_authorization_response.json",
     "test/WorkOSTests/testdata/device_authorization_response_nulls.json",
@@ -863,6 +890,9 @@
     "test/WorkOSTests/testdata/group_member_removed_data.json",
     "test/WorkOSTests/testdata/group_member_removed_nulls.json",
     "test/WorkOSTests/testdata/group_nulls.json",
+    "test/WorkOSTests/testdata/group_role_assignment.json",
+    "test/WorkOSTests/testdata/group_role_assignment_list.json",
+    "test/WorkOSTests/testdata/group_role_assignment_resource.json",
     "test/WorkOSTests/testdata/group_updated.json",
     "test/WorkOSTests/testdata/group_updated_nulls.json",
     "test/WorkOSTests/testdata/intent_options.json",
@@ -913,6 +943,7 @@
     "test/WorkOSTests/testdata/list_empty_event_schema.json",
     "test/WorkOSTests/testdata/list_empty_flag.json",
     "test/WorkOSTests/testdata/list_empty_group.json",
+    "test/WorkOSTests/testdata/list_empty_group_role_assignment.json",
     "test/WorkOSTests/testdata/list_empty_object_summary.json",
     "test/WorkOSTests/testdata/list_empty_organization.json",
     "test/WorkOSTests/testdata/list_empty_organization_api_key.json",
@@ -927,6 +958,7 @@
     "test/WorkOSTests/testdata/list_event_schema.json",
     "test/WorkOSTests/testdata/list_flag.json",
     "test/WorkOSTests/testdata/list_group.json",
+    "test/WorkOSTests/testdata/list_group_role_assignment.json",
     "test/WorkOSTests/testdata/list_object_summary.json",
     "test/WorkOSTests/testdata/list_organization.json",
     "test/WorkOSTests/testdata/list_organization_api_key.json",
@@ -1086,6 +1118,9 @@
     "test/WorkOSTests/testdata/rekey_request.json",
     "test/WorkOSTests/testdata/remove_role.json",
     "test/WorkOSTests/testdata/remove_role_nulls.json",
+    "test/WorkOSTests/testdata/replace_group_role_assignment_entry.json",
+    "test/WorkOSTests/testdata/replace_group_role_assignment_entry_nulls.json",
+    "test/WorkOSTests/testdata/replace_group_role_assignments.json",
     "test/WorkOSTests/testdata/resend_user_invite_options.json",
     "test/WorkOSTests/testdata/resend_user_invite_options_nulls.json",
     "test/WorkOSTests/testdata/reset_password_response.json",
@@ -1230,6 +1265,7 @@
     "test/WorkOSTests/testdata/vault_object.json",
     "test/WorkOSTests/testdata/verify_email_address.json",
     "test/WorkOSTests/testdata/verify_email_response.json",
+    "test/WorkOSTests/testdata/version_list_response.json",
     "test/WorkOSTests/testdata/waitlist_user.json",
     "test/WorkOSTests/testdata/waitlist_user_approved.json",
     "test/WorkOSTests/testdata/waitlist_user_approved_nulls.json",
@@ -1267,6 +1303,30 @@
     "POST /authkit/oauth2/complete": {
       "sdkMethod": "CompleteOAuth2Async",
       "service": "connect"
+    },
+    "GET /authorization/groups/{group_id}/role_assignments": {
+      "sdkMethod": "ListGroupRoleAssignmentsAsync",
+      "service": "authorization"
+    },
+    "POST /authorization/groups/{group_id}/role_assignments": {
+      "sdkMethod": "CreateGroupRoleAssignmentAsync",
+      "service": "authorization"
+    },
+    "PUT /authorization/groups/{group_id}/role_assignments": {
+      "sdkMethod": "UpdateGroupRoleAssignmentsAsync",
+      "service": "authorization"
+    },
+    "DELETE /authorization/groups/{group_id}/role_assignments": {
+      "sdkMethod": "DeleteGroupRoleAssignmentsAsync",
+      "service": "authorization"
+    },
+    "GET /authorization/groups/{group_id}/role_assignments/{role_assignment_id}": {
+      "sdkMethod": "GetGroupRoleAssignmentAsync",
+      "service": "authorization"
+    },
+    "DELETE /authorization/groups/{group_id}/role_assignments/{role_assignment_id}": {
+      "sdkMethod": "DeleteGroupRoleAssignmentAsync",
+      "service": "authorization"
     },
     "POST /authorization/organization_memberships/{organization_membership_id}/check": {
       "sdkMethod": "CheckAsync",
@@ -1424,6 +1484,10 @@
       "sdkMethod": "DeletePermissionAsync",
       "service": "authorization"
     },
+    "POST /client/token": {
+      "sdkMethod": "CreateTokenAsync",
+      "service": "client_api"
+    },
     "GET /connect/applications": {
       "sdkMethod": "ListApplicationsAsync",
       "service": "connect"
@@ -1472,8 +1536,8 @@
       "sdkMethod": "AuthorizeDataIntegrationAsync",
       "service": "pipes"
     },
-    "POST /data-integrations/{slug}/token": {
-      "sdkMethod": "CreateDataIntegrationTokenAsync",
+    "POST /data-integrations/{provider}/token": {
+      "sdkMethod": "GetAccessTokenAsync",
       "service": "pipes"
     },
     "GET /directories": {
@@ -1591,6 +1655,14 @@
     "POST /organizations/{organizationId}/api_keys": {
       "sdkMethod": "CreateOrganizationApiKeyAsync",
       "service": "api_keys"
+    },
+    "GET /organizations/{organizationId}/data_integration_configurations": {
+      "sdkMethod": "ListOrganizationDataIntegrationConfigurationsAsync",
+      "service": "pipes_provider"
+    },
+    "PUT /organizations/{organizationId}/data_integration_configurations/{slug}": {
+      "sdkMethod": "UpdateOrganizationDataIntegrationConfigurationAsync",
+      "service": "pipes_provider"
     },
     "GET /organizations/{organizationId}/feature-flags": {
       "sdkMethod": "ListOrganizationFeatureFlagsAsync",

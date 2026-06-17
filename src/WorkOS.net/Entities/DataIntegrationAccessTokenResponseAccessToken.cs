@@ -2,6 +2,7 @@
 
 namespace WorkOS
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>The [access token](https://workos.com/docs/reference/pipes/access-token) object, present when `active` is `true`.</summary>
@@ -15,7 +16,7 @@ namespace WorkOS
         public string AccessToken { get; set; } = default!;
 
         /// <summary>The ISO-8601 formatted timestamp indicating when the access token expires.</summary>
-        public string? ExpiresAt { get; set; }
+        public DateTimeOffset? ExpiresAt { get; set; }
 
         /// <summary>The scopes granted to the access token.</summary>
         public List<string> Scopes { get; set; } = default!;

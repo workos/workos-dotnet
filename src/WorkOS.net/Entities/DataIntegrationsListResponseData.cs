@@ -34,6 +34,9 @@ namespace WorkOS
         /// <summary>The OAuth scopes configured for this provider, or `null` if none are configured.</summary>
         public List<string>? Scopes { get; set; }
 
+        /// <summary>The authentication methods supported by this provider (`oauth`, `api_key`, or both). Defaults to `["oauth"]` if absent.</summary>
+        public List<ConnectedAccountAuthMethod>? AuthMethods { get; set; }
+
         /// <summary>Whether the provider is owned by a user or organization.</summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]

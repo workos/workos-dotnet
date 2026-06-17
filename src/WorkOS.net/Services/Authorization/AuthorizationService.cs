@@ -24,6 +24,135 @@ namespace WorkOS
         /// <param name="client">The HTTP client used to make API requests.</param>
         public AuthorizationService(WorkOSClient client) : base(client) { }
 
+        /// <summary>List role assignments for a group</summary>
+        /// <remarks>
+        /// List all role assignments granted to a group. Each assignment represents a role granted to the group on a resource.
+        /// </remarks>
+        /// <param name="groupId">The ID of the group.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="GroupRoleAssignment"/> results.</returns>
+        public virtual async Task<WorkOSList<GroupRoleAssignment>> ListGroupRoleAssignmentsAsync(string groupId, AuthorizationListGroupRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<GroupRoleAssignment>>($"/authorization/groups/{Uri.EscapeDataString(groupId)}/role_assignments", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListGroupRoleAssignmentsAsync"/>.</summary>
+        public virtual Task<WorkOSList<GroupRoleAssignment>> ListGroupRoleAssignments(string groupId, AuthorizationListGroupRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListGroupRoleAssignmentsAsync(groupId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListGroupRoleAssignmentsAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="groupId">The ID of the group.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="GroupRoleAssignment"/> items.</returns>
+        public virtual IAsyncEnumerable<GroupRoleAssignment> ListGroupRoleAssignmentsAutoPagingAsync(string groupId, AuthorizationListGroupRoleAssignmentsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<GroupRoleAssignment>($"/authorization/groups/{Uri.EscapeDataString(groupId)}/role_assignments", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Assign a role to a group</summary>
+        /// <remarks>
+        /// Assign a role to a group on a specific resource.
+        /// </remarks>
+        /// <param name="groupId">The ID of the group.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="GroupRoleAssignment"/> result.</returns>
+        public virtual async Task<GroupRoleAssignment> CreateGroupRoleAssignmentAsync(string groupId, AuthorizationCreateGroupRoleAssignmentOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<GroupRoleAssignment>($"/authorization/groups/{Uri.EscapeDataString(groupId)}/role_assignments", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateGroupRoleAssignmentAsync"/>.</summary>
+        public virtual Task<GroupRoleAssignment> CreateGroupRoleAssignment(string groupId, AuthorizationCreateGroupRoleAssignmentOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateGroupRoleAssignmentAsync(groupId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Replace all role assignments for a group</summary>
+        /// <remarks>
+        /// Replace all role assignments for a group with the provided list. Existing assignments not in the list will be removed.
+        /// </remarks>
+        /// <param name="groupId">The ID of the group.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="GroupRoleAssignmentList"/> result.</returns>
+        public virtual async Task<GroupRoleAssignmentList> UpdateGroupRoleAssignmentsAsync(string groupId, AuthorizationUpdateGroupRoleAssignmentsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PutAsync<GroupRoleAssignmentList>($"/authorization/groups/{Uri.EscapeDataString(groupId)}/role_assignments", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="UpdateGroupRoleAssignmentsAsync"/>.</summary>
+        public virtual Task<GroupRoleAssignmentList> UpdateGroupRoleAssignments(string groupId, AuthorizationUpdateGroupRoleAssignmentsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.UpdateGroupRoleAssignmentsAsync(groupId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Remove group role assignments by criteria</summary>
+        /// <remarks>
+        /// Remove role assignments from a group that match the provided criteria. Returns 404 when no matching active assignment is found.
+        /// </remarks>
+        /// <param name="groupId">The ID of the group.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteGroupRoleAssignmentsAsync(string groupId, AuthorizationDeleteGroupRoleAssignmentsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/authorization/groups/{Uri.EscapeDataString(groupId)}/role_assignments", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteGroupRoleAssignmentsAsync"/>.</summary>
+        public virtual Task DeleteGroupRoleAssignments(string groupId, AuthorizationDeleteGroupRoleAssignmentsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteGroupRoleAssignmentsAsync(groupId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Get a group role assignment</summary>
+        /// <remarks>
+        /// Get a specific role assignment for a group by its ID.
+        /// </remarks>
+        /// <param name="groupId">The ID of the group.</param>
+        /// <param name="roleAssignmentId">The ID of the group role assignment.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="GroupRoleAssignment"/> result.</returns>
+        public virtual async Task<GroupRoleAssignment> GetGroupRoleAssignmentAsync(string groupId, string roleAssignmentId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<GroupRoleAssignment>($"/authorization/groups/{Uri.EscapeDataString(groupId)}/role_assignments/{Uri.EscapeDataString(roleAssignmentId)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetGroupRoleAssignmentAsync"/>.</summary>
+        public virtual Task<GroupRoleAssignment> GetGroupRoleAssignment(string groupId, string roleAssignmentId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetGroupRoleAssignmentAsync(groupId, roleAssignmentId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Remove a group role assignment</summary>
+        /// <remarks>
+        /// Remove a specific role assignment from a group by its ID.
+        /// </remarks>
+        /// <param name="groupId">The ID of the group.</param>
+        /// <param name="roleAssignmentId">The ID of the group role assignment to remove.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteGroupRoleAssignmentAsync(string groupId, string roleAssignmentId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/authorization/groups/{Uri.EscapeDataString(groupId)}/role_assignments/{Uri.EscapeDataString(roleAssignmentId)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteGroupRoleAssignmentAsync"/>.</summary>
+        public virtual Task DeleteGroupRoleAssignment(string groupId, string roleAssignmentId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteGroupRoleAssignmentAsync(groupId, roleAssignmentId, requestOptions, cancellationToken);
+        }
+
         /// <summary>Check authorization</summary>
         /// <remarks>
         /// Check if an organization membership has a specific permission on a resource. Supports identification by resource_id OR by resource_external_id + resource_type_slug.

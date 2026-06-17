@@ -4,7 +4,7 @@ namespace WorkOS
 {
 
     /// <summary>The resource the role is assigned on.</summary>
-    public class UserRoleAssignmentResource
+    public class GroupRoleAssignmentResource
     {
 
         /// <summary>The unique ID of the Resource.</summary>

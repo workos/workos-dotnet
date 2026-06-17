@@ -600,7 +600,7 @@ namespace WorkOS
 
         /// <summary>Send verification email</summary>
         /// <remarks>
-        /// Sends an email that contains a one-time code used to verify a user’s email address.
+        /// Sends an email that contains a one-time code used to verify a user's email address.
         /// </remarks>
         /// <param name="id">The ID of the user.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
@@ -888,7 +888,7 @@ namespace WorkOS
 
         /// <summary>Create a redirect URI</summary>
         /// <remarks>
-        /// Creates a new redirect URI for an environment.
+        /// Creates a new redirect URI for an application.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>

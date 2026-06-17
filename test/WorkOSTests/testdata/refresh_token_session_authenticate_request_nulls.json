@@ -1,6 +1,6 @@
 {
   "client_id": "client_01HXYZ123456789ABCDEFGHIJ",
-  "client_secret": "sk_test_....",
+  "client_secret": null,
   "grant_type": "refresh_token",
   "refresh_token": "yAjhKk23hJMM3DaR...",
   "organization_id": null,
