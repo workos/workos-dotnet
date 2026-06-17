@@ -29,7 +29,7 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateTokenAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/widget_session_token_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/client_api_token_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/widgets/token", HttpStatusCode.OK, fixture);
             var options = new WidgetsCreateTokenOptions();
             options.OrganizationId = "test_organization_id";
