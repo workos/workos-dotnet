@@ -1,6 +1,6 @@
 {
   "client_id": "client_01HXYZ123456789ABCDEFGHIJ",
-  "client_secret": "sk_test_....",
+  "client_secret": null,
   "grant_type": "authorization_code",
   "code": "vBqZKaPpsnJlPfXiDqN7b6VTz",
   "ip_address": null,

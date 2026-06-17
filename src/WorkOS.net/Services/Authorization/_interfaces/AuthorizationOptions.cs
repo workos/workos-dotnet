@@ -7,6 +7,53 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
+    /// <summary>Request options for <see cref="AuthorizationService.ListGroupRoleAssignmentsAsync"/>: List role assignments for a group</summary>
+    public class AuthorizationListGroupRoleAssignmentsOptions : ListOptions
+    {
+    }
+
+    /// <summary>Request options for <see cref="AuthorizationService.CreateGroupRoleAssignmentAsync"/>: Assign a role to a group</summary>
+    public class AuthorizationCreateGroupRoleAssignmentOptions : BaseOptions
+    {
+        /// <summary>The slug of the role to assign to the group.</summary>
+        public string RoleSlug { get; set; } = default!;
+
+        /// <summary>The ID of the resource. Omit along with the external-id fields to target the organization itself.</summary>
+        public string? ResourceId { get; set; }
+
+        /// <summary>The external ID of the resource.</summary>
+        public string? ResourceExternalId { get; set; }
+
+        /// <summary>The resource type slug.</summary>
+        public string? ResourceTypeSlug { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="AuthorizationService.UpdateGroupRoleAssignmentsAsync"/>: Replace all role assignments for a group</summary>
+    public class AuthorizationUpdateGroupRoleAssignmentsOptions : BaseOptions
+    {
+        /// <summary>The list of role assignments that should exist for the group. All existing assignments will be replaced.</summary>
+        public List<AssignRole> RoleAssignments { get; set; } = default!;
+
+    }
+
+    /// <summary>Request options for <see cref="AuthorizationService.DeleteGroupRoleAssignmentsAsync"/>: Remove group role assignments by criteria</summary>
+    public class AuthorizationDeleteGroupRoleAssignmentsOptions : BaseOptions
+    {
+        /// <summary>The slug of the role to remove assignments for.</summary>
+        public string RoleSlug { get; set; } = default!;
+
+        /// <summary>The ID of the resource. Mutually exclusive with `resource_external_id` and `resource_type_slug`.</summary>
+        public string? ResourceId { get; set; }
+
+        /// <summary>The external ID of the resource.</summary>
+        public string? ResourceExternalId { get; set; }
+
+        /// <summary>The resource type slug.</summary>
+        public string? ResourceTypeSlug { get; set; }
+
+    }
+
     /// <summary>Request options for <see cref="AuthorizationService.CheckAsync"/>: Check authorization</summary>
     public class AuthorizationCheckOptions : BaseOptions
     {

@@ -27,6 +27,79 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListGroupRoleAssignmentsAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/list_group_role_assignment.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/authorization/groups/test_group_id/role_assignments", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListGroupRoleAssignmentsAsync("test_group_id", new AuthorizationListGroupRoleAssignmentsOptions());
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/authorization/groups/test_group_id/role_assignments");
+        }
+
+        [Fact]
+        public async Task TestListGroupRoleAssignmentsAsyncEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/authorization/groups/test_group_id/role_assignments", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListGroupRoleAssignmentsAsync("test_group_id", new AuthorizationListGroupRoleAssignmentsOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
+        public async Task TestCreateGroupRoleAssignmentAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/group_role_assignment.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/authorization/groups/test_group_id/role_assignments", HttpStatusCode.OK, fixture);
+            var options = new AuthorizationCreateGroupRoleAssignmentOptions();
+            options.RoleSlug = "test_role_slug";
+            var result = await this.service.CreateGroupRoleAssignmentAsync("test_group_id", options);
+            Assert.NotNull(result);
+            Assert.Equal("gra_01HXYZ123456789ABCDEFGH", result.Id);
+            Assert.Equal("group_01HXYZ123456789ABCDEFGHIJ", result.GroupId);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/authorization/groups/test_group_id/role_assignments");
+            await this.httpMock.AssertRequestBodyContainsAsync("role_slug", "test_role_slug");
+        }
+
+        [Fact]
+        public async Task TestUpdateGroupRoleAssignmentsAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/group_role_assignment_list.json");
+            this.httpMock.MockResponse(HttpMethod.Put, "/authorization/groups/test_group_id/role_assignments", HttpStatusCode.OK, fixture);
+            var result = await this.service.UpdateGroupRoleAssignmentsAsync("test_group_id", new AuthorizationUpdateGroupRoleAssignmentsOptions());
+            Assert.NotNull(result);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/authorization/groups/test_group_id/role_assignments");
+        }
+
+        [Fact]
+        public async Task TestDeleteGroupRoleAssignmentsAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/authorization/groups/test_group_id/role_assignments", HttpStatusCode.NoContent, "");
+            await this.service.DeleteGroupRoleAssignmentsAsync("test_group_id", new AuthorizationDeleteGroupRoleAssignmentsOptions());
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/authorization/groups/test_group_id/role_assignments");
+        }
+
+        [Fact]
+        public async Task TestGetGroupRoleAssignmentAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/group_role_assignment.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/authorization/groups/test_group_id/role_assignments/test_role_assignment_id", HttpStatusCode.OK, fixture);
+            var result = await this.service.GetGroupRoleAssignmentAsync("test_group_id", "test_role_assignment_id");
+            Assert.NotNull(result);
+            Assert.Equal("gra_01HXYZ123456789ABCDEFGH", result.Id);
+            Assert.Equal("group_01HXYZ123456789ABCDEFGHIJ", result.GroupId);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/authorization/groups/test_group_id/role_assignments/test_role_assignment_id");
+        }
+
+        [Fact]
+        public async Task TestDeleteGroupRoleAssignmentAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/authorization/groups/test_group_id/role_assignments/test_role_assignment_id", HttpStatusCode.NoContent, "");
+            await this.service.DeleteGroupRoleAssignmentAsync("test_group_id", "test_role_assignment_id");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/authorization/groups/test_group_id/role_assignments/test_role_assignment_id");
+        }
+
+        [Fact]
         public async Task TestCheckAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/authorization_check.json");
@@ -589,6 +662,38 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListGroupRoleAssignmentsAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/group_role_assignment.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/groups/test_group_id/role_assignments", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<GroupRoleAssignment>();
+            await foreach (var item in this.service.ListGroupRoleAssignmentsAutoPagingAsync("test_group_id", new AuthorizationListGroupRoleAssignmentsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListGroupRoleAssignmentsAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/groups/test_group_id/role_assignments", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<GroupRoleAssignment>();
+            await foreach (var item in this.service.ListGroupRoleAssignmentsAutoPagingAsync("test_group_id", new AuthorizationListGroupRoleAssignmentsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
         public async Task TestListResourcesForMembershipAutoPagingAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/authorization_resource.json");
@@ -912,35 +1017,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.CheckAsync("test_organization_membership_id", new AuthorizationCheckOptions()));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.ListGroupRoleAssignmentsAsync("test_group_id", new AuthorizationListGroupRoleAssignmentsOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundException>(() => this.service.CheckAsync("test_organization_membership_id", new AuthorizationCheckOptions()));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.ListGroupRoleAssignmentsAsync("test_group_id", new AuthorizationListGroupRoleAssignmentsOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.CheckAsync("test_organization_membership_id", new AuthorizationCheckOptions()));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.ListGroupRoleAssignmentsAsync("test_group_id", new AuthorizationListGroupRoleAssignmentsOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.CheckAsync("test_organization_membership_id", new AuthorizationCheckOptions()));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.ListGroupRoleAssignmentsAsync("test_group_id", new AuthorizationListGroupRoleAssignmentsOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerException>(() => this.service.CheckAsync("test_organization_membership_id", new AuthorizationCheckOptions()));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.ListGroupRoleAssignmentsAsync("test_group_id", new AuthorizationListGroupRoleAssignmentsOptions()));
         }
     }
 }
