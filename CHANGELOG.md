@@ -1,6 +1,6 @@
 # Changelog
 
-## [6.0.0](https://github.com/workos/workos-dotnet/compare/v5.1.0...v6.0.0) (2026-06-17)
+## [5.2.0](https://github.com/workos/workos-dotnet/compare/v5.1.0...v5.2.0) (2026-06-17)
 
 - [#268](https://github.com/workos/workos-dotnet/pull/268) feat(generated)!: regenerate from spec (12 changes)
   **⚠️ Breaking**
