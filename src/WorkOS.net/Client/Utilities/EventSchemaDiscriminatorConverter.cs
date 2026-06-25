@@ -98,12 +98,14 @@ namespace WorkOS
                 case "permission.deleted": target = new PermissionDeleted(); break;
                 case "permission.updated": target = new PermissionUpdated(); break;
                 case "pipes.connected_account.connected": target = new PipesConnectedAccountConnected(); break;
+                case "pipes.connected_account.connection_failed": target = new PipesConnectedAccountConnectionFailed(); break;
                 case "pipes.connected_account.disconnected": target = new PipesConnectedAccountDisconnected(); break;
                 case "pipes.connected_account.reauthorization_needed": target = new PipesConnectedAccountReauthorizationNeeded(); break;
                 case "role.created": target = new RoleCreated(); break;
                 case "role.deleted": target = new RoleDeleted(); break;
                 case "role.updated": target = new RoleUpdated(); break;
                 case "session.created": target = new SessionCreated(); break;
+                case "session.reauthenticated": target = new SessionReauthenticated(); break;
                 case "session.revoked": target = new SessionRevoked(); break;
                 case "user.created": target = new UserCreated(); break;
                 case "user.deleted": target = new UserDeleted(); break;
