@@ -46,6 +46,9 @@ namespace WorkOS
         /// <summary>The primary role assigned to the user within the organization.</summary>
         public AddRolePermission Role { get; set; } = default!;
 
+        /// <summary>The list of roles assigned to the user within the organization.</summary>
+        public List<AddRolePermission> Roles { get; set; } = default!;
+
         /// <summary>The user that belongs to the organization through this membership.</summary>
         public User User { get; set; } = default!;
 
