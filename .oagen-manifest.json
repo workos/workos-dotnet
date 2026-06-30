@@ -1,8 +1,9 @@
 {
   "version": 2,
   "language": "dotnet",
-  "generatedAt": "2026-06-17T20:55:38.959Z",
+  "generatedAt": "2026-06-30T19:54:02.752Z",
   "files": [
+    "src/WorkOS.net/Client/Utilities/AgentRegistrationCredentialIssuedDataDetailDiscriminatorConverter.cs",
     "src/WorkOS.net/Client/Utilities/ApiKeyCreatedDataOwnerDiscriminatorConverter.cs",
     "src/WorkOS.net/Client/Utilities/ApiKeyOwnerDiscriminatorConverter.cs",
     "src/WorkOS.net/Client/Utilities/ApiKeyUpdatedDataOwnerDiscriminatorConverter.cs",
@@ -37,6 +38,7 @@
     "src/WorkOS.net/Entities/AuditLogSchemaActor.cs",
     "src/WorkOS.net/Entities/AuditLogSchemaTarget.cs",
     "src/WorkOS.net/Entities/AuditLogsRetention.cs",
+    "src/WorkOS.net/Entities/AuthMethodMismatchError.cs",
     "src/WorkOS.net/Entities/AuthenticateResponse.cs",
     "src/WorkOS.net/Entities/AuthenticateResponseImpersonator.cs",
     "src/WorkOS.net/Entities/AuthenticateResponseOAuthToken.cs",
@@ -120,6 +122,8 @@
     "src/WorkOS.net/Entities/DataIntegrationConfigurationListResponse.cs",
     "src/WorkOS.net/Entities/DataIntegrationConfigurationResponse.cs",
     "src/WorkOS.net/Entities/DataIntegrationCredentials.cs",
+    "src/WorkOS.net/Entities/DataIntegrationCredentialsResponse.cs",
+    "src/WorkOS.net/Entities/DataIntegrationCredentialsResponseCredential.cs",
     "src/WorkOS.net/Entities/DataIntegrationsListResponse.cs",
     "src/WorkOS.net/Entities/DataIntegrationsListResponseData.cs",
     "src/WorkOS.net/Entities/DataIntegrationsListResponseDataConnectedAccount.cs",
@@ -507,6 +511,7 @@
     "test/WorkOSTests/testdata/audit_log_schema_target_nulls.json",
     "test/WorkOSTests/testdata/audit_logs_retention.json",
     "test/WorkOSTests/testdata/audit_logs_retention_nulls.json",
+    "test/WorkOSTests/testdata/auth_method_mismatch_error.json",
     "test/WorkOSTests/testdata/authenticate_response.json",
     "test/WorkOSTests/testdata/authenticate_response_impersonator.json",
     "test/WorkOSTests/testdata/authenticate_response_impersonator_nulls.json",
@@ -718,6 +723,10 @@
     "test/WorkOSTests/testdata/data_integration_configuration_response_nulls.json",
     "test/WorkOSTests/testdata/data_integration_credentials.json",
     "test/WorkOSTests/testdata/data_integration_credentials_nulls.json",
+    "test/WorkOSTests/testdata/data_integration_credentials_response.json",
+    "test/WorkOSTests/testdata/data_integration_credentials_response_credential.json",
+    "test/WorkOSTests/testdata/data_integration_credentials_response_credential_nulls.json",
+    "test/WorkOSTests/testdata/data_integration_credentials_response_nulls.json",
     "test/WorkOSTests/testdata/data_integrations_get_data_integration_authorize_url_request.json",
     "test/WorkOSTests/testdata/data_integrations_get_data_integration_authorize_url_request_nulls.json",
     "test/WorkOSTests/testdata/data_integrations_get_user_token_request.json",
@@ -727,6 +736,10 @@
     "test/WorkOSTests/testdata/data_integrations_list_response_data_connected_account.json",
     "test/WorkOSTests/testdata/data_integrations_list_response_data_connected_account_nulls.json",
     "test/WorkOSTests/testdata/data_integrations_list_response_data_nulls.json",
+    "test/WorkOSTests/testdata/data_integrations_upsert_api_key_request.json",
+    "test/WorkOSTests/testdata/data_integrations_upsert_api_key_request_nulls.json",
+    "test/WorkOSTests/testdata/data_integrations_vend_credentials_request.json",
+    "test/WorkOSTests/testdata/data_integrations_vend_credentials_request_nulls.json",
     "test/WorkOSTests/testdata/decrypt_request.json",
     "test/WorkOSTests/testdata/decrypt_response.json",
     "test/WorkOSTests/testdata/delete_group_role_assignments_by_criteria.json",
@@ -926,6 +939,7 @@
     "test/WorkOSTests/testdata/list_authorized_connect_application_list_data.json",
     "test/WorkOSTests/testdata/list_connect_application.json",
     "test/WorkOSTests/testdata/list_connection.json",
+    "test/WorkOSTests/testdata/list_cors_origin_response.json",
     "test/WorkOSTests/testdata/list_directory.json",
     "test/WorkOSTests/testdata/list_directory_group.json",
     "test/WorkOSTests/testdata/list_directory_user_with_groups.json",
@@ -937,6 +951,7 @@
     "test/WorkOSTests/testdata/list_empty_authorized_connect_application_list_data.json",
     "test/WorkOSTests/testdata/list_empty_connect_application.json",
     "test/WorkOSTests/testdata/list_empty_connection.json",
+    "test/WorkOSTests/testdata/list_empty_cors_origin_response.json",
     "test/WorkOSTests/testdata/list_empty_directory.json",
     "test/WorkOSTests/testdata/list_empty_directory_group.json",
     "test/WorkOSTests/testdata/list_empty_directory_user_with_groups.json",
@@ -947,6 +962,7 @@
     "test/WorkOSTests/testdata/list_empty_object_summary.json",
     "test/WorkOSTests/testdata/list_empty_organization.json",
     "test/WorkOSTests/testdata/list_empty_organization_api_key.json",
+    "test/WorkOSTests/testdata/list_empty_redirect_uri.json",
     "test/WorkOSTests/testdata/list_empty_user.json",
     "test/WorkOSTests/testdata/list_empty_user_api_key.json",
     "test/WorkOSTests/testdata/list_empty_user_invite.json",
@@ -962,6 +978,7 @@
     "test/WorkOSTests/testdata/list_object_summary.json",
     "test/WorkOSTests/testdata/list_organization.json",
     "test/WorkOSTests/testdata/list_organization_api_key.json",
+    "test/WorkOSTests/testdata/list_redirect_uri.json",
     "test/WorkOSTests/testdata/list_user.json",
     "test/WorkOSTests/testdata/list_user_api_key.json",
     "test/WorkOSTests/testdata/list_user_invite.json",
@@ -1104,6 +1121,7 @@
     "test/WorkOSTests/testdata/profile_nulls.json",
     "test/WorkOSTests/testdata/radar_list_entry_already_present_response.json",
     "test/WorkOSTests/testdata/radar_standalone_assess_request.json",
+    "test/WorkOSTests/testdata/radar_standalone_assess_request_nulls.json",
     "test/WorkOSTests/testdata/radar_standalone_delete_radar_list_entry_request.json",
     "test/WorkOSTests/testdata/radar_standalone_response.json",
     "test/WorkOSTests/testdata/radar_standalone_response_nulls.json",
@@ -2051,6 +2069,30 @@
     "GET /audit_logs/exports/{auditLogExportId}": {
       "sdkMethod": "GetExportAsync",
       "service": "audit_logs"
+    },
+    "POST /agents/credentials/validate": {
+      "sdkMethod": "CreateValidateAsync",
+      "service": "agents"
+    },
+    "GET /agents/registrations/{id}": {
+      "sdkMethod": "GetRegistrationAsync",
+      "service": "agents"
+    },
+    "PUT /data-integrations/{slug}/api-key": {
+      "sdkMethod": "UpdateDataIntegrationApiKeyAsync",
+      "service": "pipes"
+    },
+    "POST /data-integrations/{slug}/credentials": {
+      "sdkMethod": "CreateDataIntegrationCredentialAsync",
+      "service": "pipes"
+    },
+    "GET /user_management/cors_origins": {
+      "sdkMethod": "ListCorsOriginsAsync",
+      "service": "user_management"
+    },
+    "GET /user_management/redirect_uris": {
+      "sdkMethod": "ListRedirectUrisAsync",
+      "service": "user_management"
     }
   }
 }

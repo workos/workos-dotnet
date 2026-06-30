@@ -7,6 +7,20 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
+    /// <summary>Request options for <see cref="PipesService.UpdateDataIntegrationApiKeyAsync"/>: Upsert an API key for a connected account</summary>
+    public class PipesUpdateDataIntegrationApiKeyOptions : BaseOptions
+    {
+        /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>
+        public string UserId { get; set; } = default!;
+
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization.</summary>
+        public string? OrganizationId { get; set; }
+
+        /// <summary>The API key secret to store for this integration.</summary>
+        public string Secret { get; set; } = default!;
+
+    }
+
     /// <summary>Request options for <see cref="PipesService.AuthorizeDataIntegrationAsync"/>: Get authorization URL</summary>
     public class PipesAuthorizeDataIntegrationOptions : BaseOptions
     {
@@ -18,6 +32,17 @@ namespace WorkOS
 
         /// <summary>The URL to redirect the user to after authorization.</summary>
         public string? ReturnTo { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="PipesService.CreateDataIntegrationCredentialAsync"/>: Vend credentials for a connected account</summary>
+    public class PipesCreateDataIntegrationCredentialOptions : BaseOptions
+    {
+        /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>
+        public string UserId { get; set; } = default!;
+
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization.</summary>
+        public string? OrganizationId { get; set; }
 
     }
 

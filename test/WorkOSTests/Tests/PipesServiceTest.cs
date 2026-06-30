@@ -27,6 +27,24 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestUpdateDataIntegrationApiKeyAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
+            this.httpMock.MockResponse(HttpMethod.Put, "/data-integrations/test_slug/api-key", HttpStatusCode.OK, fixture);
+            var options = new PipesUpdateDataIntegrationApiKeyOptions();
+            options.UserId = "test_user_id";
+            options.Secret = "test_secret";
+            var result = await this.service.UpdateDataIntegrationApiKeyAsync("test_slug", options);
+            Assert.NotNull(result);
+            Assert.Equal("data_installation_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.CreatedAt);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.UpdatedAt);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/data-integrations/test_slug/api-key");
+            await this.httpMock.AssertRequestBodyContainsAsync("user_id", "test_user_id");
+            await this.httpMock.AssertRequestBodyContainsAsync("secret", "test_secret");
+        }
+
+        [Fact]
         public async Task TestAuthorizeDataIntegrationAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/data_integration_authorize_url_response.json");
@@ -37,6 +55,19 @@ namespace WorkOSTests
             Assert.NotNull(result);
             Assert.Equal("https://api.workos.com/data-integrations/q2czJKmVAraSBg8xFpT7M9uR/authorize-redirect", result.Url);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/data-integrations/test_slug/authorize");
+            await this.httpMock.AssertRequestBodyContainsAsync("user_id", "test_user_id");
+        }
+
+        [Fact]
+        public async Task TestCreateDataIntegrationCredentialAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/data_integration_credentials_response.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/data-integrations/test_slug/credentials", HttpStatusCode.OK, fixture);
+            var options = new PipesCreateDataIntegrationCredentialOptions();
+            options.UserId = "test_user_id";
+            var result = await this.service.CreateDataIntegrationCredentialAsync("test_slug", options);
+            Assert.NotNull(result);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/data-integrations/test_slug/credentials");
             await this.httpMock.AssertRequestBodyContainsAsync("user_id", "test_user_id");
         }
 
@@ -88,35 +119,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.AuthorizeDataIntegrationAsync("test_slug", new PipesAuthorizeDataIntegrationOptions()));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.UpdateDataIntegrationApiKeyAsync("test_slug", new PipesUpdateDataIntegrationApiKeyOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundException>(() => this.service.AuthorizeDataIntegrationAsync("test_slug", new PipesAuthorizeDataIntegrationOptions()));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.UpdateDataIntegrationApiKeyAsync("test_slug", new PipesUpdateDataIntegrationApiKeyOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.AuthorizeDataIntegrationAsync("test_slug", new PipesAuthorizeDataIntegrationOptions()));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.UpdateDataIntegrationApiKeyAsync("test_slug", new PipesUpdateDataIntegrationApiKeyOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.AuthorizeDataIntegrationAsync("test_slug", new PipesAuthorizeDataIntegrationOptions()));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.UpdateDataIntegrationApiKeyAsync("test_slug", new PipesUpdateDataIntegrationApiKeyOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerException>(() => this.service.AuthorizeDataIntegrationAsync("test_slug", new PipesAuthorizeDataIntegrationOptions()));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.UpdateDataIntegrationApiKeyAsync("test_slug", new PipesUpdateDataIntegrationApiKeyOptions()));
         }
     }
 }
