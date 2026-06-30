@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.3.0](https://github.com/workos/workos-dotnet/compare/v5.2.0...v5.3.0) (2026-06-30)
+
+* [#271](https://github.com/workos/workos-dotnet/pull/271) fix(generated): regenerate from spec
+
+  **Fixes**
+  * **[organization_membership](https://workos.com/docs/reference/authkit/organization-membership)**:
+    * Added `roles` to organization membership models
+
 ## [5.2.0](https://github.com/workos/workos-dotnet/compare/v5.1.0...v5.2.0) (2026-06-17)
 
 - [#268](https://github.com/workos/workos-dotnet/pull/268) feat(generated)!: regenerate from spec (12 changes)
