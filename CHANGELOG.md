@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.0](https://github.com/workos/workos-dotnet/compare/v5.2.0...v5.3.0) (2026-06-30)
+
+
+### Features
+
+* **generated:** OrganizationMembership (batch 4a353f07) ([#271](https://github.com/workos/workos-dotnet/issues/271)) ([72020c5](https://github.com/workos/workos-dotnet/commit/72020c5eb3d314983278b5e407cc41b9e4031612))
+
 ## [5.2.0](https://github.com/workos/workos-dotnet/compare/v5.1.0...v5.2.0) (2026-06-17)
 
 - [#268](https://github.com/workos/workos-dotnet/pull/268) feat(generated)!: regenerate from spec (12 changes)
