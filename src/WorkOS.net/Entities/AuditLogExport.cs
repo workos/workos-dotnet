@@ -16,7 +16,7 @@ namespace WorkOS
         /// <summary>The unique ID of the Audit Log Export.</summary>
         public string Id { get; set; } = default!;
 
-        /// <summary>The state of the export. Possible values: pending, ready, error.</summary>
+        /// <summary>The state of the export. Possible values: pending, ready, error, expired.</summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public AuditLogExportState State { get; set; }

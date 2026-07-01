@@ -1,7 +1,7 @@
 {
   "version": 2,
   "language": "dotnet",
-  "generatedAt": "2026-07-01T16:28:43.294Z",
+  "generatedAt": "2026-07-01T18:19:06.270Z",
   "files": [
     "src/WorkOS.net/Client/Utilities/AgentRegistrationCredentialIssuedDataDetailDiscriminatorConverter.cs",
     "src/WorkOS.net/Client/Utilities/ApiKeyCreatedDataOwnerDiscriminatorConverter.cs",
@@ -290,6 +290,7 @@
     "src/WorkOS.net/Entities/UserObject.cs",
     "src/WorkOS.net/Entities/UserOrganizationMembershipBaseListData.cs",
     "src/WorkOS.net/Entities/UserRoleAssignment.cs",
+    "src/WorkOS.net/Entities/UserRoleAssignmentSource.cs",
     "src/WorkOS.net/Entities/UserUpdated.cs",
     "src/WorkOS.net/Entities/VaultByokKeyDeleted.cs",
     "src/WorkOS.net/Entities/VaultByokKeyDeletedData.cs",
@@ -371,6 +372,7 @@
     "src/WorkOS.net/Enums/UpdateWebhookEndpointStatus.cs",
     "src/WorkOS.net/Enums/UserIdentitiesGetItemProvider.cs",
     "src/WorkOS.net/Enums/UserManagementAuthenticationProvider.cs",
+    "src/WorkOS.net/Enums/UserRoleAssignmentSourceType.cs",
     "src/WorkOS.net/Enums/VaultByokKeyProvider.cs",
     "src/WorkOS.net/Enums/VaultDataCreatedDataActorSource.cs",
     "src/WorkOS.net/Enums/VaultOrder.cs",
@@ -1239,6 +1241,8 @@
     "test/WorkOSTests/testdata/user_organization_membership_nulls.json",
     "test/WorkOSTests/testdata/user_role_assignment.json",
     "test/WorkOSTests/testdata/user_role_assignment_resource.json",
+    "test/WorkOSTests/testdata/user_role_assignment_source.json",
+    "test/WorkOSTests/testdata/user_role_assignment_source_nulls.json",
     "test/WorkOSTests/testdata/user_sessions_impersonator.json",
     "test/WorkOSTests/testdata/user_sessions_impersonator_nulls.json",
     "test/WorkOSTests/testdata/user_sessions_list_item.json",

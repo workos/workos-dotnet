@@ -14,6 +14,16 @@ namespace WorkOS
         [EnumMember(Value = "unknown")]
         Unknown,
 
+        [EnumMember(Value = "agent.registration.created")]
+        AgentRegistrationCreated,
+        [EnumMember(Value = "agent.registration.claim.attempt.created")]
+        AgentRegistrationClaimAttemptCreated,
+        [EnumMember(Value = "agent.registration.claim.completed")]
+        AgentRegistrationClaimCompleted,
+        [EnumMember(Value = "agent.registration.credential.issued")]
+        AgentRegistrationCredentialIssued,
+        [EnumMember(Value = "agent.registration.organization.switched")]
+        AgentRegistrationOrganizationSwitched,
         [EnumMember(Value = "authentication.email_verification_succeeded")]
         AuthenticationEmailVerificationSucceeded,
         [EnumMember(Value = "authentication.magic_auth_failed")]
@@ -44,6 +54,8 @@ namespace WorkOS
         AuthenticationSSOTimedOut,
         [EnumMember(Value = "authentication.radar_risk_detected")]
         AuthenticationRadarRiskDetected,
+        [EnumMember(Value = "authentication.reauthentication_succeeded")]
+        AuthenticationReauthenticationSucceeded,
         [EnumMember(Value = "api_key.created")]
         ApiKeyCreated,
         [EnumMember(Value = "api_key.revoked")]
@@ -162,6 +174,8 @@ namespace WorkOS
         PermissionUpdated,
         [EnumMember(Value = "pipes.connected_account.connected")]
         PipesConnectedAccountConnected,
+        [EnumMember(Value = "pipes.connected_account.connection_failed")]
+        PipesConnectedAccountConnectionFailed,
         [EnumMember(Value = "pipes.connected_account.disconnected")]
         PipesConnectedAccountDisconnected,
         [EnumMember(Value = "pipes.connected_account.reauthorization_needed")]
