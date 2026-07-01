@@ -269,6 +269,35 @@ namespace WorkOS
             return this.RevokeSessionAsync(options, requestOptions, cancellationToken);
         }
 
+        /// <summary>List CORS origins</summary>
+        /// <remarks>
+        /// Lists the CORS origins for the current environment.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="CorsOriginResponse"/> results.</returns>
+        public virtual async Task<WorkOSList<CorsOriginResponse>> ListCorsOriginsAsync(UserManagementListCorsOriginsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<CorsOriginResponse>>("/user_management/cors_origins", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListCorsOriginsAsync"/>.</summary>
+        public virtual Task<WorkOSList<CorsOriginResponse>> ListCorsOrigins(UserManagementListCorsOriginsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListCorsOriginsAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListCorsOriginsAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="CorsOriginResponse"/> items.</returns>
+        public virtual IAsyncEnumerable<CorsOriginResponse> ListCorsOriginsAutoPagingAsync(UserManagementListCorsOriginsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<CorsOriginResponse>("/user_management/cors_origins", options, requestOptions, cancellationToken);
+        }
+
         /// <summary>Create a CORS origin</summary>
         /// <remarks>
         /// Creates a new CORS origin for the current environment. CORS origins allow browser-based applications to make requests to the WorkOS API.
@@ -884,6 +913,35 @@ namespace WorkOS
         public virtual Task<MagicAuth> GetMagicAuth(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.GetMagicAuthAsync(id, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List redirect URIs</summary>
+        /// <remarks>
+        /// Lists the redirect URIs for an environment.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="RedirectUri"/> results.</returns>
+        public virtual async Task<WorkOSList<RedirectUri>> ListRedirectUrisAsync(UserManagementListRedirectUrisOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<RedirectUri>>("/user_management/redirect_uris", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListRedirectUrisAsync"/>.</summary>
+        public virtual Task<WorkOSList<RedirectUri>> ListRedirectUris(UserManagementListRedirectUrisOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListRedirectUrisAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListRedirectUrisAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="RedirectUri"/> items.</returns>
+        public virtual IAsyncEnumerable<RedirectUri> ListRedirectUrisAutoPagingAsync(UserManagementListRedirectUrisOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<RedirectUri>("/user_management/redirect_uris", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Create a redirect URI</summary>

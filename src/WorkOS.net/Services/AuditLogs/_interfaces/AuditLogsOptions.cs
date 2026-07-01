@@ -57,10 +57,10 @@ namespace WorkOS
         public string OrganizationId { get; set; } = default!;
 
         /// <summary>ISO-8601 value for start of the export range.</summary>
-        public string RangeStart { get; set; } = default!;
+        public DateTimeOffset RangeStart { get; set; }
 
         /// <summary>ISO-8601 value for end of the export range.</summary>
-        public string RangeEnd { get; set; } = default!;
+        public DateTimeOffset RangeEnd { get; set; }
 
         /// <summary>List of actions to filter against.</summary>
         public List<string>? Actions { get; set; }

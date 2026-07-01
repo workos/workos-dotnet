@@ -31,6 +31,9 @@ namespace WorkOS
         /// <summary>A token representing a user invitation to redeem during authentication.</summary>
         public string? InvitationToken { get; set; }
 
+        /// <summary>Maximum allowable elapsed time, in seconds, since the user last actively authenticated. If the last authentication is older than this value, the user is prompted to re-authenticate; a value of `0` forces re-authentication. Only supported when the provider is `authkit`.</summary>
+        public long? MaxAge { get; set; }
+
         /// <summary>Used to specify which screen to display when the provider is `authkit`.</summary>
         public RadarStandaloneAssessRequestAction? ScreenHint { get; set; }
 
@@ -83,6 +86,11 @@ namespace WorkOS
         /// <summary>The ID of the session to revoke. This can be extracted from the `sid` claim of the access token.</summary>
         public string SessionId { get; set; } = default!;
 
+    }
+
+    /// <summary>Request options for <see cref="UserManagementService.ListCorsOriginsAsync"/>: List CORS origins</summary>
+    public class UserManagementListCorsOriginsOptions : ListOptions
+    {
     }
 
     /// <summary>Request options for <see cref="UserManagementService.CreateCorsOriginAsync"/>: Create a CORS origin</summary>
@@ -294,6 +302,11 @@ namespace WorkOS
         /// <summary>The invitation token to associate with this magic code.</summary>
         public string? InvitationToken { get; set; }
 
+    }
+
+    /// <summary>Request options for <see cref="UserManagementService.ListRedirectUrisAsync"/>: List redirect URIs</summary>
+    public class UserManagementListRedirectUrisOptions : ListOptions
+    {
     }
 
     /// <summary>Request options for <see cref="UserManagementService.CreateRedirectUriAsync"/>: Create a redirect URI</summary>

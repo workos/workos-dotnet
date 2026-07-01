@@ -116,13 +116,11 @@ namespace WorkOSTests
             this.httpMock.MockResponse(HttpMethod.Post, "/audit_logs/exports", HttpStatusCode.OK, fixture);
             var options = new AuditLogsCreateExportOptions();
             options.OrganizationId = "test_organization_id";
-            options.RangeStart = "test_range_start";
             var result = await this.service.CreateExportAsync(options);
             Assert.NotNull(result);
             Assert.Equal("audit_log_export_01GBZK5MP7TD1YCFQHFR22180V", result.Id);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/audit_logs/exports");
             await this.httpMock.AssertRequestBodyContainsAsync("organization_id", "test_organization_id");
-            await this.httpMock.AssertRequestBodyContainsAsync("range_start", "test_range_start");
         }
 
         [Fact]

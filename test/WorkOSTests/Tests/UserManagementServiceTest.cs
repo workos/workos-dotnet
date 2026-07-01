@@ -78,6 +78,26 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListCorsOriginsAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/list_cors_origin_response.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/cors_origins", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListCorsOriginsAsync(new UserManagementListCorsOriginsOptions());
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/cors_origins");
+        }
+
+        [Fact]
+        public async Task TestListCorsOriginsAsyncEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/cors_origins", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListCorsOriginsAsync(new UserManagementListCorsOriginsOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public async Task TestCreateCorsOriginAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/cors_origin_response.json");
@@ -466,6 +486,26 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListRedirectUrisAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/list_redirect_uri.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/redirect_uris", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListRedirectUrisAsync(new UserManagementListRedirectUrisOptions());
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/redirect_uris");
+        }
+
+        [Fact]
+        public async Task TestListRedirectUrisAsyncEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/redirect_uris", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListRedirectUrisAsync(new UserManagementListRedirectUrisOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public async Task TestCreateRedirectUriAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/redirect_uri.json");
@@ -545,6 +585,38 @@ namespace WorkOSTests
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users/test_userId/api_keys");
             await this.httpMock.AssertRequestBodyContainsAsync("name", "test_name");
             await this.httpMock.AssertRequestBodyContainsAsync("organization_id", "test_organization_id");
+        }
+
+        [Fact]
+        public async Task TestListCorsOriginsAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/cors_origin_response.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/cors_origins", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<CorsOriginResponse>();
+            await foreach (var item in this.service.ListCorsOriginsAutoPagingAsync(new UserManagementListCorsOriginsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListCorsOriginsAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/cors_origins", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<CorsOriginResponse>();
+            await foreach (var item in this.service.ListCorsOriginsAutoPagingAsync(new UserManagementListCorsOriginsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
         }
 
         [Fact]
@@ -636,6 +708,38 @@ namespace WorkOSTests
 
             var items = new List<Invitation>();
             await foreach (var item in this.service.ListInvitationsAutoPagingAsync(new UserManagementListInvitationsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
+        public async Task TestListRedirectUrisAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/redirect_uri.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/redirect_uris", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<RedirectUri>();
+            await foreach (var item in this.service.ListRedirectUrisAutoPagingAsync(new UserManagementListRedirectUrisOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListRedirectUrisAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/redirect_uris", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<RedirectUri>();
+            await foreach (var item in this.service.ListRedirectUrisAutoPagingAsync(new UserManagementListRedirectUrisOptions()))
             {
                 items.Add(item);
             }

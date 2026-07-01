@@ -6,21 +6,17 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents audit log export state values.</summary>
+    /// <summary>Represents user role assignment source type values.</summary>
     [JsonConverter(typeof(WorkOSNewtonsoftStringEnumConverter))]
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
-    public enum AuditLogExportState
+    public enum UserRoleAssignmentSourceType
     {
         [EnumMember(Value = "unknown")]
         Unknown,
 
-        [EnumMember(Value = "pending")]
-        Pending,
-        [EnumMember(Value = "ready")]
-        Ready,
-        [EnumMember(Value = "error")]
-        Error,
-        [EnumMember(Value = "expired")]
-        Expired,
+        [EnumMember(Value = "direct")]
+        Direct,
+        [EnumMember(Value = "group")]
+        Group,
     }
 }
