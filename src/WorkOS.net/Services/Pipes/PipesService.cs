@@ -24,6 +24,26 @@ namespace WorkOS
         /// <param name="client">The HTTP client used to make API requests.</param>
         public PipesService(WorkOSClient client) : base(client) { }
 
+        /// <summary>Upsert an API key for a connected account</summary>
+        /// <remarks>
+        /// Creates or updates an API-key-based installation for the specified integration and user. If an installation already exists, the stored API key is rotated to the new value.
+        /// </remarks>
+        /// <param name="slug">The identifier of the integration.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
+        public virtual async Task<ConnectedAccount> UpdateDataIntegrationApiKeyAsync(string slug, PipesUpdateDataIntegrationApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PutAsync<ConnectedAccount>($"/data-integrations/{Uri.EscapeDataString(slug)}/api-key", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="UpdateDataIntegrationApiKeyAsync"/>.</summary>
+        public virtual Task<ConnectedAccount> UpdateDataIntegrationApiKey(string slug, PipesUpdateDataIntegrationApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.UpdateDataIntegrationApiKeyAsync(slug, options, requestOptions, cancellationToken);
+        }
+
         /// <summary>Get authorization URL</summary>
         /// <remarks>
         /// Generates an OAuth authorization URL to initiate the connection flow for a user. Redirect the user to the returned URL to begin the OAuth flow with the third-party provider.
@@ -42,6 +62,26 @@ namespace WorkOS
         public virtual Task<DataIntegrationAuthorizeUrlResponse> AuthorizeDataIntegration(string slug, PipesAuthorizeDataIntegrationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.AuthorizeDataIntegrationAsync(slug, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Vend credentials for a connected account</summary>
+        /// <remarks>
+        /// Returns credentials for a user's connected account. Branches on the installation's `auth_method`: OAuth installations return an access token (refreshed if needed); API-key installations return the stored secret.
+        /// </remarks>
+        /// <param name="slug">The identifier of the integration.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="DataIntegrationCredentialsResponse"/> result.</returns>
+        public virtual async Task<DataIntegrationCredentialsResponse> CreateDataIntegrationCredentialAsync(string slug, PipesCreateDataIntegrationCredentialOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<DataIntegrationCredentialsResponse>($"/data-integrations/{Uri.EscapeDataString(slug)}/credentials", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateDataIntegrationCredentialAsync"/>.</summary>
+        public virtual Task<DataIntegrationCredentialsResponse> CreateDataIntegrationCredential(string slug, PipesCreateDataIntegrationCredentialOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateDataIntegrationCredentialAsync(slug, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get an access token for a connected account</summary>
