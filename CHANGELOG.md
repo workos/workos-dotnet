@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.4.0](https://github.com/workos/workos-dotnet/compare/v5.3.0...v5.4.0) (2026-07-01)
+
+
+### Features
+
+* **generated:** AdminPortal, Authorization, Webhooks, UserManagement, AuditLogs (batch 08085e9d) ([#277](https://github.com/workos/workos-dotnet/issues/277)) ([1dfef95](https://github.com/workos/workos-dotnet/commit/1dfef956336a33744db2b08fe38d37c466d7fe11))
+* **generated:** Pipes (batch 77e46600) ([#275](https://github.com/workos/workos-dotnet/issues/275)) ([5b4c264](https://github.com/workos/workos-dotnet/commit/5b4c264544f864018837f28f1ecfef1a191904b9))
+
 ## [5.3.0](https://github.com/workos/workos-dotnet/compare/v5.2.0...v5.3.0) (2026-06-30)
 
 * [#271](https://github.com/workos/workos-dotnet/pull/271) fix(generated): regenerate from spec
