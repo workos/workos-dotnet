@@ -24,6 +24,111 @@ namespace WorkOS
         /// <param name="client">The HTTP client used to make API requests.</param>
         public PipesService(WorkOSClient client) : base(client) { }
 
+        /// <summary>List data integrations</summary>
+        /// <remarks>
+        /// Lists the environment's data integrations configured with `custom` or `organization` credentials, including custom providers.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="DataIntegration"/> results.</returns>
+        public virtual async Task<WorkOSList<DataIntegration>> ListDataIntegrationsAsync(PipesListDataIntegrationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<DataIntegration>>("/data-integrations", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListDataIntegrationsAsync"/>.</summary>
+        public virtual Task<WorkOSList<DataIntegration>> ListDataIntegrations(PipesListDataIntegrationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListDataIntegrationsAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListDataIntegrationsAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="DataIntegration"/> items.</returns>
+        public virtual IAsyncEnumerable<DataIntegration> ListDataIntegrationsAutoPagingAsync(PipesListDataIntegrationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<DataIntegration>("/data-integrations", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create a data integration</summary>
+        /// <remarks>
+        /// Creates a data integration for a provider. Set `credentials.type` to `custom` to use your own OAuth app credentials, or `organization` to have each organization supply its own. For a built-in provider, pass its slug as `provider`. For a custom provider, pass a new slug plus a `custom_provider` definition.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="DataIntegration"/> result.</returns>
+        public virtual async Task<DataIntegration> CreateDataIntegrationAsync(PipesCreateDataIntegrationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<DataIntegration>("/data-integrations", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateDataIntegrationAsync"/>.</summary>
+        public virtual Task<DataIntegration> CreateDataIntegration(PipesCreateDataIntegrationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateDataIntegrationAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Get a data integration</summary>
+        /// <remarks>
+        /// Retrieves a data integration by its slug.
+        /// </remarks>
+        /// <param name="slug">The slug identifier of the data integration.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="DataIntegration"/> result.</returns>
+        public virtual async Task<DataIntegration> GetDataIntegrationAsync(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<DataIntegration>($"/data-integrations/{Uri.EscapeDataString(slug)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetDataIntegrationAsync"/>.</summary>
+        public virtual Task<DataIntegration> GetDataIntegration(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetDataIntegrationAsync(slug, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Update a data integration</summary>
+        /// <remarks>
+        /// Updates the description, enabled state, or custom credentials of a data integration. For custom providers, `custom_provider` updates the OAuth definition.
+        /// </remarks>
+        /// <param name="slug">The slug identifier of the data integration.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="DataIntegration"/> result.</returns>
+        public virtual async Task<DataIntegration> UpdateDataIntegrationAsync(string slug, PipesUpdateDataIntegrationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PutAsync<DataIntegration>($"/data-integrations/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="UpdateDataIntegrationAsync"/>.</summary>
+        public virtual Task<DataIntegration> UpdateDataIntegration(string slug, PipesUpdateDataIntegrationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.UpdateDataIntegrationAsync(slug, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Delete a data integration</summary>
+        /// <remarks>
+        /// Deletes a data integration and all of its connected installations. For a custom provider, also deletes the custom provider definition.
+        /// </remarks>
+        /// <param name="slug">The slug identifier of the data integration.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteDataIntegrationAsync(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/data-integrations/{Uri.EscapeDataString(slug)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteDataIntegrationAsync"/>.</summary>
+        public virtual Task DeleteDataIntegration(string slug, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteDataIntegrationAsync(slug, requestOptions, cancellationToken);
+        }
+
         /// <summary>Upsert an API key for a connected account</summary>
         /// <remarks>
         /// Creates or updates an API-key-based installation for the specified integration and user. If an installation already exists, the stored API key is rotated to the new value.
@@ -123,6 +228,48 @@ namespace WorkOS
         public virtual Task<ConnectedAccount> GetUserConnectedAccount(string userId, string slug, PipesGetUserConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.GetUserConnectedAccountAsync(userId, slug, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Import a connected account</summary>
+        /// <remarks>
+        /// Imports a [connected account](https://workos.com/docs/reference/pipes/connected-account) for a user by providing OAuth tokens directly. Use this to migrate existing connections or set up connections without going through the OAuth flow.
+        /// </remarks>
+        /// <param name="userId">A [User](https://workos.com/docs/reference/authkit/user) identifier.</param>
+        /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
+        public virtual async Task<ConnectedAccount> CreateUserConnectedAccountAsync(string userId, string slug, PipesCreateUserConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<ConnectedAccount>($"/user_management/users/{Uri.EscapeDataString(userId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateUserConnectedAccountAsync"/>.</summary>
+        public virtual Task<ConnectedAccount> CreateUserConnectedAccount(string userId, string slug, PipesCreateUserConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateUserConnectedAccountAsync(userId, slug, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Update a connected account</summary>
+        /// <remarks>
+        /// Updates a user's [connected account](https://workos.com/docs/reference/pipes/connected-account) tokens, scopes, or state for a specific provider.
+        /// </remarks>
+        /// <param name="userId">A [User](https://workos.com/docs/reference/authkit/user) identifier.</param>
+        /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
+        public virtual async Task<ConnectedAccount> UpdateUserConnectedAccountAsync(string userId, string slug, PipesUpdateUserConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PutAsync<ConnectedAccount>($"/user_management/users/{Uri.EscapeDataString(userId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="UpdateUserConnectedAccountAsync"/>.</summary>
+        public virtual Task<ConnectedAccount> UpdateUserConnectedAccount(string userId, string slug, PipesUpdateUserConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.UpdateUserConnectedAccountAsync(userId, slug, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a connected account</summary>
