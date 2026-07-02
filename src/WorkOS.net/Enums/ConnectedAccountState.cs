@@ -18,7 +18,5 @@ namespace WorkOS
         Connected,
         [EnumMember(Value = "needs_reauthorization")]
         NeedsReauthorization,
-        [EnumMember(Value = "disconnected")]
-        Disconnected,
     }
 }
