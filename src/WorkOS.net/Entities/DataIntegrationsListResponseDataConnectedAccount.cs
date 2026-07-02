@@ -39,7 +39,7 @@ namespace WorkOS
         /// </remarks>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
-        public ConnectedAccountState State { get; set; }
+        public DataIntegrationsListResponseDataConnectedAccountState State { get; set; }
 
         /// <summary>The timestamp when the connection was created.</summary>
         public string CreatedAt { get; set; } = default!;

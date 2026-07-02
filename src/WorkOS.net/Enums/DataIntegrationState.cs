@@ -6,17 +6,19 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents connected account state values.</summary>
+    /// <summary>Represents data integration state values.</summary>
     [JsonConverter(typeof(WorkOSNewtonsoftStringEnumConverter))]
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
-    public enum ConnectedAccountState
+    public enum DataIntegrationState
     {
         [EnumMember(Value = "unknown")]
         Unknown,
 
-        [EnumMember(Value = "connected")]
-        Connected,
-        [EnumMember(Value = "needs_reauthorization")]
-        NeedsReauthorization,
+        [EnumMember(Value = "valid")]
+        Valid,
+        [EnumMember(Value = "invalid")]
+        Invalid,
+        [EnumMember(Value = "requested")]
+        Requested,
     }
 }
