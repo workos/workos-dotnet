@@ -29,6 +29,9 @@ namespace WorkOS
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public RadarStandaloneAssessRequestAction Action { get; set; }
 
+        /// <summary>An optional Radar signals ID for the request.</summary>
+        public string? SignalsId { get; set; }
+
     }
 
     /// <summary>Request options for <see cref="RadarService.UpdateAttemptAsync"/>: Update a Radar attempt</summary>

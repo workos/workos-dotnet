@@ -7,5 +7,6 @@
   "device_id": null,
   "user_agent": null,
   "code_verifier": null,
-  "invitation_token": null
+  "invitation_token": null,
+  "signals_id": null
 }
