@@ -7,5 +7,6 @@
   "invitation_token": null,
   "ip_address": null,
   "device_id": null,
-  "user_agent": null
+  "user_agent": null,
+  "radar_auth_attempt_id": null
 }
