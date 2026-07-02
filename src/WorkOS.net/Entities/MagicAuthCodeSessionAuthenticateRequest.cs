@@ -31,5 +31,8 @@ namespace WorkOS
 
         /// <summary>The user agent string from the user's browser.</summary>
         public string? UserAgent { get; set; }
+
+        /// <summary>The ID of an existing Radar authentication attempt to associate with this authentication.</summary>
+        public string? RadarAuthAttemptId { get; set; }
     }
 }

@@ -1,3 +1,4 @@
 {
-  "code": "invalid_request"
+  "code": "invalid_request",
+  "radar_auth_attempt_id": "radar_auth_attempt_01HXYZ123456789ABCDEFGHIJ"
 }
