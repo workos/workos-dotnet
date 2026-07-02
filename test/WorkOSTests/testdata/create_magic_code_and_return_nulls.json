@@ -1,4 +1,8 @@
 {
   "email": "marcelina.davis@example.com",
-  "invitation_token": null
+  "invitation_token": null,
+  "ip_address": null,
+  "user_agent": null,
+  "radar_auth_attempt_id": null,
+  "signals_id": null
 }

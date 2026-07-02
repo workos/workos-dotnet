@@ -8,5 +8,8 @@
   "email_verified": null,
   "metadata": null,
   "external_id": null,
-  "name": null
+  "name": null,
+  "ip_address": null,
+  "user_agent": null,
+  "signals_id": null
 }
