@@ -27,6 +27,76 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListDataIntegrationsAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/list_data_integration.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/data-integrations", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListDataIntegrationsAsync(new PipesListDataIntegrationsOptions());
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/data-integrations");
+        }
+
+        [Fact]
+        public async Task TestListDataIntegrationsAsyncEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/data-integrations", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListDataIntegrationsAsync(new PipesListDataIntegrationsOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
+        public async Task TestCreateDataIntegrationAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/data_integration.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/data-integrations", HttpStatusCode.OK, fixture);
+            var options = new PipesCreateDataIntegrationOptions();
+            options.Provider = "test_provider";
+            var result = await this.service.CreateDataIntegrationAsync(options);
+            Assert.NotNull(result);
+            Assert.Equal("data_integration_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("github", result.Slug);
+            Assert.Equal("github", result.IntegrationType);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/data-integrations");
+            await this.httpMock.AssertRequestBodyContainsAsync("provider", "test_provider");
+        }
+
+        [Fact]
+        public async Task TestGetDataIntegrationAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/data_integration.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/data-integrations/test_slug", HttpStatusCode.OK, fixture);
+            var result = await this.service.GetDataIntegrationAsync("test_slug");
+            Assert.NotNull(result);
+            Assert.Equal("data_integration_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("github", result.Slug);
+            Assert.Equal("github", result.IntegrationType);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/data-integrations/test_slug");
+        }
+
+        [Fact]
+        public async Task TestUpdateDataIntegrationAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/data_integration.json");
+            this.httpMock.MockResponse(HttpMethod.Put, "/data-integrations/test_slug", HttpStatusCode.OK, fixture);
+            var result = await this.service.UpdateDataIntegrationAsync("test_slug", new PipesUpdateDataIntegrationOptions());
+            Assert.NotNull(result);
+            Assert.Equal("data_integration_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("github", result.Slug);
+            Assert.Equal("github", result.IntegrationType);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/data-integrations/test_slug");
+        }
+
+        [Fact]
+        public async Task TestDeleteDataIntegrationAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/data-integrations/test_slug", HttpStatusCode.NoContent, "");
+            await this.service.DeleteDataIntegrationAsync("test_slug");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/data-integrations/test_slug");
+        }
+
+        [Fact]
         public async Task TestUpdateDataIntegrationApiKeyAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
@@ -98,6 +168,32 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestCreateUserConnectedAccountAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/users/test_user_id/connected_accounts/test_slug", HttpStatusCode.OK, fixture);
+            var result = await this.service.CreateUserConnectedAccountAsync("test_user_id", "test_slug", new PipesCreateUserConnectedAccountOptions());
+            Assert.NotNull(result);
+            Assert.Equal("data_installation_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.CreatedAt);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.UpdatedAt);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users/test_user_id/connected_accounts/test_slug");
+        }
+
+        [Fact]
+        public async Task TestUpdateUserConnectedAccountAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
+            this.httpMock.MockResponse(HttpMethod.Put, "/user_management/users/test_user_id/connected_accounts/test_slug", HttpStatusCode.OK, fixture);
+            var result = await this.service.UpdateUserConnectedAccountAsync("test_user_id", "test_slug", new PipesUpdateUserConnectedAccountOptions());
+            Assert.NotNull(result);
+            Assert.Equal("data_installation_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.CreatedAt);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.UpdatedAt);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/user_management/users/test_user_id/connected_accounts/test_slug");
+        }
+
+        [Fact]
         public async Task TestDeleteUserConnectedAccountAsync()
         {
             this.httpMock.MockResponse(HttpMethod.Delete, "/user_management/users/test_user_id/connected_accounts/test_slug", HttpStatusCode.NoContent, "");
@@ -116,38 +212,70 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListDataIntegrationsAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/data_integration.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/data-integrations", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<DataIntegration>();
+            await foreach (var item in this.service.ListDataIntegrationsAutoPagingAsync(new PipesListDataIntegrationsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListDataIntegrationsAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/data-integrations", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<DataIntegration>();
+            await foreach (var item in this.service.ListDataIntegrationsAutoPagingAsync(new PipesListDataIntegrationsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.UpdateDataIntegrationApiKeyAsync("test_slug", new PipesUpdateDataIntegrationApiKeyOptions()));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.ListDataIntegrationsAsync(new PipesListDataIntegrationsOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundException>(() => this.service.UpdateDataIntegrationApiKeyAsync("test_slug", new PipesUpdateDataIntegrationApiKeyOptions()));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.ListDataIntegrationsAsync(new PipesListDataIntegrationsOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.UpdateDataIntegrationApiKeyAsync("test_slug", new PipesUpdateDataIntegrationApiKeyOptions()));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.ListDataIntegrationsAsync(new PipesListDataIntegrationsOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.UpdateDataIntegrationApiKeyAsync("test_slug", new PipesUpdateDataIntegrationApiKeyOptions()));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.ListDataIntegrationsAsync(new PipesListDataIntegrationsOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerException>(() => this.service.UpdateDataIntegrationApiKeyAsync("test_slug", new PipesUpdateDataIntegrationApiKeyOptions()));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.ListDataIntegrationsAsync(new PipesListDataIntegrationsOptions()));
         }
     }
 }

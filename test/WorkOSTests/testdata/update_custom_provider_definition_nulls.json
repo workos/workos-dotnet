@@ -1,0 +1,13 @@
+{
+  "name": null,
+  "authorization_url": null,
+  "token_url": null,
+  "refresh_token_url": null,
+  "pkce_enabled": null,
+  "request_scope_separator": null,
+  "scopes_required": null,
+  "client_secret_required": null,
+  "additional_authorization_parameters": null,
+  "token_body_content_type": null,
+  "authenticate_via": null
+}

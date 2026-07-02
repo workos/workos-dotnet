@@ -7,6 +7,54 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
+    /// <summary>Request options for <see cref="PipesService.ListDataIntegrationsAsync"/>: List data integrations</summary>
+    public class PipesListDataIntegrationsOptions : ListOptions
+    {
+    }
+
+    /// <summary>Request options for <see cref="PipesService.CreateDataIntegrationAsync"/>: Create a data integration</summary>
+    public class PipesCreateDataIntegrationOptions : BaseOptions
+    {
+        /// <summary>The provider to create a Data Integration for. For a built-in provider use its slug (e.g. `github`, `slack`). For a custom provider, this is the new provider slug and `custom_provider` must be supplied. A custom provider slug cannot shadow an existing global provider slug.</summary>
+        public string Provider { get; set; } = default!;
+
+        /// <summary>An optional description of the Data Integration.</summary>
+        public string? Description { get; set; }
+
+        /// <summary>Whether the Data Integration is enabled. Defaults to `false`.</summary>
+        public bool? Enabled { get; set; }
+
+        /// <summary>The OAuth scopes to request for the Data Integration. Defaults to the provider's configured scopes when omitted.</summary>
+        public List<string>? Scopes { get; set; }
+
+        /// <summary>The credentials to configure for the Data Integration. Required for both built-in and custom providers.</summary>
+        public DataIntegrationCredentialsDto? Credentials { get; set; }
+
+        /// <summary>The OAuth definition for a custom provider. Supply this to define a custom provider; omit it to create an integration for a built-in provider.</summary>
+        public CustomProviderDefinition? CustomProvider { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="PipesService.UpdateDataIntegrationAsync"/>: Update a data integration</summary>
+    public class PipesUpdateDataIntegrationOptions : BaseOptions
+    {
+        /// <summary>An optional description of the Data Integration.</summary>
+        public string? Description { get; set; }
+
+        /// <summary>Whether the Data Integration is enabled.</summary>
+        public bool? Enabled { get; set; }
+
+        /// <summary>The OAuth scopes to request for the Data Integration. Pass `null` to reset to the provider's configured scopes.</summary>
+        public List<string>? Scopes { get; set; }
+
+        /// <summary>New credentials for the Data Integration. When provided, rotates the stored client secret.</summary>
+        public DataIntegrationCredentialsDto? Credentials { get; set; }
+
+        /// <summary>Updates to a custom provider's OAuth definition. Only valid for custom-provider integrations.</summary>
+        public UpdateCustomProviderDefinition? CustomProvider { get; set; }
+
+    }
+
     /// <summary>Request options for <see cref="PipesService.UpdateDataIntegrationApiKeyAsync"/>: Upsert an API key for a connected account</summary>
     public class PipesUpdateDataIntegrationApiKeyOptions : BaseOptions
     {
@@ -60,6 +108,52 @@ namespace WorkOS
     /// <summary>Request options for <see cref="PipesService.GetUserConnectedAccountAsync"/>: Get a connected account</summary>
     public class PipesGetUserConnectedAccountOptions : BaseOptions
     {
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
+        public string? OrganizationId { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="PipesService.CreateUserConnectedAccountAsync"/>: Import a connected account</summary>
+    public class PipesCreateUserConnectedAccountOptions : BaseOptions
+    {
+        /// <summary>The OAuth access token for the connected account.</summary>
+        public string? AccessToken { get; set; }
+
+        /// <summary>The OAuth refresh token for the connected account.</summary>
+        public string? RefreshToken { get; set; }
+
+        /// <summary>The ISO-8601 timestamp when the access token expires. Required when `access_token` is provided for tokens that expire.</summary>
+        public DateTimeOffset? ExpiresAt { get; set; }
+
+        /// <summary>The OAuth scopes granted for this connection.</summary>
+        public List<string>? Scopes { get; set; }
+
+        /// <summary>Explicitly set the state of the connected account. When omitted, the state is derived from the token combination provided.</summary>
+        public ConnectedAccountState? State { get; set; }
+
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
+        public string? OrganizationId { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="PipesService.UpdateUserConnectedAccountAsync"/>: Update a connected account</summary>
+    public class PipesUpdateUserConnectedAccountOptions : BaseOptions
+    {
+        /// <summary>The OAuth access token for the connected account.</summary>
+        public string? AccessToken { get; set; }
+
+        /// <summary>The OAuth refresh token for the connected account.</summary>
+        public string? RefreshToken { get; set; }
+
+        /// <summary>The ISO-8601 timestamp when the access token expires. Required when `access_token` is provided for tokens that expire.</summary>
+        public DateTimeOffset? ExpiresAt { get; set; }
+
+        /// <summary>The OAuth scopes granted for this connection.</summary>
+        public List<string>? Scopes { get; set; }
+
+        /// <summary>Explicitly set the state of the connected account. When omitted, the state is derived from the token combination provided.</summary>
+        public ConnectedAccountState? State { get; set; }
+
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         public string? OrganizationId { get; set; }
 
