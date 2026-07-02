@@ -3,7 +3,8 @@
   "user_agent": "Mozilla/5.0",
   "email": "user@example.com",
   "auth_method": "Password",
-  "action": "login",
+  "action": "sign-in",
   "device_fingerprint": null,
-  "bot_score": null
+  "bot_score": null,
+  "signals_id": null
 }
