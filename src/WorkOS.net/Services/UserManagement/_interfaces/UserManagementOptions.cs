@@ -69,6 +69,26 @@ namespace WorkOS
 
     }
 
+    /// <summary>Request options for <see cref="UserManagementService.CreateRadarChallengeAsync"/>: Send a Radar SMS challenge</summary>
+    public class UserManagementCreateRadarChallengeOptions : BaseOptions
+    {
+        /// <summary>The ID of the user to send the SMS challenge to.</summary>
+        public string UserId { get; set; } = default!;
+
+        /// <summary>The pending authentication token from a previous authentication attempt that triggered the Radar challenge.</summary>
+        public string PendingAuthenticationToken { get; set; } = default!;
+
+        /// <summary>The phone number to send the SMS verification code to.</summary>
+        public string PhoneNumber { get; set; } = default!;
+
+        /// <summary>The IP address of the user's request.</summary>
+        public string? IpAddress { get; set; }
+
+        /// <summary>The user agent string from the user's request.</summary>
+        public string? UserAgent { get; set; }
+
+    }
+
     /// <summary>Request options for <see cref="UserManagementService.GetLogoutUrl"/>: Logout</summary>
     public class UserManagementGetLogoutUrlOptions : BaseOptions
     {
@@ -158,6 +178,15 @@ namespace WorkOS
 
         /// <summary>The external ID of the user.</summary>
         public string? ExternalId { get; set; }
+
+        /// <summary>The IP address of the user's request.</summary>
+        public string? IpAddress { get; set; }
+
+        /// <summary>The user agent string from the user's request.</summary>
+        public string? UserAgent { get; set; }
+
+        /// <summary>An optional Radar signals ID to correlate client-side signals with this request.</summary>
+        public string? SignalsId { get; set; }
 
         [JsonIgnore]
         [STJS.JsonIgnore]
@@ -301,6 +330,18 @@ namespace WorkOS
 
         /// <summary>The invitation token to associate with this magic code.</summary>
         public string? InvitationToken { get; set; }
+
+        /// <summary>The IP address of the user's request.</summary>
+        public string? IpAddress { get; set; }
+
+        /// <summary>The user agent string from the user's request.</summary>
+        public string? UserAgent { get; set; }
+
+        /// <summary>The ID of an existing Radar authentication attempt to associate with this request.</summary>
+        public string? RadarAuthAttemptId { get; set; }
+
+        /// <summary>An optional Radar signals ID to correlate client-side signals with this request.</summary>
+        public string? SignalsId { get; set; }
 
     }
 

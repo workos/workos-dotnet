@@ -234,6 +234,25 @@ namespace WorkOS
             return this.CreateDeviceAsync(options, requestOptions, cancellationToken);
         }
 
+        /// <summary>Send a Radar SMS challenge</summary>
+        /// <remarks>
+        /// Sends a one-time verification code over SMS to a user as part of a Radar challenge. Use the returned `verification_id` to authenticate the user with the `urn:workos:oauth:grant-type:radar-sms-challenge:code` grant type.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="SendRadarSmsChallengeResponse"/> result.</returns>
+        public virtual async Task<SendRadarSmsChallengeResponse> CreateRadarChallengeAsync(UserManagementCreateRadarChallengeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<SendRadarSmsChallengeResponse>("/user_management/radar_challenges", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateRadarChallengeAsync"/>.</summary>
+        public virtual Task<SendRadarSmsChallengeResponse> CreateRadarChallenge(UserManagementCreateRadarChallengeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateRadarChallengeAsync(options, requestOptions, cancellationToken);
+        }
+
         /// <summary>Logout</summary>
         /// <remarks>
         /// Logout a user from the current [session](https://workos.com/docs/reference/authkit/session).
@@ -429,8 +448,8 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="User"/> result.</returns>
-        public virtual async Task<User> CreateAsync(UserManagementCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="MagicAuthSendMagicAuthCodeAndReturnResponse"/> result.</returns>
+        public virtual async Task<MagicAuthSendMagicAuthCodeAndReturnResponse> CreateAsync(UserManagementCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -457,11 +476,11 @@ namespace WorkOS
                 request.AddBodyParam("password_hash_type", JsonConvert.SerializeObject(hashed.PasswordHashType).Trim('"'));
             }
 
-            return await this.Client.MakeAPIRequest<User>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<MagicAuthSendMagicAuthCodeAndReturnResponse>(request, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="CreateAsync"/>.</summary>
-        public virtual Task<User> Create(UserManagementCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<MagicAuthSendMagicAuthCodeAndReturnResponse> Create(UserManagementCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.CreateAsync(options, requestOptions, cancellationToken);
         }
@@ -884,14 +903,14 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="MagicAuth"/> result.</returns>
-        public virtual async Task<MagicAuth> CreateMagicAuthAsync(UserManagementCreateMagicAuthOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="MagicAuthSendMagicAuthCodeAndReturnResponse"/> result.</returns>
+        public virtual async Task<MagicAuthSendMagicAuthCodeAndReturnResponse> CreateMagicAuthAsync(UserManagementCreateMagicAuthOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<MagicAuth>("/user_management/magic_auth", options, requestOptions, cancellationToken);
+            return await this.PostAsync<MagicAuthSendMagicAuthCodeAndReturnResponse>("/user_management/magic_auth", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="CreateMagicAuthAsync"/>.</summary>
-        public virtual Task<MagicAuth> CreateMagicAuth(UserManagementCreateMagicAuthOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<MagicAuthSendMagicAuthCodeAndReturnResponse> CreateMagicAuth(UserManagementCreateMagicAuthOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.CreateMagicAuthAsync(options, requestOptions, cancellationToken);
         }

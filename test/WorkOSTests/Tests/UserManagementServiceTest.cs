@@ -61,6 +61,23 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestCreateRadarChallengeAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/send_radar_sms_challenge_response.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/radar_challenges", HttpStatusCode.OK, fixture);
+            var options = new UserManagementCreateRadarChallengeOptions();
+            options.UserId = "test_user_id";
+            options.PendingAuthenticationToken = "test_pending_authentication_token";
+            var result = await this.service.CreateRadarChallengeAsync(options);
+            Assert.NotNull(result);
+            Assert.Equal("vrf_01HXYZ123456789ABCDEFGHIJ", result.VerificationId);
+            Assert.Equal("+15555550123", result.PhoneNumber);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/radar_challenges");
+            await this.httpMock.AssertRequestBodyContainsAsync("user_id", "test_user_id");
+            await this.httpMock.AssertRequestBodyContainsAsync("pending_authentication_token", "test_pending_authentication_token");
+        }
+
+        [Fact]
         public void TestGetLogoutUrl()
         {
             var url = this.service.GetLogoutUrl(new UserManagementGetLogoutUrlOptions());
@@ -192,14 +209,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/email_change_confirmation_user.json");
+            var fixture = System.IO.File.ReadAllText("testdata/magic_auth_send_magic_auth_code_and_return_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/users", HttpStatusCode.OK, fixture);
             var options = new UserManagementCreateOptions();
             options.Email = "test_email";
             var result = await this.service.CreateAsync(options);
             Assert.NotNull(result);
-            Assert.Equal("user_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
-            Assert.Equal("new.email@example.com", result.Email);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users");
             await this.httpMock.AssertRequestBodyContainsAsync("email", "test_email");
         }
@@ -459,15 +474,12 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateMagicAuthAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/magic_auth.json");
+            var fixture = System.IO.File.ReadAllText("testdata/magic_auth_send_magic_auth_code_and_return_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/magic_auth", HttpStatusCode.OK, fixture);
             var options = new UserManagementCreateMagicAuthOptions();
             options.Email = "test_email";
             var result = await this.service.CreateMagicAuthAsync(options);
             Assert.NotNull(result);
-            Assert.Equal("magic_auth_01HWZBQZY2M3AMQW166Q22K88F", result.Id);
-            Assert.Equal("user_01E4ZCR3C56J083X43JQXF3JK5", result.UserId);
-            Assert.Equal("marcelina.davis@example.com", result.Email);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/magic_auth");
             await this.httpMock.AssertRequestBodyContainsAsync("email", "test_email");
         }
