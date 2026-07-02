@@ -1,7 +1,7 @@
 {
   "version": 2,
   "language": "dotnet",
-  "generatedAt": "2026-07-01T18:19:06.270Z",
+  "generatedAt": "2026-07-02T14:10:59.017Z",
   "files": [
     "src/WorkOS.net/Client/Utilities/AgentRegistrationCredentialIssuedDataDetailDiscriminatorConverter.cs",
     "src/WorkOS.net/Client/Utilities/ApiKeyCreatedDataOwnerDiscriminatorConverter.cs",
@@ -212,6 +212,7 @@
     "src/WorkOS.net/Entities/MagicAuthCodeSessionAuthenticateRequest.cs",
     "src/WorkOS.net/Entities/MagicAuthCreated.cs",
     "src/WorkOS.net/Entities/MagicAuthCreatedData.cs",
+    "src/WorkOS.net/Entities/MagicAuthSendMagicAuthCodeAndReturnResponse.cs",
     "src/WorkOS.net/Entities/MfaTotpSessionAuthenticateRequest.cs",
     "src/WorkOS.net/Entities/NewConnectApplicationSecret.cs",
     "src/WorkOS.net/Entities/ObjectMetadata.cs",
@@ -258,7 +259,9 @@
     "src/WorkOS.net/Entities/PipesConnectedAccountReauthorizationNeeded.cs",
     "src/WorkOS.net/Entities/PortalLinkResponse.cs",
     "src/WorkOS.net/Entities/Profile.cs",
+    "src/WorkOS.net/Entities/RadarEmailChallengeCodeSessionAuthenticateRequest.cs",
     "src/WorkOS.net/Entities/RadarListEntryAlreadyPresentResponse.cs",
+    "src/WorkOS.net/Entities/RadarSmsChallengeCodeSessionAuthenticateRequest.cs",
     "src/WorkOS.net/Entities/RadarStandaloneResponse.cs",
     "src/WorkOS.net/Entities/RedirectUri.cs",
     "src/WorkOS.net/Entities/RedirectUriInput.cs",
@@ -274,6 +277,7 @@
     "src/WorkOS.net/Entities/SSOIntentOptions.cs",
     "src/WorkOS.net/Entities/SSOLogoutAuthorizeResponse.cs",
     "src/WorkOS.net/Entities/SSOTokenResponse.cs",
+    "src/WorkOS.net/Entities/SendRadarSmsChallengeResponse.cs",
     "src/WorkOS.net/Entities/SessionCreated.cs",
     "src/WorkOS.net/Entities/SessionCreatedData.cs",
     "src/WorkOS.net/Entities/SessionRevoked.cs",
@@ -942,6 +946,7 @@
     "test/WorkOSTests/testdata/list_connect_application.json",
     "test/WorkOSTests/testdata/list_connection.json",
     "test/WorkOSTests/testdata/list_cors_origin_response.json",
+    "test/WorkOSTests/testdata/list_data_integration.json",
     "test/WorkOSTests/testdata/list_directory.json",
     "test/WorkOSTests/testdata/list_directory_group.json",
     "test/WorkOSTests/testdata/list_directory_user_with_groups.json",
@@ -954,6 +959,7 @@
     "test/WorkOSTests/testdata/list_empty_connect_application.json",
     "test/WorkOSTests/testdata/list_empty_connection.json",
     "test/WorkOSTests/testdata/list_empty_cors_origin_response.json",
+    "test/WorkOSTests/testdata/list_empty_data_integration.json",
     "test/WorkOSTests/testdata/list_empty_directory.json",
     "test/WorkOSTests/testdata/list_empty_directory_group.json",
     "test/WorkOSTests/testdata/list_empty_directory_user_with_groups.json",
@@ -995,6 +1001,8 @@
     "test/WorkOSTests/testdata/magic_auth_created.json",
     "test/WorkOSTests/testdata/magic_auth_created_data.json",
     "test/WorkOSTests/testdata/magic_auth_created_nulls.json",
+    "test/WorkOSTests/testdata/magic_auth_send_magic_auth_code_and_return_response.json",
+    "test/WorkOSTests/testdata/magic_auth_send_magic_auth_code_and_return_response_nulls.json",
     "test/WorkOSTests/testdata/mfa_totp_session_authenticate_request.json",
     "test/WorkOSTests/testdata/mfa_totp_session_authenticate_request_nulls.json",
     "test/WorkOSTests/testdata/new_connect_application_secret.json",
@@ -1121,8 +1129,13 @@
     "test/WorkOSTests/testdata/portal_link_response.json",
     "test/WorkOSTests/testdata/profile.json",
     "test/WorkOSTests/testdata/profile_nulls.json",
+    "test/WorkOSTests/testdata/radar_email_challenge_code_session_authenticate_request.json",
+    "test/WorkOSTests/testdata/radar_email_challenge_code_session_authenticate_request_nulls.json",
     "test/WorkOSTests/testdata/radar_list_entry_already_present_response.json",
+    "test/WorkOSTests/testdata/radar_sms_challenge_code_session_authenticate_request.json",
+    "test/WorkOSTests/testdata/radar_sms_challenge_code_session_authenticate_request_nulls.json",
     "test/WorkOSTests/testdata/radar_standalone_assess_request.json",
+    "test/WorkOSTests/testdata/radar_standalone_assess_request_nulls.json",
     "test/WorkOSTests/testdata/radar_standalone_delete_radar_list_entry_request.json",
     "test/WorkOSTests/testdata/radar_standalone_response.json",
     "test/WorkOSTests/testdata/radar_standalone_response_nulls.json",
@@ -1160,6 +1173,9 @@
     "test/WorkOSTests/testdata/role_updated_data_nulls.json",
     "test/WorkOSTests/testdata/role_updated_nulls.json",
     "test/WorkOSTests/testdata/send_email_change.json",
+    "test/WorkOSTests/testdata/send_radar_sms_challenge.json",
+    "test/WorkOSTests/testdata/send_radar_sms_challenge_nulls.json",
+    "test/WorkOSTests/testdata/send_radar_sms_challenge_response.json",
     "test/WorkOSTests/testdata/send_verification_email_response.json",
     "test/WorkOSTests/testdata/session_created.json",
     "test/WorkOSTests/testdata/session_created_data.json",
@@ -1223,6 +1239,8 @@
     "test/WorkOSTests/testdata/user_consent_option.json",
     "test/WorkOSTests/testdata/user_consent_option_choice.json",
     "test/WorkOSTests/testdata/user_consent_option_choice_nulls.json",
+    "test/WorkOSTests/testdata/user_create_response.json",
+    "test/WorkOSTests/testdata/user_create_response_nulls.json",
     "test/WorkOSTests/testdata/user_created.json",
     "test/WorkOSTests/testdata/user_created_nulls.json",
     "test/WorkOSTests/testdata/user_deleted.json",
@@ -2088,6 +2106,38 @@
     "GET /user_management/redirect_uris": {
       "sdkMethod": "ListRedirectUrisAsync",
       "service": "user_management"
+    },
+    "GET /data-integrations": {
+      "sdkMethod": "ListDataIntegrationsAsync",
+      "service": "pipes"
+    },
+    "POST /data-integrations": {
+      "sdkMethod": "CreateDataIntegrationAsync",
+      "service": "pipes"
+    },
+    "GET /data-integrations/{slug}": {
+      "sdkMethod": "GetDataIntegrationAsync",
+      "service": "pipes"
+    },
+    "PUT /data-integrations/{slug}": {
+      "sdkMethod": "UpdateDataIntegrationAsync",
+      "service": "pipes"
+    },
+    "DELETE /data-integrations/{slug}": {
+      "sdkMethod": "DeleteDataIntegrationAsync",
+      "service": "pipes"
+    },
+    "POST /user_management/radar_challenges": {
+      "sdkMethod": "CreateRadarChallengeAsync",
+      "service": "user_management"
+    },
+    "POST /user_management/users/{user_id}/connected_accounts/{slug}": {
+      "sdkMethod": "CreateUserConnectedAccountAsync",
+      "service": "pipes"
+    },
+    "PUT /user_management/users/{user_id}/connected_accounts/{slug}": {
+      "sdkMethod": "UpdateUserConnectedAccountAsync",
+      "service": "pipes"
     }
   }
 }
