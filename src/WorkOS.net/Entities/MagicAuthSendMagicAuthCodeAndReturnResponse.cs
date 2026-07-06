@@ -2,10 +2,35 @@
 
 namespace WorkOS
 {
+    using System;
 
     /// <summary>Represents a magic auth send magic auth code and return response.</summary>
     public class MagicAuthSendMagicAuthCodeAndReturnResponse
     {
+
+        /// <summary>Distinguishes the Magic Auth object.</summary>
+        public string Object { get; internal set; } = "magic_auth";
+
+        /// <summary>The unique ID of the Magic Auth code.</summary>
+        public string Id { get; set; } = default!;
+
+        /// <summary>The unique ID of the user.</summary>
+        public string UserId { get; set; } = default!;
+
+        /// <summary>The email address of the user.</summary>
+        public string Email { get; set; } = default!;
+
+        /// <summary>The timestamp when the Magic Auth code expires.</summary>
+        public DateTimeOffset ExpiresAt { get; set; }
+
+        /// <summary>An ISO 8601 timestamp.</summary>
+        public DateTimeOffset CreatedAt { get; set; }
+
+        /// <summary>An ISO 8601 timestamp.</summary>
+        public DateTimeOffset UpdatedAt { get; set; }
+
+        /// <summary>The code used to verify the Magic Auth code.</summary>
+        public string Code { get; set; } = default!;
 
         /// <summary>The ID of the Radar authentication attempt created for this request when Radar is enabled. Pass this value to the authenticate endpoint to associate the subsequent authentication with this Radar attempt.</summary>
         public string? RadarAuthAttemptId { get; set; }

@@ -26,6 +26,12 @@ namespace WorkOS
         /// <summary>The user agent string from the user's browser.</summary>
         public string? UserAgent { get; set; }
 
+        /// <summary>An optional Radar signals ID to correlate client-side signals with this authentication attempt.</summary>
+        public string? SignalsId { get; set; }
+
+        /// <summary>The ID of an existing Radar authentication attempt to associate with this authentication.</summary>
+        public string? RadarAuthAttemptId { get; set; }
+
         internal string GrantType { get; set; } = default!;
 
         internal string ClientId { get; set; } = default!;
@@ -53,6 +59,9 @@ namespace WorkOS
 
         /// <summary>The user agent string from the user's browser.</summary>
         public string? UserAgent { get; set; }
+
+        /// <summary>An optional Radar signals ID to correlate client-side signals with this authentication attempt.</summary>
+        public string? SignalsId { get; set; }
 
         internal string GrantType { get; set; } = default!;
 
@@ -100,6 +109,8 @@ namespace WorkOS
         public string? DeviceId { get; set; }
 
         public string? UserAgent { get; set; }
+
+        public string? RadarAuthAttemptId { get; set; }
 
         internal string GrantType { get; set; } = default!;
 
@@ -184,6 +195,52 @@ namespace WorkOS
         internal string GrantType { get; set; } = default!;
 
         internal string ClientId { get; set; } = default!;
+
+    }
+
+    public class AuthenticateWithRadarEmailChallengeOptions : BaseOptions
+    {
+        public string Code { get; set; } = default!;
+
+        public string RadarChallengeId { get; set; } = default!;
+
+        public string PendingAuthenticationToken { get; set; } = default!;
+
+        public string? IpAddress { get; set; }
+
+        public string? DeviceId { get; set; }
+
+        public string? UserAgent { get; set; }
+
+        internal string GrantType { get; set; } = default!;
+
+        internal string ClientId { get; set; } = default!;
+
+        internal string ClientSecret { get; set; } = default!;
+
+    }
+
+    public class AuthenticateWithRadarSmsChallengeOptions : BaseOptions
+    {
+        public string Code { get; set; } = default!;
+
+        public string VerificationId { get; set; } = default!;
+
+        public string PhoneNumber { get; set; } = default!;
+
+        public string PendingAuthenticationToken { get; set; } = default!;
+
+        public string? IpAddress { get; set; }
+
+        public string? DeviceId { get; set; }
+
+        public string? UserAgent { get; set; }
+
+        internal string GrantType { get; set; } = default!;
+
+        internal string ClientId { get; set; } = default!;
+
+        internal string ClientSecret { get; set; } = default!;
 
     }
 }

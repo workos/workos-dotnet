@@ -1,7 +1,6 @@
 {
   "version": 2,
   "language": "dotnet",
-  "generatedAt": "2026-07-02T17:29:50.293Z",
   "files": [
     "src/WorkOS.net/Client/Utilities/AgentRegistrationCredentialIssuedDataDetailDiscriminatorConverter.cs",
     "src/WorkOS.net/Client/Utilities/ApiKeyCreatedDataOwnerDiscriminatorConverter.cs",
@@ -294,6 +293,7 @@
     "src/WorkOS.net/Entities/UserAuthenticationFactorEnrollResponse.cs",
     "src/WorkOS.net/Entities/UserConsentOption.cs",
     "src/WorkOS.net/Entities/UserConsentOptionChoice.cs",
+    "src/WorkOS.net/Entities/UserCreateResponse.cs",
     "src/WorkOS.net/Entities/UserCreated.cs",
     "src/WorkOS.net/Entities/UserDeleted.cs",
     "src/WorkOS.net/Entities/UserIdentitiesGetItem.cs",
