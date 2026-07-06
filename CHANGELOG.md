@@ -2,10 +2,19 @@
 
 ## [5.5.0](https://github.com/workos/workos-dotnet/compare/v5.4.0...v5.5.0) (2026-07-06)
 
+* [#281](https://github.com/workos/workos-dotnet/pull/281) fix(generated): regenerate from spec
 
-### Features
+  **Features**
+  * **[user_management](https://workos.com/docs/reference/authkit/user)**:
+    * Added model `UserRoleAssignmentSource`
+    * Added `source` to `UserRoleAssignment`
+    * Added enum `UserRoleAssignmentSourceType`
+    * Added parameter `UserManagementAuthentication.authorize.max_age`
+    * Added endpoint `GET /user_management/cors_origins`
+    * Added endpoint `GET /user_management/redirect_uris`
 
-* **generated:** UserManagement, Radar (batch f510ddfb) ([#281](https://github.com/workos/workos-dotnet/issues/281)) ([89d9ce5](https://github.com/workos/workos-dotnet/commit/89d9ce59af771555f6f382437973349e11c7e96c))
+  **Fixes**
+  * Restore mistakenly removed CreateMagicAuth logic from previous release
 
 ## [5.4.0](https://github.com/workos/workos-dotnet/compare/v5.3.0...v5.4.0) (2026-07-02)
 
