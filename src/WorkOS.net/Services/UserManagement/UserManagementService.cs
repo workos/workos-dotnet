@@ -195,6 +195,44 @@ namespace WorkOS
             return this.AuthenticateWithDeviceCodeAsync(options, requestOptions, cancellationToken);
         }
 
+        /// <summary>Authenticate with radar email challenge.</summary>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AuthenticateResponse"/> result.</returns>
+        public async Task<AuthenticateResponse> AuthenticateWithRadarEmailChallengeAsync(AuthenticateWithRadarEmailChallengeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            options.GrantType = "urn:workos:oauth:grant-type:radar-email-challenge:code";
+            options.ClientId = this.Client.RequireClientId();
+            options.ClientSecret = this.Client.ApiKey ?? string.Empty;
+            return await this.PostAsync<AuthenticateResponse>("/user_management/authenticate", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="AuthenticateWithRadarEmailChallengeAsync"/>.</summary>
+        public Task<AuthenticateResponse> AuthenticateWithRadarEmailChallenge(AuthenticateWithRadarEmailChallengeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.AuthenticateWithRadarEmailChallengeAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Authenticate with radar sms challenge.</summary>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AuthenticateResponse"/> result.</returns>
+        public async Task<AuthenticateResponse> AuthenticateWithRadarSmsChallengeAsync(AuthenticateWithRadarSmsChallengeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            options.GrantType = "urn:workos:oauth:grant-type:radar-sms-challenge:code";
+            options.ClientId = this.Client.RequireClientId();
+            options.ClientSecret = this.Client.ApiKey ?? string.Empty;
+            return await this.PostAsync<AuthenticateResponse>("/user_management/authenticate", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="AuthenticateWithRadarSmsChallengeAsync"/>.</summary>
+        public Task<AuthenticateResponse> AuthenticateWithRadarSmsChallenge(AuthenticateWithRadarSmsChallengeOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.AuthenticateWithRadarSmsChallengeAsync(options, requestOptions, cancellationToken);
+        }
+
         /// <summary>Get an authorization URL</summary>
         /// <remarks>
         /// Generates an OAuth 2.0 authorization URL to authenticate a user with AuthKit or SSO.
@@ -448,8 +486,8 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="MagicAuthSendMagicAuthCodeAndReturnResponse"/> result.</returns>
-        public virtual async Task<MagicAuthSendMagicAuthCodeAndReturnResponse> CreateAsync(UserManagementCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="UserCreateResponse"/> result.</returns>
+        public virtual async Task<UserCreateResponse> CreateAsync(UserManagementCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             var request = new WorkOSRequest
             {
@@ -476,11 +514,11 @@ namespace WorkOS
                 request.AddBodyParam("password_hash_type", JsonConvert.SerializeObject(hashed.PasswordHashType).Trim('"'));
             }
 
-            return await this.Client.MakeAPIRequest<MagicAuthSendMagicAuthCodeAndReturnResponse>(request, cancellationToken);
+            return await this.Client.MakeAPIRequest<UserCreateResponse>(request, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="CreateAsync"/>.</summary>
-        public virtual Task<MagicAuthSendMagicAuthCodeAndReturnResponse> Create(UserManagementCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<UserCreateResponse> Create(UserManagementCreateOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.CreateAsync(options, requestOptions, cancellationToken);
         }

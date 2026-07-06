@@ -3,10 +3,10 @@
   "client_secret": null,
   "grant_type": "authorization_code",
   "code": "vBqZKaPpsnJlPfXiDqN7b6VTz",
+  "code_verifier": null,
+  "invitation_token": null,
   "ip_address": null,
   "device_id": null,
   "user_agent": null,
-  "code_verifier": null,
-  "invitation_token": null,
   "signals_id": null
 }

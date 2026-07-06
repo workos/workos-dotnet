@@ -209,12 +209,14 @@ namespace WorkOSTests
         [Fact]
         public async Task TestCreateAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/magic_auth_send_magic_auth_code_and_return_response.json");
+            var fixture = System.IO.File.ReadAllText("testdata/user_create_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/users", HttpStatusCode.OK, fixture);
             var options = new UserManagementCreateOptions();
             options.Email = "test_email";
             var result = await this.service.CreateAsync(options);
             Assert.NotNull(result);
+            Assert.Equal("user_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
+            Assert.Equal("marcelina.davis@example.com", result.Email);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users");
             await this.httpMock.AssertRequestBodyContainsAsync("email", "test_email");
         }
@@ -480,6 +482,9 @@ namespace WorkOSTests
             options.Email = "test_email";
             var result = await this.service.CreateMagicAuthAsync(options);
             Assert.NotNull(result);
+            Assert.Equal("magic_auth_01HWZBQZY2M3AMQW166Q22K88F", result.Id);
+            Assert.Equal("user_01E4ZCR3C56J083X43JQXF3JK5", result.UserId);
+            Assert.Equal("marcelina.davis@example.com", result.Email);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/magic_auth");
             await this.httpMock.AssertRequestBodyContainsAsync("email", "test_email");
         }
@@ -899,6 +904,26 @@ namespace WorkOSTests
             var fixture = System.IO.File.ReadAllText("testdata/authenticate_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authenticate", HttpStatusCode.OK, fixture);
             var result = await this.service.AuthenticateWithDeviceCodeAsync(new AuthenticateWithDeviceCodeOptions());
+            Assert.NotNull(result);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
+        }
+
+        [Fact]
+        public async Task TestAuthenticateWithRadarEmailChallengeAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/authenticate_response.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authenticate", HttpStatusCode.OK, fixture);
+            var result = await this.service.AuthenticateWithRadarEmailChallengeAsync(new AuthenticateWithRadarEmailChallengeOptions());
+            Assert.NotNull(result);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
+        }
+
+        [Fact]
+        public async Task TestAuthenticateWithRadarSmsChallengeAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/authenticate_response.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authenticate", HttpStatusCode.OK, fixture);
+            var result = await this.service.AuthenticateWithRadarSmsChallengeAsync(new AuthenticateWithRadarSmsChallengeOptions());
             Assert.NotNull(result);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authenticate");
         }
