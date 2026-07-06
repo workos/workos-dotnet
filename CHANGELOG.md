@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.5.0](https://github.com/workos/workos-dotnet/compare/v5.4.0...v5.5.0) (2026-07-06)
+
+
+### Features
+
+* **generated:** UserManagement, Radar (batch f510ddfb) ([#281](https://github.com/workos/workos-dotnet/issues/281)) ([89d9ce5](https://github.com/workos/workos-dotnet/commit/89d9ce59af771555f6f382437973349e11c7e96c))
+
 ## [5.4.0](https://github.com/workos/workos-dotnet/compare/v5.3.0...v5.4.0) (2026-07-02)
 
 * [#275](https://github.com/workos/workos-dotnet/pull/275) fix(generated): regenerate from spec
