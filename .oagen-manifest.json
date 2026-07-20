@@ -2166,6 +2166,14 @@
     "PUT /user_management/users/{user_id}/connected_accounts/{slug}": {
       "sdkMethod": "UpdateUserConnectedAccountAsync",
       "service": "pipes"
+    },
+    "GET /user_management/radar_challenges/{id}": {
+      "sdkMethod": "GetRadarChallengeAsync",
+      "service": "user_management"
+    },
+    "DELETE /user_management/redirect_uris/{id}": {
+      "sdkMethod": "DeleteRedirectUrisAsync",
+      "service": "user_management"
     }
   }
 }

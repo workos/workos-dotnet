@@ -3,7 +3,6 @@
   "type": "user",
   "name": "Jon Smith",
   "metadata": {
-    "owner": "user_01GBTCQ2",
-    "role": "admin"
+    "owner": "user_01GBTCQ2"
   }
 }
