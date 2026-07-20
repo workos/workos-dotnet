@@ -296,13 +296,15 @@ var org = await WorkOSConfiguration.WorkOSClient.Organizations.CreateAsync(
     new OrganizationsCreateOptions { Name = "Acme" },
     new RequestOptions
     {
-        IdempotencyKey = "acme-tenant-create-v1",
         MaxRetries = 0,
     });
 ```
 
 The SDK automatically adds an `Idempotency-Key` header to `POST` requests when
-one is not provided explicitly.
+one is not provided explicitly via `RequestOptions.IdempotencyKey`.
+
+> [!NOTE]
+> The WorkOS API currently honors `Idempotency-Key` only on the [Create Audit Log Event](https://workos.com/docs/reference/audit-logs/event) endpoint (`AuditLogs.CreateEventAsync`). Other endpoints accept the header but do not deduplicate requests, so a retried mutation elsewhere can still create a duplicate.
 
 ## Error handling
 
