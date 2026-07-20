@@ -6,8 +6,7 @@
     "type": "user",
     "name": "Jon Smith",
     "metadata": {
-      "owner": "user_01GBTCQ2",
-      "role": "admin"
+      "owner": "user_01GBTCQ2"
     }
   },
   "targets": [
@@ -25,8 +24,7 @@
     "user_agent": "Chrome/104.0.0.0"
   },
   "metadata": {
-    "owner": "user_01GBTCQ2",
-    "extra": "data"
+    "owner": "user_01GBTCQ2"
   },
   "version": 1
 }

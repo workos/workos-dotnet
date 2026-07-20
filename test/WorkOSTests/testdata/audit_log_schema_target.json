@@ -6,7 +6,6 @@
       "cost": {
         "type": "number"
       }
-    },
-    "key": {}
+    }
   }
 }
