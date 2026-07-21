@@ -26,7 +26,7 @@ nuget install WorkOS.net
 dotnet add package WorkOS.net
 ```
 
-### Via Visual Studio IDE
+### Via the Package Manager Console
 
 ```sh
 Install-Package WorkOS.net
@@ -191,14 +191,35 @@ var logoutUrl = publicClient.GetLogoutUrl(sessionId, returnTo: "https://example.
 The SDK ships JSON metadata for **both** [Newtonsoft.Json](https://www.newtonsoft.com/json)
 (used by the runtime to talk to the WorkOS API) and
 [`System.Text.Json`](https://learn.microsoft.com/dotnet/api/system.text.json)
-(STJ). All generated DTOs, enums, `AnyOf<T...>` values, and webhook envelopes
-work under either serializer:
+(STJ). All generated DTOs, enums, `OneOf<T...>` values, and webhook envelopes
+work under either serializer. Generated types rely on snake_case naming
+conventions rather than per-property attributes, so configure the serializer
+accordingly:
 
 ```c#
-// Both round-trip the same payload.
-var newtonsoft = JsonConvert.DeserializeObject<Organization>(json);
-var stj = System.Text.Json.JsonSerializer.Deserialize<Organization>(json);
+// Newtonsoft.Json
+var newtonsoftSettings = new JsonSerializerSettings
+{
+    ContractResolver = new DefaultContractResolver
+    {
+        NamingStrategy = new SnakeCaseNamingStrategy(),
+    },
+};
+var newtonsoft = JsonConvert.DeserializeObject<Organization>(json, newtonsoftSettings);
+
+// System.Text.Json
+var stjOptions = new JsonSerializerOptions
+{
+    PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+    Converters = { new WorkOSStringEnumConverterFactory() },
+};
+var stj = System.Text.Json.JsonSerializer.Deserialize<Organization>(json, stjOptions);
 ```
+
+> [!NOTE]
+> The polymorphic event envelope discriminators (for example `EventSchema`)
+> are currently wired up for Newtonsoft.Json only; deserializing event
+> envelopes into their variant subclasses requires Newtonsoft.
 
 Enum forward compatibility is identical on both stacks: an enum value the SDK
 hasn't seen before deserializes to the type's `Unknown` member instead of
@@ -208,23 +229,26 @@ throwing.
 
 Most services on `WorkOSClient` are generated from the WorkOS OpenAPI
 specification (`Organizations`, `UserManagement`, `DirectorySync`, `SSO`,
-`AuditLogs`, `Events`, `Webhooks`, etc.). In addition, the SDK ships a handful
-of **hand-maintained** services that do not correspond to a single REST
-endpoint:
+`AuditLogs`, `Events`, `Webhooks`, `Vault`, etc.). In addition, the SDK ships
+a handful of **hand-maintained** services that are not generated from the
+OpenAPI specification:
 
 | Service               | Purpose                                                          |
 | --------------------- | ---------------------------------------------------------------- |
 | `client.Passwordless` | Magic-link / passwordless session helpers.                       |
-| `client.Vault`        | Key-value storage and envelope encryption helpers.               |
 | `client.Actions`      | AuthKit Actions signing-secret verification and payload signing. |
 | `client.Session`      | Sealed-session management, cookie helpers, and JWT validation.   |
+
+The `Vault` service is generated, but its local envelope-encryption helpers
+(`Vault.EncryptAsync` / `Vault.DecryptAsync`, which perform AES-256-GCM
+locally) are hand-maintained additions.
 
 These services are fully supported and are accessed the same way as generated
 services:
 
 ```c#
-var payload = client.Actions.VerifyAndParse(rawBody, signatureHeader);
-var session = client.Session.LoadSealedSession(cookieValue);
+var payload = client.Actions.ConstructAction(rawBody, signatureHeader, signingSecret);
+var session = await client.Session.AuthenticateAsync(cookieValue, cookiePassword);
 ```
 
 ## Making direct API requests
@@ -296,13 +320,15 @@ var org = await WorkOSConfiguration.WorkOSClient.Organizations.CreateAsync(
     new OrganizationsCreateOptions { Name = "Acme" },
     new RequestOptions
     {
-        IdempotencyKey = "acme-tenant-create-v1",
         MaxRetries = 0,
     });
 ```
 
 The SDK automatically adds an `Idempotency-Key` header to `POST` requests when
-one is not provided explicitly.
+one is not provided explicitly via `RequestOptions.IdempotencyKey`.
+
+> [!NOTE]
+> The WorkOS API currently honors `Idempotency-Key` only on the [Create Audit Log Event](https://workos.com/docs/reference/audit-logs/event) endpoint (`AuditLogs.CreateEventAsync`). Other endpoints accept the header but do not deduplicate requests, so a retried mutation elsewhere can still create a duplicate.
 
 ## Error handling
 
@@ -325,7 +351,7 @@ body in `Exception.Message`.
 ```c#
 try
 {
-    var org = await client.Organizations.GetOrganization("org_01H...");
+    var org = await client.Organizations.GetAsync("org_01H...");
 }
 catch (NotFoundException)
 {
@@ -344,8 +370,8 @@ catch (ApiException ex)
 
 ### Retry behavior
 
-The SDK automatically retries failed requests that receive a **429** (rate limit)
-or **5xx** (server error) response. Retries use exponential backoff with full
+The SDK automatically retries requests that fail with a **429** (rate limit)
+or **5xx** (server error) response, a network error, or a timeout. Retries use exponential backoff with full
 jitter and honor the `Retry-After` header when present. By default the SDK
 retries up to **2** times; you can change this via `WorkOSOptions.MaxRetries`
 or disable retries entirely by setting it to `0`.
@@ -370,9 +396,10 @@ dotnet test test/WorkOSTests/WorkOSTests.csproj -f net8.0
 
 The SDK follows the [Azure SDK mocking guidelines](https://azure.github.io/azure-sdk/dotnet_introduction.html#dotnet-mocking):
 
-- Every service class (`UserManagementService`, `SSOService`,
+- Every generated service class (`UserManagementService`, `SSOService`,
   `OrganizationsService`, `DirectorySyncService`, etc.) exposes a
-  parameterless constructor.
+  parameterless constructor. (The hand-maintained `SessionService` requires
+  a `WorkOSClient`.)
 - Service accessors on `WorkOSClient` are declared `virtual`, and generated
   service methods are virtual where the SDK surface permits overriding.
 
@@ -421,7 +448,7 @@ can move to using the stable version.
 
 ## More Information
 
-- [Single Sign-On Guide](https://workos.com/docs/sso/guide)
-- [Directory Sync Guide](https://workos.com/docs/directory-sync/guide)
-- [Admin Portal Guide](https://workos.com/docs/admin-portal/guide)
-- [Magic Link Guide](https://workos.com/docs/magic-link/guide)
+- [Single Sign-On Guide](https://workos.com/docs/sso)
+- [Directory Sync Guide](https://workos.com/docs/directory-sync)
+- [Admin Portal Guide](https://workos.com/docs/admin-portal)
+- [Magic Link Guide](https://workos.com/docs/magic-link)
