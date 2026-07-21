@@ -35,7 +35,7 @@ namespace WorkOS
         /// <summary>The state of the connected account.</summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
-        public PipeConnectedAccountState State { get; set; }
+        public ConnectedAccountInputState State { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }

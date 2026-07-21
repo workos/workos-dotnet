@@ -24,6 +24,9 @@ namespace WorkOS
     /// <summary>Request options for <see cref="ConnectService.ListApplicationsAsync"/>: List Connect Applications</summary>
     public class ConnectListApplicationsOptions : ListOptions
     {
+        /// <summary>Filter Connect Applications by registration type. Specify multiple as a comma-separated list (e.g. `registration_types=dynamic,authenticated`). Defaults to `authenticated` only when not specified.</summary>
+        public List<ApplicationsRegistrationTypes>? RegistrationTypes { get; set; }
+
         /// <summary>Filter Connect Applications by organization ID.</summary>
         public string? OrganizationId { get; set; }
 

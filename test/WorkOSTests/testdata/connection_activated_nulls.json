@@ -1,4 +1,5 @@
 {
+  "object": "event",
   "id": "event_01EHZNVPK3SFK441A1RGBFSHRT",
   "event": "connection.activated",
   "data": {
@@ -21,6 +22,5 @@
     ]
   },
   "created_at": "2026-01-15T12:00:00.000Z",
-  "context": null,
-  "object": "event"
+  "context": null
 }
