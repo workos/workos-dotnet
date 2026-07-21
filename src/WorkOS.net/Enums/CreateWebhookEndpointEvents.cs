@@ -22,8 +22,14 @@ namespace WorkOS
         AgentRegistrationClaimCompleted,
         [EnumMember(Value = "agent.registration.credential.issued")]
         AgentRegistrationCredentialIssued,
+        [EnumMember(Value = "agent.registration.deleted")]
+        AgentRegistrationDeleted,
+        [EnumMember(Value = "agent.registration.expired")]
+        AgentRegistrationExpired,
         [EnumMember(Value = "agent.registration.organization.switched")]
         AgentRegistrationOrganizationSwitched,
+        [EnumMember(Value = "agent.registration.revoked")]
+        AgentRegistrationRevoked,
         [EnumMember(Value = "authentication.email_verification_succeeded")]
         AuthenticationEmailVerificationSucceeded,
         [EnumMember(Value = "authentication.magic_auth_failed")]
@@ -52,6 +58,8 @@ namespace WorkOS
         AuthenticationSSOSucceeded,
         [EnumMember(Value = "authentication.sso_timed_out")]
         AuthenticationSSOTimedOut,
+        [EnumMember(Value = "radar.challenge_created")]
+        RadarChallengeCreated,
         [EnumMember(Value = "authentication.radar_risk_detected")]
         AuthenticationRadarRiskDetected,
         [EnumMember(Value = "authentication.reauthentication_succeeded")]

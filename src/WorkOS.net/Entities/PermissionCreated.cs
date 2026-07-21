@@ -9,7 +9,7 @@ namespace WorkOS
     {
 
         /// <summary>The event payload.</summary>
-        public new PermissionCreatedData Data { get; set; } = default!;
+        public new AuthorizationPermission Data { get; set; } = default!;
         public new EventContext? Context { get; set; }
     }
 }

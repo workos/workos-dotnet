@@ -3,7 +3,7 @@
 namespace WorkOS
 {
 
-    /// <summary>Represents an urn ietf params o auth grant type device code session authenticate request.</summary>
+    /// <summary>Represents a device code session authenticate request.</summary>
     public class DeviceCodeSessionAuthenticateRequest
     {
 

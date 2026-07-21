@@ -7,6 +7,7 @@
   "email": null,
   "first_name": null,
   "last_name": null,
+  "name": null,
   "emails": null,
   "job_title": null,
   "username": null,
@@ -22,6 +23,5 @@
   "roles": null,
   "created_at": "2026-01-15T12:00:00.000Z",
   "updated_at": "2026-01-15T12:00:00.000Z",
-  "previous_attributes": null,
-  "name": null
+  "previous_attributes": null
 }

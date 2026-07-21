@@ -78,6 +78,19 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestGetRadarChallengeAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/radar_challenge.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/radar_challenges/test_id", HttpStatusCode.OK, fixture);
+            var result = await this.service.GetRadarChallengeAsync("test_id");
+            Assert.NotNull(result);
+            Assert.Equal("radar_challenge_01HWZBQZY2M3AMQW166Q22K88F", result.Id);
+            Assert.Equal("user_01E4ZCR3C56J083X43JQXF3JK5", result.UserId);
+            Assert.Equal("marcelina.davis@example.com", result.Email);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/radar_challenges/test_id");
+        }
+
+        [Fact]
         public void TestGetLogoutUrl()
         {
             var url = this.service.GetLogoutUrl(new UserManagementGetLogoutUrlOptions());
@@ -531,11 +544,19 @@ namespace WorkOSTests
             options.Uri = "test_uri";
             var result = await this.service.CreateRedirectUriAsync(options);
             Assert.NotNull(result);
-            Assert.Equal("ruri_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("redir_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
             Assert.Equal("https://example.com/callback", result.Uri);
             Assert.Equal("2026-01-15T12:00:00.000Z", result.CreatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/redirect_uris");
             await this.httpMock.AssertRequestBodyContainsAsync("uri", "test_uri");
+        }
+
+        [Fact]
+        public async Task TestDeleteRedirectUrisAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/user_management/redirect_uris/test_id", HttpStatusCode.NoContent, "");
+            await this.service.DeleteRedirectUrisAsync("test_id");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/user_management/redirect_uris/test_id");
         }
 
         [Fact]

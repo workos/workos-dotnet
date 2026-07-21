@@ -166,5 +166,36 @@ namespace WorkOS
         {
             return this.GetAuditLogConfigurationAsync(id, requestOptions, cancellationToken);
         }
+
+        /// <summary>List authorized applications</summary>
+        /// <remarks>
+        /// Get a list of all Connect applications that users in the organization have authorized.
+        /// </remarks>
+        /// <param name="organizationId">The ID of the organization.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="OrganizationAuthorizedConnectApplicationListData"/> results.</returns>
+        public virtual async Task<WorkOSList<OrganizationAuthorizedConnectApplicationListData>> ListAuthorizedApplicationsAsync(string organizationId, OrganizationsListAuthorizedApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<OrganizationAuthorizedConnectApplicationListData>>($"/organizations/{Uri.EscapeDataString(organizationId)}/authorized_applications", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListAuthorizedApplicationsAsync"/>.</summary>
+        public virtual Task<WorkOSList<OrganizationAuthorizedConnectApplicationListData>> ListAuthorizedApplications(string organizationId, OrganizationsListAuthorizedApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAuthorizedApplicationsAsync(organizationId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListAuthorizedApplicationsAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="organizationId">The ID of the organization.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="OrganizationAuthorizedConnectApplicationListData"/> items.</returns>
+        public virtual IAsyncEnumerable<OrganizationAuthorizedConnectApplicationListData> ListAuthorizedApplicationsAutoPagingAsync(string organizationId, OrganizationsListAuthorizedApplicationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<OrganizationAuthorizedConnectApplicationListData>($"/organizations/{Uri.EscapeDataString(organizationId)}/authorized_applications", options, requestOptions, cancellationToken);
+        }
     }
 }

@@ -98,18 +98,25 @@ namespace WorkOS
 
     public class AuthenticateWithMagicAuthOptions : BaseOptions
     {
+        /// <summary>The one-time code for Magic Auth authentication.</summary>
         public string Code { get; set; } = default!;
 
+        /// <summary>The user's email address.</summary>
         public string Email { get; set; } = default!;
 
+        /// <summary>An invitation token to accept during authentication.</summary>
         public string? InvitationToken { get; set; }
 
+        /// <summary>The IP address of the user's request.</summary>
         public string? IpAddress { get; set; }
 
+        /// <summary>A unique identifier for the device.</summary>
         public string? DeviceId { get; set; }
 
+        /// <summary>The user agent string from the user's browser.</summary>
         public string? UserAgent { get; set; }
 
+        /// <summary>The ID of an existing Radar authentication attempt to associate with this authentication.</summary>
         public string? RadarAuthAttemptId { get; set; }
 
         internal string GrantType { get; set; } = default!;
@@ -122,14 +129,19 @@ namespace WorkOS
 
     public class AuthenticateWithEmailVerificationOptions : BaseOptions
     {
+        /// <summary>The email verification code.</summary>
         public string Code { get; set; } = default!;
 
+        /// <summary>The pending authentication token from a previous authentication attempt.</summary>
         public string PendingAuthenticationToken { get; set; } = default!;
 
+        /// <summary>The IP address of the user's request.</summary>
         public string? IpAddress { get; set; }
 
+        /// <summary>A unique identifier for the device.</summary>
         public string? DeviceId { get; set; }
 
+        /// <summary>The user agent string from the user's browser.</summary>
         public string? UserAgent { get; set; }
 
         internal string GrantType { get; set; } = default!;
@@ -164,14 +176,19 @@ namespace WorkOS
 
     public class AuthenticateWithOrganizationSelectionOptions : BaseOptions
     {
+        /// <summary>The pending authentication token from a previous authentication attempt.</summary>
         public string PendingAuthenticationToken { get; set; } = default!;
 
+        /// <summary>The ID of the organization the user selected.</summary>
         public string OrganizationId { get; set; } = default!;
 
+        /// <summary>The IP address of the user's request.</summary>
         public string? IpAddress { get; set; }
 
+        /// <summary>A unique identifier for the device.</summary>
         public string? DeviceId { get; set; }
 
+        /// <summary>The user agent string from the user's browser.</summary>
         public string? UserAgent { get; set; }
 
         internal string GrantType { get; set; } = default!;
@@ -184,12 +201,16 @@ namespace WorkOS
 
     public class AuthenticateWithDeviceCodeOptions : BaseOptions
     {
+        /// <summary>The device verification code.</summary>
         public string DeviceCode { get; set; } = default!;
 
+        /// <summary>The IP address of the user's request.</summary>
         public string? IpAddress { get; set; }
 
+        /// <summary>A unique identifier for the device.</summary>
         public string? DeviceId { get; set; }
 
+        /// <summary>The user agent string from the user's browser.</summary>
         public string? UserAgent { get; set; }
 
         internal string GrantType { get; set; } = default!;
@@ -200,16 +221,22 @@ namespace WorkOS
 
     public class AuthenticateWithRadarEmailChallengeOptions : BaseOptions
     {
+        /// <summary>The one-time code from the Radar email challenge.</summary>
         public string Code { get; set; } = default!;
 
+        /// <summary>The ID of the Radar email challenge being verified.</summary>
         public string RadarChallengeId { get; set; } = default!;
 
+        /// <summary>The pending authentication token from a previous authentication attempt.</summary>
         public string PendingAuthenticationToken { get; set; } = default!;
 
+        /// <summary>The IP address of the user's request.</summary>
         public string? IpAddress { get; set; }
 
+        /// <summary>A unique identifier for the device.</summary>
         public string? DeviceId { get; set; }
 
+        /// <summary>The user agent string from the user's browser.</summary>
         public string? UserAgent { get; set; }
 
         internal string GrantType { get; set; } = default!;
@@ -222,18 +249,25 @@ namespace WorkOS
 
     public class AuthenticateWithRadarSmsChallengeOptions : BaseOptions
     {
+        /// <summary>The one-time code from the Radar SMS challenge.</summary>
         public string Code { get; set; } = default!;
 
+        /// <summary>The ID of the Radar SMS verification being confirmed.</summary>
         public string VerificationId { get; set; } = default!;
 
+        /// <summary>The phone number the Radar SMS challenge was sent to.</summary>
         public string PhoneNumber { get; set; } = default!;
 
+        /// <summary>The pending authentication token from a previous authentication attempt.</summary>
         public string PendingAuthenticationToken { get; set; } = default!;
 
+        /// <summary>The IP address of the user's request.</summary>
         public string? IpAddress { get; set; }
 
+        /// <summary>A unique identifier for the device.</summary>
         public string? DeviceId { get; set; }
 
+        /// <summary>The user agent string from the user's browser.</summary>
         public string? UserAgent { get; set; }
 
         internal string GrantType { get; set; } = default!;

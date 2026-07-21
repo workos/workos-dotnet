@@ -10,8 +10,8 @@ namespace WorkOS
     /// <summary>Request options for <see cref="WidgetsService.CreateTokenAsync"/>: Generate a widget token</summary>
     public class WidgetsCreateTokenOptions : BaseOptions
     {
-        /// <summary>The ID of the organization to scope the widget session to.</summary>
-        public string OrganizationId { get; set; } = default!;
+        /// <summary>The ID of the organization to scope the widget session to. Required when scopes are provided. Optional when issuing a token for user-only widgets (e.g. `UserProfile`, `UserSecurity`) that do not require organization context.</summary>
+        public string? OrganizationId { get; set; }
 
         /// <summary>The ID of the user to issue the widget session token for.</summary>
         public string? UserId { get; set; }

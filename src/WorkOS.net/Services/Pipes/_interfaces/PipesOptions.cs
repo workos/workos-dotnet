@@ -27,8 +27,14 @@ namespace WorkOS
         /// <summary>The OAuth scopes to request for the Data Integration. Defaults to the provider's configured scopes when omitted.</summary>
         public List<string>? Scopes { get; set; }
 
-        /// <summary>The credentials to configure for the Data Integration. Required for both built-in and custom providers.</summary>
-        public DataIntegrationCredentialsDto? Credentials { get; set; }
+        /// <summary>How accounts authenticate with the provider. Defaults to `["oauth"]`. Use `["api_key"]` to declare an API key integration; `credentials` is then not required and keys are supplied per-tenant (optionally via `api_key` on this request).</summary>
+        public List<ConnectedAccountAuthMethod>? AuthMethods { get; set; }
+
+        /// <summary>The OAuth credentials to configure for the Data Integration. Required for OAuth integrations; omit when `auth_methods` is `["api_key"]`.</summary>
+        public DataIntegrationCredentialsInput? Credentials { get; set; }
+
+        /// <summary>An optional API key to install for the first tenant on an `api_key` integration. Omit to declare a keyless integration; tenants can be added later via the per-installation API key path.</summary>
+        public ApiKeyInstallation? ApiKey { get; set; }
 
         /// <summary>The OAuth definition for a custom provider. Supply this to define a custom provider; omit it to create an integration for a built-in provider.</summary>
         public CustomProviderDefinition? CustomProvider { get; set; }
@@ -47,8 +53,11 @@ namespace WorkOS
         /// <summary>The OAuth scopes to request for the Data Integration. Pass `null` to reset to the provider's configured scopes.</summary>
         public List<string>? Scopes { get; set; }
 
-        /// <summary>New credentials for the Data Integration. When provided, rotates the stored client secret.</summary>
-        public DataIntegrationCredentialsDto? Credentials { get; set; }
+        /// <summary>New OAuth credentials for the Data Integration. When provided, rotates the stored client secret. Mutually exclusive with `api_key`.</summary>
+        public DataIntegrationCredentialsInput? Credentials { get; set; }
+
+        /// <summary>An API key to install or rotate for a tenant on an `api_key` integration. Upserts the tenant installation identified by `user_id` (and optional `organization_id`).</summary>
+        public ApiKeyInstallation? ApiKey { get; set; }
 
         /// <summary>Updates to a custom provider's OAuth definition. Only valid for custom-provider integrations.</summary>
         public UpdateCustomProviderDefinition? CustomProvider { get; set; }
@@ -129,7 +138,7 @@ namespace WorkOS
         public List<string>? Scopes { get; set; }
 
         /// <summary>Explicitly set the state of the connected account. When omitted, the state is derived from the token combination provided.</summary>
-        public ConnectedAccountState? State { get; set; }
+        public ConnectedAccountInputState? State { get; set; }
 
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         public string? OrganizationId { get; set; }
@@ -152,7 +161,7 @@ namespace WorkOS
         public List<string>? Scopes { get; set; }
 
         /// <summary>Explicitly set the state of the connected account. When omitted, the state is derived from the token combination provided.</summary>
-        public ConnectedAccountState? State { get; set; }
+        public ConnectedAccountInputState? State { get; set; }
 
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         public string? OrganizationId { get; set; }

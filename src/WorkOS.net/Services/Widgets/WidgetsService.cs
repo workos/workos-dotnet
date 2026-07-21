@@ -26,7 +26,7 @@ namespace WorkOS
 
         /// <summary>Generate a widget token</summary>
         /// <remarks>
-        /// Generate a widget token scoped to an organization and user with the specified scopes.
+        /// Generate a widget token for a user, optionally scoped to an organization. When an organization is specified, org-scoped widgets are enabled; omitting it issues a user-only token for widgets like `UserProfile` and `UserSecurity`.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>

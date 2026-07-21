@@ -117,6 +117,26 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListAuthorizedApplicationsAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/list_organization_authorized_connect_application_list_data.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organization_id/authorized_applications", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListAuthorizedApplicationsAsync("test_organization_id", new OrganizationsListAuthorizedApplicationsOptions());
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_organization_id/authorized_applications");
+        }
+
+        [Fact]
+        public async Task TestListAuthorizedApplicationsAsyncEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organization_id/authorized_applications", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListAuthorizedApplicationsAsync("test_organization_id", new OrganizationsListAuthorizedApplicationsOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public async Task TestListAutoPagingAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/organization.json");
@@ -141,6 +161,38 @@ namespace WorkOSTests
 
             var items = new List<Organization>();
             await foreach (var item in this.service.ListAutoPagingAsync(new OrganizationsListOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
+        public async Task TestListAuthorizedApplicationsAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/organization_authorized_connect_application_list_data.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_organization_id/authorized_applications", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<OrganizationAuthorizedConnectApplicationListData>();
+            await foreach (var item in this.service.ListAuthorizedApplicationsAutoPagingAsync("test_organization_id", new OrganizationsListAuthorizedApplicationsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListAuthorizedApplicationsAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/organizations/test_organization_id/authorized_applications", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<OrganizationAuthorizedConnectApplicationListData>();
+            await foreach (var item in this.service.ListAuthorizedApplicationsAutoPagingAsync("test_organization_id", new OrganizationsListAuthorizedApplicationsOptions()))
             {
                 items.Add(item);
             }

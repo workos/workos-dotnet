@@ -3,5 +3,6 @@
   "enabled": null,
   "scopes": null,
   "credentials": null,
+  "api_key": null,
   "custom_provider": null
 }

@@ -31,13 +31,10 @@ namespace WorkOSTests
         {
             var fixture = System.IO.File.ReadAllText("testdata/client_api_token_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/widgets/token", HttpStatusCode.OK, fixture);
-            var options = new WidgetsCreateTokenOptions();
-            options.OrganizationId = "test_organization_id";
-            var result = await this.service.CreateTokenAsync(options);
+            var result = await this.service.CreateTokenAsync(new WidgetsCreateTokenOptions());
             Assert.NotNull(result);
             Assert.Equal("eyJhbGciOiJSUzI1NiIsImtpZCI6InNlc3Npb24...", result.Token);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/widgets/token");
-            await this.httpMock.AssertRequestBodyContainsAsync("organization_id", "test_organization_id");
         }
 
         [Fact]

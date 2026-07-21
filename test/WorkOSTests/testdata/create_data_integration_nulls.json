@@ -3,6 +3,8 @@
   "description": null,
   "enabled": null,
   "scopes": null,
+  "auth_methods": null,
   "credentials": null,
+  "api_key": null,
   "custom_provider": null
 }
