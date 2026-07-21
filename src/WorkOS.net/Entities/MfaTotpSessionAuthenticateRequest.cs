@@ -3,7 +3,7 @@
 namespace WorkOS
 {
 
-    /// <summary>Represents an urn workos o auth grant type mfa totp session authenticate request.</summary>
+    /// <summary>Represents a mfa totp session authenticate request.</summary>
     public class MfaTotpSessionAuthenticateRequest
     {
 

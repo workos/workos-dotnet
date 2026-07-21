@@ -7,6 +7,11 @@ namespace WorkOS
     /// </summary>
     public partial class WorkOSClient
     {
+        private AgentsService agents;
+
+        /// <summary>Gets the <see cref="AgentsService"/> for agents API operations.</summary>
+        public virtual AgentsService Agents => this.agents ??= new AgentsService(this);
+
         private MultiFactorAuthService multiFactorAuth;
 
         /// <summary>Gets the <see cref="MultiFactorAuthService"/> for multi factor auth API operations.</summary>

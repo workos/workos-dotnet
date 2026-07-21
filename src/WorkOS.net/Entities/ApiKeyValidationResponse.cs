@@ -7,5 +7,8 @@ namespace WorkOS
     public class ApiKeyValidationResponse
     {
         public ApiKey? ApiKey { get; set; }
+
+        /// <summary>The ID of the agent registration this API Key was issued for. Present only when the API Key is assigned to an agent registration.</summary>
+        public string? AgentRegistrationId { get; set; }
     }
 }

@@ -26,6 +26,14 @@ namespace WorkOS
             {
                 case "action.authentication.denied": target = new ActionAuthenticationDenied(); break;
                 case "action.user_registration.denied": target = new ActionUserRegistrationDenied(); break;
+                case "agent.registration.claim.attempt.created": target = new AgentRegistrationClaimAttemptCreated(); break;
+                case "agent.registration.claim.completed": target = new AgentRegistrationClaimCompleted(); break;
+                case "agent.registration.created": target = new AgentRegistrationCreated(); break;
+                case "agent.registration.credential.issued": target = new AgentRegistrationCredentialIssued(); break;
+                case "agent.registration.deleted": target = new AgentRegistrationDeleted(); break;
+                case "agent.registration.expired": target = new AgentRegistrationExpired(); break;
+                case "agent.registration.organization.switched": target = new AgentRegistrationOrganizationSwitched(); break;
+                case "agent.registration.revoked": target = new AgentRegistrationRevoked(); break;
                 case "api_key.created": target = new ApiKeyCreated(); break;
                 case "api_key.revoked": target = new ApiKeyRevoked(); break;
                 case "api_key.updated": target = new ApiKeyUpdated(); break;
@@ -42,6 +50,7 @@ namespace WorkOS
                 case "authentication.password_failed": target = new AuthenticationPasswordFailed(); break;
                 case "authentication.password_succeeded": target = new AuthenticationPasswordSucceeded(); break;
                 case "authentication.radar_risk_detected": target = new AuthenticationRadarRiskDetected(); break;
+                case "authentication.reauthentication_succeeded": target = new AuthenticationReauthenticationSucceeded(); break;
                 case "authentication.sso_failed": target = new AuthenticationSSOFailed(); break;
                 case "authentication.sso_started": target = new AuthenticationSSOStarted(); break;
                 case "authentication.sso_succeeded": target = new AuthenticationSSOSucceeded(); break;
@@ -98,8 +107,10 @@ namespace WorkOS
                 case "permission.deleted": target = new PermissionDeleted(); break;
                 case "permission.updated": target = new PermissionUpdated(); break;
                 case "pipes.connected_account.connected": target = new PipesConnectedAccountConnected(); break;
+                case "pipes.connected_account.connection_failed": target = new PipesConnectedAccountConnectionFailed(); break;
                 case "pipes.connected_account.disconnected": target = new PipesConnectedAccountDisconnected(); break;
                 case "pipes.connected_account.reauthorization_needed": target = new PipesConnectedAccountReauthorizationNeeded(); break;
+                case "radar.challenge_created": target = new RadarChallengeCreated(); break;
                 case "role.created": target = new RoleCreated(); break;
                 case "role.deleted": target = new RoleDeleted(); break;
                 case "role.updated": target = new RoleUpdated(); break;
@@ -117,6 +128,7 @@ namespace WorkOS
                 case "vault.dek.decrypted": target = new VaultDekDecrypted(); break;
                 case "vault.dek.read": target = new VaultDekRead(); break;
                 case "vault.kek.created": target = new VaultKekCreated(); break;
+                case "vault.kek.deleted": target = new VaultKekDeleted(); break;
                 case "vault.metadata.read": target = new VaultMetadataRead(); break;
                 case "vault.names.listed": target = new VaultNamesListed(); break;
                 case "waitlist_user.approved": target = new WaitlistUserApproved(); break;

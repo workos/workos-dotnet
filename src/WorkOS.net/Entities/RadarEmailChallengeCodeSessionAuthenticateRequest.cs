@@ -3,7 +3,7 @@
 namespace WorkOS
 {
 
-    /// <summary>Represents an urn workos o auth grant type radar email challenge code session authenticate request.</summary>
+    /// <summary>Represents a radar email challenge code session authenticate request.</summary>
     public class RadarEmailChallengeCodeSessionAuthenticateRequest
     {
 

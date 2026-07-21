@@ -3,7 +3,7 @@
 namespace WorkOS
 {
 
-    /// <summary>Represents an urn workos o auth grant type magic auth code session authenticate request.</summary>
+    /// <summary>Represents a magic auth code session authenticate request.</summary>
     public class MagicAuthCodeSessionAuthenticateRequest
     {
 

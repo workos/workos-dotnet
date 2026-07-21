@@ -8,12 +8,12 @@
   "email": "todd@example.com",
   "first_name": null,
   "last_name": null,
+  "name": null,
   "role": null,
   "roles": null,
   "groups": null,
   "custom_attributes": null,
   "raw_attributes": {
     "key": {}
-  },
-  "name": null
+  }
 }

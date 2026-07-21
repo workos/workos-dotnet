@@ -3,7 +3,7 @@
 namespace WorkOS
 {
 
-    /// <summary>Represents an urn workos o auth grant type organization selection session authenticate request.</summary>
+    /// <summary>Represents an organization selection session authenticate request.</summary>
     public class OrganizationSelectionSessionAuthenticateRequest
     {
 

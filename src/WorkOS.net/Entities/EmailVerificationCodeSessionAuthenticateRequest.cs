@@ -3,7 +3,7 @@
 namespace WorkOS
 {
 
-    /// <summary>Represents an urn workos o auth grant type email verification code session authenticate request.</summary>
+    /// <summary>Represents an email verification code session authenticate request.</summary>
     public class EmailVerificationCodeSessionAuthenticateRequest
     {
 

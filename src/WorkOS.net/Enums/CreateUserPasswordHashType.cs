@@ -20,6 +20,8 @@ namespace WorkOS
         FirebaseScrypt,
         [EnumMember(Value = "ssha")]
         Ssha,
+        [EnumMember(Value = "ssha256")]
+        Ssha256,
         [EnumMember(Value = "scrypt")]
         Scrypt,
         [EnumMember(Value = "pbkdf2")]

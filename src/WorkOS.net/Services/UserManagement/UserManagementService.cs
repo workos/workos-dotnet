@@ -291,6 +291,25 @@ namespace WorkOS
             return this.CreateRadarChallengeAsync(options, requestOptions, cancellationToken);
         }
 
+        /// <summary>Get Radar Challenge details</summary>
+        /// <remarks>
+        /// Get the details of an existing Radar Challenge, including the OTP code.
+        /// </remarks>
+        /// <param name="id">The unique ID of the Radar Challenge.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="RadarChallenge"/> result.</returns>
+        public virtual async Task<RadarChallenge> GetRadarChallengeAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<RadarChallenge>($"/user_management/radar_challenges/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetRadarChallengeAsync"/>.</summary>
+        public virtual Task<RadarChallenge> GetRadarChallenge(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetRadarChallengeAsync(id, requestOptions, cancellationToken);
+        }
+
         /// <summary>Logout</summary>
         /// <remarks>
         /// Logout a user from the current [session](https://workos.com/docs/reference/authkit/session).
@@ -357,7 +376,7 @@ namespace WorkOS
 
         /// <summary>Create a CORS origin</summary>
         /// <remarks>
-        /// Creates a new CORS origin for the current environment. CORS origins allow browser-based applications to make requests to the WorkOS API.
+        /// Creates a new CORS origin for the API key's application. CORS origins allow browser-based applications to make requests to the WorkOS API.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
@@ -1018,6 +1037,24 @@ namespace WorkOS
         public virtual Task<RedirectUri> CreateRedirectUri(UserManagementCreateRedirectUriOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.CreateRedirectUriAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Delete a redirect URI</summary>
+        /// <remarks>
+        /// Deletes a redirect URI from an application.
+        /// </remarks>
+        /// <param name="id">The ID of the redirect URI to delete.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteRedirectUrisAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/user_management/redirect_uris/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteRedirectUrisAsync"/>.</summary>
+        public virtual Task DeleteRedirectUris(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteRedirectUrisAsync(id, requestOptions, cancellationToken);
         }
 
         /// <summary>List authorized applications</summary>

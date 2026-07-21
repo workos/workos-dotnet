@@ -67,4 +67,9 @@ namespace WorkOS
         public string? ExternalId { get; set; }
 
     }
+
+    /// <summary>Request options for <see cref="OrganizationsService.ListAuthorizedApplicationsAsync"/>: List authorized applications</summary>
+    public class OrganizationsListAuthorizedApplicationsOptions : ListOptions
+    {
+    }
 }

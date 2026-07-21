@@ -40,8 +40,14 @@ namespace WorkOS
         /// <summary>The OAuth redirect URI to register with the provider when configuring the custom application.</summary>
         public string RedirectUri { get; set; } = default!;
 
+        /// <summary>How accounts authenticate with the provider for this Data Integration.</summary>
+        public List<ConnectedAccountAuthMethod> AuthMethods { get; set; } = default!;
+
         /// <summary>The credentials configured for the Data Integration.</summary>
         public DataIntegrationCredential Credentials { get; set; } = default!;
+
+        /// <summary>The tenant installation created when an API key was supplied at creation time; `null` otherwise. Not populated on list/get responses.</summary>
+        public DataIntegrationInstallation? Installation { get; set; }
 
         /// <summary>The OAuth definition when this is a custom provider; `null` for built-in providers.</summary>
         public DataIntegrationCustomProvider? CustomProvider { get; set; }

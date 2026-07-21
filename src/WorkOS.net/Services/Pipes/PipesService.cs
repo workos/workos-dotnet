@@ -26,7 +26,7 @@ namespace WorkOS
 
         /// <summary>List data integrations</summary>
         /// <remarks>
-        /// Lists the environment's data integrations configured with `custom` or `organization` credentials, including custom providers.
+        /// Lists the environment's data integrations configured with `custom` or `organization` credentials, including custom providers and API key integrations.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
@@ -55,7 +55,7 @@ namespace WorkOS
 
         /// <summary>Create a data integration</summary>
         /// <remarks>
-        /// Creates a data integration for a provider. Set `credentials.type` to `custom` to use your own OAuth app credentials, or `organization` to have each organization supply its own. For a built-in provider, pass its slug as `provider`. For a custom provider, pass a new slug plus a `custom_provider` definition.
+        /// Creates a data integration for a provider. Set `credentials.type` to `custom` to use your own OAuth app credentials or `organization` to have each organization supply its own. Set `auth_methods` to `["api_key"]` to create an API key integration; you may optionally supply an `api_key` block to install a first tenant in the same call. For a built-in provider, pass its slug as `provider`. For a custom provider, pass a new slug plus a `custom_provider` definition.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>

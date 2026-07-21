@@ -42,5 +42,11 @@ namespace WorkOS
         /// <summary>Unique identifier of the WorkOS Directory Group. This value can be obtained from the WorkOS API.</summary>
         public string? Group { get; set; }
 
+        /// <summary>Filter Directory Users by the identity provider's unique identifier (`idp_id`). Requires the `directory` parameter to also be provided.</summary>
+        public string? IdpId { get; set; }
+
+        /// <summary>Filter Directory Users by their primary email address. Requires the `directory` parameter to also be provided.</summary>
+        public string? Email { get; set; }
+
     }
 }

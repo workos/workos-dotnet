@@ -20,6 +20,8 @@ namespace WorkOS
             var discriminatorValue = jObject["kind"]?.ToString();
             switch (discriminatorValue)
             {
+                case "api_key": return jObject.ToObject<AgentRegistrationCredentialIssuedDataDetail>(serializer);
+                case "access_token": return jObject.ToObject<AccessTokenAgentRegistrationCredentialIssuedDataDetail>(serializer);
                 default: return jObject.ToObject<object>(serializer);
             }
         }
