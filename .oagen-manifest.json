@@ -131,7 +131,6 @@
     "src/WorkOS.net/Entities/ConnectionDeactivated.cs",
     "src/WorkOS.net/Entities/ConnectionDeleted.cs",
     "src/WorkOS.net/Entities/ConnectionDeletedData.cs",
-    "src/WorkOS.net/Entities/ConnectionOption.cs",
     "src/WorkOS.net/Entities/ConnectionSAMLCertificateRenewalRequired.cs",
     "src/WorkOS.net/Entities/ConnectionSAMLCertificateRenewalRequiredData.cs",
     "src/WorkOS.net/Entities/ConnectionSAMLCertificateRenewalRequiredDataCertificate.cs",
@@ -152,7 +151,6 @@
     "src/WorkOS.net/Entities/DataIntegrationConfigurationResponse.cs",
     "src/WorkOS.net/Entities/DataIntegrationCredential.cs",
     "src/WorkOS.net/Entities/DataIntegrationCredentials.cs",
-    "src/WorkOS.net/Entities/DataIntegrationCredentialsDto.cs",
     "src/WorkOS.net/Entities/DataIntegrationCredentialsInput.cs",
     "src/WorkOS.net/Entities/DataIntegrationCredentialsResponse.cs",
     "src/WorkOS.net/Entities/DataIntegrationCredentialsResponseCredential.cs",
@@ -172,7 +170,6 @@
     "src/WorkOS.net/Entities/DirectoryUser.cs",
     "src/WorkOS.net/Entities/DirectoryUserEmail.cs",
     "src/WorkOS.net/Entities/DirectoryUserWithGroups.cs",
-    "src/WorkOS.net/Entities/DomainVerificationIntentOptions.cs",
     "src/WorkOS.net/Entities/DsyncActivated.cs",
     "src/WorkOS.net/Entities/DsyncActivatedData.cs",
     "src/WorkOS.net/Entities/DsyncActivatedDataDomain.cs",
@@ -232,7 +229,6 @@
     "src/WorkOS.net/Entities/GroupRoleAssignmentList.cs",
     "src/WorkOS.net/Entities/GroupRoleAssignmentResource.cs",
     "src/WorkOS.net/Entities/GroupUpdated.cs",
-    "src/WorkOS.net/Entities/IntentOptions.cs",
     "src/WorkOS.net/Entities/Invitation.cs",
     "src/WorkOS.net/Entities/InvitationAccepted.cs",
     "src/WorkOS.net/Entities/InvitationAcceptedData.cs",
@@ -285,7 +281,6 @@
     "src/WorkOS.net/Entities/PasswordResetSucceeded.cs",
     "src/WorkOS.net/Entities/PasswordSessionAuthenticateRequest.cs",
     "src/WorkOS.net/Entities/PermissionCreated.cs",
-    "src/WorkOS.net/Entities/PermissionCreatedData.cs",
     "src/WorkOS.net/Entities/PermissionDeleted.cs",
     "src/WorkOS.net/Entities/PermissionUpdated.cs",
     "src/WorkOS.net/Entities/PipeConnectedAccount.cs",
@@ -314,7 +309,6 @@
     "src/WorkOS.net/Entities/RoleList.cs",
     "src/WorkOS.net/Entities/RoleUpdated.cs",
     "src/WorkOS.net/Entities/SSOAuthorizeUrlResponse.cs",
-    "src/WorkOS.net/Entities/SSOIntentOptions.cs",
     "src/WorkOS.net/Entities/SSOLogoutAuthorizeResponse.cs",
     "src/WorkOS.net/Entities/SSOTokenResponse.cs",
     "src/WorkOS.net/Entities/SendRadarSmsChallengeResponse.cs",
@@ -398,7 +392,6 @@
     "src/WorkOS.net/Enums/DataIntegrationCredentialType.cs",
     "src/WorkOS.net/Enums/DataIntegrationCredentialsCredentialsType.cs",
     "src/WorkOS.net/Enums/DataIntegrationState.cs",
-    "src/WorkOS.net/Enums/DataIntegrationsListResponseDataConnectedAccountState.cs",
     "src/WorkOS.net/Enums/DataIntegrationsListResponseDataOwnership.cs",
     "src/WorkOS.net/Enums/DirectoryState.cs",
     "src/WorkOS.net/Enums/DirectoryType.cs",
@@ -415,7 +408,6 @@
     "src/WorkOS.net/Enums/OrganizationDomainVerificationFailedDataReason.cs",
     "src/WorkOS.net/Enums/OrganizationMembershipCreatedDataStatus.cs",
     "src/WorkOS.net/Enums/PaginationOrder.cs",
-    "src/WorkOS.net/Enums/PipeConnectedAccountState.cs",
     "src/WorkOS.net/Enums/RadarListAction.cs",
     "src/WorkOS.net/Enums/RadarListType.cs",
     "src/WorkOS.net/Enums/RadarStandaloneAssessRequestAction.cs",
@@ -753,8 +745,6 @@
     "test/WorkOSTests/testdata/connect_application_oauth_nulls.json",
     "test/WorkOSTests/testdata/connect_application_oauth_redirect_uris.json",
     "test/WorkOSTests/testdata/connected_account.json",
-    "test/WorkOSTests/testdata/connected_account_dto.json",
-    "test/WorkOSTests/testdata/connected_account_dto_nulls.json",
     "test/WorkOSTests/testdata/connected_account_input.json",
     "test/WorkOSTests/testdata/connected_account_input_nulls.json",
     "test/WorkOSTests/testdata/connected_account_nulls.json",
@@ -775,8 +765,6 @@
     "test/WorkOSTests/testdata/connection_deleted_nulls.json",
     "test/WorkOSTests/testdata/connection_domain.json",
     "test/WorkOSTests/testdata/connection_nulls.json",
-    "test/WorkOSTests/testdata/connection_option.json",
-    "test/WorkOSTests/testdata/connection_option_nulls.json",
     "test/WorkOSTests/testdata/connection_saml_certificate_renewal_required.json",
     "test/WorkOSTests/testdata/connection_saml_certificate_renewal_required_data.json",
     "test/WorkOSTests/testdata/connection_saml_certificate_renewal_required_data_certificate.json",
@@ -845,8 +833,6 @@
     "test/WorkOSTests/testdata/data_integration_credential.json",
     "test/WorkOSTests/testdata/data_integration_credential_nulls.json",
     "test/WorkOSTests/testdata/data_integration_credentials.json",
-    "test/WorkOSTests/testdata/data_integration_credentials_dto.json",
-    "test/WorkOSTests/testdata/data_integration_credentials_dto_nulls.json",
     "test/WorkOSTests/testdata/data_integration_credentials_input.json",
     "test/WorkOSTests/testdata/data_integration_credentials_input_nulls.json",
     "test/WorkOSTests/testdata/data_integration_credentials_nulls.json",
@@ -895,8 +881,6 @@
     "test/WorkOSTests/testdata/directory_user_with_groups_email.json",
     "test/WorkOSTests/testdata/directory_user_with_groups_email_nulls.json",
     "test/WorkOSTests/testdata/directory_user_with_groups_nulls.json",
-    "test/WorkOSTests/testdata/domain_verification_intent_options.json",
-    "test/WorkOSTests/testdata/domain_verification_intent_options_nulls.json",
     "test/WorkOSTests/testdata/dsync_activated.json",
     "test/WorkOSTests/testdata/dsync_activated_data.json",
     "test/WorkOSTests/testdata/dsync_activated_data_domain.json",
@@ -1040,8 +1024,6 @@
     "test/WorkOSTests/testdata/group_role_assignment_resource.json",
     "test/WorkOSTests/testdata/group_updated.json",
     "test/WorkOSTests/testdata/group_updated_nulls.json",
-    "test/WorkOSTests/testdata/intent_options.json",
-    "test/WorkOSTests/testdata/intent_options_nulls.json",
     "test/WorkOSTests/testdata/invitation.json",
     "test/WorkOSTests/testdata/invitation_accepted.json",
     "test/WorkOSTests/testdata/invitation_accepted_data.json",
@@ -1173,8 +1155,6 @@
     "test/WorkOSTests/testdata/organization_domain_deleted_data_nulls.json",
     "test/WorkOSTests/testdata/organization_domain_deleted_nulls.json",
     "test/WorkOSTests/testdata/organization_domain_nulls.json",
-    "test/WorkOSTests/testdata/organization_domain_stand_alone.json",
-    "test/WorkOSTests/testdata/organization_domain_stand_alone_nulls.json",
     "test/WorkOSTests/testdata/organization_domain_updated.json",
     "test/WorkOSTests/testdata/organization_domain_updated_data.json",
     "test/WorkOSTests/testdata/organization_domain_updated_data_nulls.json",
@@ -1331,8 +1311,6 @@
     "test/WorkOSTests/testdata/slim_role.json",
     "test/WorkOSTests/testdata/sso_authorize_url_response.json",
     "test/WorkOSTests/testdata/sso_device_authorization_request.json",
-    "test/WorkOSTests/testdata/sso_intent_options.json",
-    "test/WorkOSTests/testdata/sso_intent_options_nulls.json",
     "test/WorkOSTests/testdata/sso_logout_authorize_request.json",
     "test/WorkOSTests/testdata/sso_logout_authorize_response.json",
     "test/WorkOSTests/testdata/sso_token_response.json",
@@ -1464,6 +1442,18 @@
     "test/WorkOSTests/testdata/widget_session_token_response.json"
   ],
   "operations": {
+    "PATCH /agents/claims/attempts": {
+      "sdkMethod": "UpdateAttemptsAsync",
+      "service": "agents"
+    },
+    "POST /agents/credentials/validate": {
+      "sdkMethod": "CreateValidateAsync",
+      "service": "agents"
+    },
+    "GET /agents/registrations/{id}": {
+      "sdkMethod": "GetRegistrationAsync",
+      "service": "agents"
+    },
     "POST /auth/challenges/{id}/verify": {
       "sdkMethod": "VerifyChallengeAsync",
       "service": "multi_factor_auth"
@@ -1716,8 +1706,36 @@
       "sdkMethod": "DeleteConnectionAsync",
       "service": "sso"
     },
+    "GET /data-integrations": {
+      "sdkMethod": "ListDataIntegrationsAsync",
+      "service": "pipes"
+    },
+    "POST /data-integrations": {
+      "sdkMethod": "CreateDataIntegrationAsync",
+      "service": "pipes"
+    },
+    "GET /data-integrations/{slug}": {
+      "sdkMethod": "GetDataIntegrationAsync",
+      "service": "pipes"
+    },
+    "PUT /data-integrations/{slug}": {
+      "sdkMethod": "UpdateDataIntegrationAsync",
+      "service": "pipes"
+    },
+    "DELETE /data-integrations/{slug}": {
+      "sdkMethod": "DeleteDataIntegrationAsync",
+      "service": "pipes"
+    },
+    "PUT /data-integrations/{slug}/api-key": {
+      "sdkMethod": "UpdateDataIntegrationApiKeyAsync",
+      "service": "pipes"
+    },
     "POST /data-integrations/{slug}/authorize": {
       "sdkMethod": "AuthorizeDataIntegrationAsync",
+      "service": "pipes"
+    },
+    "POST /data-integrations/{slug}/credentials": {
+      "sdkMethod": "CreateDataIntegrationCredentialAsync",
       "service": "pipes"
     },
     "POST /data-integrations/{provider}/token": {
@@ -1884,6 +1902,10 @@
       "sdkMethod": "DeleteOrganizationMembershipAsync",
       "service": "groups"
     },
+    "GET /organizations/{organization_id}/authorized_applications": {
+      "sdkMethod": "ListAuthorizedApplicationsAsync",
+      "service": "organizations"
+    },
     "POST /portal/generate_link": {
       "sdkMethod": "GenerateLinkAsync",
       "service": "admin_portal"
@@ -1940,12 +1962,24 @@
       "sdkMethod": "CreateDeviceAsync",
       "service": "user_management"
     },
+    "POST /user_management/radar_challenges": {
+      "sdkMethod": "CreateRadarChallengeAsync",
+      "service": "user_management"
+    },
+    "GET /user_management/radar_challenges/{id}": {
+      "sdkMethod": "GetRadarChallengeAsync",
+      "service": "user_management"
+    },
     "GET /user_management/sessions/logout": {
       "sdkMethod": "GetLogoutUrl",
       "service": "user_management"
     },
     "POST /user_management/sessions/revoke": {
       "sdkMethod": "RevokeSessionAsync",
+      "service": "user_management"
+    },
+    "GET /user_management/cors_origins": {
+      "sdkMethod": "ListCorsOriginsAsync",
       "service": "user_management"
     },
     "POST /user_management/cors_origins": {
@@ -2092,8 +2126,16 @@
       "sdkMethod": "ListGroupsAsync",
       "service": "organization_membership"
     },
+    "GET /user_management/redirect_uris": {
+      "sdkMethod": "ListRedirectUrisAsync",
+      "service": "user_management"
+    },
     "POST /user_management/redirect_uris": {
       "sdkMethod": "CreateRedirectUriAsync",
+      "service": "user_management"
+    },
+    "DELETE /user_management/redirect_uris/{id}": {
+      "sdkMethod": "DeleteRedirectUrisAsync",
       "service": "user_management"
     },
     "GET /user_management/users/{userId}/feature-flags": {
@@ -2110,6 +2152,14 @@
     },
     "GET /user_management/users/{user_id}/connected_accounts/{slug}": {
       "sdkMethod": "GetUserConnectedAccountAsync",
+      "service": "pipes"
+    },
+    "POST /user_management/users/{user_id}/connected_accounts/{slug}": {
+      "sdkMethod": "CreateUserConnectedAccountAsync",
+      "service": "pipes"
+    },
+    "PUT /user_management/users/{user_id}/connected_accounts/{slug}": {
+      "sdkMethod": "UpdateUserConnectedAccountAsync",
       "service": "pipes"
     },
     "DELETE /user_management/users/{user_id}/connected_accounts/{slug}": {
@@ -2235,78 +2285,6 @@
     "GET /audit_logs/exports/{auditLogExportId}": {
       "sdkMethod": "GetExportAsync",
       "service": "audit_logs"
-    },
-    "PUT /data-integrations/{slug}/api-key": {
-      "sdkMethod": "UpdateDataIntegrationApiKeyAsync",
-      "service": "pipes"
-    },
-    "POST /data-integrations/{slug}/credentials": {
-      "sdkMethod": "CreateDataIntegrationCredentialAsync",
-      "service": "pipes"
-    },
-    "GET /user_management/cors_origins": {
-      "sdkMethod": "ListCorsOriginsAsync",
-      "service": "user_management"
-    },
-    "GET /user_management/redirect_uris": {
-      "sdkMethod": "ListRedirectUrisAsync",
-      "service": "user_management"
-    },
-    "GET /data-integrations": {
-      "sdkMethod": "ListDataIntegrationsAsync",
-      "service": "pipes"
-    },
-    "POST /data-integrations": {
-      "sdkMethod": "CreateDataIntegrationAsync",
-      "service": "pipes"
-    },
-    "GET /data-integrations/{slug}": {
-      "sdkMethod": "GetDataIntegrationAsync",
-      "service": "pipes"
-    },
-    "PUT /data-integrations/{slug}": {
-      "sdkMethod": "UpdateDataIntegrationAsync",
-      "service": "pipes"
-    },
-    "DELETE /data-integrations/{slug}": {
-      "sdkMethod": "DeleteDataIntegrationAsync",
-      "service": "pipes"
-    },
-    "POST /user_management/radar_challenges": {
-      "sdkMethod": "CreateRadarChallengeAsync",
-      "service": "user_management"
-    },
-    "POST /user_management/users/{user_id}/connected_accounts/{slug}": {
-      "sdkMethod": "CreateUserConnectedAccountAsync",
-      "service": "pipes"
-    },
-    "PUT /user_management/users/{user_id}/connected_accounts/{slug}": {
-      "sdkMethod": "UpdateUserConnectedAccountAsync",
-      "service": "pipes"
-    },
-    "GET /user_management/radar_challenges/{id}": {
-      "sdkMethod": "GetRadarChallengeAsync",
-      "service": "user_management"
-    },
-    "DELETE /user_management/redirect_uris/{id}": {
-      "sdkMethod": "DeleteRedirectUrisAsync",
-      "service": "user_management"
-    },
-    "PATCH /agents/claims/attempts": {
-      "sdkMethod": "UpdateAttemptsAsync",
-      "service": "agents"
-    },
-    "POST /agents/credentials/validate": {
-      "sdkMethod": "CreateValidateAsync",
-      "service": "agents"
-    },
-    "GET /agents/registrations/{id}": {
-      "sdkMethod": "GetRegistrationAsync",
-      "service": "agents"
-    },
-    "GET /organizations/{organization_id}/authorized_applications": {
-      "sdkMethod": "ListAuthorizedApplicationsAsync",
-      "service": "organizations"
     }
   }
 }
