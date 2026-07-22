@@ -2,27 +2,94 @@
 
 ## [6.0.0](https://github.com/workos/workos-dotnet/compare/v5.5.0...v6.0.0) (2026-07-22)
 
+* [#285](https://github.com/workos/workos-dotnet/pull/285) fix(generated): regenerate from spec
 
-### ⚠ BREAKING CHANGES
+  **Features**
+  * **[audit_logs](https://workos.com/docs/reference/audit-logs)**:
+    * Added `expired` to `AuditLogExportState`
 
-* **authorization:** SDK surface change: Symbol "PermissionCreatedData" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289))
-* **connect:** SDK surface change: Symbol "ConnectionOption" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289))
-* **organization_domains:** SDK surface change: Symbol "DomainVerificationIntentOptions" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289))
-* **pipes:** SDK surface change: Symbol "DataIntegrationCredentialsDto" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289))
-* **sso:** SDK surface change: Symbol "SSOIntentOptions" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289))
-* **admin_portal:** SDK surface change: Symbol "IntentOptions" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289))
-* **connect:** SDK surface change: `Connection.Options` was renamed to `Connection.CallbackEndpoint` ([#288](https://github.com/workos/workos-dotnet/issues/288))
+* [#288](https://github.com/workos/workos-dotnet/pull/288) feat(generated)!: regenerate from spec (1 change)
 
-### Features
+  **Features**
+  * **agents**:
+    * Added model `ClaimViewResponse`
+    * Added model `ClaimViewResponseOrganization`
+    * Added model `AgentAdminLinkClaimAttemptToExternalUserRequest`
+    * Added model `AgentAdminLinkClaimAttemptToExternalUserRequestUser`
+    * Added enum `ClaimViewResponseStatus`
+    * Added endpoint `PATCH /agents/claims/attempts`
+    * Added model `AgentRegistration`
+    * Added model `AgentCredentialValidation`
+    * Added model `AgentRegistrationAgentIdentity`
+    * Added model `AgentRegistrationClaim`
+    * Added model `AgentAdminValidateCredentialRequest`
+    * Added model `AgentRegistrationClaimClaimCompletion`
+    * Added enum `AgentRegistrationStatus`
+    * Added enum `AgentRegistrationKind`
+    * Added enum `AgentAdminValidateCredentialRequestType`
+    * Added service `Agents`
+  * **[api_keys](https://workos.com/docs/reference/authkit/api-keys)**:
+    * Added `agent_registration_id` to `ApiKeyValidationResponse`
+  * **[connect](https://workos.com/docs/reference/workos-connect/standalone)**:
+    * Added enum `ApplicationsRegistrationTypes`
+    * Added parameter `Applications.list.registration_types`
+  * **[directory_sync](https://workos.com/docs/reference/directory-sync)**:
+    * Added parameter `DirectoryUsers.list.idp_id`
+    * Added parameter `DirectoryUsers.list.email`
+  * **[organizations](https://workos.com/docs/reference/organization)**:
+    * Added model `OrganizationAuthorizedConnectApplicationList`
+    * Added model `OrganizationAuthorizedConnectApplicationListData`
+    * Added model `OrganizationAuthorizedConnectApplicationListListMetadata`
+    * Added service `OrganizationsAuthorizedApplications`
+  * **[pipes](https://workos.com/docs/reference/pipes)**:
+    * Added model `DataIntegrationInstallation`
+    * Added `auth_methods` to `CreateDataIntegration`
+    * Added `api_key` to `CreateDataIntegration`
+    * Added `api_key` to `UpdateDataIntegration`
+    * Added `auth_methods` to `DataIntegration`
+    * Added `installation` to `DataIntegration`
+    * Added enum `CreateDataIntegrationAuthMethods`
+    * Added enum `DataIntegrationAuthMethods`
+    * Added model `DataIntegrationCredentialsResponse`
+    * Added model `DataIntegrationCredentialsResponseCredential`
+    * Added model `DataIntegrationsUpsertApiKeyRequest`
+    * Added model `DataIntegrationsVendCredentialsRequest`
+    * Added enum `DataIntegrationCredentialsResponseError`
+    * Added endpoint `PUT /data-integrations/{slug}/api-key`
+    * Added endpoint `POST /data-integrations/{slug}/credentials`
+  * **[sso](https://workos.com/docs/reference/sso)**:
+    * Added parameter `SSO.authorize.prompt`
+  * **[user_management](https://workos.com/docs/reference/authkit/user)**:
+    * Added `ssha256` to `CreateUserPasswordHashType`
+    * Added `ssha256` to `UpdateUserPasswordHashType`
+    * Added endpoint `GET /user_management/radar_challenges/{id}`
+  * **[webhooks](https://workos.com/docs/reference/webhooks)**:
+    * Added `agent.registration.revoked` to `CreateWebhookEndpointEvents`
+    * Added `agent.registration.revoked` to `UpdateWebhookEndpointEvents`
+    * Added `agent.registration.deleted` to `CreateWebhookEndpointEvents`
+    * Added `agent.registration.deleted` to `UpdateWebhookEndpointEvents`
+    * Added `radar.challenge_created` to `CreateWebhookEndpointEvents`
+    * Added `radar.challenge_created` to `UpdateWebhookEndpointEvents`
+    * Added `agent.registration.expired` to `CreateWebhookEndpointEvents`
+    * Added `agent.registration.expired` to `UpdateWebhookEndpointEvents`
+  * **[widgets](https://workos.com/docs/reference/widgets)**:
+    * Made `WidgetSessionToken.organization_id` optional
 
-* **admin_portal:** SDK surface change: Symbol "IntentOptions" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289)) ([52583e7](https://github.com/workos/workos-dotnet/commit/52583e7e9f8d36cafcd8baa158a1bb7ca010d7f7))
-* **authorization:** SDK surface change: Symbol "PermissionCreatedData" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289)) ([52583e7](https://github.com/workos/workos-dotnet/commit/52583e7e9f8d36cafcd8baa158a1bb7ca010d7f7))
-* **connect:** SDK surface change: `Connection.Options` was renamed to `Connection.CallbackEndpoint` ([#288](https://github.com/workos/workos-dotnet/issues/288)) ([2203d07](https://github.com/workos/workos-dotnet/commit/2203d07918c9620c73f6d2bbcf2fecc886d45e8d))
-* **connect:** SDK surface change: Symbol "ConnectionOption" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289)) ([52583e7](https://github.com/workos/workos-dotnet/commit/52583e7e9f8d36cafcd8baa158a1bb7ca010d7f7))
-* **generated:** AuditLogs (batch 56391ebd) ([#285](https://github.com/workos/workos-dotnet/issues/285)) ([2879dd4](https://github.com/workos/workos-dotnet/commit/2879dd4af7d496fce138a2255853ae34c80d8a53))
-* **organization_domains:** SDK surface change: Symbol "DomainVerificationIntentOptions" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289)) ([52583e7](https://github.com/workos/workos-dotnet/commit/52583e7e9f8d36cafcd8baa158a1bb7ca010d7f7))
-* **pipes:** SDK surface change: Symbol "DataIntegrationCredentialsDto" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289)) ([52583e7](https://github.com/workos/workos-dotnet/commit/52583e7e9f8d36cafcd8baa158a1bb7ca010d7f7))
-* **sso:** SDK surface change: Symbol "SSOIntentOptions" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289)) ([52583e7](https://github.com/workos/workos-dotnet/commit/52583e7e9f8d36cafcd8baa158a1bb7ca010d7f7))
+* [#289](https://github.com/workos/workos-dotnet/pull/289) feat(generated)!: regenerate from spec (6 changes)
+
+  **⚠️ Breaking**
+  * **[admin_portal](https://workos.com/docs/reference/admin-portal)**:
+    * SDK surface change: Symbol "IntentOptions" was removed
+  * **[authorization](https://workos.com/docs/reference/fga)**:
+    * SDK surface change: Symbol "PermissionCreatedData" was removed
+  * **[connect](https://workos.com/docs/reference/workos-connect/standalone)**:
+    * SDK surface change: Symbol "ConnectionOption" was removed
+  * **[organization_domains](https://workos.com/docs/reference/domain-verification)**:
+    * SDK surface change: Symbol "DomainVerificationIntentOptions" was removed
+  * **[pipes](https://workos.com/docs/reference/pipes)**:
+    * SDK surface change: Symbol "DataIntegrationCredentialsDto" was removed
+  * **[sso](https://workos.com/docs/reference/sso)**:
+    * SDK surface change: Symbol "SSOIntentOptions" was removed
 
 ## [5.5.0](https://github.com/workos/workos-dotnet/compare/v5.4.0...v5.5.0) (2026-07-06)
 
