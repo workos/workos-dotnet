@@ -1,5 +1,29 @@
 # Changelog
 
+## [6.0.0](https://github.com/workos/workos-dotnet/compare/v5.5.0...v6.0.0) (2026-07-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* **authorization:** SDK surface change: Symbol "PermissionCreatedData" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289))
+* **connect:** SDK surface change: Symbol "ConnectionOption" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289))
+* **organization_domains:** SDK surface change: Symbol "DomainVerificationIntentOptions" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289))
+* **pipes:** SDK surface change: Symbol "DataIntegrationCredentialsDto" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289))
+* **sso:** SDK surface change: Symbol "SSOIntentOptions" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289))
+* **admin_portal:** SDK surface change: Symbol "IntentOptions" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289))
+* **connect:** SDK surface change: `Connection.Options` was renamed to `Connection.CallbackEndpoint` ([#288](https://github.com/workos/workos-dotnet/issues/288))
+
+### Features
+
+* **admin_portal:** SDK surface change: Symbol "IntentOptions" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289)) ([52583e7](https://github.com/workos/workos-dotnet/commit/52583e7e9f8d36cafcd8baa158a1bb7ca010d7f7))
+* **authorization:** SDK surface change: Symbol "PermissionCreatedData" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289)) ([52583e7](https://github.com/workos/workos-dotnet/commit/52583e7e9f8d36cafcd8baa158a1bb7ca010d7f7))
+* **connect:** SDK surface change: `Connection.Options` was renamed to `Connection.CallbackEndpoint` ([#288](https://github.com/workos/workos-dotnet/issues/288)) ([2203d07](https://github.com/workos/workos-dotnet/commit/2203d07918c9620c73f6d2bbcf2fecc886d45e8d))
+* **connect:** SDK surface change: Symbol "ConnectionOption" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289)) ([52583e7](https://github.com/workos/workos-dotnet/commit/52583e7e9f8d36cafcd8baa158a1bb7ca010d7f7))
+* **generated:** AuditLogs (batch 56391ebd) ([#285](https://github.com/workos/workos-dotnet/issues/285)) ([2879dd4](https://github.com/workos/workos-dotnet/commit/2879dd4af7d496fce138a2255853ae34c80d8a53))
+* **organization_domains:** SDK surface change: Symbol "DomainVerificationIntentOptions" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289)) ([52583e7](https://github.com/workos/workos-dotnet/commit/52583e7e9f8d36cafcd8baa158a1bb7ca010d7f7))
+* **pipes:** SDK surface change: Symbol "DataIntegrationCredentialsDto" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289)) ([52583e7](https://github.com/workos/workos-dotnet/commit/52583e7e9f8d36cafcd8baa158a1bb7ca010d7f7))
+* **sso:** SDK surface change: Symbol "SSOIntentOptions" was removed ([#289](https://github.com/workos/workos-dotnet/issues/289)) ([52583e7](https://github.com/workos/workos-dotnet/commit/52583e7e9f8d36cafcd8baa158a1bb7ca010d7f7))
+
 ## [5.5.0](https://github.com/workos/workos-dotnet/compare/v5.4.0...v5.5.0) (2026-07-06)
 
 * [#281](https://github.com/workos/workos-dotnet/pull/281) fix(generated): regenerate from spec
