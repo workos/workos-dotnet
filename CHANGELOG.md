@@ -2,11 +2,30 @@
 
 ## [6.1.0](https://github.com/workos/workos-dotnet/compare/v6.0.0...v6.1.0) (2026-07-28)
 
+* [#290](https://github.com/workos/workos-dotnet/pull/290) fix(generated): regenerate from spec
 
-### Features
+  **Features**
+  * **[pipes](https://workos.com/docs/reference/pipes)**:
+    * Added `config` to `DataIntegrationsGetDataIntegrationAuthorizeUrlRequest`
+    * Added `client_credentials` to `DataIntegrationAuthMethods`
+    * Added `client_credentials` to `DataIntegrationsListResponseDataAuthMethods`
+    * Added `client_credentials` to `DataIntegrationsListResponseDataConnectedAccountAuthMethod`
+    * Added `config` to Pipes models
+  * **[connect](https://workos.com/docs/reference/workos-connect/standalone)**:
+    * Added `client_credentials` to `ConnectedAccountAuthMethod`
 
-* **generated:** Pipes, PipesProvider, UserManagement (batch 6c21f6dc) ([#290](https://github.com/workos/workos-dotnet/issues/290)) ([8113a79](https://github.com/workos/workos-dotnet/commit/8113a79a4d1b5d27a16de28ce081a4bd01362bcb))
-* **generated:** SSO (batch 16283437) ([#292](https://github.com/workos/workos-dotnet/issues/292)) ([ab937b9](https://github.com/workos/workos-dotnet/commit/ab937b91185eeec6d28605467700189324077250))
+  **Fixes**
+  * **[user_management](https://workos.com/docs/reference/authkit/user)**:
+    * Changed errors for endpoint `POST /user_management/invitations`
+    * Changed errors for endpoint `POST /user_management/invitations/{id}/resend`
+    * Changed errors for endpoint `POST /user_management/magic_auth`
+    * Changed errors for endpoint `POST /user_management/authenticate`
+
+* [#292](https://github.com/workos/workos-dotnet/pull/292) fix(generated): regenerate from spec
+
+  **Fixes**
+  * **[sso](https://workos.com/docs/reference/sso)**:
+    * Removed `callback_endpoint` from `Connection`
 
 ## [6.0.0](https://github.com/workos/workos-dotnet/compare/v5.5.0...v6.0.0) (2026-07-22)
 
