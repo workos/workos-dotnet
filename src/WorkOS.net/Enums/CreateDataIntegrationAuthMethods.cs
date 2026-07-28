@@ -6,10 +6,10 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents connected account auth method values.</summary>
+    /// <summary>Represents create data integration auth methods values.</summary>
     [JsonConverter(typeof(WorkOSNewtonsoftStringEnumConverter))]
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
-    public enum ConnectedAccountAuthMethod
+    public enum CreateDataIntegrationAuthMethods
     {
         [EnumMember(Value = "unknown")]
         Unknown,
@@ -18,7 +18,5 @@ namespace WorkOS
         OAuth,
         [EnumMember(Value = "api_key")]
         ApiKey,
-        [EnumMember(Value = "client_credentials")]
-        ClientCredentials,
     }
 }

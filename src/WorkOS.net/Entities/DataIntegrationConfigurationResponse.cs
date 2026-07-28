@@ -29,6 +29,9 @@ namespace WorkOS
         /// <summary>The OAuth scopes in effect for this organization. Reflects the organization override when one is set, otherwise the provider scopes, or `null` when none are configured.</summary>
         public List<string>? Scopes { get; set; }
 
+        /// <summary>The provider-specific config values in effect for this organization, keyed by config field. Reflects the organization override for organization-credential providers, otherwise the provider root. Empty when none are configured.</summary>
+        public Dictionary<string, string> Config { get; set; } = default!;
+
         /// <summary>The timestamp when the configuration was created.</summary>
         public string CreatedAt { get; set; } = default!;
 
