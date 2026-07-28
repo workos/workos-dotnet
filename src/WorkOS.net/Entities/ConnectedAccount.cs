@@ -25,7 +25,7 @@ namespace WorkOS
         /// <summary>The OAuth scopes granted for this connection.</summary>
         public List<string> Scopes { get; set; } = default!;
 
-        /// <summary>The authentication method used for this connection (`oauth` or `api_key`). Defaults to `oauth` if absent.</summary>
+        /// <summary>The authentication method used for this connection (`oauth`, `api_key`, or `client_credentials`). Defaults to `oauth` if absent.</summary>
         public ConnectedAccountAuthMethod? AuthMethod { get; set; }
 
         /// <summary>The last four characters of the API key, or `null` for OAuth connections.</summary>

@@ -384,6 +384,7 @@
     "src/WorkOS.net/Enums/ConnectionState.cs",
     "src/WorkOS.net/Enums/ConnectionType.cs",
     "src/WorkOS.net/Enums/ConnectionsConnectionType.cs",
+    "src/WorkOS.net/Enums/CreateDataIntegrationAuthMethods.cs",
     "src/WorkOS.net/Enums/CreateUserInviteOptionsLocale.cs",
     "src/WorkOS.net/Enums/CreateUserPasswordHashType.cs",
     "src/WorkOS.net/Enums/CreateWebhookEndpointEvents.cs",

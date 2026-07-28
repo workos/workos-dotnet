@@ -4,6 +4,7 @@
   "enabled": null,
   "scopes": null,
   "auth_methods": null,
+  "config": null,
   "credentials": null,
   "api_key": null,
   "custom_provider": null

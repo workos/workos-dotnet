@@ -22,5 +22,8 @@ namespace WorkOS
         /// <summary>The OAuth client secret of the organization's own application. Must be provided together with `client_id`.</summary>
         public string? ClientSecret { get; set; }
 
+        /// <summary>Provider-specific config values to set for the organization, keyed by config field. Only fields the provider declares are accepted, and each value must match that field's pattern. Accepted only for providers whose credentials are organization-managed; for shared or custom credential providers, config belongs on the integration itself (via the data-integrations API) and supplying it here is rejected.</summary>
+        public Dictionary<string, string>? Config { get; set; }
+
     }
 }
