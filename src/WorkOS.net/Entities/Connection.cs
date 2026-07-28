@@ -42,9 +42,6 @@ namespace WorkOS
         /// <summary>List of Organization Domains.</summary>
         public List<ConnectionActivatedDataDomain> Domains { get; set; } = default!;
 
-        /// <summary>The immutable callback endpoint for this Connection. For SAML connections this is the ACS URL; for OIDC connections this is the redirect URI.</summary>
-        public string? CallbackEndpoint { get; set; }
-
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }
 
