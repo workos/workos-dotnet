@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.1.0](https://github.com/workos/workos-dotnet/compare/v6.0.0...v6.1.0) (2026-07-28)
+
+
+### Features
+
+* **generated:** Pipes, PipesProvider, UserManagement (batch 6c21f6dc) ([#290](https://github.com/workos/workos-dotnet/issues/290)) ([8113a79](https://github.com/workos/workos-dotnet/commit/8113a79a4d1b5d27a16de28ce081a4bd01362bcb))
+* **generated:** SSO (batch 16283437) ([#292](https://github.com/workos/workos-dotnet/issues/292)) ([ab937b9](https://github.com/workos/workos-dotnet/commit/ab937b91185eeec6d28605467700189324077250))
+
 ## [6.0.0](https://github.com/workos/workos-dotnet/compare/v5.5.0...v6.0.0) (2026-07-22)
 
 * [#285](https://github.com/workos/workos-dotnet/pull/285) fix(generated): regenerate from spec
