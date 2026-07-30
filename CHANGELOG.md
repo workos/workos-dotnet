@@ -1,5 +1,32 @@
 # Changelog
 
+## [6.1.0](https://github.com/workos/workos-dotnet/compare/v6.0.0...v6.1.0) (2026-07-28)
+
+* [#290](https://github.com/workos/workos-dotnet/pull/290) fix(generated): regenerate from spec
+
+  **Features**
+  * **[pipes](https://workos.com/docs/reference/pipes)**:
+    * Added `config` to `DataIntegrationsGetDataIntegrationAuthorizeUrlRequest`
+    * Added `client_credentials` to `DataIntegrationAuthMethods`
+    * Added `client_credentials` to `DataIntegrationsListResponseDataAuthMethods`
+    * Added `client_credentials` to `DataIntegrationsListResponseDataConnectedAccountAuthMethod`
+    * Added `config` to Pipes models
+  * **[connect](https://workos.com/docs/reference/workos-connect/standalone)**:
+    * Added `client_credentials` to `ConnectedAccountAuthMethod`
+
+  **Fixes**
+  * **[user_management](https://workos.com/docs/reference/authkit/user)**:
+    * Changed errors for endpoint `POST /user_management/invitations`
+    * Changed errors for endpoint `POST /user_management/invitations/{id}/resend`
+    * Changed errors for endpoint `POST /user_management/magic_auth`
+    * Changed errors for endpoint `POST /user_management/authenticate`
+
+* [#292](https://github.com/workos/workos-dotnet/pull/292) fix(generated): regenerate from spec
+
+  **Fixes**
+  * **[sso](https://workos.com/docs/reference/sso)**:
+    * Removed `callback_endpoint` from `Connection`
+
 ## [6.0.0](https://github.com/workos/workos-dotnet/compare/v5.5.0...v6.0.0) (2026-07-22)
 
 * [#285](https://github.com/workos/workos-dotnet/pull/285) fix(generated): regenerate from spec
