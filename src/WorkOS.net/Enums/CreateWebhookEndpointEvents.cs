@@ -24,6 +24,8 @@ namespace WorkOS
         AgentRegistrationCredentialIssued,
         [EnumMember(Value = "agent.registration.deleted")]
         AgentRegistrationDeleted,
+        [EnumMember(Value = "agent.registration.refreshed")]
+        AgentRegistrationRefreshed,
         [EnumMember(Value = "agent.registration.expired")]
         AgentRegistrationExpired,
         [EnumMember(Value = "agent.registration.organization.switched")]

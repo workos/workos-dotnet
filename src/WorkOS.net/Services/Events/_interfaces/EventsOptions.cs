@@ -11,7 +11,7 @@ namespace WorkOS
     public class EventsListOptions : ListOptions
     {
         /// <summary>Filter events by one or more event types (e.g. `dsync.user.created`).</summary>
-        public List<string>? Events { get; set; }
+        public List<string> Events { get; set; } = default!;
 
         /// <summary>ISO-8601 date string to filter events created after this date.</summary>
         public string? RangeStart { get; set; }

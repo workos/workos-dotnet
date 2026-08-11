@@ -33,6 +33,7 @@ namespace WorkOS
                 case "agent.registration.deleted": target = new AgentRegistrationDeleted(); break;
                 case "agent.registration.expired": target = new AgentRegistrationExpired(); break;
                 case "agent.registration.organization.switched": target = new AgentRegistrationOrganizationSwitched(); break;
+                case "agent.registration.refreshed": target = new AgentRegistrationRefreshed(); break;
                 case "agent.registration.revoked": target = new AgentRegistrationRevoked(); break;
                 case "api_key.created": target = new ApiKeyCreated(); break;
                 case "api_key.revoked": target = new ApiKeyRevoked(); break;
