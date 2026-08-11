@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.2.0](https://github.com/workos/workos-dotnet/compare/v6.1.0...v6.2.0) (2026-08-11)
+
+
+### Features
+
+* **events:** Change required status for parameter `Events.list.events` ([#293](https://github.com/workos/workos-dotnet/issues/293)) ([6fc8f1e](https://github.com/workos/workos-dotnet/commit/6fc8f1ec3adad5f8cb1bfef3e887ca0accced6d5))
+
 ## [6.1.0](https://github.com/workos/workos-dotnet/compare/v6.0.0...v6.1.0) (2026-07-28)
 
 * [#290](https://github.com/workos/workos-dotnet/pull/290) fix(generated): regenerate from spec
