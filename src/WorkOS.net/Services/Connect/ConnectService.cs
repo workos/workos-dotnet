@@ -77,7 +77,7 @@ namespace WorkOS
             return this.ListAutoPagingAsync<ConnectApplication>("/connect/applications", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Create oauth application.</summary>
+        /// <summary>Create OAuth application.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -94,7 +94,7 @@ namespace WorkOS
             return this.CreateOAuthApplicationAsync(options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Create m2m application.</summary>
+        /// <summary>Create M2M application.</summary>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>

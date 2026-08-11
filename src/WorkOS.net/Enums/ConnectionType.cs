@@ -60,6 +60,10 @@ namespace WorkOS
         GoogleOidc,
         [EnumMember(Value = "GoogleSAML")]
         GoogleSAML,
+        [EnumMember(Value = "GrokOAuth")]
+        GrokOAuth,
+        [EnumMember(Value = "XOAuth")]
+        XoAuth,
         [EnumMember(Value = "IntuitOAuth")]
         IntuitOAuth,
         [EnumMember(Value = "JumpCloudSAML")]

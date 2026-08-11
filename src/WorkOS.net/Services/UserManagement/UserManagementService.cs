@@ -531,6 +531,10 @@ namespace WorkOS
                 }
 
                 request.AddBodyParam("password_hash_type", JsonConvert.SerializeObject(hashed.PasswordHashType).Trim('"'));
+                if (hashed.PasswordSaltPosition != null)
+                {
+                    request.AddBodyParam("password_salt_position", JsonConvert.SerializeObject(hashed.PasswordSaltPosition).Trim('"'));
+                }
             }
 
             return await this.Client.MakeAPIRequest<UserCreateResponse>(request, cancellationToken);
@@ -614,6 +618,10 @@ namespace WorkOS
                 }
 
                 request.AddBodyParam("password_hash_type", JsonConvert.SerializeObject(hashed.PasswordHashType).Trim('"'));
+                if (hashed.PasswordSaltPosition != null)
+                {
+                    request.AddBodyParam("password_salt_position", JsonConvert.SerializeObject(hashed.PasswordSaltPosition).Trim('"'));
+                }
             }
 
             return await this.Client.MakeAPIRequest<User>(request, cancellationToken);

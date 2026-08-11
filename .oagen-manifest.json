@@ -37,6 +37,7 @@
     "src/WorkOS.net/Entities/AgentRegistrationExpired.cs",
     "src/WorkOS.net/Entities/AgentRegistrationOrganizationSwitched.cs",
     "src/WorkOS.net/Entities/AgentRegistrationOrganizationSwitchedData.cs",
+    "src/WorkOS.net/Entities/AgentRegistrationRefreshed.cs",
     "src/WorkOS.net/Entities/AgentRegistrationRevoked.cs",
     "src/WorkOS.net/Entities/ApiKey.cs",
     "src/WorkOS.net/Entities/ApiKeyCreated.cs",
@@ -387,6 +388,7 @@
     "src/WorkOS.net/Enums/CreateDataIntegrationAuthMethods.cs",
     "src/WorkOS.net/Enums/CreateUserInviteOptionsLocale.cs",
     "src/WorkOS.net/Enums/CreateUserPasswordHashType.cs",
+    "src/WorkOS.net/Enums/CreateUserPasswordSaltPosition.cs",
     "src/WorkOS.net/Enums/CreateWebhookEndpointEvents.cs",
     "src/WorkOS.net/Enums/CustomProviderDefinitionAuthenticateVia.cs",
     "src/WorkOS.net/Enums/DataIntegrationAccessTokenResponseError.cs",
@@ -548,6 +550,9 @@
     "test/WorkOSTests/testdata/agent_registration_organization_switched.json",
     "test/WorkOSTests/testdata/agent_registration_organization_switched_data.json",
     "test/WorkOSTests/testdata/agent_registration_organization_switched_nulls.json",
+    "test/WorkOSTests/testdata/agent_registration_refreshed.json",
+    "test/WorkOSTests/testdata/agent_registration_refreshed_data.json",
+    "test/WorkOSTests/testdata/agent_registration_refreshed_nulls.json",
     "test/WorkOSTests/testdata/agent_registration_revoked.json",
     "test/WorkOSTests/testdata/agent_registration_revoked_data.json",
     "test/WorkOSTests/testdata/agent_registration_revoked_nulls.json",
@@ -857,6 +862,8 @@
     "test/WorkOSTests/testdata/data_integrations_list_response_data_nulls.json",
     "test/WorkOSTests/testdata/data_integrations_upsert_api_key_request.json",
     "test/WorkOSTests/testdata/data_integrations_upsert_api_key_request_nulls.json",
+    "test/WorkOSTests/testdata/data_integrations_upsert_client_credentials_request.json",
+    "test/WorkOSTests/testdata/data_integrations_upsert_client_credentials_request_nulls.json",
     "test/WorkOSTests/testdata/data_integrations_vend_credentials_request.json",
     "test/WorkOSTests/testdata/data_integrations_vend_credentials_request_nulls.json",
     "test/WorkOSTests/testdata/decrypt_request.json",
@@ -2286,6 +2293,10 @@
     "GET /audit_logs/exports/{auditLogExportId}": {
       "sdkMethod": "GetExportAsync",
       "service": "audit_logs"
+    },
+    "PUT /data-integrations/{slug}/client-credentials": {
+      "sdkMethod": "UpdateDataIntegrationClientCredentialsAsync",
+      "service": "pipes"
     }
   }
 }

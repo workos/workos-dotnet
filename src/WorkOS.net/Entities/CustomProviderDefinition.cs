@@ -11,11 +11,11 @@ namespace WorkOS
         /// <summary>A descriptive name for the custom provider.</summary>
         public string Name { get; set; } = default!;
 
-        /// <summary>The provider's OAuth authorization endpoint.</summary>
-        public string AuthorizationUrl { get; set; } = default!;
+        /// <summary>The provider's OAuth authorization endpoint. Required for OAuth providers; omit for `api_key` providers.</summary>
+        public string? AuthorizationUrl { get; set; }
 
-        /// <summary>The provider's OAuth token endpoint.</summary>
-        public string TokenUrl { get; set; } = default!;
+        /// <summary>The provider's OAuth token endpoint. Required for OAuth providers; omit for `api_key` providers.</summary>
+        public string? TokenUrl { get; set; }
 
         /// <summary>The endpoint used to refresh tokens, if different from the token endpoint.</summary>
         public string? RefreshTokenUrl { get; set; }

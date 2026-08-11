@@ -5,7 +5,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>The credentials configured for the Data Integration.</summary>
+    /// <summary>Represents a data integration credential.</summary>
     public class DataIntegrationCredential
     {
 
