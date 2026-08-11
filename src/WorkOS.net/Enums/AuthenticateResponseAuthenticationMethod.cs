@@ -36,6 +36,10 @@ namespace WorkOS
         GitLabOAuth,
         [EnumMember(Value = "GoogleOAuth")]
         GoogleOAuth,
+        [EnumMember(Value = "GrokOAuth")]
+        GrokOAuth,
+        [EnumMember(Value = "XOAuth")]
+        XoAuth,
         [EnumMember(Value = "IntuitOAuth")]
         IntuitOAuth,
         [EnumMember(Value = "LinkedInOAuth")]

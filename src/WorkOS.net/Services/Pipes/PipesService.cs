@@ -55,7 +55,7 @@ namespace WorkOS
 
         /// <summary>Create a data integration</summary>
         /// <remarks>
-        /// Creates a data integration for a provider. Set `credentials.type` to `custom` to use your own OAuth app credentials or `organization` to have each organization supply its own. Set `auth_methods` to `["api_key"]` to create an API key integration; you may optionally supply an `api_key` block to install a first tenant in the same call. For a built-in provider, pass its slug as `provider`. For a custom provider, pass a new slug plus a `custom_provider` definition.
+        /// Creates a data integration for a provider. Set `credentials.type` to `custom` to use your own OAuth app credentials or `organization` to have each organization supply its own. Set `auth_methods` to `["api_key"]` to create an API key integration; you may optionally supply an `api_key` block to install a first tenant in the same call. Set `auth_methods` to `["client_credentials"]` to create a client-credentials integration; client credentials are installed per-tenant afterwards. For a built-in provider, pass its slug as `provider`. For a custom provider, pass a new slug plus a `custom_provider` definition.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
@@ -167,6 +167,26 @@ namespace WorkOS
         public virtual Task<DataIntegrationAuthorizeUrlResponse> AuthorizeDataIntegration(string slug, PipesAuthorizeDataIntegrationOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.AuthorizeDataIntegrationAsync(slug, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Upsert client credentials for a connected account</summary>
+        /// <remarks>
+        /// Creates or updates a client-credentials-based installation for the specified integration and user. If an installation already exists, the stored client credentials are rotated to the new values.
+        /// </remarks>
+        /// <param name="slug">The identifier of the integration.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
+        public virtual async Task<ConnectedAccount> UpdateDataIntegrationClientCredentialsAsync(string slug, PipesUpdateDataIntegrationClientCredentialsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PutAsync<ConnectedAccount>($"/data-integrations/{Uri.EscapeDataString(slug)}/client-credentials", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="UpdateDataIntegrationClientCredentialsAsync"/>.</summary>
+        public virtual Task<ConnectedAccount> UpdateDataIntegrationClientCredentials(string slug, PipesUpdateDataIntegrationClientCredentialsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.UpdateDataIntegrationClientCredentialsAsync(slug, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Vend credentials for a connected account</summary>

@@ -10,6 +10,9 @@ namespace WorkOS
     /// <summary>Request options for <see cref="GroupsService.ListOrganizationGroupsAsync"/>: List groups</summary>
     public class GroupsListOrganizationGroupsOptions : ListOptions
     {
+        /// <summary>Search groups by name or by group ID.</summary>
+        public string? Search { get; set; }
+
     }
 
     /// <summary>Request options for <see cref="GroupsService.CreateOrganizationGroupAsync"/>: Create a group</summary>

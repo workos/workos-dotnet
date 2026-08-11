@@ -27,6 +27,9 @@ namespace WorkOS
         /// <summary>The timestamp when the Waitlist User was approved, or null if not yet approved.</summary>
         public DateTimeOffset? ApprovedAt { get; set; }
 
+        /// <summary>The unique ID of the Waitlist that the Waitlist User joined.</summary>
+        public string? WaitlistId { get; set; }
+
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset CreatedAt { get; set; }
 

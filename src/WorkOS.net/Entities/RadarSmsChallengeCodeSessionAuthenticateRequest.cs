@@ -17,11 +17,11 @@ namespace WorkOS
         /// <summary>The one-time code from the Radar SMS challenge.</summary>
         public string Code { get; set; } = default!;
 
-        /// <summary>The ID of the Radar SMS verification being confirmed.</summary>
-        public string VerificationId { get; set; } = default!;
+        /// <summary>The ID of the Radar SMS verification being confirmed. Required for sign-up challenges; omitted for sign-in challenges, where the verification is resolved server-side.</summary>
+        public string? VerificationId { get; set; }
 
-        /// <summary>The phone number the Radar SMS challenge was sent to.</summary>
-        public string PhoneNumber { get; set; } = default!;
+        /// <summary>The phone number the Radar SMS challenge was sent to. Required for sign-up challenges; omitted for sign-in challenges, where the phone number on file is resolved server-side.</summary>
+        public string? PhoneNumber { get; set; }
 
         /// <summary>The pending authentication token from a previous authentication attempt.</summary>
         public string PendingAuthenticationToken { get; set; } = default!;

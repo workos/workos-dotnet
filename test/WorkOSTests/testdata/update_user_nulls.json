@@ -9,5 +9,6 @@
   "locale": null,
   "password": null,
   "password_hash": null,
-  "password_hash_type": null
+  "password_hash_type": null,
+  "password_salt_position": null
 }

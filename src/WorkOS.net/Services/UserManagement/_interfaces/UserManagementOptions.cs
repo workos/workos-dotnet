@@ -208,6 +208,8 @@ namespace WorkOS
 
         public CreateUserPasswordHashType PasswordHashType { get; set; } = default!;
 
+        public CreateUserPasswordSaltPosition? PasswordSaltPosition { get; set; }
+
     }
 
     /// <summary>Request options for <see cref="UserManagementService.UpdateAsync"/>: Update a user</summary>

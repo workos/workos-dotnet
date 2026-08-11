@@ -27,10 +27,10 @@ namespace WorkOS
         /// <summary>The OAuth scopes to request for the Data Integration. Defaults to the provider's configured scopes when omitted.</summary>
         public List<string>? Scopes { get; set; }
 
-        /// <summary>How accounts authenticate with the provider. Defaults to `["oauth"]`. Use `["api_key"]` to declare an API key integration; `credentials` is then not required and keys are supplied per-tenant (optionally via `api_key` on this request).</summary>
-        public List<CreateDataIntegrationAuthMethods>? AuthMethods { get; set; }
+        /// <summary>How accounts authenticate with the provider. Defaults to `["oauth"]`. Use `["api_key"]` to declare an API key integration; `credentials` is then not required and keys are supplied per-tenant (optionally via `api_key` on this request). Use `["client_credentials"]` to declare a client-credentials integration; `credentials` is likewise not required and client credentials are supplied per-tenant.</summary>
+        public List<ConnectedAccountAuthMethod>? AuthMethods { get; set; }
 
-        /// <summary>Provider-specific config values (e.g. a Snowflake `account_identifier`), keyed by the config field. Only fields the built-in provider declares are accepted.</summary>
+        /// <summary>Provider-specific config values (e.g. a Snowflake `account`), keyed by the config field. Only fields the built-in provider declares are accepted.</summary>
         public Dictionary<string, string>? Config { get; set; }
 
         /// <summary>The OAuth credentials to configure for the Data Integration. Required for OAuth integrations; omit when `auth_methods` is `["api_key"]`.</summary>
@@ -94,6 +94,26 @@ namespace WorkOS
         public string? ReturnTo { get; set; }
 
         /// <summary>Connect-time config values for the provider-declared `installation`-scope fields (e.g. a Zendesk `subdomain`), keyed by the config field. Only fields the provider declares may be supplied, and required fields must be provided unless already pinned on the integration.</summary>
+        public Dictionary<string, string>? Config { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="PipesService.UpdateDataIntegrationClientCredentialsAsync"/>: Upsert client credentials for a connected account</summary>
+    public class PipesUpdateDataIntegrationClientCredentialsOptions : BaseOptions
+    {
+        /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>
+        public string UserId { get; set; } = default!;
+
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization.</summary>
+        public string? OrganizationId { get; set; }
+
+        /// <summary>The OAuth client ID to store for this integration.</summary>
+        public string ClientId { get; set; } = default!;
+
+        /// <summary>The OAuth client secret to store for this integration.</summary>
+        public string ClientSecret { get; set; } = default!;
+
+        /// <summary>Provider-specific configuration values collected for this installation, keyed by the provider's config field descriptors.</summary>
         public Dictionary<string, string>? Config { get; set; }
 
     }
