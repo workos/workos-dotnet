@@ -365,6 +365,31 @@ namespace WorkOS
     {
     }
 
+    /// <summary>Request options for <see cref="UserManagementService.ListWaitlistEntriesAsync"/>: List waitlist entries</summary>
+    public class UserManagementListWaitlistEntriesOptions : ListOptions
+    {
+        /// <summary>Filter waitlist entries by their state.</summary>
+        public UserManagementWaitlistsState? State { get; set; }
+
+        /// <summary>Filter waitlist entries by their exact email address.</summary>
+        public string? Email { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="UserManagementService.CreateWaitlistEntryAsync"/>: Create a waitlist entry</summary>
+    public class UserManagementCreateWaitlistEntryOptions : BaseOptions
+    {
+        /// <summary>The email address of the user joining the waitlist.</summary>
+        public string Email { get; set; } = default!;
+
+        /// <summary>Object containing additional key/value pairs collected with the waitlist entry. Supports up to 50 string pairs, with keys up to 40 characters and values up to 600 characters. Values are user-provided — treat them as untrusted input when rendering or exporting.</summary>
+        public Dictionary<string, string>? AdditionalFields { get; set; }
+
+        /// <summary>Whether to send the waitlist confirmation email to the user. Defaults to `false`. No email is sent when the waitlist confirmation email is disabled in the environment, even if `send_confirmation_email` is `true`.</summary>
+        public bool? SendConfirmationEmail { get; set; }
+
+    }
+
     /// <summary>Request options for <see cref="UserManagementService.ListApiKeysAsync"/>: List API keys for a user</summary>
     public class UserManagementListApiKeysOptions : ListOptions
     {

@@ -356,6 +356,8 @@
     "src/WorkOS.net/Entities/VaultNamesListedData.cs",
     "src/WorkOS.net/Entities/VaultObject.cs",
     "src/WorkOS.net/Entities/VersionListResponse.cs",
+    "src/WorkOS.net/Entities/Waitlist.cs",
+    "src/WorkOS.net/Entities/WaitlistEntry.cs",
     "src/WorkOS.net/Entities/WaitlistUser.cs",
     "src/WorkOS.net/Entities/WaitlistUserApproved.cs",
     "src/WorkOS.net/Entities/WaitlistUserCreated.cs",
@@ -424,6 +426,7 @@
     "src/WorkOS.net/Enums/UpdateWebhookEndpointStatus.cs",
     "src/WorkOS.net/Enums/UserIdentitiesGetItemProvider.cs",
     "src/WorkOS.net/Enums/UserManagementAuthenticationProvider.cs",
+    "src/WorkOS.net/Enums/UserManagementWaitlistsState.cs",
     "src/WorkOS.net/Enums/UserRoleAssignmentSourceType.cs",
     "src/WorkOS.net/Enums/VaultByokKeyProvider.cs",
     "src/WorkOS.net/Enums/VaultDataCreatedDataActorSource.cs",
@@ -824,6 +827,8 @@
     "test/WorkOSTests/testdata/create_user_nulls.json",
     "test/WorkOSTests/testdata/create_user_organization_membership.json",
     "test/WorkOSTests/testdata/create_user_organization_membership_nulls.json",
+    "test/WorkOSTests/testdata/create_waitlist_entry.json",
+    "test/WorkOSTests/testdata/create_waitlist_entry_nulls.json",
     "test/WorkOSTests/testdata/create_webhook_endpoint.json",
     "test/WorkOSTests/testdata/custom_provider_definition.json",
     "test/WorkOSTests/testdata/custom_provider_definition_nulls.json",
@@ -1053,6 +1058,9 @@
     "test/WorkOSTests/testdata/jwks_response.json",
     "test/WorkOSTests/testdata/jwks_response_keys.json",
     "test/WorkOSTests/testdata/jwt_template_response.json",
+    "test/WorkOSTests/testdata/list_agent_blueprint.json",
+    "test/WorkOSTests/testdata/list_agent_instance.json",
+    "test/WorkOSTests/testdata/list_agent_instance_session.json",
     "test/WorkOSTests/testdata/list_audit_log_action.json",
     "test/WorkOSTests/testdata/list_audit_log_schema.json",
     "test/WorkOSTests/testdata/list_authentication_factor.json",
@@ -1066,6 +1074,9 @@
     "test/WorkOSTests/testdata/list_directory.json",
     "test/WorkOSTests/testdata/list_directory_group.json",
     "test/WorkOSTests/testdata/list_directory_user_with_groups.json",
+    "test/WorkOSTests/testdata/list_empty_agent_blueprint.json",
+    "test/WorkOSTests/testdata/list_empty_agent_instance.json",
+    "test/WorkOSTests/testdata/list_empty_agent_instance_session.json",
     "test/WorkOSTests/testdata/list_empty_audit_log_action.json",
     "test/WorkOSTests/testdata/list_empty_audit_log_schema.json",
     "test/WorkOSTests/testdata/list_empty_authentication_factor.json",
@@ -1095,6 +1106,8 @@
     "test/WorkOSTests/testdata/list_empty_user_organization_membership_base_list_data.json",
     "test/WorkOSTests/testdata/list_empty_user_role_assignment.json",
     "test/WorkOSTests/testdata/list_empty_user_sessions_list_item.json",
+    "test/WorkOSTests/testdata/list_empty_waitlist.json",
+    "test/WorkOSTests/testdata/list_empty_waitlist_entry.json",
     "test/WorkOSTests/testdata/list_empty_webhook_endpoint.json",
     "test/WorkOSTests/testdata/list_event_schema.json",
     "test/WorkOSTests/testdata/list_flag.json",
@@ -1112,6 +1125,8 @@
     "test/WorkOSTests/testdata/list_user_organization_membership_base_list_data.json",
     "test/WorkOSTests/testdata/list_user_role_assignment.json",
     "test/WorkOSTests/testdata/list_user_sessions_list_item.json",
+    "test/WorkOSTests/testdata/list_waitlist.json",
+    "test/WorkOSTests/testdata/list_waitlist_entry.json",
     "test/WorkOSTests/testdata/list_webhook_endpoint.json",
     "test/WorkOSTests/testdata/magic_auth.json",
     "test/WorkOSTests/testdata/magic_auth_code_session_authenticate_request.json",
@@ -1436,6 +1451,9 @@
     "test/WorkOSTests/testdata/verify_email_address.json",
     "test/WorkOSTests/testdata/verify_email_response.json",
     "test/WorkOSTests/testdata/version_list_response.json",
+    "test/WorkOSTests/testdata/waitlist.json",
+    "test/WorkOSTests/testdata/waitlist_entry.json",
+    "test/WorkOSTests/testdata/waitlist_entry_nulls.json",
     "test/WorkOSTests/testdata/waitlist_user.json",
     "test/WorkOSTests/testdata/waitlist_user_approved.json",
     "test/WorkOSTests/testdata/waitlist_user_approved_nulls.json",
@@ -2297,6 +2315,146 @@
     "PUT /data-integrations/{slug}/client-credentials": {
       "sdkMethod": "UpdateDataIntegrationClientCredentialsAsync",
       "service": "pipes"
+    },
+    "GET /agents/blueprints": {
+      "sdkMethod": "ListBlueprintsAsync",
+      "service": "agents"
+    },
+    "POST /agents/blueprints": {
+      "sdkMethod": "CreateBlueprintAsync",
+      "service": "agents"
+    },
+    "GET /agents/blueprints/{agent_blueprint_id}": {
+      "sdkMethod": "GetBlueprintAsync",
+      "service": "agents"
+    },
+    "PATCH /agents/blueprints/{agent_blueprint_id}": {
+      "sdkMethod": "UpdateBlueprintAsync",
+      "service": "agents"
+    },
+    "DELETE /agents/blueprints/{agent_blueprint_id}": {
+      "sdkMethod": "DeleteBlueprintAsync",
+      "service": "agents"
+    },
+    "POST /agents/blueprints/{agent_blueprint_id}/tokens": {
+      "sdkMethod": "CreateBlueprintTokenAsync",
+      "service": "agents"
+    },
+    "GET /agents/instances": {
+      "sdkMethod": "ListInstancesAsync",
+      "service": "agents"
+    },
+    "GET /agents/instances/{agent_instance_id}": {
+      "sdkMethod": "GetInstanceAsync",
+      "service": "agents"
+    },
+    "DELETE /agents/instances/{agent_instance_id}": {
+      "sdkMethod": "DeleteInstanceAsync",
+      "service": "agents"
+    },
+    "GET /agents/sessions": {
+      "sdkMethod": "ListSessionsAsync",
+      "service": "agents"
+    },
+    "GET /agents/sessions/{agent_instance_session_id}": {
+      "sdkMethod": "GetSessionAsync",
+      "service": "agents"
+    },
+    "POST /agents/sessions/{agent_instance_session_id}/revoke": {
+      "sdkMethod": "RevokeSessionAsync",
+      "service": "agents"
+    },
+    "POST /connections": {
+      "sdkMethod": "CreateConnectionAsync",
+      "service": "sso"
+    },
+    "GET /connections/{connectionId}/saml_idp_signing_certs": {
+      "sdkMethod": "ListConnectionSAMLIdpSigningCertsAsync",
+      "service": "sso"
+    },
+    "POST /connections/{connectionId}/saml_idp_signing_certs": {
+      "sdkMethod": "CreateConnectionSAMLIdpSigningCertAsync",
+      "service": "sso"
+    },
+    "DELETE /connections/{connectionId}/saml_idp_signing_certs/{certificateId}": {
+      "sdkMethod": "DeleteConnectionSAMLIdpSigningCertAsync",
+      "service": "sso"
+    },
+    "GET /connections/{connectionId}/saml_sp_encryption_certs": {
+      "sdkMethod": "ListConnectionSAMLSpEncryptionCertsAsync",
+      "service": "sso"
+    },
+    "POST /connections/{connectionId}/saml_sp_encryption_certs": {
+      "sdkMethod": "CreateConnectionSAMLSpEncryptionCertAsync",
+      "service": "sso"
+    },
+    "DELETE /connections/{connectionId}/saml_sp_encryption_certs/{certificateId}": {
+      "sdkMethod": "DeleteConnectionSAMLSpEncryptionCertAsync",
+      "service": "sso"
+    },
+    "GET /connections/{connectionId}/saml_sp_signing_cert": {
+      "sdkMethod": "ListConnectionSAMLSpSigningCertAsync",
+      "service": "sso"
+    },
+    "POST /connections/{connectionId}/saml_sp_signing_cert": {
+      "sdkMethod": "CreateConnectionSAMLSpSigningCertAsync",
+      "service": "sso"
+    },
+    "DELETE /connections/{connectionId}/saml_sp_signing_cert/{certificateId}": {
+      "sdkMethod": "DeleteConnectionSAMLSpSigningCertAsync",
+      "service": "sso"
+    },
+    "PATCH /connections/{id}": {
+      "sdkMethod": "UpdateConnectionAsync",
+      "service": "sso"
+    },
+    "GET /organizations/{organization_id}/it_contacts": {
+      "sdkMethod": "ListItContactsAsync",
+      "service": "organizations"
+    },
+    "POST /organizations/{organization_id}/it_contacts": {
+      "sdkMethod": "CreateItContactAsync",
+      "service": "organizations"
+    },
+    "DELETE /organizations/{organization_id}/it_contacts/{contact_id}": {
+      "sdkMethod": "DeleteItContactAsync",
+      "service": "organizations"
+    },
+    "POST /organizations/{organization_id}/it_contacts/{contact_id}/invite": {
+      "sdkMethod": "InviteItContactAsync",
+      "service": "organizations"
+    },
+    "POST /organizations/{organization_id}/it_contacts/{contact_id}/revoke": {
+      "sdkMethod": "RevokeItContactAsync",
+      "service": "organizations"
+    },
+    "DELETE /user_management/waitlist_entries/{id}": {
+      "sdkMethod": "DeleteWaitlistEntryAsync",
+      "service": "user_management"
+    },
+    "POST /user_management/waitlist_entries/{id}/approve": {
+      "sdkMethod": "CreateWaitlistEntryApproveAsync",
+      "service": "user_management"
+    },
+    "POST /user_management/waitlist_entries/{id}/deny": {
+      "sdkMethod": "CreateWaitlistEntryDenyAsync",
+      "service": "user_management"
+    },
+    "GET /user_management/waitlists": {
+      "sdkMethod": "ListWaitlistsAsync",
+      "service": "user_management"
+    },
+    "GET /user_management/waitlists/{id}": {
+      "sdkMethod": "GetWaitlistAsync",
+      "service": "user_management"
+    },
+    "GET /user_management/waitlists/{id}/entries": {
+      "sdkMethod": "ListWaitlistEntriesAsync",
+      "service": "user_management"
+    },
+    "POST /user_management/waitlists/{id}/entries": {
+      "sdkMethod": "CreateWaitlistEntryAsync",
+      "service": "user_management"
     }
   }
 }

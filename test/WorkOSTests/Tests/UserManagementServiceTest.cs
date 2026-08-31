@@ -588,6 +588,104 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestDeleteWaitlistEntryAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/user_management/waitlist_entries/test_id", HttpStatusCode.NoContent, "");
+            await this.service.DeleteWaitlistEntryAsync("test_id");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/user_management/waitlist_entries/test_id");
+        }
+
+        [Fact]
+        public async Task TestCreateWaitlistEntryApproveAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/waitlist_entry.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/waitlist_entries/test_id/approve", HttpStatusCode.OK, fixture);
+            var result = await this.service.CreateWaitlistEntryApproveAsync("test_id");
+            Assert.NotNull(result);
+            Assert.Equal("wl_user_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
+            Assert.Equal("marcelina.davis@example.com", result.Email);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/waitlist_entries/test_id/approve");
+        }
+
+        [Fact]
+        public async Task TestCreateWaitlistEntryDenyAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/waitlist_entry.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/waitlist_entries/test_id/deny", HttpStatusCode.OK, fixture);
+            var result = await this.service.CreateWaitlistEntryDenyAsync("test_id");
+            Assert.NotNull(result);
+            Assert.Equal("wl_user_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
+            Assert.Equal("marcelina.davis@example.com", result.Email);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/waitlist_entries/test_id/deny");
+        }
+
+        [Fact]
+        public async Task TestListWaitlistsAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/list_waitlist.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/waitlists", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListWaitlistsAsync();
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/waitlists");
+        }
+
+        [Fact]
+        public async Task TestListWaitlistsAsyncEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/waitlists", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListWaitlistsAsync();
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
+        public async Task TestGetWaitlistAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/waitlist.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/waitlists/test_id", HttpStatusCode.OK, fixture);
+            var result = await this.service.GetWaitlistAsync("test_id");
+            Assert.NotNull(result);
+            Assert.Equal("waitlist_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/waitlists/test_id");
+        }
+
+        [Fact]
+        public async Task TestListWaitlistEntriesAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/list_waitlist_entry.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/waitlists/test_id/entries", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListWaitlistEntriesAsync("test_id", new UserManagementListWaitlistEntriesOptions());
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/waitlists/test_id/entries");
+        }
+
+        [Fact]
+        public async Task TestListWaitlistEntriesAsyncEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/waitlists/test_id/entries", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListWaitlistEntriesAsync("test_id", new UserManagementListWaitlistEntriesOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
+        public async Task TestCreateWaitlistEntryAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/waitlist_entry.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/waitlists/test_id/entries", HttpStatusCode.OK, fixture);
+            var options = new UserManagementCreateWaitlistEntryOptions();
+            options.Email = "test_email";
+            var result = await this.service.CreateWaitlistEntryAsync("test_id", options);
+            Assert.NotNull(result);
+            Assert.Equal("wl_user_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
+            Assert.Equal("marcelina.davis@example.com", result.Email);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/waitlists/test_id/entries");
+            await this.httpMock.AssertRequestBodyContainsAsync("email", "test_email");
+        }
+
+        [Fact]
         public async Task TestListApiKeysAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_user_api_key.json");
@@ -810,6 +908,70 @@ namespace WorkOSTests
 
             var items = new List<AuthorizedConnectApplicationListData>();
             await foreach (var item in this.service.ListAuthorizedApplicationsAutoPagingAsync("test_user_id", new UserManagementListAuthorizedApplicationsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
+        public async Task TestListWaitlistsAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/waitlist.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/waitlists", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<Waitlist>();
+            await foreach (var item in this.service.ListWaitlistsAutoPagingAsync())
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListWaitlistsAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/waitlists", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<Waitlist>();
+            await foreach (var item in this.service.ListWaitlistsAutoPagingAsync())
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
+        public async Task TestListWaitlistEntriesAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/waitlist_entry.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/waitlists/test_id/entries", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<WaitlistEntry>();
+            await foreach (var item in this.service.ListWaitlistEntriesAutoPagingAsync("test_id", new UserManagementListWaitlistEntriesOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListWaitlistEntriesAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/waitlists/test_id/entries", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<WaitlistEntry>();
+            await foreach (var item in this.service.ListWaitlistEntriesAutoPagingAsync("test_id", new UserManagementListWaitlistEntriesOptions()))
             {
                 items.Add(item);
             }
