@@ -149,6 +149,26 @@ namespace WorkOS
             return this.CreateBlueprintTokenAsync(agentBlueprintId, options, requestOptions, cancellationToken);
         }
 
+        /// <summary>Validate an agent token</summary>
+        /// <remarks>
+        /// Validates an agent access token: verifies its signature against the environment, that it was minted under this blueprint, and that the backing session is live (not revoked or expired, and — for delegated sessions — that the delegating user session has not ended). Returns the token claims and session metadata when valid; invalid tokens are reported as errors with stable codes.
+        /// </remarks>
+        /// <param name="agentBlueprintId">The unique ID of the agent blueprint.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AgentTokenValidation"/> result.</returns>
+        public virtual async Task<AgentTokenValidation> ValidateBlueprintTokenAsync(string agentBlueprintId, AgentsValidateBlueprintTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<AgentTokenValidation>($"/agents/blueprints/{Uri.EscapeDataString(agentBlueprintId)}/tokens/validate", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ValidateBlueprintTokenAsync"/>.</summary>
+        public virtual Task<AgentTokenValidation> ValidateBlueprintToken(string agentBlueprintId, AgentsValidateBlueprintTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ValidateBlueprintTokenAsync(agentBlueprintId, options, requestOptions, cancellationToken);
+        }
+
         /// <summary>Link a claim attempt to an external user</summary>
         /// <remarks>
         /// Link an external user to a claim attempt and retrieve the code needed for the agent to complete the claim. The user is looked up by external ID; if no user exists, one is created. When the user belongs to multiple organizations, an explicit organization must be provided.
