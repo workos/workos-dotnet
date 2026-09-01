@@ -106,6 +106,21 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestValidateBlueprintTokenAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/agent_token_validation.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/agents/blueprints/test_agent_blueprint_id/tokens/validate", HttpStatusCode.OK, fixture);
+            var options = new AgentsValidateBlueprintTokenOptions();
+            options.AgentAccessToken = "test_agent_access_token";
+            var result = await this.service.ValidateBlueprintTokenAsync("test_agent_blueprint_id", options);
+            Assert.NotNull(result);
+            Assert.Equal("agent_01EHWNCE74X7JSDV0X3SZ3KJNY", result.AgentInstanceId);
+            Assert.Equal("agent_session_01EHWNCE74X7JSDV0X3SZ3KJNY", result.AgentInstanceSessionId);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/agents/blueprints/test_agent_blueprint_id/tokens/validate");
+            await this.httpMock.AssertRequestBodyContainsAsync("agent_access_token", "test_agent_access_token");
+        }
+
+        [Fact]
         public async Task TestUpdateAttemptsAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/claim_view_response.json");

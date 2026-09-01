@@ -28,7 +28,7 @@ namespace WorkOS
         public AgentBlueprintsCreateRequestInvocableBy? InvocableBy { get; set; }
 
         /// <summary>Token and session lifetimes for sessions minted from this blueprint.</summary>
-        public AgentBlueprintSessionSetting SessionSettings { get; set; } = default!;
+        public AgentBlueprintSessionSetting? SessionSettings { get; set; }
 
     }
 
@@ -74,6 +74,14 @@ namespace WorkOS
 
         /// <summary>The refresh token issued with a previous agent access token. Refresh tokens are single-use: each refresh rotates it.</summary>
         public string? RefreshToken { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="AgentsService.ValidateBlueprintTokenAsync"/>: Validate an agent token</summary>
+    public class AgentsValidateBlueprintTokenOptions : BaseOptions
+    {
+        /// <summary>The agent access token (a JWT) to validate.</summary>
+        public string AgentAccessToken { get; set; } = default!;
 
     }
 
