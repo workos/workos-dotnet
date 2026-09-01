@@ -20,5 +20,8 @@ namespace WorkOS
 
         /// <summary>The email address of the user.</summary>
         public string Email { get; set; } = default!;
+
+        /// <summary>The OAuth provider used for authentication.</summary>
+        public string? Provider { get; set; }
     }
 }

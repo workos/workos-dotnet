@@ -263,7 +263,7 @@ namespace WorkOS
 
         /// <summary>List effective permissions for an organization membership on a resource</summary>
         /// <remarks>
-        /// Returns all permissions the organization membership effectively has on a resource, including permissions inherited through roles assigned to ancestor resources.
+        /// Returns all permissions the organization membership effectively has on a resource, including permissions inherited through roles assigned to ancestor resources. Results are not filtered by the resource type: a permission is returned whenever a check for it on this resource would be authorized, and each permission is labeled with the resource type it is declared on.
         /// </remarks>
         /// <param name="organizationMembershipId">The ID of the organization membership.</param>
         /// <param name="resourceId">The ID of the authorization resource.</param>
@@ -296,7 +296,7 @@ namespace WorkOS
 
         /// <summary>List effective permissions for an organization membership on a resource by external ID</summary>
         /// <remarks>
-        /// Returns all permissions the organization membership effectively has on a resource identified by its external ID, including permissions inherited through roles assigned to ancestor resources.
+        /// Returns all permissions the organization membership effectively has on a resource identified by its external ID, including permissions inherited through roles assigned to ancestor resources. Results are not filtered by the resource type: a permission is returned whenever a check for it on this resource would be authorized, and each permission is labeled with the resource type it is declared on.
         /// </remarks>
         /// <param name="organizationMembershipId">The ID of the organization membership.</param>
         /// <param name="resourceTypeSlug">The slug of the resource type.</param>
@@ -686,14 +686,14 @@ namespace WorkOS
             }
             else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
             {
-                if (byExternalId.ParentResourceExternalId != null)
-                {
-                    request.AddBodyParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
-                }
-
                 if (byExternalId.ParentResourceTypeSlug != null)
                 {
                     request.AddBodyParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                }
+
+                if (byExternalId.ParentResourceExternalId != null)
+                {
+                    request.AddBodyParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
                 }
             }
 
@@ -881,14 +881,14 @@ namespace WorkOS
             }
             else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
             {
-                if (byExternalId.ParentResourceExternalId != null)
-                {
-                    request.AddBodyParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
-                }
-
                 if (byExternalId.ParentResourceTypeSlug != null)
                 {
                     request.AddBodyParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                }
+
+                if (byExternalId.ParentResourceExternalId != null)
+                {
+                    request.AddBodyParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
                 }
             }
 
@@ -948,14 +948,14 @@ namespace WorkOS
             }
             else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
             {
-                if (byExternalId.ParentResourceExternalId != null)
-                {
-                    request.AddBodyParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
-                }
-
                 if (byExternalId.ParentResourceTypeSlug != null)
                 {
                     request.AddBodyParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                }
+
+                if (byExternalId.ParentResourceExternalId != null)
+                {
+                    request.AddBodyParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
                 }
             }
 

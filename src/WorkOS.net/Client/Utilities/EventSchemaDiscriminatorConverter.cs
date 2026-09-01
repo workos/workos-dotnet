@@ -26,6 +26,13 @@ namespace WorkOS
             {
                 case "action.authentication.denied": target = new ActionAuthenticationDenied(); break;
                 case "action.user_registration.denied": target = new ActionUserRegistrationDenied(); break;
+                case "agent.blueprint.created": target = new AgentBlueprintCreated(); break;
+                case "agent.blueprint.deleted": target = new AgentBlueprintDeleted(); break;
+                case "agent.blueprint.updated": target = new AgentBlueprintUpdated(); break;
+                case "agent.instance.created": target = new AgentInstanceCreated(); break;
+                case "agent.instance.deleted": target = new AgentInstanceDeleted(); break;
+                case "agent.instance.session.created": target = new AgentInstanceSessionCreated(); break;
+                case "agent.instance.session.revoked": target = new AgentInstanceSessionRevoked(); break;
                 case "agent.registration.claim.attempt.created": target = new AgentRegistrationClaimAttemptCreated(); break;
                 case "agent.registration.claim.completed": target = new AgentRegistrationClaimCompleted(); break;
                 case "agent.registration.created": target = new AgentRegistrationCreated(); break;
@@ -112,6 +119,10 @@ namespace WorkOS
                 case "pipes.connected_account.disconnected": target = new PipesConnectedAccountDisconnected(); break;
                 case "pipes.connected_account.reauthorization_needed": target = new PipesConnectedAccountReauthorizationNeeded(); break;
                 case "radar.challenge_created": target = new RadarChallengeCreated(); break;
+                case "resource_export.completed": target = new ResourceExportCompleted(); break;
+                case "resource_export.created": target = new ResourceExportCreated(); break;
+                case "resource_export.downloaded": target = new ResourceExportDownloaded(); break;
+                case "resource_export.failed": target = new ResourceExportFailed(); break;
                 case "role.created": target = new RoleCreated(); break;
                 case "role.deleted": target = new RoleDeleted(); break;
                 case "role.updated": target = new RoleUpdated(); break;

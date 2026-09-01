@@ -47,6 +47,116 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestCreateConnectionAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/connection.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/connections", HttpStatusCode.OK, fixture);
+            var options = new SSOCreateConnectionOptions();
+            options.OrganizationId = "test_organization_id";
+            var result = await this.service.CreateConnectionAsync(options);
+            Assert.NotNull(result);
+            Assert.Equal("conn_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
+            Assert.Equal("Foo Corp", result.Name);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/connections");
+            await this.httpMock.AssertRequestBodyContainsAsync("organization_id", "test_organization_id");
+        }
+
+        [Fact]
+        public async Task TestListConnectionSAMLIdpSigningCertsAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/saml_idp_signing_certificate_list.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/connections/test_connectionId/saml_idp_signing_certs", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListConnectionSAMLIdpSigningCertsAsync("test_connectionId");
+            Assert.NotNull(result);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/connections/test_connectionId/saml_idp_signing_certs");
+        }
+
+        [Fact]
+        public async Task TestCreateConnectionSAMLIdpSigningCertAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/saml_idp_signing_certificate.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/connections/test_connectionId/saml_idp_signing_certs", HttpStatusCode.OK, fixture);
+            var options = new SSOCreateConnectionSAMLIdpSigningCertOptions();
+            options.Value = "test_value";
+            var result = await this.service.CreateConnectionSAMLIdpSigningCertAsync("test_connectionId", options);
+            Assert.NotNull(result);
+            Assert.Equal("saml_x509_cert_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
+            Assert.Equal("-----BEGIN CERTIFICATE-----MIIC...-----END CERTIFICATE-----", result.Value);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/connections/test_connectionId/saml_idp_signing_certs");
+            await this.httpMock.AssertRequestBodyContainsAsync("value", "test_value");
+        }
+
+        [Fact]
+        public async Task TestDeleteConnectionSAMLIdpSigningCertAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/connections/test_connectionId/saml_idp_signing_certs/test_certificateId", HttpStatusCode.NoContent, "");
+            await this.service.DeleteConnectionSAMLIdpSigningCertAsync("test_connectionId", "test_certificateId");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/connections/test_connectionId/saml_idp_signing_certs/test_certificateId");
+        }
+
+        [Fact]
+        public async Task TestListConnectionSAMLSpEncryptionCertsAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/saml_sp_encryption_certificate_list.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/connections/test_connectionId/saml_sp_encryption_certs", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListConnectionSAMLSpEncryptionCertsAsync("test_connectionId");
+            Assert.NotNull(result);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/connections/test_connectionId/saml_sp_encryption_certs");
+        }
+
+        [Fact]
+        public async Task TestCreateConnectionSAMLSpEncryptionCertAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/saml_sp_encryption_certificate.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/connections/test_connectionId/saml_sp_encryption_certs", HttpStatusCode.OK, fixture);
+            var result = await this.service.CreateConnectionSAMLSpEncryptionCertAsync("test_connectionId");
+            Assert.NotNull(result);
+            Assert.Equal("saml_enc_key_pair_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
+            Assert.Equal("-----BEGIN CERTIFICATE-----MIIC...-----END CERTIFICATE-----", result.Value);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/connections/test_connectionId/saml_sp_encryption_certs");
+        }
+
+        [Fact]
+        public async Task TestDeleteConnectionSAMLSpEncryptionCertAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/connections/test_connectionId/saml_sp_encryption_certs/test_certificateId", HttpStatusCode.NoContent, "");
+            await this.service.DeleteConnectionSAMLSpEncryptionCertAsync("test_connectionId", "test_certificateId");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/connections/test_connectionId/saml_sp_encryption_certs/test_certificateId");
+        }
+
+        [Fact]
+        public async Task TestListConnectionSAMLSpSigningCertAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/saml_sp_signing_certificate.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/connections/test_connectionId/saml_sp_signing_cert", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListConnectionSAMLSpSigningCertAsync("test_connectionId");
+            Assert.NotNull(result);
+            Assert.Equal("saml_party_trust_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
+            Assert.Equal("-----BEGIN CERTIFICATE-----MIIC...-----END CERTIFICATE-----", result.Value);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/connections/test_connectionId/saml_sp_signing_cert");
+        }
+
+        [Fact]
+        public async Task TestCreateConnectionSAMLSpSigningCertAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/saml_sp_signing_certificate.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/connections/test_connectionId/saml_sp_signing_cert", HttpStatusCode.OK, fixture);
+            var result = await this.service.CreateConnectionSAMLSpSigningCertAsync("test_connectionId");
+            Assert.NotNull(result);
+            Assert.Equal("saml_party_trust_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
+            Assert.Equal("-----BEGIN CERTIFICATE-----MIIC...-----END CERTIFICATE-----", result.Value);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/connections/test_connectionId/saml_sp_signing_cert");
+        }
+
+        [Fact]
+        public async Task TestDeleteConnectionSAMLSpSigningCertAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/connections/test_connectionId/saml_sp_signing_cert/test_certificateId", HttpStatusCode.NoContent, "");
+            await this.service.DeleteConnectionSAMLSpSigningCertAsync("test_connectionId", "test_certificateId");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/connections/test_connectionId/saml_sp_signing_cert/test_certificateId");
+        }
+
+        [Fact]
         public async Task TestGetConnectionAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/connection.json");
@@ -56,6 +166,18 @@ namespace WorkOSTests
             Assert.Equal("conn_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
             Assert.Equal("Foo Corp", result.Name);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/connections/test_id");
+        }
+
+        [Fact]
+        public async Task TestUpdateConnectionAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/connection.json");
+            this.httpMock.MockResponse(HttpMethod.Patch, "/connections/test_id", HttpStatusCode.OK, fixture);
+            var result = await this.service.UpdateConnectionAsync("test_id", new SSOUpdateConnectionOptions());
+            Assert.NotNull(result);
+            Assert.Equal("conn_01E4ZCR3C56J083X43JQXF3JK5", result.Id);
+            Assert.Equal("Foo Corp", result.Name);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Patch, "/connections/test_id");
         }
 
         [Fact]
@@ -117,13 +239,10 @@ namespace WorkOSTests
         {
             var fixture = System.IO.File.ReadAllText("testdata/sso_token_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/sso/token", HttpStatusCode.OK, fixture);
-            var options = new SSOGetProfileAndTokenOptions();
-            options.Code = "test_code";
-            var result = await this.service.GetProfileAndTokenAsync(options);
+            var result = await this.service.GetProfileAndTokenAsync(new SSOGetProfileAndTokenOptions());
             Assert.NotNull(result);
             Assert.Equal("eyJhbGciOiJSUzI1NiIsImtpZCI6InNzby...", result.AccessToken);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/sso/token");
-            await this.httpMock.AssertRequestBodyContainsAsync("code", "test_code");
         }
 
         [Fact]

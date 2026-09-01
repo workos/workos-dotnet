@@ -27,6 +27,85 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListBlueprintsAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/list_agent_blueprint.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/agents/blueprints", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListBlueprintsAsync(new AgentsListBlueprintsOptions());
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/agents/blueprints");
+        }
+
+        [Fact]
+        public async Task TestListBlueprintsAsyncEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/agents/blueprints", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListBlueprintsAsync(new AgentsListBlueprintsOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
+        public async Task TestCreateBlueprintAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/agent_blueprint.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/agents/blueprints", HttpStatusCode.OK, fixture);
+            var options = new AgentsCreateBlueprintOptions();
+            options.Name = "test_name";
+            var result = await this.service.CreateBlueprintAsync(options);
+            Assert.NotNull(result);
+            Assert.Equal("agent_blueprint_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
+            Assert.Equal("Prospecting Agent", result.Name);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/agents/blueprints");
+            await this.httpMock.AssertRequestBodyContainsAsync("name", "test_name");
+        }
+
+        [Fact]
+        public async Task TestGetBlueprintAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/agent_blueprint.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/agents/blueprints/test_agent_blueprint_id", HttpStatusCode.OK, fixture);
+            var result = await this.service.GetBlueprintAsync("test_agent_blueprint_id");
+            Assert.NotNull(result);
+            Assert.Equal("agent_blueprint_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
+            Assert.Equal("Prospecting Agent", result.Name);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/agents/blueprints/test_agent_blueprint_id");
+        }
+
+        [Fact]
+        public async Task TestUpdateBlueprintAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/agent_blueprint.json");
+            this.httpMock.MockResponse(HttpMethod.Patch, "/agents/blueprints/test_agent_blueprint_id", HttpStatusCode.OK, fixture);
+            var result = await this.service.UpdateBlueprintAsync("test_agent_blueprint_id", new AgentsUpdateBlueprintOptions());
+            Assert.NotNull(result);
+            Assert.Equal("agent_blueprint_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
+            Assert.Equal("Prospecting Agent", result.Name);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Patch, "/agents/blueprints/test_agent_blueprint_id");
+        }
+
+        [Fact]
+        public async Task TestDeleteBlueprintAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/agents/blueprints/test_agent_blueprint_id", HttpStatusCode.NoContent, "");
+            await this.service.DeleteBlueprintAsync("test_agent_blueprint_id");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/agents/blueprints/test_agent_blueprint_id");
+        }
+
+        [Fact]
+        public async Task TestCreateBlueprintTokenAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/agent_token.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/agents/blueprints/test_agent_blueprint_id/tokens", HttpStatusCode.OK, fixture);
+            var result = await this.service.CreateBlueprintTokenAsync("test_agent_blueprint_id", new AgentsCreateBlueprintTokenOptions());
+            Assert.NotNull(result);
+            Assert.Equal("eyJhbGciOiJSUzI1NiIsImtpZCI6...", result.AccessToken);
+            Assert.Equal("njGkA8Wyht0GBEGGA0Zh1Q3wZzL2...", result.RefreshToken);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/agents/blueprints/test_agent_blueprint_id/tokens");
+        }
+
+        [Fact]
         public async Task TestUpdateAttemptsAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/claim_view_response.json");
@@ -67,38 +146,219 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListInstancesAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/list_agent_instance.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/agents/instances", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListInstancesAsync(new AgentsListInstancesOptions());
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/agents/instances");
+        }
+
+        [Fact]
+        public async Task TestListInstancesAsyncEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/agents/instances", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListInstancesAsync(new AgentsListInstancesOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
+        public async Task TestGetInstanceAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/agent_instance.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/agents/instances/test_agent_instance_id", HttpStatusCode.OK, fixture);
+            var result = await this.service.GetInstanceAsync("test_agent_instance_id");
+            Assert.NotNull(result);
+            Assert.Equal("agent_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
+            Assert.Equal("agent_blueprint_01EHWNCE74X7JSDV0X3SZ3KJNY", result.AgentBlueprintId);
+            Assert.Equal("org_01EHWNCE74X7JSDV0X3SZ3KJNY", result.OrganizationId);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/agents/instances/test_agent_instance_id");
+        }
+
+        [Fact]
+        public async Task TestDeleteInstanceAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/agents/instances/test_agent_instance_id", HttpStatusCode.NoContent, "");
+            await this.service.DeleteInstanceAsync("test_agent_instance_id");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/agents/instances/test_agent_instance_id");
+        }
+
+        [Fact]
+        public async Task TestListSessionsAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/list_agent_instance_session.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/agents/sessions", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListSessionsAsync(new AgentsListSessionsOptions());
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/agents/sessions");
+        }
+
+        [Fact]
+        public async Task TestListSessionsAsyncEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/agents/sessions", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListSessionsAsync(new AgentsListSessionsOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
+        public async Task TestGetSessionAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/agent_instance_session.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/agents/sessions/test_agent_instance_session_id", HttpStatusCode.OK, fixture);
+            var result = await this.service.GetSessionAsync("test_agent_instance_session_id");
+            Assert.NotNull(result);
+            Assert.Equal("agent_session_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
+            Assert.Equal("agent_01EHWNCE74X7JSDV0X3SZ3KJNY", result.AgentInstanceId);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/agents/sessions/test_agent_instance_session_id");
+        }
+
+        [Fact]
+        public async Task TestRevokeSessionAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/agent_instance_session.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/agents/sessions/test_agent_instance_session_id/revoke", HttpStatusCode.OK, fixture);
+            var result = await this.service.RevokeSessionAsync("test_agent_instance_session_id");
+            Assert.NotNull(result);
+            Assert.Equal("agent_session_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
+            Assert.Equal("agent_01EHWNCE74X7JSDV0X3SZ3KJNY", result.AgentInstanceId);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/agents/sessions/test_agent_instance_session_id/revoke");
+        }
+
+        [Fact]
+        public async Task TestListBlueprintsAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/agent_blueprint.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/agents/blueprints", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<AgentBlueprint>();
+            await foreach (var item in this.service.ListBlueprintsAutoPagingAsync(new AgentsListBlueprintsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListBlueprintsAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/agents/blueprints", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<AgentBlueprint>();
+            await foreach (var item in this.service.ListBlueprintsAutoPagingAsync(new AgentsListBlueprintsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
+        public async Task TestListInstancesAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/agent_instance.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/agents/instances", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<AgentInstance>();
+            await foreach (var item in this.service.ListInstancesAutoPagingAsync(new AgentsListInstancesOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListInstancesAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/agents/instances", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<AgentInstance>();
+            await foreach (var item in this.service.ListInstancesAutoPagingAsync(new AgentsListInstancesOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
+        public async Task TestListSessionsAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/agent_instance_session.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/agents/sessions", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<AgentInstanceSession>();
+            await foreach (var item in this.service.ListSessionsAutoPagingAsync(new AgentsListSessionsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListSessionsAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/agents/sessions", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<AgentInstanceSession>();
+            await foreach (var item in this.service.ListSessionsAutoPagingAsync(new AgentsListSessionsOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
+        }
+
+        [Fact]
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.UpdateAttemptsAsync(new AgentsUpdateAttemptsOptions()));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.ListBlueprintsAsync(new AgentsListBlueprintsOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundException>(() => this.service.UpdateAttemptsAsync(new AgentsUpdateAttemptsOptions()));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.ListBlueprintsAsync(new AgentsListBlueprintsOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.UpdateAttemptsAsync(new AgentsUpdateAttemptsOptions()));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.ListBlueprintsAsync(new AgentsListBlueprintsOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.UpdateAttemptsAsync(new AgentsUpdateAttemptsOptions()));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.ListBlueprintsAsync(new AgentsListBlueprintsOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerException>(() => this.service.UpdateAttemptsAsync(new AgentsUpdateAttemptsOptions()));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.ListBlueprintsAsync(new AgentsListBlueprintsOptions()));
         }
     }
 }

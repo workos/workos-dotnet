@@ -24,6 +24,87 @@ namespace WorkOS
 
     }
 
+    /// <summary>Request options for <see cref="SSOService.CreateConnectionAsync"/>: Create a Connection</summary>
+    public class SSOCreateConnectionOptions : BaseOptions
+    {
+        /// <summary>Unique identifier for the Organization in which the Connection resides.</summary>
+        public string OrganizationId { get; set; } = default!;
+
+        /// <summary>A human-readable name for the Connection. This will most commonly be the organization's name.</summary>
+        public string? Name { get; set; }
+
+        /// <summary>The customer-owned identifier for the Connection.</summary>
+        public string? ExternalId { get; set; }
+
+        /// <summary>The type of the Connection. Only SAML and OIDC connection types may be created. When omitted, the type is inferred from the provided options.</summary>
+        public string? ConnectionType { get; set; }
+
+        /// <summary>How IdP attributes or claims map onto WorkOS profile fields. Provided fields override the defaults for the connection type.</summary>
+        public CreateConnectionAttributeMaps? AttributeMaps { get; set; }
+
+        [JsonIgnore]
+        [STJS.JsonIgnore]
+        public SSOCreateProtocolOptions ProtocolOptions { get; set; } = default!;
+
+    }
+
+    public abstract class SSOCreateProtocolOptions { }
+
+    public class SSOCreateProtocolOptionsSAML : SSOCreateProtocolOptions
+    {
+        public CreateConnectionSAMLOptions SAMLOptions { get; set; } = default!;
+
+    }
+
+    public class SSOCreateProtocolOptionsOidc : SSOCreateProtocolOptions
+    {
+        public CreateConnectionOidcOptions OidcOptions { get; set; } = default!;
+
+    }
+
+    /// <summary>Request options for <see cref="SSOService.CreateConnectionSAMLIdpSigningCertAsync"/>: Create an IdP signing certificate</summary>
+    public class SSOCreateConnectionSAMLIdpSigningCertOptions : BaseOptions
+    {
+        /// <summary>The PEM-encoded X.509 certificate.</summary>
+        public string Value { get; set; } = default!;
+
+    }
+
+    /// <summary>Request options for <see cref="SSOService.UpdateConnectionAsync"/>: Update a Connection</summary>
+    public class SSOUpdateConnectionOptions : BaseOptions
+    {
+        /// <summary>A human-readable name for the Connection.</summary>
+        public string? Name { get; set; }
+
+        /// <summary>The customer-owned identifier for the Connection. Set to `null` to stop tracking one.</summary>
+        public string? ExternalId { get; set; }
+
+        /// <summary>The type of the Connection. Immutable after creation — it may be sent, but only with the Connection current type.</summary>
+        public string? ConnectionType { get; set; }
+
+        /// <summary>How IdP attributes or claims map onto WorkOS profile fields. Only the provided fields are updated.</summary>
+        public PatchConnectionAttributeMaps? AttributeMaps { get; set; }
+
+        [JsonIgnore]
+        [STJS.JsonIgnore]
+        public SSOPatchProtocolOptions? ProtocolOptions { get; set; }
+
+    }
+
+    public abstract class SSOPatchProtocolOptions { }
+
+    public class SSOPatchProtocolOptionsSAML : SSOPatchProtocolOptions
+    {
+        public PatchConnectionSAMLOptions SAMLOptions { get; set; } = default!;
+
+    }
+
+    public class SSOPatchProtocolOptionsOidc : SSOPatchProtocolOptions
+    {
+        public PatchConnectionOidcOptions OidcOptions { get; set; } = default!;
+
+    }
+
     /// <summary>Request options for <see cref="SSOService.GetAuthorizationUrl"/>: Initiate SSO</summary>
     public class SSOGetAuthorizationUrlOptions : BaseOptions
     {
@@ -95,8 +176,17 @@ namespace WorkOS
     /// <summary>Request options for <see cref="SSOService.GetProfileAndTokenAsync"/>: Get a Profile and Token</summary>
     public class SSOGetProfileAndTokenOptions : BaseOptions
     {
-        /// <summary>The authorization code received from the authorization callback.</summary>
-        public string Code { get; set; } = default!;
+        /// <summary>The authorization code received from the authorization callback. Required when `grant_type` is `authorization_code`.</summary>
+        public string? Code { get; set; }
+
+        /// <summary>The OIDC ID token to exchange. Required when `grant_type` is `urn:ietf:params:oauth:grant-type:token-exchange`. Must be sent in the request body.</summary>
+        public string? SubjectToken { get; set; }
+
+        /// <summary>The type of the subject token. Required when `grant_type` is `urn:ietf:params:oauth:grant-type:token-exchange`. Must be sent in the request body.</summary>
+        public string? SubjectTokenType { get; set; }
+
+        /// <summary>The ID of the organization whose connection the subject token is validated against. Required when `grant_type` is `urn:ietf:params:oauth:grant-type:token-exchange`. Must be sent in the request body.</summary>
+        public string? OrganizationId { get; set; }
 
         internal string GrantType { get; set; } = default!;
 

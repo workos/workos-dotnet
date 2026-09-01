@@ -14,6 +14,20 @@ namespace WorkOS
         [EnumMember(Value = "unknown")]
         Unknown,
 
+        [EnumMember(Value = "agent.blueprint.created")]
+        AgentBlueprintCreated,
+        [EnumMember(Value = "agent.blueprint.deleted")]
+        AgentBlueprintDeleted,
+        [EnumMember(Value = "agent.blueprint.updated")]
+        AgentBlueprintUpdated,
+        [EnumMember(Value = "agent.instance.created")]
+        AgentInstanceCreated,
+        [EnumMember(Value = "agent.instance.deleted")]
+        AgentInstanceDeleted,
+        [EnumMember(Value = "agent.instance.session.created")]
+        AgentInstanceSessionCreated,
+        [EnumMember(Value = "agent.instance.session.revoked")]
+        AgentInstanceSessionRevoked,
         [EnumMember(Value = "agent.registration.created")]
         AgentRegistrationCreated,
         [EnumMember(Value = "agent.registration.claim.attempt.created")]

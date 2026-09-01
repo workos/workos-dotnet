@@ -1,0 +1,11 @@
+{
+  "discovery_endpoint": "https://idp.example.com/.well-known/openid-configuration",
+  "client_id": "client_123",
+  "client_secret": null,
+  "redirect_uri": null,
+  "pkce": null,
+  "token_authentication_method": null,
+  "jwt_signing_key_pair": null,
+  "id_token_signature_algorithm": null,
+  "fetch_user_info": null
+}

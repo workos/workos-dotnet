@@ -18,18 +18,12 @@ namespace WorkOS
         AppleOAuth,
         [EnumMember(Value = "BitbucketOAuth")]
         BitbucketOAuth,
-        [EnumMember(Value = "DiscordOAuth")]
-        DiscordOAuth,
         [EnumMember(Value = "GithubOAuth")]
         GithubOAuth,
         [EnumMember(Value = "GitLabOAuth")]
         GitLabOAuth,
         [EnumMember(Value = "GoogleOAuth")]
         GoogleOAuth,
-        [EnumMember(Value = "GrokOAuth")]
-        GrokOAuth,
-        [EnumMember(Value = "XOAuth")]
-        XoAuth,
         [EnumMember(Value = "IntuitOAuth")]
         IntuitOAuth,
         [EnumMember(Value = "LinkedInOAuth")]

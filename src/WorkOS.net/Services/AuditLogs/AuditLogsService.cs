@@ -7,6 +7,7 @@ namespace WorkOS
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using Newtonsoft.Json;
 
     /// <summary>Service that exposes the audit logs API operations on <see cref="WorkOSClient"/>.</summary>
     public class AuditLogsService : Service
@@ -54,7 +55,24 @@ namespace WorkOS
         /// <returns>The <see cref="AuditLogsRetention"/> result.</returns>
         public virtual async Task<AuditLogsRetention> UpdateOrganizationAuditLogsRetentionAsync(string id, AuditLogsUpdateOrganizationAuditLogsRetentionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<AuditLogsRetention>($"/organizations/{Uri.EscapeDataString(id)}/audit_logs_retention", options, requestOptions, cancellationToken);
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Put,
+                Path = $"/organizations/{Uri.EscapeDataString(id)}/audit_logs_retention",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.Retention is AuditLogsRetentionGroupPeriod period)
+            {
+                request.AddBodyParam("retention_period", JsonConvert.SerializeObject(period.RetentionPeriod).Trim('"'));
+            }
+            else if (options?.Retention is AuditLogsRetentionGroupPeriodInDays periodInDays)
+            {
+                request.AddBodyParam("retention_period_in_days", periodInDays.RetentionPeriodInDays);
+            }
+
+            return await this.Client.MakeAPIRequest<AuditLogsRetention>(request, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="UpdateOrganizationAuditLogsRetentionAsync"/>.</summary>

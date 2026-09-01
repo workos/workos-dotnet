@@ -11,13 +11,13 @@ namespace WorkOS
         /// <summary>A descriptive name for the custom provider.</summary>
         public string? Name { get; set; }
 
-        /// <summary>The provider's OAuth authorization endpoint.</summary>
+        /// <summary>The provider's OAuth authorization endpoint. Must be a static URL: `${config.…}` placeholders are resolved against a provider's declared config fields, which custom providers cannot declare.</summary>
         public string? AuthorizationUrl { get; set; }
 
-        /// <summary>The provider's OAuth token endpoint.</summary>
+        /// <summary>The provider's OAuth token endpoint. Must be a static URL: `${config.…}` placeholders are resolved against a provider's declared config fields, which custom providers cannot declare.</summary>
         public string? TokenUrl { get; set; }
 
-        /// <summary>The endpoint used to refresh tokens, if different from the token endpoint.</summary>
+        /// <summary>The endpoint used to refresh tokens, if different from the token endpoint. Must be a static URL, like the other endpoints.</summary>
         public string? RefreshTokenUrl { get; set; }
 
         /// <summary>Whether PKCE is used during the authorization code flow.</summary>
