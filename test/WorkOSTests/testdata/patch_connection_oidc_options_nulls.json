@@ -1,0 +1,10 @@
+{
+  "discovery_endpoint": null,
+  "client_id": null,
+  "client_secret": null,
+  "redirect_uri": null,
+  "pkce": null,
+  "token_authentication_method": null,
+  "id_token_signature_algorithm": null,
+  "fetch_user_info": null
+}

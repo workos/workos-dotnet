@@ -28,6 +28,7 @@ namespace WorkOS
         public bool? AllowProfilesOutsideOrganization { get; set; }
 
         /// <summary>The domains associated with the organization. Deprecated in favor of `domain_data`.</summary>
+        [System.Obsolete("This field is deprecated.")]
         public List<string>? Domains { get; set; }
 
         /// <summary>The domains associated with the organization, including verification state.</summary>
@@ -71,5 +72,21 @@ namespace WorkOS
     /// <summary>Request options for <see cref="OrganizationsService.ListAuthorizedApplicationsAsync"/>: List authorized applications</summary>
     public class OrganizationsListAuthorizedApplicationsOptions : ListOptions
     {
+    }
+
+    /// <summary>Request options for <see cref="OrganizationsService.CreateItContactAsync"/>: Create an IT contact</summary>
+    public class OrganizationsCreateItContactOptions : BaseOptions
+    {
+        /// <summary>The email address of the IT contact.</summary>
+        public string Email { get; set; } = default!;
+
+    }
+
+    /// <summary>Request options for <see cref="OrganizationsService.InviteItContactAsync"/>: Invite an IT contact</summary>
+    public class OrganizationsInviteItContactOptions : BaseOptions
+    {
+        /// <summary>The Admin Portal features that the IT contact can configure.</summary>
+        public List<InviteItContactIntents> Intents { get; set; } = default!;
+
     }
 }

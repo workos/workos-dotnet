@@ -37,13 +37,13 @@ namespace WorkOS
         /// <summary>The OAuth scopes configured for the Data Integration. `null` when the provider's configured scopes are used.</summary>
         public List<string>? Scopes { get; set; }
 
-        /// <summary>The OAuth redirect URI to register with the provider when configuring the custom application.</summary>
+        /// <summary>The OAuth redirect URI to register with the provider when configuring the custom application. Empty for `api_key` and `client_credentials` integrations, which run no authorization redirect.</summary>
         public string RedirectUri { get; set; } = default!;
 
         /// <summary>How accounts authenticate with the provider for this Data Integration.</summary>
         public List<ConnectedAccountAuthMethod> AuthMethods { get; set; } = default!;
 
-        /// <summary>The integration-level OAuth app credentials. `null` for `api_key` integrations, which hold no OAuth credentials (keys are installed per-tenant).</summary>
+        /// <summary>The integration-level OAuth app credentials. `null` for `api_key` and `client_credentials` integrations, which hold no integration-level credentials (secrets are installed per-tenant).</summary>
         public DataIntegrationCredential? Credentials { get; set; }
 
         /// <summary>The tenant installation created when an API key was supplied at creation time; `null` otherwise. Not populated on list/get responses.</summary>

@@ -1,0 +1,11 @@
+{
+  "name": "Prospecting Agent",
+  "description": null,
+  "permissions": null,
+  "invocable_by": null,
+  "session_settings": {
+    "max_age_seconds": 3600,
+    "access_token_ttl_seconds": 300,
+    "refresh_token_ttl_seconds": 3600
+  }
+}

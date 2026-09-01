@@ -23,5 +23,8 @@ namespace WorkOS
 
         /// <summary>Details about the authentication error.</summary>
         public AuthenticationEmailVerificationFailedDataError Error { get; set; } = default!;
+
+        /// <summary>The OAuth provider used for authentication.</summary>
+        public string? Provider { get; set; }
     }
 }

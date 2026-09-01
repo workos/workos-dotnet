@@ -53,6 +53,220 @@ namespace WorkOS
             return this.ListAutoPagingAsync<Connection>("/connections", options, requestOptions, cancellationToken);
         }
 
+        /// <summary>Create a Connection</summary>
+        /// <remarks>
+        /// Creates a new connection for an organization. Provide `saml_options` or `oidc_options` to configure the identity provider. When `external_id` matches an existing connection in the organization, that connection is returned instead of creating a duplicate.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="Connection"/> result.</returns>
+        public virtual async Task<Connection> CreateConnectionAsync(SSOCreateConnectionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/connections",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.ProtocolOptions is SSOCreateProtocolOptionsSAML sAML)
+            {
+                if (sAML.SAMLOptions != null)
+                {
+                    request.AddBodyParam("saml_options", sAML.SAMLOptions);
+                }
+            }
+            else if (options?.ProtocolOptions is SSOCreateProtocolOptionsOidc oidc)
+            {
+                if (oidc.OidcOptions != null)
+                {
+                    request.AddBodyParam("oidc_options", oidc.OidcOptions);
+                }
+            }
+
+            return await this.Client.MakeAPIRequest<Connection>(request, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateConnectionAsync"/>.</summary>
+        public virtual Task<Connection> CreateConnection(SSOCreateConnectionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateConnectionAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List IdP signing certificates</summary>
+        /// <remarks>
+        /// Lists every Identity Provider signing certificate on the connection, including expired ones, oldest first.
+        /// </remarks>
+        /// <param name="connectionId">Unique identifier for the Connection.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="SAMLIdpSigningCertificateList"/> result.</returns>
+        public virtual async Task<SAMLIdpSigningCertificateList> ListConnectionSAMLIdpSigningCertsAsync(string connectionId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<SAMLIdpSigningCertificateList>($"/connections/{Uri.EscapeDataString(connectionId)}/saml_idp_signing_certs", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListConnectionSAMLIdpSigningCertsAsync"/>.</summary>
+        public virtual Task<SAMLIdpSigningCertificateList> ListConnectionSAMLIdpSigningCerts(string connectionId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListConnectionSAMLIdpSigningCertsAsync(connectionId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create an IdP signing certificate</summary>
+        /// <remarks>
+        /// Adds an Identity Provider signing certificate to the connection, so SAML responses signed with its key can be verified. Use this to import a new certificate ahead of an Identity Provider rotation — the existing certificates keep working until they are deleted or expire.
+        /// </remarks>
+        /// <param name="connectionId">Unique identifier for the Connection.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="SAMLIdpSigningCertificate"/> result.</returns>
+        public virtual async Task<SAMLIdpSigningCertificate> CreateConnectionSAMLIdpSigningCertAsync(string connectionId, SSOCreateConnectionSAMLIdpSigningCertOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<SAMLIdpSigningCertificate>($"/connections/{Uri.EscapeDataString(connectionId)}/saml_idp_signing_certs", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateConnectionSAMLIdpSigningCertAsync"/>.</summary>
+        public virtual Task<SAMLIdpSigningCertificate> CreateConnectionSAMLIdpSigningCert(string connectionId, SSOCreateConnectionSAMLIdpSigningCertOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateConnectionSAMLIdpSigningCertAsync(connectionId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Delete an IdP signing certificate</summary>
+        /// <remarks>
+        /// Removes an Identity Provider signing certificate from the connection. The last remaining certificate cannot be deleted. A certificate still published in the Identity Provider metadata may be restored by a metadata refresh.
+        /// </remarks>
+        /// <param name="connectionId">Unique identifier for the Connection.</param>
+        /// <param name="certificateId">Unique identifier for the Identity Provider signing certificate.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteConnectionSAMLIdpSigningCertAsync(string connectionId, string certificateId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/connections/{Uri.EscapeDataString(connectionId)}/saml_idp_signing_certs/{Uri.EscapeDataString(certificateId)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteConnectionSAMLIdpSigningCertAsync"/>.</summary>
+        public virtual Task DeleteConnectionSAMLIdpSigningCert(string connectionId, string certificateId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteConnectionSAMLIdpSigningCertAsync(connectionId, certificateId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List SP encryption certificates</summary>
+        /// <remarks>
+        /// Lists the public certificates the Identity Provider can use to encrypt SAML responses sent to WorkOS, including expired ones, oldest first.
+        /// </remarks>
+        /// <param name="connectionId">Unique identifier for the Connection.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="SAMLSpEncryptionCertificateList"/> result.</returns>
+        public virtual async Task<SAMLSpEncryptionCertificateList> ListConnectionSAMLSpEncryptionCertsAsync(string connectionId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<SAMLSpEncryptionCertificateList>($"/connections/{Uri.EscapeDataString(connectionId)}/saml_sp_encryption_certs", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListConnectionSAMLSpEncryptionCertsAsync"/>.</summary>
+        public virtual Task<SAMLSpEncryptionCertificateList> ListConnectionSAMLSpEncryptionCerts(string connectionId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListConnectionSAMLSpEncryptionCertsAsync(connectionId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create an SP encryption certificate</summary>
+        /// <remarks>
+        /// Generates a new encryption key pair for the connection and returns its public certificate. WorkOS holds the private key, so the request takes no body — to bring your own key pairs, provide `saml_options.sp_encryption_key_pairs` when creating the connection instead. Creating a certificate appends rather than replaces: every active private key is tried when decrypting, which lets a rotation overlap the old and new certificates.
+        /// </remarks>
+        /// <param name="connectionId">Unique identifier for the Connection.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="SAMLSpEncryptionCertificate"/> result.</returns>
+        public virtual async Task<SAMLSpEncryptionCertificate> CreateConnectionSAMLSpEncryptionCertAsync(string connectionId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<SAMLSpEncryptionCertificate>($"/connections/{Uri.EscapeDataString(connectionId)}/saml_sp_encryption_certs", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateConnectionSAMLSpEncryptionCertAsync"/>.</summary>
+        public virtual Task<SAMLSpEncryptionCertificate> CreateConnectionSAMLSpEncryptionCert(string connectionId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateConnectionSAMLSpEncryptionCertAsync(connectionId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Delete an SP encryption certificate</summary>
+        /// <remarks>
+        /// Removes an encryption key pair from the connection. SAML responses encrypted with its certificate can no longer be decrypted, so remove the certificate from the Identity Provider first when rotating.
+        /// </remarks>
+        /// <param name="connectionId">Unique identifier for the Connection.</param>
+        /// <param name="certificateId">Unique identifier for the Service Provider encryption key pair. WorkOS holds the corresponding private key, which is never exposed.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteConnectionSAMLSpEncryptionCertAsync(string connectionId, string certificateId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/connections/{Uri.EscapeDataString(connectionId)}/saml_sp_encryption_certs/{Uri.EscapeDataString(certificateId)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteConnectionSAMLSpEncryptionCertAsync"/>.</summary>
+        public virtual Task DeleteConnectionSAMLSpEncryptionCert(string connectionId, string certificateId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteConnectionSAMLSpEncryptionCertAsync(connectionId, certificateId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Get the SP signing certificate</summary>
+        /// <remarks>
+        /// Returns the public certificate the Identity Provider can use to verify the signature of SAML requests sent by WorkOS. Responds with `404` when the connection has no request signing key pair.
+        /// </remarks>
+        /// <param name="connectionId">Unique identifier for the Connection.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="SAMLSpSigningCertificate"/> result.</returns>
+        public virtual async Task<SAMLSpSigningCertificate> ListConnectionSAMLSpSigningCertAsync(string connectionId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<SAMLSpSigningCertificate>($"/connections/{Uri.EscapeDataString(connectionId)}/saml_sp_signing_cert", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListConnectionSAMLSpSigningCertAsync"/>.</summary>
+        public virtual Task<SAMLSpSigningCertificate> ListConnectionSAMLSpSigningCert(string connectionId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListConnectionSAMLSpSigningCertAsync(connectionId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create an SP signing certificate</summary>
+        /// <remarks>
+        /// Generates a new request signing key pair for the connection and returns its public certificate. WorkOS holds the private key, so the request takes no body — to bring your own key pair, provide `saml_options.sp_signing_key_pair` when creating the connection instead. A connection signs with one key pair at a time: delete the existing certificate before creating its replacement.
+        /// </remarks>
+        /// <param name="connectionId">Unique identifier for the Connection.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="SAMLSpSigningCertificate"/> result.</returns>
+        public virtual async Task<SAMLSpSigningCertificate> CreateConnectionSAMLSpSigningCertAsync(string connectionId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<SAMLSpSigningCertificate>($"/connections/{Uri.EscapeDataString(connectionId)}/saml_sp_signing_cert", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateConnectionSAMLSpSigningCertAsync"/>.</summary>
+        public virtual Task<SAMLSpSigningCertificate> CreateConnectionSAMLSpSigningCert(string connectionId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateConnectionSAMLSpSigningCertAsync(connectionId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Delete the SP signing certificate</summary>
+        /// <remarks>
+        /// Removes the request signing key pair from the connection, after which SAML requests are sent unsigned. Delete the certificate before creating its replacement when rotating.
+        /// </remarks>
+        /// <param name="connectionId">Unique identifier for the Connection.</param>
+        /// <param name="certificateId">Unique identifier for the Service Provider signing key pair. WorkOS holds the corresponding private key, which is never exposed.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteConnectionSAMLSpSigningCertAsync(string connectionId, string certificateId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/connections/{Uri.EscapeDataString(connectionId)}/saml_sp_signing_cert/{Uri.EscapeDataString(certificateId)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteConnectionSAMLSpSigningCertAsync"/>.</summary>
+        public virtual Task DeleteConnectionSAMLSpSigningCert(string connectionId, string certificateId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteConnectionSAMLSpSigningCertAsync(connectionId, certificateId, requestOptions, cancellationToken);
+        }
+
         /// <summary>Get a Connection</summary>
         /// <remarks>
         /// Get the details of an existing connection.
@@ -70,6 +284,49 @@ namespace WorkOS
         public virtual Task<Connection> GetConnection(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.GetConnectionAsync(id, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Update a Connection</summary>
+        /// <remarks>
+        /// Updates an existing connection. Only the provided fields are changed; fields that accept `null` are reset to their default behavior.
+        /// </remarks>
+        /// <param name="id">Unique identifier for the Connection.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="Connection"/> result.</returns>
+        public virtual async Task<Connection> UpdateConnectionAsync(string id, SSOUpdateConnectionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Patch,
+                Path = $"/connections/{Uri.EscapeDataString(id)}",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.ProtocolOptions is SSOPatchProtocolOptionsSAML sAML)
+            {
+                if (sAML.SAMLOptions != null)
+                {
+                    request.AddBodyParam("saml_options", sAML.SAMLOptions);
+                }
+            }
+            else if (options?.ProtocolOptions is SSOPatchProtocolOptionsOidc oidc)
+            {
+                if (oidc.OidcOptions != null)
+                {
+                    request.AddBodyParam("oidc_options", oidc.OidcOptions);
+                }
+            }
+
+            return await this.Client.MakeAPIRequest<Connection>(request, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="UpdateConnectionAsync"/>.</summary>
+        public virtual Task<Connection> UpdateConnection(string id, SSOUpdateConnectionOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.UpdateConnectionAsync(id, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Delete a Connection</summary>

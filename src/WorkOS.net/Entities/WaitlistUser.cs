@@ -3,6 +3,7 @@
 namespace WorkOS
 {
     using System;
+    using System.Collections.Generic;
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
@@ -10,24 +11,24 @@ namespace WorkOS
     public class WaitlistUser
     {
 
-        /// <summary>Distinguishes the Waitlist User object.</summary>
-        public string Object { get; internal set; } = "waitlist_user";
-
-        /// <summary>The unique ID of the Waitlist User.</summary>
+        /// <summary>The unique ID of the waitlist entry.</summary>
         public string Id { get; set; } = default!;
 
-        /// <summary>The email address of the Waitlist User.</summary>
+        /// <summary>The email address of the user on the waitlist.</summary>
         public string Email { get; set; } = default!;
 
-        /// <summary>The state of the Waitlist User.</summary>
+        /// <summary>The state of the waitlist entry.</summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
-        public WaitlistUserState State { get; set; }
+        public UserManagementWaitlistsState State { get; set; }
 
-        /// <summary>The timestamp when the Waitlist User was approved, or null if not yet approved.</summary>
+        /// <summary>The timestamp when the entry was approved, or null if not yet approved.</summary>
         public DateTimeOffset? ApprovedAt { get; set; }
 
-        /// <summary>The unique ID of the Waitlist that the Waitlist User joined.</summary>
+        /// <summary>Additional fields submitted when the user joined the waitlist. Values are user-provided — treat them as untrusted input when rendering or exporting.</summary>
+        public Dictionary<string, string>? AdditionalFields { get; set; }
+
+        /// <summary>The unique ID of the waitlist the entry belongs to.</summary>
         public string? WaitlistId { get; set; }
 
         /// <summary>An ISO 8601 timestamp.</summary>
@@ -35,5 +36,8 @@ namespace WorkOS
 
         /// <summary>An ISO 8601 timestamp.</summary>
         public DateTimeOffset UpdatedAt { get; set; }
+
+        /// <summary>Distinguishes the Waitlist User object.</summary>
+        public string Object { get; internal set; } = "waitlist_user";
     }
 }

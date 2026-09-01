@@ -10,8 +10,23 @@ namespace WorkOS
     /// <summary>Request options for <see cref="AuditLogsService.UpdateOrganizationAuditLogsRetentionAsync"/>: Set Retention</summary>
     public class AuditLogsUpdateOrganizationAuditLogsRetentionOptions : BaseOptions
     {
-        /// <summary>The number of days Audit Log events will be retained. Valid values are `30` and `365`.</summary>
-        public long RetentionPeriodInDays { get; set; }
+        [JsonIgnore]
+        [STJS.JsonIgnore]
+        public AuditLogsRetentionGroup Retention { get; set; } = default!;
+
+    }
+
+    public abstract class AuditLogsRetentionGroup { }
+
+    public class AuditLogsRetentionGroupPeriod : AuditLogsRetentionGroup
+    {
+        public UpdateAuditLogsRetentionRetentionPeriod RetentionPeriod { get; set; } = default!;
+
+    }
+
+    public class AuditLogsRetentionGroupPeriodInDays : AuditLogsRetentionGroup
+    {
+        public long RetentionPeriodInDays { get; set; } = default!;
 
     }
 

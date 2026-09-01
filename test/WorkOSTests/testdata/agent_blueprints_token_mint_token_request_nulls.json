@@ -1,0 +1,8 @@
+{
+  "type": "user_delegated",
+  "user_access_token": null,
+  "intent": null,
+  "organization_id": null,
+  "agent_access_token": null,
+  "refresh_token": null
+}

@@ -197,5 +197,102 @@ namespace WorkOS
         {
             return this.ListAutoPagingAsync<OrganizationAuthorizedConnectApplicationListData>($"/organizations/{Uri.EscapeDataString(organizationId)}/authorized_applications", options, requestOptions, cancellationToken);
         }
+
+        /// <summary>List IT contacts</summary>
+        /// <remarks>
+        /// Get the IT contacts for an organization.
+        /// </remarks>
+        /// <param name="organizationId">The ID of the organization.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ItContactList"/> result.</returns>
+        public virtual async Task<ItContactList> ListItContactsAsync(string organizationId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<ItContactList>($"/organizations/{Uri.EscapeDataString(organizationId)}/it_contacts", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListItContactsAsync"/>.</summary>
+        public virtual Task<ItContactList> ListItContacts(string organizationId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListItContactsAsync(organizationId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create an IT contact</summary>
+        /// <remarks>
+        /// Add an IT contact to an organization. No Admin Portal invitation is sent, though the contact is notified if the organization has a connection certificate nearing expiry.
+        /// </remarks>
+        /// <param name="organizationId">The ID of the organization.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ItContact"/> result.</returns>
+        public virtual async Task<ItContact> CreateItContactAsync(string organizationId, OrganizationsCreateItContactOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<ItContact>($"/organizations/{Uri.EscapeDataString(organizationId)}/it_contacts", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateItContactAsync"/>.</summary>
+        public virtual Task<ItContact> CreateItContact(string organizationId, OrganizationsCreateItContactOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateItContactAsync(organizationId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Delete an IT contact</summary>
+        /// <remarks>
+        /// Remove an IT contact from an organization and revoke the contact's active setup links.
+        /// </remarks>
+        /// <param name="organizationId">The ID of the organization.</param>
+        /// <param name="contactId">The ID of the IT contact.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteItContactAsync(string organizationId, string contactId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/organizations/{Uri.EscapeDataString(organizationId)}/it_contacts/{Uri.EscapeDataString(contactId)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteItContactAsync"/>.</summary>
+        public virtual Task DeleteItContact(string organizationId, string contactId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteItContactAsync(organizationId, contactId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Invite an IT contact</summary>
+        /// <remarks>
+        /// Create an Admin Portal setup link and email it to the IT contact. An organization can have at most one active invitation.
+        /// </remarks>
+        /// <param name="organizationId">The ID of the organization.</param>
+        /// <param name="contactId">The ID of the IT contact.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task InviteItContactAsync(string organizationId, string contactId, OrganizationsInviteItContactOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.PostAsync<object>($"/organizations/{Uri.EscapeDataString(organizationId)}/it_contacts/{Uri.EscapeDataString(contactId)}/invite", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="InviteItContactAsync"/>.</summary>
+        public virtual Task InviteItContact(string organizationId, string contactId, OrganizationsInviteItContactOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.InviteItContactAsync(organizationId, contactId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Revoke an IT contact's invitation</summary>
+        /// <remarks>
+        /// Revoke the organization's active Admin Portal invitation.
+        /// </remarks>
+        /// <param name="organizationId">The ID of the organization.</param>
+        /// <param name="contactId">The ID of the IT contact.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task RevokeItContactAsync(string organizationId, string contactId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.PostAsync<object>($"/organizations/{Uri.EscapeDataString(organizationId)}/it_contacts/{Uri.EscapeDataString(contactId)}/revoke", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="RevokeItContactAsync"/>.</summary>
+        public virtual Task RevokeItContact(string organizationId, string contactId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.RevokeItContactAsync(organizationId, contactId, requestOptions, cancellationToken);
+        }
     }
 }

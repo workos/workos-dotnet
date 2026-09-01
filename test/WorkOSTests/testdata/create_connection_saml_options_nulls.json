@@ -1,0 +1,10 @@
+{
+  "idp_metadata_url": null,
+  "acs_url": null,
+  "sp_entity_id": null,
+  "idp_entity_id": null,
+  "idp_sso_url": null,
+  "idp_signing_certs": null,
+  "sp_signing_key_pair": null,
+  "sp_encryption_key_pairs": null
+}

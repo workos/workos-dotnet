@@ -137,6 +137,55 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListItContactsAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/it_contact_list.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organization_id/it_contacts", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListItContactsAsync("test_organization_id");
+            Assert.NotNull(result);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_organization_id/it_contacts");
+        }
+
+        [Fact]
+        public async Task TestCreateItContactAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/it_contact.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/organizations/test_organization_id/it_contacts", HttpStatusCode.OK, fixture);
+            var options = new OrganizationsCreateItContactOptions();
+            options.Email = "test_email";
+            var result = await this.service.CreateItContactAsync("test_organization_id", options);
+            Assert.NotNull(result);
+            Assert.Equal("it_contact_01HXYZ123456789ABCDEFGHIJ", result.Id);
+            Assert.Equal("it-contact@example.com", result.Email);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations/test_organization_id/it_contacts");
+            await this.httpMock.AssertRequestBodyContainsAsync("email", "test_email");
+        }
+
+        [Fact]
+        public async Task TestDeleteItContactAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/organizations/test_organization_id/it_contacts/test_contact_id", HttpStatusCode.NoContent, "");
+            await this.service.DeleteItContactAsync("test_organization_id", "test_contact_id");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/organizations/test_organization_id/it_contacts/test_contact_id");
+        }
+
+        [Fact]
+        public async Task TestInviteItContactAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Post, "/organizations/test_organization_id/it_contacts/test_contact_id/invite", HttpStatusCode.OK, "");
+            await this.service.InviteItContactAsync("test_organization_id", "test_contact_id", new OrganizationsInviteItContactOptions());
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations/test_organization_id/it_contacts/test_contact_id/invite");
+        }
+
+        [Fact]
+        public async Task TestRevokeItContactAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Post, "/organizations/test_organization_id/it_contacts/test_contact_id/revoke", HttpStatusCode.OK, "");
+            await this.service.RevokeItContactAsync("test_organization_id", "test_contact_id");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations/test_organization_id/it_contacts/test_contact_id/revoke");
+        }
+
+        [Fact]
         public async Task TestListAutoPagingAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/organization.json");

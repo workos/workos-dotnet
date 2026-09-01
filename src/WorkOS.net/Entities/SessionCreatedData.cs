@@ -39,7 +39,7 @@ namespace WorkOS
         /// <summary>The current status of the session.</summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
-        public SessionCreatedDataStatus Status { get; set; }
+        public AgentInstanceSessionStatus Status { get; set; }
 
         /// <summary>The timestamp when the session expires.</summary>
         public DateTimeOffset ExpiresAt { get; set; }

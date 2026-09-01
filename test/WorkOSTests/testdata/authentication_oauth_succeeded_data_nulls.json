@@ -4,5 +4,6 @@
   "ip_address": null,
   "user_agent": null,
   "user_id": null,
-  "email": "user@example.com"
+  "email": "user@example.com",
+  "provider": null
 }

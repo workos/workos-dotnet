@@ -7,6 +7,76 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
+    /// <summary>Request options for <see cref="AgentsService.ListBlueprintsAsync"/>: List agent blueprints</summary>
+    public class AgentsListBlueprintsOptions : ListOptions
+    {
+    }
+
+    /// <summary>Request options for <see cref="AgentsService.CreateBlueprintAsync"/>: Create an agent blueprint</summary>
+    public class AgentsCreateBlueprintOptions : BaseOptions
+    {
+        /// <summary>Human-readable name of the agent blueprint.</summary>
+        public string Name { get; set; } = default!;
+
+        /// <summary>Human-readable description of the agent blueprint.</summary>
+        public string? Description { get; set; }
+
+        /// <summary>Permission slugs forming the ceiling on what sessions minted from this blueprint may do. Each slug must exist in the environment.</summary>
+        public List<string>? Permissions { get; set; }
+
+        /// <summary>Who may mint sessions from this blueprint.</summary>
+        public AgentBlueprintsCreateRequestInvocableBy? InvocableBy { get; set; }
+
+        /// <summary>Token and session lifetimes for sessions minted from this blueprint.</summary>
+        public AgentBlueprintSessionSetting SessionSettings { get; set; } = default!;
+
+    }
+
+    /// <summary>Request options for <see cref="AgentsService.UpdateBlueprintAsync"/>: Update an agent blueprint</summary>
+    public class AgentsUpdateBlueprintOptions : BaseOptions
+    {
+        /// <summary>Human-readable name of the agent blueprint.</summary>
+        public string? Name { get; set; }
+
+        /// <summary>Human-readable description of the agent blueprint. Pass `null` to clear it.</summary>
+        public string? Description { get; set; }
+
+        /// <summary>Permission slugs forming the ceiling on what sessions minted from this blueprint may do. Each slug must exist in the environment.</summary>
+        public List<string>? Permissions { get; set; }
+
+        /// <summary>Who may mint sessions from this blueprint. Omitted lists are left unchanged.</summary>
+        public AgentBlueprintsCreateRequestInvocableBy? InvocableBy { get; set; }
+
+        /// <summary>Token and session lifetimes for sessions minted from this blueprint. Omitted fields are left unchanged.</summary>
+        public AgentBlueprintsUpdateRequestSessionSetting? SessionSettings { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="AgentsService.CreateBlueprintTokenAsync"/>: Mint an agent token</summary>
+    public class AgentsCreateBlueprintTokenOptions : BaseOptions
+    {
+        /// <summary>How the session is minted: `user_delegated`, `autonomous`, `agent_delegated`, or `refresh`.</summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
+        public AgentBlueprintsTokenMintTokenRequestType Type { get; set; }
+
+        /// <summary>The access token of the user delegating to the agent. The token identifies the user and organization; effective permissions are resolved server-side.</summary>
+        public string? UserAccessToken { get; set; }
+
+        /// <summary>Optional caller-supplied context, echoed as an object with a `text` field in the `intent` claim of the minted access token.</summary>
+        public string? Intent { get; set; }
+
+        /// <summary>The organization the agent acts within when operating as itself.</summary>
+        public string? OrganizationId { get; set; }
+
+        /// <summary>The agent's own access token to exchange for a new session on the same instance. The token must have been minted from this blueprint; permissions are re-derived from current authority.</summary>
+        public string? AgentAccessToken { get; set; }
+
+        /// <summary>The refresh token issued with a previous agent access token. Refresh tokens are single-use: each refresh rotates it.</summary>
+        public string? RefreshToken { get; set; }
+
+    }
+
     /// <summary>Request options for <see cref="AgentsService.UpdateAttemptsAsync"/>: Link a claim attempt to an external user</summary>
     public class AgentsUpdateAttemptsOptions : BaseOptions
     {
@@ -37,6 +107,28 @@ namespace WorkOS
 
         /// <summary>When provided, the access token's `aud` claim is verified against this value. Tokens issued for a different resource are rejected.</summary>
         public string? Audience { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="AgentsService.ListInstancesAsync"/>: List agent instances</summary>
+    public class AgentsListInstancesOptions : ListOptions
+    {
+        /// <summary>Only return instances acting within this organization.</summary>
+        public string? OrganizationId { get; set; }
+
+        /// <summary>Only return instances minted from this blueprint.</summary>
+        public string? AgentBlueprintId { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="AgentsService.ListSessionsAsync"/>: List agent instance sessions</summary>
+    public class AgentsListSessionsOptions : ListOptions
+    {
+        /// <summary>Only return sessions of instances minted from this blueprint.</summary>
+        public string? AgentBlueprintId { get; set; }
+
+        /// <summary>Only return sessions belonging to this agent instance.</summary>
+        public string? AgentInstanceId { get; set; }
 
     }
 }

@@ -24,6 +24,131 @@ namespace WorkOS
         /// <param name="client">The HTTP client used to make API requests.</param>
         public AgentsService(WorkOSClient client) : base(client) { }
 
+        /// <summary>List agent blueprints</summary>
+        /// <remarks>
+        /// Lists the agent blueprints in the current environment.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="AgentBlueprint"/> results.</returns>
+        public virtual async Task<WorkOSList<AgentBlueprint>> ListBlueprintsAsync(AgentsListBlueprintsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<AgentBlueprint>>("/agents/blueprints", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListBlueprintsAsync"/>.</summary>
+        public virtual Task<WorkOSList<AgentBlueprint>> ListBlueprints(AgentsListBlueprintsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListBlueprintsAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListBlueprintsAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="AgentBlueprint"/> items.</returns>
+        public virtual IAsyncEnumerable<AgentBlueprint> ListBlueprintsAutoPagingAsync(AgentsListBlueprintsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<AgentBlueprint>("/agents/blueprints", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create an agent blueprint</summary>
+        /// <remarks>
+        /// Creates an agent blueprint: the template describing what an agent may do (its permission ceiling), who may invoke it, and the lifetimes of its sessions.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AgentBlueprint"/> result.</returns>
+        public virtual async Task<AgentBlueprint> CreateBlueprintAsync(AgentsCreateBlueprintOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<AgentBlueprint>("/agents/blueprints", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateBlueprintAsync"/>.</summary>
+        public virtual Task<AgentBlueprint> CreateBlueprint(AgentsCreateBlueprintOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateBlueprintAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Get an agent blueprint</summary>
+        /// <remarks>
+        /// Retrieves an agent blueprint by ID.
+        /// </remarks>
+        /// <param name="agentBlueprintId">The unique ID of the agent blueprint.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AgentBlueprint"/> result.</returns>
+        public virtual async Task<AgentBlueprint> GetBlueprintAsync(string agentBlueprintId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<AgentBlueprint>($"/agents/blueprints/{Uri.EscapeDataString(agentBlueprintId)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetBlueprintAsync"/>.</summary>
+        public virtual Task<AgentBlueprint> GetBlueprint(string agentBlueprintId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetBlueprintAsync(agentBlueprintId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Update an agent blueprint</summary>
+        /// <remarks>
+        /// Updates an agent blueprint. Omitted fields are left unchanged; provided lists replace the existing configuration.
+        /// </remarks>
+        /// <param name="agentBlueprintId">The unique ID of the agent blueprint.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AgentBlueprint"/> result.</returns>
+        public virtual async Task<AgentBlueprint> UpdateBlueprintAsync(string agentBlueprintId, AgentsUpdateBlueprintOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PatchAsync<AgentBlueprint>($"/agents/blueprints/{Uri.EscapeDataString(agentBlueprintId)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="UpdateBlueprintAsync"/>.</summary>
+        public virtual Task<AgentBlueprint> UpdateBlueprint(string agentBlueprintId, AgentsUpdateBlueprintOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.UpdateBlueprintAsync(agentBlueprintId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Delete an agent blueprint</summary>
+        /// <remarks>
+        /// Deletes an agent blueprint along with its configuration, instances, and sessions.
+        /// </remarks>
+        /// <param name="agentBlueprintId">The unique ID of the agent blueprint.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteBlueprintAsync(string agentBlueprintId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/agents/blueprints/{Uri.EscapeDataString(agentBlueprintId)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteBlueprintAsync"/>.</summary>
+        public virtual Task DeleteBlueprint(string agentBlueprintId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteBlueprintAsync(agentBlueprintId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Mint an agent token</summary>
+        /// <remarks>
+        /// Mint an agent access token (and backing session) from an agent blueprint. The session can be user-delegated (exchanging a user access token), autonomous (the agent acting as itself in an organization), agent-delegated (the agent exchanging its own access token for a new session on the same instance), or a refresh of a previously issued refresh token.
+        /// </remarks>
+        /// <param name="agentBlueprintId">The unique ID of the agent blueprint.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AgentToken"/> result.</returns>
+        public virtual async Task<AgentToken> CreateBlueprintTokenAsync(string agentBlueprintId, AgentsCreateBlueprintTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<AgentToken>($"/agents/blueprints/{Uri.EscapeDataString(agentBlueprintId)}/tokens", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateBlueprintTokenAsync"/>.</summary>
+        public virtual Task<AgentToken> CreateBlueprintToken(string agentBlueprintId, AgentsCreateBlueprintTokenOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateBlueprintTokenAsync(agentBlueprintId, options, requestOptions, cancellationToken);
+        }
+
         /// <summary>Link a claim attempt to an external user</summary>
         /// <remarks>
         /// Link an external user to a claim attempt and retrieve the code needed for the agent to complete the claim. The user is looked up by external ID; if no user exists, one is created. When the user belongs to multiple organizations, an explicit organization must be provided.
@@ -79,6 +204,139 @@ namespace WorkOS
         public virtual Task<AgentRegistration> GetRegistration(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.GetRegistrationAsync(id, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List agent instances</summary>
+        /// <remarks>
+        /// Lists the agent instances in the current environment. Instances are created implicitly when tokens are minted.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="AgentInstance"/> results.</returns>
+        public virtual async Task<WorkOSList<AgentInstance>> ListInstancesAsync(AgentsListInstancesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<AgentInstance>>("/agents/instances", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListInstancesAsync"/>.</summary>
+        public virtual Task<WorkOSList<AgentInstance>> ListInstances(AgentsListInstancesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListInstancesAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListInstancesAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="AgentInstance"/> items.</returns>
+        public virtual IAsyncEnumerable<AgentInstance> ListInstancesAutoPagingAsync(AgentsListInstancesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<AgentInstance>("/agents/instances", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Get an agent instance</summary>
+        /// <remarks>
+        /// Retrieves an agent instance by ID.
+        /// </remarks>
+        /// <param name="agentInstanceId">The unique ID of the agent instance.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AgentInstance"/> result.</returns>
+        public virtual async Task<AgentInstance> GetInstanceAsync(string agentInstanceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<AgentInstance>($"/agents/instances/{Uri.EscapeDataString(agentInstanceId)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetInstanceAsync"/>.</summary>
+        public virtual Task<AgentInstance> GetInstance(string agentInstanceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetInstanceAsync(agentInstanceId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Delete an agent instance</summary>
+        /// <remarks>
+        /// Deletes an agent instance along with its sessions, invalidating their refresh tokens.
+        /// </remarks>
+        /// <param name="agentInstanceId">The unique ID of the agent instance.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteInstanceAsync(string agentInstanceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/agents/instances/{Uri.EscapeDataString(agentInstanceId)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteInstanceAsync"/>.</summary>
+        public virtual Task DeleteInstance(string agentInstanceId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteInstanceAsync(agentInstanceId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List agent instance sessions</summary>
+        /// <remarks>
+        /// Lists the agent instance sessions in the current environment. Sessions are created when tokens are minted.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="AgentInstanceSession"/> results.</returns>
+        public virtual async Task<WorkOSList<AgentInstanceSession>> ListSessionsAsync(AgentsListSessionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<AgentInstanceSession>>("/agents/sessions", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListSessionsAsync"/>.</summary>
+        public virtual Task<WorkOSList<AgentInstanceSession>> ListSessions(AgentsListSessionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListSessionsAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListSessionsAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="AgentInstanceSession"/> items.</returns>
+        public virtual IAsyncEnumerable<AgentInstanceSession> ListSessionsAutoPagingAsync(AgentsListSessionsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<AgentInstanceSession>("/agents/sessions", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Get an agent instance session</summary>
+        /// <remarks>
+        /// Retrieves an agent instance session by ID.
+        /// </remarks>
+        /// <param name="agentInstanceSessionId">The unique ID of the agent instance session.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AgentInstanceSession"/> result.</returns>
+        public virtual async Task<AgentInstanceSession> GetSessionAsync(string agentInstanceSessionId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<AgentInstanceSession>($"/agents/sessions/{Uri.EscapeDataString(agentInstanceSessionId)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetSessionAsync"/>.</summary>
+        public virtual Task<AgentInstanceSession> GetSession(string agentInstanceSessionId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetSessionAsync(agentInstanceSessionId, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Revoke an agent instance session</summary>
+        /// <remarks>
+        /// Revokes an agent instance session, invalidating its refresh token and every access token minted under it. Revocation is idempotent: revoking an already-revoked session keeps the original `revoked_at`, and revoking an already-expired session returns the session with `status: expired` and a null `revoked_at`.
+        /// </remarks>
+        /// <param name="agentInstanceSessionId">The unique ID of the agent instance session.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AgentInstanceSession"/> result.</returns>
+        public virtual async Task<AgentInstanceSession> RevokeSessionAsync(string agentInstanceSessionId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<AgentInstanceSession>($"/agents/sessions/{Uri.EscapeDataString(agentInstanceSessionId)}/revoke", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="RevokeSessionAsync"/>.</summary>
+        public virtual Task<AgentInstanceSession> RevokeSession(string agentInstanceSessionId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.RevokeSessionAsync(agentInstanceSessionId, requestOptions, cancellationToken);
         }
     }
 }
