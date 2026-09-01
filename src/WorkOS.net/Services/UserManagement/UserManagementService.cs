@@ -1115,6 +1115,162 @@ namespace WorkOS
             return this.DeleteAuthorizedApplicationAsync(userId, applicationId, requestOptions, cancellationToken);
         }
 
+        /// <summary>Delete a waitlist entry</summary>
+        /// <remarks>
+        /// Remove the entry from the waitlist. Its email address can join again unless a user with that email now exists in the environment. Deleting the entry does not revoke an invitation created by approving it — [revoke that invitation](https://workos.com/docs/reference/authkit/invitation/revoke) separately to withdraw access.
+        /// </remarks>
+        /// <param name="id">The unique ID of the waitlist entry.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteWaitlistEntryAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/user_management/waitlist_entries/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteWaitlistEntryAsync"/>.</summary>
+        public virtual Task DeleteWaitlistEntry(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteWaitlistEntryAsync(id, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Approve a waitlist entry</summary>
+        /// <remarks>
+        /// Approve a waitlist entry, create an invitation for its email address, and send the invitation email. Approving a denied entry reverses the denial. The approval is saved even when the invitation steps fail, so instead of retrying the approval, recover based on the outcome:
+        /// - `200` — the entry is approved. If invitation creation failed, no invitation exists yet; [send](https://workos.com/docs/reference/authkit/invitation/send) one.
+        /// - `422` with code `invitation_email_not_sent` — the entry is approved and an invitation exists, but its email was not sent; [resend](https://workos.com/docs/reference/authkit/invitation/resend) it.
+        /// - `422` with code `invalid_state` — the entry was already approved.
+        /// </remarks>
+        /// <param name="id">The unique ID of the waitlist entry.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="WaitlistEntry"/> result.</returns>
+        public virtual async Task<WaitlistEntry> CreateWaitlistEntryApproveAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<WaitlistEntry>($"/user_management/waitlist_entries/{Uri.EscapeDataString(id)}/approve", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateWaitlistEntryApproveAsync"/>.</summary>
+        public virtual Task<WaitlistEntry> CreateWaitlistEntryApprove(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateWaitlistEntryApproveAsync(id, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Deny a waitlist entry</summary>
+        /// <remarks>
+        /// Deny a pending waitlist entry. Denying an entry that is not pending fails with the code `invalid_state`. A denial can be reversed by approving the entry.
+        /// </remarks>
+        /// <param name="id">The unique ID of the waitlist entry.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="WaitlistEntry"/> result.</returns>
+        public virtual async Task<WaitlistEntry> CreateWaitlistEntryDenyAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<WaitlistEntry>($"/user_management/waitlist_entries/{Uri.EscapeDataString(id)}/deny", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateWaitlistEntryDenyAsync"/>.</summary>
+        public virtual Task<WaitlistEntry> CreateWaitlistEntryDeny(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateWaitlistEntryDenyAsync(id, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List waitlists</summary>
+        /// <remarks>
+        /// Get a list of the waitlists in the environment. All waitlists are returned in a single response — this endpoint is not paginated, so the `list_metadata` cursors are always `null`.
+        /// </remarks>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="Waitlist"/> results.</returns>
+        public virtual async Task<WorkOSList<Waitlist>> ListWaitlistsAsync(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<Waitlist>>("/user_management/waitlists", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListWaitlistsAsync"/>.</summary>
+        public virtual Task<WorkOSList<Waitlist>> ListWaitlists(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListWaitlistsAsync(requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListWaitlistsAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="Waitlist"/> items.</returns>
+        public virtual IAsyncEnumerable<Waitlist> ListWaitlistsAutoPagingAsync(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<Waitlist>("/user_management/waitlists", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Get a waitlist</summary>
+        /// <remarks>
+        /// Get the details of an existing waitlist.
+        /// </remarks>
+        /// <param name="id">The unique ID of the waitlist, or the literal `default` for the environment's default waitlist. The default waitlist is created when its first entry is added, so read requests for `default` return a `404` until then.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="Waitlist"/> result.</returns>
+        public virtual async Task<Waitlist> GetWaitlistAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<Waitlist>($"/user_management/waitlists/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetWaitlistAsync"/>.</summary>
+        public virtual Task<Waitlist> GetWaitlist(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetWaitlistAsync(id, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List waitlist entries</summary>
+        /// <remarks>
+        /// Get a list of entries on a waitlist matching the criteria specified.
+        /// </remarks>
+        /// <param name="id">The unique ID of the waitlist, or the literal `default` for the environment's default waitlist. The default waitlist is created when its first entry is added, so read requests for `default` return a `404` until then.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="WaitlistEntry"/> results.</returns>
+        public virtual async Task<WorkOSList<WaitlistEntry>> ListWaitlistEntriesAsync(string id, UserManagementListWaitlistEntriesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<WaitlistEntry>>($"/user_management/waitlists/{Uri.EscapeDataString(id)}/entries", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListWaitlistEntriesAsync"/>.</summary>
+        public virtual Task<WorkOSList<WaitlistEntry>> ListWaitlistEntries(string id, UserManagementListWaitlistEntriesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListWaitlistEntriesAsync(id, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListWaitlistEntriesAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="id">The unique ID of the waitlist, or the literal `default` for the environment's default waitlist. The default waitlist is created when its first entry is added, so read requests for `default` return a `404` until then.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="WaitlistEntry"/> items.</returns>
+        public virtual IAsyncEnumerable<WaitlistEntry> ListWaitlistEntriesAutoPagingAsync(string id, UserManagementListWaitlistEntriesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<WaitlistEntry>($"/user_management/waitlists/{Uri.EscapeDataString(id)}/entries", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create a waitlist entry</summary>
+        /// <remarks>
+        /// Add an email address to the waitlist. Email addresses are normalized and unique per environment: a request for an email address already on the waitlist returns the existing entry unchanged (still with status `201`) and does not send another confirmation email. If a user with the email address already exists in the environment, the request fails with the code `user_already_exists`.
+        /// </remarks>
+        /// <param name="id">The unique ID of the waitlist, or the literal `default` for the environment's default waitlist. Use `default` when adding the first entry — the default waitlist is created automatically.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="WaitlistEntry"/> result.</returns>
+        public virtual async Task<WaitlistEntry> CreateWaitlistEntryAsync(string id, UserManagementCreateWaitlistEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<WaitlistEntry>($"/user_management/waitlists/{Uri.EscapeDataString(id)}/entries", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateWaitlistEntryAsync"/>.</summary>
+        public virtual Task<WaitlistEntry> CreateWaitlistEntry(string id, UserManagementCreateWaitlistEntryOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateWaitlistEntryAsync(id, options, requestOptions, cancellationToken);
+        }
+
         /// <summary>List API keys for a user</summary>
         /// <remarks>
         /// Get a list of API keys owned by a specific user.
