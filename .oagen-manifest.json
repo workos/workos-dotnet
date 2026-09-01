@@ -60,6 +60,7 @@
     "src/WorkOS.net/Entities/AgentRegistrationRefreshed.cs",
     "src/WorkOS.net/Entities/AgentRegistrationRevoked.cs",
     "src/WorkOS.net/Entities/AgentToken.cs",
+    "src/WorkOS.net/Entities/AgentTokenValidation.cs",
     "src/WorkOS.net/Entities/ApiKey.cs",
     "src/WorkOS.net/Entities/ApiKeyCreated.cs",
     "src/WorkOS.net/Entities/ApiKeyCreatedData.cs",
@@ -603,6 +604,7 @@
     "test/WorkOSTests/testdata/agent_blueprints_create_request_session_setting.json",
     "test/WorkOSTests/testdata/agent_blueprints_token_mint_token_request.json",
     "test/WorkOSTests/testdata/agent_blueprints_token_mint_token_request_nulls.json",
+    "test/WorkOSTests/testdata/agent_blueprints_token_validate_token_request.json",
     "test/WorkOSTests/testdata/agent_blueprints_update_request.json",
     "test/WorkOSTests/testdata/agent_blueprints_update_request_invocable_by.json",
     "test/WorkOSTests/testdata/agent_blueprints_update_request_invocable_by_nulls.json",
@@ -669,6 +671,8 @@
     "test/WorkOSTests/testdata/agent_registration_revoked_data.json",
     "test/WorkOSTests/testdata/agent_registration_revoked_nulls.json",
     "test/WorkOSTests/testdata/agent_token.json",
+    "test/WorkOSTests/testdata/agent_token_validation.json",
+    "test/WorkOSTests/testdata/agent_token_validation_nulls.json",
     "test/WorkOSTests/testdata/api_key.json",
     "test/WorkOSTests/testdata/api_key_created.json",
     "test/WorkOSTests/testdata/api_key_created_data.json",
@@ -2626,6 +2630,10 @@
     "POST /user_management/waitlists/{id}/entries": {
       "sdkMethod": "CreateWaitlistEntryAsync",
       "service": "user_management"
+    },
+    "POST /agents/blueprints/{agent_blueprint_id}/tokens/validate": {
+      "sdkMethod": "ValidateBlueprintTokenAsync",
+      "service": "agents"
     }
   }
 }
