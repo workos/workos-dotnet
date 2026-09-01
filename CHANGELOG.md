@@ -1,5 +1,24 @@
 # Changelog
 
+## [6.3.0](https://github.com/workos/workos-dotnet/compare/v6.2.0...v6.3.0) (2026-09-01)
+
+
+### Features
+
+* **agents:** Add blueprint, instance, and session endpoints ([#300](https://github.com/workos/workos-dotnet/issues/300)) ([7884606](https://github.com/workos/workos-dotnet/commit/788460656b30e14289c76ad581c73d988929c2d0))
+* **audit_logs:** Add retention_period option to update retention endpoint ([#300](https://github.com/workos/workos-dotnet/issues/300)) ([7884606](https://github.com/workos/workos-dotnet/commit/788460656b30e14289c76ad581c73d988929c2d0))
+* **generated:** Agents (batch 13ebc8c1) ([#303](https://github.com/workos/workos-dotnet/issues/303)) ([514b58c](https://github.com/workos/workos-dotnet/commit/514b58c3bd4f8cdbbd762c143e342d67f2b87284))
+* **organizations:** Add IT contacts endpoints ([#300](https://github.com/workos/workos-dotnet/issues/300)) ([7884606](https://github.com/workos/workos-dotnet/commit/788460656b30e14289c76ad581c73d988929c2d0))
+* **platform_teams:** Add Platform Teams service ([#300](https://github.com/workos/workos-dotnet/issues/300)) ([7884606](https://github.com/workos/workos-dotnet/commit/788460656b30e14289c76ad581c73d988929c2d0))
+* **sso:** Add connection management and SAML certificate endpoints ([#300](https://github.com/workos/workos-dotnet/issues/300)) ([7884606](https://github.com/workos/workos-dotnet/commit/788460656b30e14289c76ad581c73d988929c2d0))
+* **user_management:** Add email-completion grant and waitlist endpoints ([#300](https://github.com/workos/workos-dotnet/issues/300)) ([7884606](https://github.com/workos/workos-dotnet/commit/788460656b30e14289c76ad581c73d988929c2d0))
+* **webhooks:** Add agent instance and blueprint webhook event types ([#300](https://github.com/workos/workos-dotnet/issues/300)) ([7884606](https://github.com/workos/workos-dotnet/commit/788460656b30e14289c76ad581c73d988929c2d0))
+
+
+### Bug Fixes
+
+* **sso:** Remove DiscordOAuth and GrokOAuth from connection type enums ([#300](https://github.com/workos/workos-dotnet/issues/300)) ([7884606](https://github.com/workos/workos-dotnet/commit/788460656b30e14289c76ad581c73d988929c2d0))
+
 ## [6.2.0](https://github.com/workos/workos-dotnet/compare/v6.1.0...v6.2.0) (2026-08-11)
 
 * [#293](https://github.com/workos/workos-dotnet/pull/293) feat(generated)!: regenerate from spec (1 change)
