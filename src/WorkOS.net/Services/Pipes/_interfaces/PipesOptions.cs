@@ -127,6 +127,9 @@ namespace WorkOS
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization.</summary>
         public string? OrganizationId { get; set; }
 
+        /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select a specific connection when the user has several for this provider.</summary>
+        public string? ConnectedAccountId { get; set; }
+
     }
 
     /// <summary>Request options for <see cref="PipesService.GetAccessTokenAsync"/>: Get an access token for a connected account</summary>
@@ -138,6 +141,9 @@ namespace WorkOS
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization.</summary>
         public string? OrganizationId { get; set; }
 
+        /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select a specific connection when the user has several for this provider.</summary>
+        public string? ConnectedAccountId { get; set; }
+
     }
 
     /// <summary>Request options for <see cref="PipesService.GetUserConnectedAccountAsync"/>: Get a connected account</summary>
@@ -145,6 +151,9 @@ namespace WorkOS
     {
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         public string? OrganizationId { get; set; }
+
+        /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select a specific connection when the user has several for this provider.</summary>
+        public string? ConnectedAccountId { get; set; }
 
     }
 
@@ -192,6 +201,9 @@ namespace WorkOS
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         public string? OrganizationId { get; set; }
 
+        /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select the connection to update.</summary>
+        public string? ConnectedAccountId { get; set; }
+
     }
 
     /// <summary>Request options for <see cref="PipesService.DeleteUserConnectedAccountAsync"/>: Delete a connected account</summary>
@@ -199,6 +211,9 @@ namespace WorkOS
     {
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         public string? OrganizationId { get; set; }
+
+        /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select the connection to delete.</summary>
+        public string? ConnectedAccountId { get; set; }
 
     }
 
