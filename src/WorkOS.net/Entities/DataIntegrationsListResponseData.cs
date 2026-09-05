@@ -50,5 +50,8 @@ namespace WorkOS
 
         /// <summary>The user's [connected account](https://workos.com/docs/reference/pipes/connected-account) for this provider, or `null` if the user has not connected.</summary>
         public DataIntegrationsListResponseDataConnectedAccount? ConnectedAccount { get; set; }
+
+        /// <summary>The user's connected accounts for this provider in the requested ownership context.</summary>
+        public List<DataIntegrationsListResponseDataConnectedAccount> ConnectedAccounts { get; set; } = default!;
     }
 }
