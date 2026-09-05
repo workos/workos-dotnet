@@ -2,10 +2,24 @@
 
 ## [6.4.0](https://github.com/workos/workos-dotnet/compare/v6.3.0...v6.4.0) (2026-09-05)
 
+* [#304](https://github.com/workos/workos-dotnet/pull/304) fix(generated): regenerate from spec
 
-### Features
-
-* **generated:** Pipes (batch 8ad8e447) ([#304](https://github.com/workos/workos-dotnet/issues/304)) ([4d37876](https://github.com/workos/workos-dotnet/commit/4d3787659eae1a969bf8043fcbefb089c98159bc))
+  **Features**
+  * **[pipes](https://workos.com/docs/reference/pipes)**:
+    * Added `connected_account_id` to `DataIntegrationsVendCredentialsRequest`
+    * Added `connected_account_id` to `DataIntegrationsGetUserTokenRequest`
+    * Added parameter `UserManagementDataProviders.getUserDataInstallation.connected_account_id`
+    * Changed errors for endpoint `GET /user_management/users/{user_id}/connected_accounts/{slug}`
+    * Added parameter `UserManagementDataProviders.updateUserDataInstallation.connected_account_id`
+    * Changed errors for endpoint `PUT /user_management/users/{user_id}/connected_accounts/{slug}`
+    * Added parameter `UserManagementDataProviders.deleteUserDataInstallation.connected_account_id`
+    * Changed errors for endpoint `DELETE /user_management/users/{user_id}/connected_accounts/{slug}`
+    * Added `connected_accounts` to `DataIntegrationsListResponseData`
+    * Changed errors for endpoint `PUT /data-integrations/{slug}`
+    * Changed errors for endpoint `PUT /data-integrations/{slug}/api-key`
+    * Changed errors for endpoint `PUT /data-integrations/{slug}/client-credentials`
+    * Changed errors for endpoint `POST /data-integrations/{slug}/credentials`
+    * Changed errors for endpoint `POST /data-integrations/{provider}/token`
 
 ## [6.3.0](https://github.com/workos/workos-dotnet/compare/v6.2.0...v6.3.0) (2026-09-01)
 
