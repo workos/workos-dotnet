@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.4.0](https://github.com/workos/workos-dotnet/compare/v6.3.0...v6.4.0) (2026-09-05)
+
+
+### Features
+
+* **generated:** Pipes (batch 8ad8e447) ([#304](https://github.com/workos/workos-dotnet/issues/304)) ([4d37876](https://github.com/workos/workos-dotnet/commit/4d3787659eae1a969bf8043fcbefb089c98159bc))
+
 ## [6.3.0](https://github.com/workos/workos-dotnet/compare/v6.2.0...v6.3.0) (2026-09-01)
 
 * [#300](https://github.com/workos/workos-dotnet/pull/300) feat(generated): regenerate from spec (2 changes)
