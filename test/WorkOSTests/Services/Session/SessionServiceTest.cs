@@ -68,6 +68,8 @@ namespace WorkOSTests
             });
 
             var sessionService = client.Session;
+            Assert.Null(sessionService.ValidIssuer);
+            Assert.Null(sessionService.ValidAudience);
             sessionService.SetJwksManagerForTesting(new ConfigurationManager<OpenIdConnectConfiguration>(
                 $"https://api.workos.com/sso/jwks/{ClientId}",
                 new JwksConfigurationRetriever(),
@@ -84,6 +86,66 @@ namespace WorkOSTests
             Assert.Equal("admin", result.Role);
             Assert.Equal(accessToken, result.AccessToken);
             Assert.Null(result.Reason);
+        }
+
+        [Theory]
+        [InlineData(null, null, true)]
+        [InlineData(null, "", true)]
+        [InlineData("", null, true)]
+        [InlineData("", "", true)]
+        [InlineData("test-issuer", null, true)]
+        [InlineData("test-issuer", "", true)]
+        [InlineData(null, "test-audience", true)]
+        [InlineData("", "test-audience", true)]
+        [InlineData("test-issuer", "test-audience", true)]
+        [InlineData("other-issuer", null, false)]
+        [InlineData("other-issuer", "", false)]
+        [InlineData(null, "other-audience", false)]
+        [InlineData("", "other-audience", false)]
+        [InlineData("other-issuer", "test-audience", false)]
+        [InlineData("test-issuer", "other-audience", false)]
+        public async Task AuthenticateAsync_IssuerAndAudienceValidation_IsOptIn(
+            string validIssuer,
+            string validAudience,
+            bool expectedAuthenticated)
+        {
+            using var rsa = RSA.Create(2048);
+            var key = new RsaSecurityKey(rsa) { KeyId = "test-key-id" };
+            var jwk = JsonWebKeyConverter.ConvertFromRSASecurityKey(key);
+            var jwksJson = System.Text.Json.JsonSerializer.Serialize(new
+            {
+                keys = new[] { jwk },
+            });
+
+            var accessToken = new JwtSecurityTokenHandler().CreateEncodedJwt(new SecurityTokenDescriptor
+            {
+                Issuer = "test-issuer",
+                Audience = "test-audience",
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.RsaSha256),
+            });
+            var sealedSession = SessionService.SealSessionFromAuthResponse(
+                accessToken,
+                "refresh_token_value",
+                CookiePassword);
+
+            var client = new WorkOSClient(new WorkOSOptions
+            {
+                ApiKey = "sk_test",
+                ClientId = ClientId,
+            });
+            var sessionService = client.Session;
+            sessionService.ValidIssuer = validIssuer;
+            sessionService.ValidAudience = validAudience;
+            sessionService.SetJwksManagerForTesting(new ConfigurationManager<OpenIdConnectConfiguration>(
+                $"https://api.workos.com/sso/jwks/{ClientId}",
+                new JwksConfigurationRetriever(),
+                new StaticDocumentRetriever(jwksJson)));
+
+            var result = await sessionService.AuthenticateAsync(sealedSession, CookiePassword);
+
+            Assert.Equal(expectedAuthenticated, result.Authenticated);
+            Assert.Equal(expectedAuthenticated ? null : SessionFailureReason.InvalidJwt, result.Reason);
         }
 
         /// <summary>

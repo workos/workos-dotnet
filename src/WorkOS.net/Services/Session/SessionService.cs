@@ -27,25 +27,17 @@ namespace WorkOS
         }
 
         /// <summary>
-        /// Optional override for the expected JWT issuer. When null, defaults to
-        /// <c>{ApiBaseURL}/user_management/{clientId}</c>.
+        /// Optional expected JWT issuer. Defaults to <see langword="null"/>.
+        /// Issuer validation is disabled when null or empty. Set a non-empty
+        /// value to enable issuer validation.
         /// </summary>
-        /// <remarks>
-        /// TODO: confirm the literal documented WorkOS access-token issuer
-        /// before locking this default. See security-fix-plan.md "Open
-        /// questions / follow-ups" entry on .NET #57.
-        /// </remarks>
         public string? ValidIssuer { get; set; }
 
         /// <summary>
-        /// Optional override for the expected JWT audience. When null, defaults
-        /// to the configured client ID.
+        /// Optional expected JWT audience. Defaults to <see langword="null"/>.
+        /// Audience validation is disabled when null or empty. Set a non-empty
+        /// value to enable audience validation.
         /// </summary>
-        /// <remarks>
-        /// TODO: confirm the literal documented WorkOS access-token audience
-        /// before locking this default. See security-fix-plan.md "Open
-        /// questions / follow-ups" entry on .NET #57.
-        /// </remarks>
         public string? ValidAudience { get; set; }
 
         /// <summary>
