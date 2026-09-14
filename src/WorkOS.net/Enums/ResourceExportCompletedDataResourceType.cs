@@ -24,5 +24,7 @@ namespace WorkOS
         Sessions,
         [EnumMember(Value = "auditLogEvents")]
         AuditLogEvents,
+        [EnumMember(Value = "connections")]
+        Connections,
     }
 }

@@ -10,10 +10,10 @@ namespace WorkOS
         /// <summary>Unique identifier of the installation.</summary>
         public string Id { get; set; } = default!;
 
-        /// <summary>The User the API key was installed for.</summary>
-        public string UserId { get; set; } = default!;
+        /// <summary>The User the API key was installed for. Null on an `organization`-owned integration, whose installations belong to the organization.</summary>
+        public string? UserId { get; set; }
 
-        /// <summary>The Organization the installation is scoped to, or null when unscoped.</summary>
+        /// <summary>The Organization the installation is scoped to (or owned by, on an `organization`-owned integration), or null when unscoped.</summary>
         public string? OrganizationId { get; set; }
 
         /// <summary>The last four characters of the stored API key. The full key is never returned.</summary>
