@@ -345,6 +345,72 @@ namespace WorkOS
             return this.RevokeSessionAsync(options, requestOptions, cancellationToken);
         }
 
+        /// <summary>List MCP resource indicators</summary>
+        /// <remarks>
+        /// Lists the MCP resource indicators configured for an environment.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A page of <see cref="AuthkitOAuthResource"/> results.</returns>
+        public virtual async Task<WorkOSList<AuthkitOAuthResource>> ListAuthkitOAuthResourcesAsync(UserManagementListAuthkitOAuthResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WorkOSList<AuthkitOAuthResource>>("/user_management/authkit_oauth_resources", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListAuthkitOAuthResourcesAsync"/>.</summary>
+        public virtual Task<WorkOSList<AuthkitOAuthResource>> ListAuthkitOAuthResources(UserManagementListAuthkitOAuthResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAuthkitOAuthResourcesAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Auto-paging variant of <see cref="ListAuthkitOAuthResourcesAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>An async sequence of <see cref="AuthkitOAuthResource"/> items.</returns>
+        public virtual IAsyncEnumerable<AuthkitOAuthResource> ListAuthkitOAuthResourcesAutoPagingAsync(UserManagementListAuthkitOAuthResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListAutoPagingAsync<AuthkitOAuthResource>("/user_management/authkit_oauth_resources", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Create an MCP resource indicator</summary>
+        /// <remarks>
+        /// Adds an MCP resource indicator (RFC 8707) to an environment, leaving any others in place.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AuthkitOAuthResource"/> result.</returns>
+        public virtual async Task<AuthkitOAuthResource> CreateAuthkitOAuthResourceAsync(UserManagementCreateAuthkitOAuthResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<AuthkitOAuthResource>("/user_management/authkit_oauth_resources", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateAuthkitOAuthResourceAsync"/>.</summary>
+        public virtual Task<AuthkitOAuthResource> CreateAuthkitOAuthResource(UserManagementCreateAuthkitOAuthResourceOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateAuthkitOAuthResourceAsync(options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Delete an MCP resource indicator</summary>
+        /// <remarks>
+        /// Removes an MCP resource indicator from an environment. Any application consents granted against it are removed too.
+        /// </remarks>
+        /// <param name="id">The ID of the MCP resource indicator to delete.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteAuthkitOAuthResourceAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/user_management/authkit_oauth_resources/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteAuthkitOAuthResourceAsync"/>.</summary>
+        public virtual Task DeleteAuthkitOAuthResource(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteAuthkitOAuthResourceAsync(id, requestOptions, cancellationToken);
+        }
+
         /// <summary>List CORS origins</summary>
         /// <remarks>
         /// Lists the CORS origins for the current environment.

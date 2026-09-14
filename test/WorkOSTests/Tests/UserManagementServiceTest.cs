@@ -108,6 +108,50 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListAuthkitOAuthResourcesAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/list_authkit_oauth_resource.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/authkit_oauth_resources", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListAuthkitOAuthResourcesAsync(new UserManagementListAuthkitOAuthResourcesOptions());
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/authkit_oauth_resources");
+        }
+
+        [Fact]
+        public async Task TestListAuthkitOAuthResourcesAsyncEmpty()
+        {
+            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/authkit_oauth_resources", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
+            var result = await this.service.ListAuthkitOAuthResourcesAsync(new UserManagementListAuthkitOAuthResourcesOptions());
+            Assert.NotNull(result);
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
+        public async Task TestCreateAuthkitOAuthResourceAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/authkit_oauth_resource.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/user_management/authkit_oauth_resources", HttpStatusCode.OK, fixture);
+            var options = new UserManagementCreateAuthkitOAuthResourceOptions();
+            options.Uri = "test_uri";
+            var result = await this.service.CreateAuthkitOAuthResourceAsync(options);
+            Assert.NotNull(result);
+            Assert.Equal("authkit_oauth_resource_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("https://api.example.com", result.Uri);
+            Assert.Equal("2026-01-15T12:00:00.000Z", result.CreatedAt);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/authkit_oauth_resources");
+            await this.httpMock.AssertRequestBodyContainsAsync("uri", "test_uri");
+        }
+
+        [Fact]
+        public async Task TestDeleteAuthkitOAuthResourceAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/user_management/authkit_oauth_resources/test_id", HttpStatusCode.NoContent, "");
+            await this.service.DeleteAuthkitOAuthResourceAsync("test_id");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/user_management/authkit_oauth_resources/test_id");
+        }
+
+        [Fact]
         public async Task TestListCorsOriginsAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_cors_origin_response.json");
@@ -721,6 +765,38 @@ namespace WorkOSTests
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users/test_userId/api_keys");
             await this.httpMock.AssertRequestBodyContainsAsync("name", "test_name");
             await this.httpMock.AssertRequestBodyContainsAsync("organization_id", "test_organization_id");
+        }
+
+        [Fact]
+        public async Task TestListAuthkitOAuthResourcesAutoPagingAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/authkit_oauth_resource.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/authkit_oauth_resources", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var items = new List<AuthkitOAuthResource>();
+            await foreach (var item in this.service.ListAuthkitOAuthResourcesAutoPagingAsync(new UserManagementListAuthkitOAuthResourcesOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+        }
+
+        [Fact]
+        public async Task TestListAuthkitOAuthResourcesAutoPagingAsyncEmpty()
+        {
+            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/authkit_oauth_resources", HttpStatusCode.OK, new[] { empty });
+
+            var items = new List<AuthkitOAuthResource>();
+            await foreach (var item in this.service.ListAuthkitOAuthResourcesAutoPagingAsync(new UserManagementListAuthkitOAuthResourcesOptions()))
+            {
+                items.Add(item);
+            }
+
+            Assert.Empty(items);
         }
 
         [Fact]
