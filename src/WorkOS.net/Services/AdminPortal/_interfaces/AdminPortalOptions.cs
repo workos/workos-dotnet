@@ -10,10 +10,10 @@ namespace WorkOS
     /// <summary>Request options for <see cref="AdminPortalService.GenerateLinkAsync"/>: Generate a Portal Link</summary>
     public class AdminPortalGenerateLinkOptions : BaseOptions
     {
-        /// <summary>The URL to go to when an admin clicks on your logo in the Admin Portal. If not specified, the return URL configured on the [Redirects](https://dashboard.workos.com/redirects) page will be used.</summary>
+        /// <summary>The URL to go to when an admin clicks on your logo in the Admin Portal. If not specified, the return URL configured on the [Admin Portal](https://dashboard.workos.com/admin-portal) page will be used.</summary>
         public string? ReturnUrl { get; set; }
 
-        /// <summary>The URL to redirect the admin to when they finish setup. If not specified, the success URL configured on the [Redirects](https://dashboard.workos.com/redirects) page will be used.</summary>
+        /// <summary>The URL to redirect the admin to when they finish setup. If not specified, the success URL configured on the [Admin Portal](https://dashboard.workos.com/admin-portal) page will be used.</summary>
         public string? SuccessUrl { get; set; }
 
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier.</summary>

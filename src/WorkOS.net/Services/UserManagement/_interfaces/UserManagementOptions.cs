@@ -108,6 +108,22 @@ namespace WorkOS
 
     }
 
+    /// <summary>Request options for <see cref="UserManagementService.ListAuthkitOAuthResourcesAsync"/>: List MCP resource indicators</summary>
+    public class UserManagementListAuthkitOAuthResourcesOptions : ListOptions
+    {
+    }
+
+    /// <summary>Request options for <see cref="UserManagementService.CreateAuthkitOAuthResourceAsync"/>: Create an MCP resource indicator</summary>
+    public class UserManagementCreateAuthkitOAuthResourceOptions : BaseOptions
+    {
+        /// <summary>The resource URI. May be a wildcard pattern with a single `*` in the leftmost hostname label, where enabled for the environment.</summary>
+        public string Uri { get; set; } = default!;
+
+        /// <summary>Whether the resource being created becomes the environment default, clearing any previous default. Applies at creation only — this API has no update endpoint yet, so changing the default on an existing resource is done from the dashboard. A wildcard pattern cannot be the default.</summary>
+        public bool? Default { get; set; }
+
+    }
+
     /// <summary>Request options for <see cref="UserManagementService.ListCorsOriginsAsync"/>: List CORS origins</summary>
     public class UserManagementListCorsOriginsOptions : ListOptions
     {

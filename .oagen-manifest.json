@@ -9,6 +9,7 @@
     "src/WorkOS.net/Client/Utilities/EventSchemaDiscriminatorConverter.cs",
     "src/WorkOS.net/Client/WorkOSClient.Generated.cs",
     "src/WorkOS.net/Entities/AccessTokenAgentRegistrationCredentialIssuedDataDetail.cs",
+    "src/WorkOS.net/Entities/AccountSelectionRequiredError.cs",
     "src/WorkOS.net/Entities/ActionAuthenticationDenied.cs",
     "src/WorkOS.net/Entities/ActionAuthenticationDeniedData.cs",
     "src/WorkOS.net/Entities/ActionUserRegistrationDenied.cs",
@@ -134,6 +135,7 @@
     "src/WorkOS.net/Entities/AuthenticationSSOSucceededData.cs",
     "src/WorkOS.net/Entities/AuthenticationSSOTimedOut.cs",
     "src/WorkOS.net/Entities/AuthenticationSSOTimedOutData.cs",
+    "src/WorkOS.net/Entities/AuthkitOAuthResource.cs",
     "src/WorkOS.net/Entities/AuthorizationCheck.cs",
     "src/WorkOS.net/Entities/AuthorizationCodeSessionAuthenticateRequest.cs",
     "src/WorkOS.net/Entities/AuthorizationPermission.cs",
@@ -438,6 +440,7 @@
     "src/WorkOS.net/Enums/CreateConnectionOidcOptionsIdTokenSignatureAlgorithm.cs",
     "src/WorkOS.net/Enums/CreateConnectionOidcOptionsTokenAuthenticationMethod.cs",
     "src/WorkOS.net/Enums/CreateDataIntegrationAuthMethods.cs",
+    "src/WorkOS.net/Enums/CreateDataIntegrationOwnership.cs",
     "src/WorkOS.net/Enums/CreateUserInviteOptionsLocale.cs",
     "src/WorkOS.net/Enums/CreateUserPasswordHashType.cs",
     "src/WorkOS.net/Enums/CreateUserPasswordSaltPosition.cs",
@@ -563,6 +566,7 @@
     "test/WorkOSTests/Tests/WebhooksServiceTest.cs",
     "test/WorkOSTests/Tests/WidgetsServiceTest.cs",
     "test/WorkOSTests/testdata/access_token_agent_registration_credential_issued_data_detail.json",
+    "test/WorkOSTests/testdata/account_selection_required_error.json",
     "test/WorkOSTests/testdata/action_authentication_denied.json",
     "test/WorkOSTests/testdata/action_authentication_denied_data.json",
     "test/WorkOSTests/testdata/action_authentication_denied_data_nulls.json",
@@ -840,6 +844,7 @@
     "test/WorkOSTests/testdata/authentication_sso_timed_out_data_sso.json",
     "test/WorkOSTests/testdata/authentication_sso_timed_out_data_sso_nulls.json",
     "test/WorkOSTests/testdata/authentication_sso_timed_out_nulls.json",
+    "test/WorkOSTests/testdata/authkit_oauth_resource.json",
     "test/WorkOSTests/testdata/authorization_check.json",
     "test/WorkOSTests/testdata/authorization_code_session_authenticate_request.json",
     "test/WorkOSTests/testdata/authorization_code_session_authenticate_request_nulls.json",
@@ -902,6 +907,8 @@
     "test/WorkOSTests/testdata/connection_saml_certificate_renewed_nulls.json",
     "test/WorkOSTests/testdata/cors_origin_response.json",
     "test/WorkOSTests/testdata/create_application_secret.json",
+    "test/WorkOSTests/testdata/create_authkit_oauth_resource.json",
+    "test/WorkOSTests/testdata/create_authkit_oauth_resource_nulls.json",
     "test/WorkOSTests/testdata/create_authorization_permission.json",
     "test/WorkOSTests/testdata/create_authorization_permission_nulls.json",
     "test/WorkOSTests/testdata/create_authorization_resource.json",
@@ -1197,6 +1204,7 @@
     "test/WorkOSTests/testdata/list_audit_log_action.json",
     "test/WorkOSTests/testdata/list_audit_log_schema.json",
     "test/WorkOSTests/testdata/list_authentication_factor.json",
+    "test/WorkOSTests/testdata/list_authkit_oauth_resource.json",
     "test/WorkOSTests/testdata/list_authorization_permission.json",
     "test/WorkOSTests/testdata/list_authorization_resource.json",
     "test/WorkOSTests/testdata/list_authorized_connect_application_list_data.json",
@@ -1213,6 +1221,7 @@
     "test/WorkOSTests/testdata/list_empty_audit_log_action.json",
     "test/WorkOSTests/testdata/list_empty_audit_log_schema.json",
     "test/WorkOSTests/testdata/list_empty_authentication_factor.json",
+    "test/WorkOSTests/testdata/list_empty_authkit_oauth_resource.json",
     "test/WorkOSTests/testdata/list_empty_authorization_permission.json",
     "test/WorkOSTests/testdata/list_empty_authorization_resource.json",
     "test/WorkOSTests/testdata/list_empty_authorized_connect_application_list_data.json",
@@ -2634,6 +2643,30 @@
     "POST /agents/blueprints/{agent_blueprint_id}/tokens/validate": {
       "sdkMethod": "ValidateBlueprintTokenAsync",
       "service": "agents"
+    },
+    "GET /data-integrations/{slug}/organization": {
+      "sdkMethod": "ListDataIntegrationOrganizationAsync",
+      "service": "pipes"
+    },
+    "PUT /data-integrations/{slug}/organization": {
+      "sdkMethod": "UpdateDataIntegrationOrganizationAsync",
+      "service": "pipes"
+    },
+    "DELETE /data-integrations/{slug}/organization": {
+      "sdkMethod": "DeleteDataIntegrationOrganizationAsync",
+      "service": "pipes"
+    },
+    "GET /user_management/authkit_oauth_resources": {
+      "sdkMethod": "ListAuthkitOAuthResourcesAsync",
+      "service": "user_management"
+    },
+    "POST /user_management/authkit_oauth_resources": {
+      "sdkMethod": "CreateAuthkitOAuthResourceAsync",
+      "service": "user_management"
+    },
+    "DELETE /user_management/authkit_oauth_resources/{id}": {
+      "sdkMethod": "DeleteAuthkitOAuthResourceAsync",
+      "service": "user_management"
     }
   }
 }

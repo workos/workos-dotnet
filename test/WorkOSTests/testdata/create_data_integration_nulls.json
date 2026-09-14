@@ -1,5 +1,6 @@
 {
   "provider": "github",
+  "ownership": null,
   "description": null,
   "enabled": null,
   "scopes": null,

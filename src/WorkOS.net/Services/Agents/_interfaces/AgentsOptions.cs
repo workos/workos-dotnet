@@ -132,6 +132,9 @@ namespace WorkOS
     /// <summary>Request options for <see cref="AgentsService.ListSessionsAsync"/>: List agent instance sessions</summary>
     public class AgentsListSessionsOptions : ListOptions
     {
+        /// <summary>Only return sessions of instances acting within this organization.</summary>
+        public string? OrganizationId { get; set; }
+
         /// <summary>Only return sessions of instances minted from this blueprint.</summary>
         public string? AgentBlueprintId { get; set; }
 

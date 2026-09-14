@@ -160,6 +160,40 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListDataIntegrationOrganizationAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/data_integration.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/data-integrations/test_slug/organization", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListDataIntegrationOrganizationAsync("test_slug");
+            Assert.NotNull(result);
+            Assert.Equal("data_integration_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("github", result.Slug);
+            Assert.Equal("github", result.IntegrationType);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/data-integrations/test_slug/organization");
+        }
+
+        [Fact]
+        public async Task TestUpdateDataIntegrationOrganizationAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/data_integration.json");
+            this.httpMock.MockResponse(HttpMethod.Put, "/data-integrations/test_slug/organization", HttpStatusCode.OK, fixture);
+            var result = await this.service.UpdateDataIntegrationOrganizationAsync("test_slug", new PipesUpdateDataIntegrationOrganizationOptions());
+            Assert.NotNull(result);
+            Assert.Equal("data_integration_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("github", result.Slug);
+            Assert.Equal("github", result.IntegrationType);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/data-integrations/test_slug/organization");
+        }
+
+        [Fact]
+        public async Task TestDeleteDataIntegrationOrganizationAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/data-integrations/test_slug/organization", HttpStatusCode.NoContent, "");
+            await this.service.DeleteDataIntegrationOrganizationAsync("test_slug");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/data-integrations/test_slug/organization");
+        }
+
+        [Fact]
         public async Task TestGetAccessTokenAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/data_integration_access_token_response.json");

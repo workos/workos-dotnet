@@ -23,6 +23,11 @@ namespace WorkOS
         /// <summary>The integration type derived from the provider.</summary>
         public string IntegrationType { get; set; } = default!;
 
+        /// <summary>Who owns the Data Integration: `user` when users connect their own accounts, `organization` when organizations connect. Fixed at creation.</summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
+        public CreateDataIntegrationOwnership Ownership { get; set; }
+
         /// <summary>An optional description of the Data Integration.</summary>
         public string? Description { get; set; }
 

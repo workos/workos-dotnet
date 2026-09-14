@@ -10,6 +10,9 @@ namespace WorkOS
     /// <summary>Request options for <see cref="PipesService.ListDataIntegrationsAsync"/>: List data integrations</summary>
     public class PipesListDataIntegrationsOptions : ListOptions
     {
+        /// <summary>Only return Data Integrations with this ownership: `user` for the integrations users connect their own accounts to, or `organization` for the roots organizations connect to. Omit to return both.</summary>
+        public CreateDataIntegrationOwnership? Ownership { get; set; }
+
     }
 
     /// <summary>Request options for <see cref="PipesService.CreateDataIntegrationAsync"/>: Create a data integration</summary>
@@ -17,6 +20,9 @@ namespace WorkOS
     {
         /// <summary>The provider to create a Data Integration for. For a built-in provider use its slug (e.g. `github`, `slack`). For a custom provider, this is the new provider slug and `custom_provider` must be supplied. A custom provider slug cannot shadow an existing global provider slug.</summary>
         public string Provider { get; set; } = default!;
+
+        /// <summary>Who owns the Data Integration. `user` (the default) creates the integration users connect their own accounts to; `organization` creates the root organizations connect to. Ownership is fixed at creation, and one integration of each ownership may exist per provider. Independent of `credentials.type`.</summary>
+        public CreateDataIntegrationOwnership? Ownership { get; set; }
 
         /// <summary>An optional description of the Data Integration.</summary>
         public string? Description { get; set; }
@@ -73,8 +79,14 @@ namespace WorkOS
         /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>
         public string UserId { get; set; } = default!;
 
-        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization.</summary>
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization. Required when `connection_owner` is `organization`.</summary>
         public string? OrganizationId { get; set; }
+
+        /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to rotate a specific existing connection.</summary>
+        public string? ConnectedAccountId { get; set; }
+
+        /// <summary>Whose connection to create or rotate. `user` (the default) addresses the connection owned by `user_id`. `organization` addresses the connection shared by every member of `organization_id`; `user_id` then identifies the member performing the request and must be an active member of the organization.</summary>
+        public CreateDataIntegrationOwnership? ConnectionOwner { get; set; }
 
         /// <summary>The API key secret to store for this integration.</summary>
         public string Secret { get; set; } = default!;
@@ -104,8 +116,14 @@ namespace WorkOS
         /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>
         public string UserId { get; set; } = default!;
 
-        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization.</summary>
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization. Required when `connection_owner` is `organization`.</summary>
         public string? OrganizationId { get; set; }
+
+        /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to rotate a specific existing connection.</summary>
+        public string? ConnectedAccountId { get; set; }
+
+        /// <summary>Whose connection to create or rotate. `user` (the default) addresses the connection owned by `user_id`. `organization` addresses the connection shared by every member of `organization_id`; `user_id` then identifies the member performing the request and must be an active member of the organization.</summary>
+        public CreateDataIntegrationOwnership? ConnectionOwner { get; set; }
 
         /// <summary>The OAuth client ID to store for this integration.</summary>
         public string ClientId { get; set; } = default!;
@@ -121,28 +139,63 @@ namespace WorkOS
     /// <summary>Request options for <see cref="PipesService.CreateDataIntegrationCredentialAsync"/>: Vend credentials for a connected account</summary>
     public class PipesCreateDataIntegrationCredentialOptions : BaseOptions
     {
-        /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>
+        /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier. When `connection_owner` is `organization`, this is the user the credentials are vended on behalf of; they must be an active member of the organization.</summary>
         public string UserId { get; set; } = default!;
 
-        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization.</summary>
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization. Required when `connection_owner` is `organization`.</summary>
         public string? OrganizationId { get; set; }
 
         /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select a specific connection when the user has several for this provider.</summary>
         public string? ConnectedAccountId { get; set; }
+
+        /// <summary>Which connection to vend from. `user` (the default) vends the user's own connection and requires `user_id`. `organization` vends the organization's shared connection and requires `organization_id`.</summary>
+        public CreateDataIntegrationOwnership? ConnectionOwner { get; set; }
+
+        /// <summary>Set to `true` to use the plural connection contract. If no `connected_account_id` is supplied and several connections match, the request returns `account_selection_required`. When omitted or `false`, only the compatibility connection is considered.</summary>
+        public bool? SupportsMultipleConnections { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="PipesService.UpdateDataIntegrationOrganizationAsync"/>: Update an organization-owned data integration</summary>
+    public class PipesUpdateDataIntegrationOrganizationOptions : BaseOptions
+    {
+        /// <summary>An optional description of the Data Integration.</summary>
+        public string? Description { get; set; }
+
+        /// <summary>Whether the Data Integration is enabled.</summary>
+        public bool? Enabled { get; set; }
+
+        /// <summary>The OAuth scopes to request for the Data Integration. Pass `null` to reset to the provider's configured scopes.</summary>
+        public List<string>? Scopes { get; set; }
+
+        /// <summary>New OAuth credentials for the Data Integration. When provided, rotates the stored client secret. Mutually exclusive with `api_key`.</summary>
+        public DataIntegrationCredentialsInput? Credentials { get; set; }
+
+        /// <summary>An API key to install or rotate for a tenant on an `api_key` integration. Upserts the tenant installation identified by `user_id` (and optional `organization_id`).</summary>
+        public ApiKeyInstallation? ApiKey { get; set; }
+
+        /// <summary>Updates to a custom provider's OAuth definition. Only valid for custom-provider integrations.</summary>
+        public UpdateCustomProviderDefinition? CustomProvider { get; set; }
 
     }
 
     /// <summary>Request options for <see cref="PipesService.GetAccessTokenAsync"/>: Get an access token for a connected account</summary>
     public class PipesGetAccessTokenOptions : BaseOptions
     {
-        /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>
+        /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier. When `connection_owner` is `organization`, this is the user the credentials are vended on behalf of; they must be an active member of the organization.</summary>
         public string UserId { get; set; } = default!;
 
-        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization.</summary>
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization. Required when `connection_owner` is `organization`.</summary>
         public string? OrganizationId { get; set; }
 
         /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select a specific connection when the user has several for this provider.</summary>
         public string? ConnectedAccountId { get; set; }
+
+        /// <summary>Which connection to vend from. `user` (the default) vends the user's own connection and requires `user_id`. `organization` vends the organization's shared connection and requires `organization_id`.</summary>
+        public CreateDataIntegrationOwnership? ConnectionOwner { get; set; }
+
+        /// <summary>Set to `true` to use the plural connection contract. If no `connected_account_id` is supplied and several connections match, the request returns `account_selection_required`. When omitted or `false`, only the compatibility connection is considered.</summary>
+        public bool? SupportsMultipleConnections { get; set; }
 
     }
 
@@ -151,6 +204,9 @@ namespace WorkOS
     {
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         public string? OrganizationId { get; set; }
+
+        /// <summary>Set to `true` to use the plural connection contract. When omitted or `false`, only the compatibility connection is considered.</summary>
+        public bool? SupportsMultipleConnections { get; set; }
 
         /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select a specific connection when the user has several for this provider.</summary>
         public string? ConnectedAccountId { get; set; }
@@ -201,6 +257,9 @@ namespace WorkOS
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         public string? OrganizationId { get; set; }
 
+        /// <summary>Set to `true` to use the plural connection contract. When omitted or `false`, only the compatibility connection is considered.</summary>
+        public bool? SupportsMultipleConnections { get; set; }
+
         /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select the connection to update.</summary>
         public string? ConnectedAccountId { get; set; }
 
@@ -212,6 +271,9 @@ namespace WorkOS
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         public string? OrganizationId { get; set; }
 
+        /// <summary>Set to `true` to use the plural connection contract. When omitted or `false`, only the compatibility connection is considered.</summary>
+        public bool? SupportsMultipleConnections { get; set; }
+
         /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select the connection to delete.</summary>
         public string? ConnectedAccountId { get; set; }
 
@@ -222,6 +284,9 @@ namespace WorkOS
     {
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to filter connections for a specific organization.</summary>
         public string? OrganizationId { get; set; }
+
+        /// <summary>Set to `true` to use the plural connection contract. When omitted or `false`, only the compatibility connection is considered.</summary>
+        public bool? SupportsMultipleConnections { get; set; }
 
     }
 }

@@ -48,10 +48,10 @@ namespace WorkOS
         /// <summary>The timestamp when the provider was last updated.</summary>
         public string UpdatedAt { get; set; } = default!;
 
-        /// <summary>The user's [connected account](https://workos.com/docs/reference/pipes/connected-account) for this provider, or `null` if the user has not connected.</summary>
+        /// <summary>The user's compatibility [connected account](https://workos.com/docs/reference/pipes/connected-account) for this provider, or `null` when the compatibility slot is empty. This legacy field never selects a standard connection.</summary>
         public DataIntegrationsListResponseDataConnectedAccount? ConnectedAccount { get; set; }
 
-        /// <summary>The user's connected accounts for this provider in the requested ownership context.</summary>
+        /// <summary>The user's connected accounts for this provider in the requested ownership context. This contains only the compatibility connection unless `supports_multiple_connections` is `true`.</summary>
         public List<DataIntegrationsListResponseDataConnectedAccount> ConnectedAccounts { get; set; } = default!;
     }
 }
