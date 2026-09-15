@@ -135,6 +135,7 @@ namespace WorkOS
         /// GET/DELETE) Options participate; Method, AccessToken, headers, and request
         /// bodies are ignored.</param>
         /// <returns>The full request URI including any query string.</returns>
+        /// <exception cref="ArgumentException">The request path contains a raw or percent-encoded dot segment.</exception>
         public virtual Uri BuildRequestUri(WorkOSRequest request)
         {
             return this.BuildUri(request);
@@ -468,6 +469,16 @@ namespace WorkOS
 
         private Uri BuildUri(WorkOSRequest request)
         {
+            // System.Uri normalizes raw and escaped dot segments, which can retarget requests.
+            foreach (var segment in request.Path.Split('/'))
+            {
+                var unescapedSegment = Uri.UnescapeDataString(segment);
+                if (unescapedSegment == "." || unescapedSegment == "..")
+                {
+                    throw new ArgumentException("Request paths must not contain dot segments.", nameof(request.Path));
+                }
+            }
+
             var builder = new StringBuilder();
             var options = request.Options;
             builder.Append(this.ApiBaseURL);
