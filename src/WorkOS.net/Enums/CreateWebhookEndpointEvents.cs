@@ -196,6 +196,16 @@ namespace WorkOS
         PermissionDeleted,
         [EnumMember(Value = "permission.updated")]
         PermissionUpdated,
+        [EnumMember(Value = "pipes.account_connection.add_failed")]
+        PipesAccountConnectionAddFailed,
+        [EnumMember(Value = "pipes.account_connection.connected")]
+        PipesAccountConnectionConnected,
+        [EnumMember(Value = "pipes.account_connection.connection_failed")]
+        PipesAccountConnectionConnectionFailed,
+        [EnumMember(Value = "pipes.account_connection.disconnected")]
+        PipesAccountConnectionDisconnected,
+        [EnumMember(Value = "pipes.account_connection.reauthorization_needed")]
+        PipesAccountConnectionReauthorizationNeeded,
         [EnumMember(Value = "pipes.connected_account.connected")]
         PipesConnectedAccountConnected,
         [EnumMember(Value = "pipes.connected_account.connection_failed")]

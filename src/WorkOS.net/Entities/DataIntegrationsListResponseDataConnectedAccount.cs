@@ -16,6 +16,17 @@ namespace WorkOS
         /// <summary>The unique identifier of the connected account.</summary>
         public string Id { get; set; } = default!;
 
+        /// <summary>Whether this row is the compatibility connection visible to undeclared clients or a standard peer for plural-aware clients. The role does not indicate preference or creation order.</summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
+        public ConnectedAccountConnectionRole ConnectionRole { get; set; }
+
+        /// <summary>A best-effort identifier for the provider account this connection points at. It is correlation metadata, not the connection identifier or a selector.</summary>
+        public string? AccountIdentifier { get; set; }
+
+        /// <summary>A mutable, non-unique display name for the provider account connection.</summary>
+        public string? AccountDisplayName { get; set; }
+
         /// <summary>The [User](https://workos.com/docs/reference/authkit/user) identifier associated with this connection.</summary>
         public string? UserId { get; set; }
 
