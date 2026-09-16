@@ -199,7 +199,10 @@ namespace WorkOSTests
 
         /// <summary>
         /// Mocks sequential responses for the same method + path.
-        /// Each successive call returns the next response in the array.
+        /// Each successive call returns the next response in the array; calls
+        /// past the end keep returning the last one. Every matching request is
+        /// recorded in <see cref="CapturedRequests"/>, so a test can assert the
+        /// query string of each page an auto-paging loop requested.
         /// </summary>
         public void MockSequentialResponses(
             HttpMethod method,
@@ -207,22 +210,32 @@ namespace WorkOSTests
             HttpStatusCode status,
             string[] responses)
         {
-            var setup = this.MockHandler.Protected()
-                .SetupSequence<Task<HttpResponseMessage>>(
+            if (responses.Length == 0)
+            {
+                throw new System.ArgumentException("At least one response is required.", nameof(responses));
+            }
+
+            // Moq's SetupSequence has no Callback hook, so drive the sequence
+            // from a plain Setup whose return factory walks the array.
+            var next = 0;
+            this.MockHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>(
                     "SendAsync",
                     ItExpr.Is<HttpRequestMessage>(m =>
                         m.Method == method &&
                         m.RequestUri!.AbsolutePath == path),
-                    ItExpr.IsAny<CancellationToken>());
-
-            foreach (var response in responses)
-            {
-                setup.ReturnsAsync(new HttpResponseMessage
+                    ItExpr.IsAny<CancellationToken>())
+                .Callback<HttpRequestMessage, CancellationToken>((req, _) => this.CapturedRequests.Add(req))
+                .ReturnsAsync(() =>
                 {
-                    Content = new StringContent(response),
-                    StatusCode = status,
+                    var index = System.Math.Min(next, responses.Length - 1);
+                    next++;
+                    return new HttpResponseMessage
+                    {
+                        Content = new StringContent(responses[index]),
+                        StatusCode = status,
+                    };
                 });
-            }
         }
 
         /// <summary>
