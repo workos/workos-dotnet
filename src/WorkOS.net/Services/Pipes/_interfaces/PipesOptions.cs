@@ -96,11 +96,14 @@ namespace WorkOS
     /// <summary>Request options for <see cref="PipesService.AuthorizeDataIntegrationAsync"/>: Get authorization URL</summary>
     public class PipesAuthorizeDataIntegrationOptions : BaseOptions
     {
-        /// <summary>The ID of the user to authorize.</summary>
+        /// <summary>The ID of the user to authorize. When `connection_owner` is `organization`, this is the user authorizing on behalf of the organization; they must be an active member of the organization and do not become the owner of the resulting connected account.</summary>
         public string UserId { get; set; } = default!;
 
-        /// <summary>An organization ID to scope the authorization to a specific organization.</summary>
+        /// <summary>An organization ID to scope the authorization to a specific organization. Required when `connection_owner` is `organization`.</summary>
         public string? OrganizationId { get; set; }
+
+        /// <summary>Who will own the connected account. `user` (the default) connects the user's own account. `organization` connects the organization's shared account and requires `organization_id`.</summary>
+        public CreateDataIntegrationOwnership? ConnectionOwner { get; set; }
 
         /// <summary>The URL to redirect the user to after authorization.</summary>
         public string? ReturnTo { get; set; }

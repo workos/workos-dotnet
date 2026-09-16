@@ -2,6 +2,8 @@
 
 namespace WorkOS
 {
+    using Newtonsoft.Json;
+    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a data integration installation.</summary>
     public class DataIntegrationInstallation
@@ -9,6 +11,17 @@ namespace WorkOS
 
         /// <summary>Unique identifier of the installation.</summary>
         public string Id { get; set; } = default!;
+
+        /// <summary>Whether this is the compatibility connection visible to undeclared clients or a standard connection for plural-aware clients.</summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
+        public ConnectedAccountConnectionRole ConnectionRole { get; set; }
+
+        /// <summary>A best-effort provider account identifier used for correlation, not connection selection.</summary>
+        public string? AccountIdentifier { get; set; }
+
+        /// <summary>A mutable, non-unique display name for this connection.</summary>
+        public string? AccountDisplayName { get; set; }
 
         /// <summary>The User the API key was installed for. Null on an `organization`-owned integration, whose installations belong to the organization.</summary>
         public string? UserId { get; set; }

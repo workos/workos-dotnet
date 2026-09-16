@@ -258,7 +258,37 @@ namespace WorkOS
         /// <returns>An async sequence of <see cref="AuthorizationResource"/> items.</returns>
         public virtual IAsyncEnumerable<AuthorizationResource> ListResourcesForMembershipAutoPagingAsync(string organizationMembershipId, AuthorizationListResourcesForMembershipOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<AuthorizationResource>($"/authorization/organization_memberships/{Uri.EscapeDataString(organizationMembershipId)}/resources", options, requestOptions, cancellationToken);
+            options ??= new AuthorizationListResourcesForMembershipOptions();
+
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"/authorization/organization_memberships/{Uri.EscapeDataString(organizationMembershipId)}/resources",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.ParentResource is AuthorizationParentResourceById byId)
+            {
+                if (byId.ParentResourceId != null)
+                {
+                    request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                }
+            }
+            else if (options?.ParentResource is AuthorizationParentResourceByExternalId byExternalId)
+            {
+                if (byExternalId.ParentResourceTypeSlug != null)
+                {
+                    request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                }
+
+                if (byExternalId.ParentResourceExternalId != null)
+                {
+                    request.AddQueryParam("parent_resource_external_id", byExternalId.ParentResourceExternalId);
+                }
+            }
+
+            return this.Client.ListAutoPagingAsync<AuthorizationResource>(request, cancellationToken);
         }
 
         /// <summary>List effective permissions for an organization membership on a resource</summary>
@@ -851,7 +881,37 @@ namespace WorkOS
         /// <returns>An async sequence of <see cref="AuthorizationResource"/> items.</returns>
         public virtual IAsyncEnumerable<AuthorizationResource> ListResourcesAutoPagingAsync(AuthorizationListResourcesOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<AuthorizationResource>("/authorization/resources", options, requestOptions, cancellationToken);
+            options ??= new AuthorizationListResourcesOptions();
+
+            var request = new WorkOSRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/authorization/resources",
+                Options = options,
+                RequestOptions = requestOptions,
+            };
+
+            if (options?.Parent is AuthorizationParentById byId)
+            {
+                if (byId.ParentResourceId != null)
+                {
+                    request.AddQueryParam("parent_resource_id", byId.ParentResourceId);
+                }
+            }
+            else if (options?.Parent is AuthorizationParentByExternalId byExternalId)
+            {
+                if (byExternalId.ParentResourceTypeSlug != null)
+                {
+                    request.AddQueryParam("parent_resource_type_slug", byExternalId.ParentResourceTypeSlug);
+                }
+
+                if (byExternalId.ParentExternalId != null)
+                {
+                    request.AddQueryParam("parent_external_id", byExternalId.ParentExternalId);
+                }
+            }
+
+            return this.Client.ListAutoPagingAsync<AuthorizationResource>(request, cancellationToken);
         }
 
         /// <summary>Create an authorization resource</summary>

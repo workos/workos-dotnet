@@ -1,5 +1,8 @@
 {
   "id": "data_installation_01EHZNVPK3SFK441A1RGBFSHRT",
+  "connection_role": "compatibility",
+  "account_identifier": null,
+  "account_display_name": null,
   "user_id": null,
   "organization_id": null,
   "api_key_last_4": null

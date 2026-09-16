@@ -114,6 +114,11 @@ namespace WorkOS
                 case "permission.created": target = new PermissionCreated(); break;
                 case "permission.deleted": target = new PermissionDeleted(); break;
                 case "permission.updated": target = new PermissionUpdated(); break;
+                case "pipes.account_connection.add_failed": target = new PipesAccountConnectionAddFailed(); break;
+                case "pipes.account_connection.connected": target = new PipesAccountConnectionConnected(); break;
+                case "pipes.account_connection.connection_failed": target = new PipesAccountConnectionConnectionFailed(); break;
+                case "pipes.account_connection.disconnected": target = new PipesAccountConnectionDisconnected(); break;
+                case "pipes.account_connection.reauthorization_needed": target = new PipesAccountConnectionReauthorizationNeeded(); break;
                 case "pipes.connected_account.connected": target = new PipesConnectedAccountConnected(); break;
                 case "pipes.connected_account.connection_failed": target = new PipesConnectedAccountConnectionFailed(); break;
                 case "pipes.connected_account.disconnected": target = new PipesConnectedAccountDisconnected(); break;

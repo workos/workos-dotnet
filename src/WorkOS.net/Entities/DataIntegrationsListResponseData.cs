@@ -37,7 +37,13 @@ namespace WorkOS
         /// <summary>The authentication methods supported by this provider (`oauth`, `api_key`, `client_credentials`, or a combination). Defaults to `["oauth"]` if absent.</summary>
         public List<ConnectedAccountAuthMethod>? AuthMethods { get; set; }
 
-        /// <summary>Whether the provider is owned by a user or organization.</summary>
+        /// <summary>Who owns connections made through this provider: `user` for connections owned by individual users, or `organization` for a connection shared by every member of the organization. A provider row can exist before any connected account does.</summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
+        public CreateDataIntegrationOwnership ConnectionOwner { get; set; }
+
+        /// <summary>Use `connection_owner` instead. Legacy spelling of the same value: `userland_user` corresponds to `connection_owner: "user"` and `organization` to `connection_owner: "organization"`.</summary>
+        [System.Obsolete("This field is deprecated Use `connection_owner` instead.")]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public DataIntegrationsListResponseDataOwnership Ownership { get; set; }

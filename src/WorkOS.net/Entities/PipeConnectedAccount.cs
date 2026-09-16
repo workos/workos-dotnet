@@ -17,6 +17,15 @@ namespace WorkOS
         /// <summary>The unique ID of the connected account.</summary>
         public string Id { get; set; } = default!;
 
+        /// <summary>Whether this is the compatibility connection visible to undeclared clients or a standard connection for plural-aware clients. Historical events may omit this field.</summary>
+        public ConnectedAccountConnectionRole? ConnectionRole { get; set; }
+
+        /// <summary>A best-effort identifier for the provider account this connection points at. It is not the connection identifier or a selector. Historical events may omit this field.</summary>
+        public string? AccountIdentifier { get; set; }
+
+        /// <summary>A mutable, non-unique display name for the provider account connection. Historical events may omit this field.</summary>
+        public string? AccountDisplayName { get; set; }
+
         /// <summary>The unique ID of the data integration.</summary>
         public string DataIntegrationId { get; set; } = default!;
 
@@ -31,6 +40,12 @@ namespace WorkOS
 
         /// <summary>The OAuth scopes granted for this connected account.</summary>
         public List<string> Scopes { get; set; } = default!;
+
+        /// <summary>How the connection authenticates. Historical events may omit this field.</summary>
+        public ConnectedAccountAuthMethod? AuthMethod { get; set; }
+
+        /// <summary>The last four characters of the API key, or null for other authentication methods. Historical events may omit this field.</summary>
+        public string? ApiKeyLast4 { get; set; }
 
         /// <summary>The state of the connected account.</summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]

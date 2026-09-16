@@ -40,7 +40,7 @@ namespace WorkOS
     /// <summary>Request options for <see cref="MultiFactorAuthService.ChallengeFactorAsync"/>: Challenge Factor</summary>
     public class MultiFactorAuthChallengeFactorOptions : BaseOptions
     {
-        /// <summary>A custom template for the SMS message. Use the {{code}} placeholder to include the verification code.</summary>
+        /// <summary>A custom template for the SMS message. Use the {{code}} placeholder to include the verification code. Must not contain URLs or domain names.</summary>
         public string? SmsTemplate { get; set; }
 
     }

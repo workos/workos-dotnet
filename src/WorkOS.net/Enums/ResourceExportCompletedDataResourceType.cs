@@ -26,5 +26,7 @@ namespace WorkOS
         AuditLogEvents,
         [EnumMember(Value = "connections")]
         Connections,
+        [EnumMember(Value = "directoryUsers")]
+        DirectoryUsers,
     }
 }

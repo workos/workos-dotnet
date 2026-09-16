@@ -4,8 +4,8 @@ namespace WorkOS
 {
     using System;
 
-    /// <summary>Represents a pipes connected account connection failed.</summary>
-    public class PipesConnectedAccountConnectionFailed : EventSchema
+    /// <summary>Represents a pipes account connection connection failed.</summary>
+    public class PipesAccountConnectionConnectionFailed : EventSchema
     {
 
         /// <summary>The event payload.</summary>
