@@ -202,6 +202,82 @@ namespace WorkOS
 
     }
 
+    /// <summary>Request options for <see cref="PipesService.GetOrganizationConnectedAccountAsync"/>: Get an organization connected account</summary>
+    public class PipesGetOrganizationConnectedAccountOptions : BaseOptions
+    {
+        /// <summary>Set to `true` to use the plural connection contract. When omitted or `false`, only the compatibility connection is considered.</summary>
+        public bool? SupportsMultipleConnections { get; set; }
+
+        /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select a specific connection when the organization has several for this provider.</summary>
+        public string? ConnectedAccountId { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="PipesService.CreateOrganizationConnectedAccountAsync"/>: Import an organization connected account</summary>
+    public class PipesCreateOrganizationConnectedAccountOptions : BaseOptions
+    {
+        /// <summary>The OAuth access token for the connected account.</summary>
+        public string? AccessToken { get; set; }
+
+        /// <summary>The OAuth refresh token for the connected account.</summary>
+        public string? RefreshToken { get; set; }
+
+        /// <summary>The ISO-8601 timestamp when the access token expires. Required when `access_token` is provided for tokens that expire.</summary>
+        public DateTimeOffset? ExpiresAt { get; set; }
+
+        /// <summary>The OAuth scopes granted for this connection.</summary>
+        public List<string>? Scopes { get; set; }
+
+        /// <summary>Explicitly set the state of the connected account. When omitted, the state is derived from the token combination provided.</summary>
+        public ConnectedAccountInputState? State { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="PipesService.UpdateOrganizationConnectedAccountAsync"/>: Update an organization connected account</summary>
+    public class PipesUpdateOrganizationConnectedAccountOptions : BaseOptions
+    {
+        /// <summary>The OAuth access token for the connected account.</summary>
+        public string? AccessToken { get; set; }
+
+        /// <summary>The OAuth refresh token for the connected account.</summary>
+        public string? RefreshToken { get; set; }
+
+        /// <summary>The ISO-8601 timestamp when the access token expires. Required when `access_token` is provided for tokens that expire.</summary>
+        public DateTimeOffset? ExpiresAt { get; set; }
+
+        /// <summary>The OAuth scopes granted for this connection.</summary>
+        public List<string>? Scopes { get; set; }
+
+        /// <summary>Explicitly set the state of the connected account. When omitted, the state is derived from the token combination provided.</summary>
+        public ConnectedAccountInputState? State { get; set; }
+
+        /// <summary>Set to `true` to use the plural connection contract. When omitted or `false`, only the compatibility connection is considered.</summary>
+        public bool? SupportsMultipleConnections { get; set; }
+
+        /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select the connection to update.</summary>
+        public string? ConnectedAccountId { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="PipesService.DeleteOrganizationConnectedAccountAsync"/>: Delete an organization connected account</summary>
+    public class PipesDeleteOrganizationConnectedAccountOptions : BaseOptions
+    {
+        /// <summary>Set to `true` to use the plural connection contract. When omitted or `false`, only the compatibility connection is considered.</summary>
+        public bool? SupportsMultipleConnections { get; set; }
+
+        /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select the connection to delete.</summary>
+        public string? ConnectedAccountId { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="PipesService.ListOrganizationDataProvidersAsync"/>: List providers for an organization</summary>
+    public class PipesListOrganizationDataProvidersOptions : BaseOptions
+    {
+        /// <summary>Set to `true` to use the plural connection contract. When omitted or `false`, only the compatibility connection is considered.</summary>
+        public bool? SupportsMultipleConnections { get; set; }
+
+    }
+
     /// <summary>Request options for <see cref="PipesService.GetUserConnectedAccountAsync"/>: Get a connected account</summary>
     public class PipesGetUserConnectedAccountOptions : BaseOptions
     {

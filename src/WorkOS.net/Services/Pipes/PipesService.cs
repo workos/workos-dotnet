@@ -286,6 +286,109 @@ namespace WorkOS
             return this.GetAccessTokenAsync(provider, options, requestOptions, cancellationToken);
         }
 
+        /// <summary>Get an organization connected account</summary>
+        /// <remarks>
+        /// Retrieves an organization's [connected account](https://workos.com/docs/reference/pipes/connected-account) for a specific provider.
+        /// </remarks>
+        /// <param name="organizationId">An [Organization](https://workos.com/docs/reference/organization) identifier.</param>
+        /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
+        public virtual async Task<ConnectedAccount> GetOrganizationConnectedAccountAsync(string organizationId, string slug, PipesGetOrganizationConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<ConnectedAccount>($"/organizations/{Uri.EscapeDataString(organizationId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetOrganizationConnectedAccountAsync"/>.</summary>
+        public virtual Task<ConnectedAccount> GetOrganizationConnectedAccount(string organizationId, string slug, PipesGetOrganizationConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetOrganizationConnectedAccountAsync(organizationId, slug, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Import an organization connected account</summary>
+        /// <remarks>
+        /// Imports an organization-owned [connected account](https://workos.com/docs/reference/pipes/connected-account) by providing OAuth tokens directly. Use this to migrate existing connections or set up connections without going through the OAuth flow.
+        /// </remarks>
+        /// <param name="organizationId">An [Organization](https://workos.com/docs/reference/organization) identifier.</param>
+        /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
+        public virtual async Task<ConnectedAccount> CreateOrganizationConnectedAccountAsync(string organizationId, string slug, PipesCreateOrganizationConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<ConnectedAccount>($"/organizations/{Uri.EscapeDataString(organizationId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateOrganizationConnectedAccountAsync"/>.</summary>
+        public virtual Task<ConnectedAccount> CreateOrganizationConnectedAccount(string organizationId, string slug, PipesCreateOrganizationConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateOrganizationConnectedAccountAsync(organizationId, slug, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Update an organization connected account</summary>
+        /// <remarks>
+        /// Updates an organization's [connected account](https://workos.com/docs/reference/pipes/connected-account) tokens, scopes, or state for a specific provider.
+        /// </remarks>
+        /// <param name="organizationId">An [Organization](https://workos.com/docs/reference/organization) identifier.</param>
+        /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
+        public virtual async Task<ConnectedAccount> UpdateOrganizationConnectedAccountAsync(string organizationId, string slug, PipesUpdateOrganizationConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PutAsync<ConnectedAccount>($"/organizations/{Uri.EscapeDataString(organizationId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="UpdateOrganizationConnectedAccountAsync"/>.</summary>
+        public virtual Task<ConnectedAccount> UpdateOrganizationConnectedAccount(string organizationId, string slug, PipesUpdateOrganizationConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.UpdateOrganizationConnectedAccountAsync(organizationId, slug, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Delete an organization connected account</summary>
+        /// <remarks>
+        /// Disconnects the organization's account for the provider, including removing any stored access and refresh tokens. A member will need to reauthorize if the organization wants to reconnect. This does not revoke access on the provider side.
+        /// </remarks>
+        /// <param name="organizationId">An [Organization](https://workos.com/docs/reference/organization) identifier.</param>
+        /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteOrganizationConnectedAccountAsync(string organizationId, string slug, PipesDeleteOrganizationConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/organizations/{Uri.EscapeDataString(organizationId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteOrganizationConnectedAccountAsync"/>.</summary>
+        public virtual Task DeleteOrganizationConnectedAccount(string organizationId, string slug, PipesDeleteOrganizationConnectedAccountOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteOrganizationConnectedAccountAsync(organizationId, slug, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>List providers for an organization</summary>
+        /// <remarks>
+        /// Retrieves the organization-owned providers configured for your environment and the organization's [connected account](https://workos.com/docs/reference/pipes/connected-account) information for each. Providers owned by individual users are not included.
+        /// </remarks>
+        /// <param name="organizationId">An [Organization](https://workos.com/docs/reference/organization) identifier to list providers and connected accounts for.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="DataIntegrationsListResponse"/> result.</returns>
+        public virtual async Task<DataIntegrationsListResponse> ListOrganizationDataProvidersAsync(string organizationId, PipesListOrganizationDataProvidersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<DataIntegrationsListResponse>($"/organizations/{Uri.EscapeDataString(organizationId)}/data_providers", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="ListOrganizationDataProvidersAsync"/>.</summary>
+        public virtual Task<DataIntegrationsListResponse> ListOrganizationDataProviders(string organizationId, PipesListOrganizationDataProvidersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.ListOrganizationDataProvidersAsync(organizationId, options, requestOptions, cancellationToken);
+        }
+
         /// <summary>Get a connected account</summary>
         /// <remarks>
         /// Retrieves a user's [connected account](https://workos.com/docs/reference/pipes/connected-account) for a specific provider.

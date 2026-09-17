@@ -207,6 +207,63 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestGetOrganizationConnectedAccountAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organization_id/connected_accounts/test_slug", HttpStatusCode.OK, fixture);
+            var result = await this.service.GetOrganizationConnectedAccountAsync("test_organization_id", "test_slug", new PipesGetOrganizationConnectedAccountOptions());
+            Assert.NotNull(result);
+            Assert.Equal("data_installation_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.CreatedAt);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.UpdatedAt);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_organization_id/connected_accounts/test_slug");
+        }
+
+        [Fact]
+        public async Task TestCreateOrganizationConnectedAccountAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/organizations/test_organization_id/connected_accounts/test_slug", HttpStatusCode.OK, fixture);
+            var result = await this.service.CreateOrganizationConnectedAccountAsync("test_organization_id", "test_slug", new PipesCreateOrganizationConnectedAccountOptions());
+            Assert.NotNull(result);
+            Assert.Equal("data_installation_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.CreatedAt);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.UpdatedAt);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations/test_organization_id/connected_accounts/test_slug");
+        }
+
+        [Fact]
+        public async Task TestUpdateOrganizationConnectedAccountAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
+            this.httpMock.MockResponse(HttpMethod.Put, "/organizations/test_organization_id/connected_accounts/test_slug", HttpStatusCode.OK, fixture);
+            var result = await this.service.UpdateOrganizationConnectedAccountAsync("test_organization_id", "test_slug", new PipesUpdateOrganizationConnectedAccountOptions());
+            Assert.NotNull(result);
+            Assert.Equal("data_installation_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.CreatedAt);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.UpdatedAt);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/organizations/test_organization_id/connected_accounts/test_slug");
+        }
+
+        [Fact]
+        public async Task TestDeleteOrganizationConnectedAccountAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/organizations/test_organization_id/connected_accounts/test_slug", HttpStatusCode.NoContent, "");
+            await this.service.DeleteOrganizationConnectedAccountAsync("test_organization_id", "test_slug", new PipesDeleteOrganizationConnectedAccountOptions());
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/organizations/test_organization_id/connected_accounts/test_slug");
+        }
+
+        [Fact]
+        public async Task TestListOrganizationDataProvidersAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/data_integrations_list_response.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organization_id/data_providers", HttpStatusCode.OK, fixture);
+            var result = await this.service.ListOrganizationDataProvidersAsync("test_organization_id", new PipesListOrganizationDataProvidersOptions());
+            Assert.NotNull(result);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_organization_id/data_providers");
+        }
+
+        [Fact]
         public async Task TestGetUserConnectedAccountAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
