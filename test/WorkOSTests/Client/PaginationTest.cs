@@ -15,18 +15,19 @@ namespace WorkOSTests
     public class PaginationTest
     {
         private readonly HttpMock httpMock;
+        private readonly WorkOSClient client;
         private readonly OrganizationsService service;
 
         public PaginationTest()
         {
             this.httpMock = new HttpMock();
-            var client = new WorkOSClient(new WorkOSOptions
+            this.client = new WorkOSClient(new WorkOSOptions
             {
                 ApiKey = "sk_test",
                 HttpClient = this.httpMock.HttpClient,
                 MaxRetries = 0,
             });
-            this.service = new OrganizationsService(client);
+            this.service = new OrganizationsService(this.client);
         }
 
         [Fact]
@@ -130,6 +131,47 @@ namespace WorkOSTests
 
             // The caller's options must not have been mutated with cursor state.
             Assert.Null(opts.After);
+        }
+
+        [Fact]
+        public async Task ListAutoPagingAsyncCarriesGroupedQueryParamsToEveryPage()
+        {
+            // Regression guard for VULN-1274. Grouped (mutually exclusive)
+            // options such as Parent are JsonIgnore'd and only reach the wire
+            // through the service's per-variant dispatch. The pager used to
+            // bypass that dispatch, so a parent-scoped listing silently came
+            // back as the unfiltered environment-wide listing.
+            var fixture = System.IO.File.ReadAllText("testdata/authorization_resource.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_abc\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(
+                HttpMethod.Get,
+                "/authorization/resources",
+                HttpStatusCode.OK,
+                new[] { page1, page2 });
+
+            var authorization = new AuthorizationService(this.client);
+            var options = new AuthorizationListResourcesOptions
+            {
+                Parent = new AuthorizationParentById { ParentResourceId = "authz_resource_parent" },
+            };
+
+            var items = new List<AuthorizationResource>();
+            await foreach (var item in authorization.ListResourcesAutoPagingAsync(options))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+            Assert.Equal(2, this.httpMock.CapturedRequests.Count);
+            Assert.All(this.httpMock.CapturedRequests, request =>
+            {
+                var query = System.Web.HttpUtility.ParseQueryString(request.RequestUri.Query);
+                Assert.Equal("authz_resource_parent", query["parent_resource_id"]);
+            });
+
+            var secondPage = System.Web.HttpUtility.ParseQueryString(this.httpMock.CapturedRequests[1].RequestUri.Query);
+            Assert.Equal("cursor_abc", secondPage["after"]);
         }
     }
 }

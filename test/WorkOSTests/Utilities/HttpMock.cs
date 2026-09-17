@@ -199,7 +199,11 @@ namespace WorkOSTests
 
         /// <summary>
         /// Mocks sequential responses for the same method + path.
-        /// Each successive call returns the next response in the array.
+        /// Each successive call returns the next response in the array. Every
+        /// matching request is recorded in <see cref="CapturedRequests"/>, so
+        /// a test can assert the query string of each page an auto-paging loop
+        /// requested. A request beyond the configured responses throws, so a
+        /// fixture that never terminates its cursor fails instead of hanging.
         /// </summary>
         public void MockSequentialResponses(
             HttpMethod method,
@@ -207,22 +211,36 @@ namespace WorkOSTests
             HttpStatusCode status,
             string[] responses)
         {
-            var setup = this.MockHandler.Protected()
-                .SetupSequence<Task<HttpResponseMessage>>(
+            if (responses.Length == 0)
+            {
+                throw new System.ArgumentException("At least one response is required.", nameof(responses));
+            }
+
+            // Moq's SetupSequence has no Callback hook, so drive the sequence
+            // from a plain Setup whose return factory walks the array.
+            var next = 0;
+            this.MockHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>(
                     "SendAsync",
                     ItExpr.Is<HttpRequestMessage>(m =>
                         m.Method == method &&
                         m.RequestUri!.AbsolutePath == path),
-                    ItExpr.IsAny<CancellationToken>());
-
-            foreach (var response in responses)
-            {
-                setup.ReturnsAsync(new HttpResponseMessage
+                    ItExpr.IsAny<CancellationToken>())
+                .Callback<HttpRequestMessage, CancellationToken>((req, _) => this.CapturedRequests.Add(req))
+                .ReturnsAsync(() =>
                 {
-                    Content = new StringContent(response),
-                    StatusCode = status,
+                    if (next >= responses.Length)
+                    {
+                        throw new System.InvalidOperationException(
+                            $"{method} {path} was requested {next + 1} times but only {responses.Length} sequential response(s) were configured.");
+                    }
+
+                    return new HttpResponseMessage
+                    {
+                        Content = new StringContent(responses[next++]),
+                        StatusCode = status,
+                    };
                 });
-            }
         }
 
         /// <summary>
