@@ -199,10 +199,11 @@ namespace WorkOSTests
 
         /// <summary>
         /// Mocks sequential responses for the same method + path.
-        /// Each successive call returns the next response in the array; calls
-        /// past the end keep returning the last one. Every matching request is
-        /// recorded in <see cref="CapturedRequests"/>, so a test can assert the
-        /// query string of each page an auto-paging loop requested.
+        /// Each successive call returns the next response in the array. Every
+        /// matching request is recorded in <see cref="CapturedRequests"/>, so
+        /// a test can assert the query string of each page an auto-paging loop
+        /// requested. A request beyond the configured responses throws, so a
+        /// fixture that never terminates its cursor fails instead of hanging.
         /// </summary>
         public void MockSequentialResponses(
             HttpMethod method,
@@ -228,11 +229,15 @@ namespace WorkOSTests
                 .Callback<HttpRequestMessage, CancellationToken>((req, _) => this.CapturedRequests.Add(req))
                 .ReturnsAsync(() =>
                 {
-                    var index = System.Math.Min(next, responses.Length - 1);
-                    next++;
+                    if (next >= responses.Length)
+                    {
+                        throw new System.InvalidOperationException(
+                            $"{method} {path} was requested {next + 1} times but only {responses.Length} sequential response(s) were configured.");
+                    }
+
                     return new HttpResponseMessage
                     {
-                        Content = new StringContent(responses[index]),
+                        Content = new StringContent(responses[next++]),
                         StatusCode = status,
                     };
                 });
