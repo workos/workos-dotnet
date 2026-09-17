@@ -82,11 +82,6 @@ namespace WorkOS
         /// <summary>Gets the <see cref="GroupsService"/> for groups API operations.</summary>
         public virtual GroupsService Groups => this.groups ??= new GroupsService(this);
 
-        private OrganizationsDataProvidersService organizationsDataProviders;
-
-        /// <summary>Gets the <see cref="OrganizationsDataProvidersService"/> for organizations data providers API operations.</summary>
-        public virtual OrganizationsDataProvidersService OrganizationsDataProviders => this.organizationsDataProviders ??= new OrganizationsDataProvidersService(this);
-
         private PlatformTeamsService platformTeams;
 
         /// <summary>Gets the <see cref="PlatformTeamsService"/> for platform teams API operations.</summary>
