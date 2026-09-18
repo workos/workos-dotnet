@@ -1,5 +1,27 @@
 # Changelog
 
+## [6.4.0](https://github.com/workos/workos-dotnet/compare/v6.3.0...v6.4.0) (2026-09-18)
+
+
+### Features
+
+* **agents:** Add parameter `AgentsSessions.list.organization_id` ([#308](https://github.com/workos/workos-dotnet/issues/308)) ([3989bae](https://github.com/workos/workos-dotnet/commit/3989bae918ad4ef390743d9a576e792d489a3d98))
+* **generated:** Pipes (batch 8ad8e447) ([#304](https://github.com/workos/workos-dotnet/issues/304)) ([4d37876](https://github.com/workos/workos-dotnet/commit/4d3787659eae1a969bf8043fcbefb089c98159bc))
+* **pipes:** Update Pipes API surface ([#308](https://github.com/workos/workos-dotnet/issues/308)) ([3989bae](https://github.com/workos/workos-dotnet/commit/3989bae918ad4ef390743d9a576e792d489a3d98))
+* **user_management:** Add user management API surface ([#308](https://github.com/workos/workos-dotnet/issues/308)) ([3989bae](https://github.com/workos/workos-dotnet/commit/3989bae918ad4ef390743d9a576e792d489a3d98))
+
+
+### Bug Fixes
+
+* **client:** Reject dot-segment request paths ([#307](https://github.com/workos/workos-dotnet/issues/307)) ([879dd10](https://github.com/workos/workos-dotnet/commit/879dd100a923bcc2125eaa4218d67d96a791ea0b))
+* **multi_factor_auth:** Change errors for endpoint `POST /auth/factors/{id}/challenge` ([#311](https://github.com/workos/workos-dotnet/issues/311)) ([f8acb5b](https://github.com/workos/workos-dotnet/commit/f8acb5b45fb1477ef5ef026bbdc9de7592dbc4c1))
+* **multi_factor_auth:** Change errors for endpoint `POST /auth/factors/{id}/challenge` ([#313](https://github.com/workos/workos-dotnet/issues/313)) ([ea255f8](https://github.com/workos/workos-dotnet/commit/ea255f860de09b6d787d79bc31462fe0a16731c9))
+* **pipes:** Move organization connected-account operations onto Pipes ([#313](https://github.com/workos/workos-dotnet/issues/313)) ([ea255f8](https://github.com/workos/workos-dotnet/commit/ea255f860de09b6d787d79bc31462fe0a16731c9))
+* **pipes:** Remove unused types left behind by earlier renames ([#313](https://github.com/workos/workos-dotnet/issues/313)) ([ea255f8](https://github.com/workos/workos-dotnet/commit/ea255f860de09b6d787d79bc31462fe0a16731c9))
+* **pipes:** Update Pipes API surface ([#308](https://github.com/workos/workos-dotnet/issues/308)) ([3989bae](https://github.com/workos/workos-dotnet/commit/3989bae918ad4ef390743d9a576e792d489a3d98))
+* **session:** Clarify opt-in JWT claim validation ([#306](https://github.com/workos/workos-dotnet/issues/306)) ([e7acc32](https://github.com/workos/workos-dotnet/commit/e7acc326167d75cecef1764fde82756b516c416b))
+* **user_management:** Remove unused enums left behind by earlier renames ([#313](https://github.com/workos/workos-dotnet/issues/313)) ([ea255f8](https://github.com/workos/workos-dotnet/commit/ea255f860de09b6d787d79bc31462fe0a16731c9))
+
 ## [6.3.0](https://github.com/workos/workos-dotnet/compare/v6.2.0...v6.3.0) (2026-09-01)
 
 * [#300](https://github.com/workos/workos-dotnet/pull/300) feat(generated): regenerate from spec (2 changes)
