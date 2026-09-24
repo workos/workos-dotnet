@@ -2,10 +2,12 @@
 
 ## [6.5.0](https://github.com/workos/workos-dotnet/compare/v6.4.0...v6.5.0) (2026-09-24)
 
+* [#314](https://github.com/workos/workos-dotnet/pull/314) feat(generated): regenerate from spec
 
-### Features
-
-* **generated:** Authorization (batch c64ce1e7) ([#314](https://github.com/workos/workos-dotnet/issues/314)) ([e74b588](https://github.com/workos/workos-dotnet/commit/e74b588896fe7ec8b1ed50ef7872545c7619b191))
+  **Features**
+  * **[user_management](https://workos.com/docs/reference/authkit/user)**:
+    * Added model `UserRoleAssignmentSourceGroup`
+    * Added `group` to `UserRoleAssignmentSource`
 
 ## [6.4.0](https://github.com/workos/workos-dotnet/compare/v6.3.0...v6.4.0) (2026-09-18)
 
