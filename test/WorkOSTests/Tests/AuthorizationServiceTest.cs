@@ -726,6 +726,32 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestListResourcesForMembershipAutoPagingAsyncPreservesGroupedQueryParams()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/authorization_resource.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/organization_memberships/test_organization_membership_id/resources", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var options = new AuthorizationListResourcesForMembershipOptions();
+            options.ParentResource = new AuthorizationParentResourceById { ParentResourceId = "test_parent_resource_id" };
+
+            var items = new List<AuthorizationResource>();
+            await foreach (var item in this.service.ListResourcesForMembershipAutoPagingAsync("test_organization_membership_id", options))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+            Assert.Equal(2, this.httpMock.CapturedRequests.Count);
+            foreach (var request in this.httpMock.CapturedRequests)
+            {
+                var query = System.Web.HttpUtility.ParseQueryString(request.RequestUri.Query);
+                Assert.Equal("test_parent_resource_id", query["parent_resource_id"]);
+            }
+        }
+
+        [Fact]
         public async Task TestListEffectivePermissionsAutoPagingAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/authorization_permission.json");
@@ -915,6 +941,32 @@ namespace WorkOSTests
             }
 
             Assert.Empty(items);
+        }
+
+        [Fact]
+        public async Task TestListResourcesAutoPagingAsyncPreservesGroupedQueryParams()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/authorization_resource.json");
+            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
+            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
+            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/authorization/resources", HttpStatusCode.OK, new[] { page1, page2 });
+
+            var options = new AuthorizationListResourcesOptions();
+            options.Parent = new AuthorizationParentById { ParentResourceId = "test_parent_resource_id" };
+
+            var items = new List<AuthorizationResource>();
+            await foreach (var item in this.service.ListResourcesAutoPagingAsync(options))
+            {
+                items.Add(item);
+            }
+
+            Assert.Equal(2, items.Count);
+            Assert.Equal(2, this.httpMock.CapturedRequests.Count);
+            foreach (var request in this.httpMock.CapturedRequests)
+            {
+                var query = System.Web.HttpUtility.ParseQueryString(request.RequestUri.Query);
+                Assert.Equal("test_parent_resource_id", query["parent_resource_id"]);
+            }
         }
 
         [Fact]
