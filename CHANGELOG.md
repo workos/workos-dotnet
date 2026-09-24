@@ -1,5 +1,14 @@
 # Changelog
 
+## [6.5.0](https://github.com/workos/workos-dotnet/compare/v6.4.0...v6.5.0) (2026-09-24)
+
+* [#314](https://github.com/workos/workos-dotnet/pull/314) feat(generated): regenerate from spec
+
+  **Features**
+  * **[user_management](https://workos.com/docs/reference/authkit/user)**:
+    * Added model `UserRoleAssignmentSourceGroup`
+    * Added `group` to `UserRoleAssignmentSource`
+
 ## [6.4.0](https://github.com/workos/workos-dotnet/compare/v6.3.0...v6.4.0) (2026-09-18)
 
 ### Bug Fixes
