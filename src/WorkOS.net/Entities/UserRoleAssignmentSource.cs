@@ -16,5 +16,8 @@ namespace WorkOS
 
         /// <summary>The ID of the group role assignment the role was derived from, or null if direct.</summary>
         public string? GroupRoleAssignmentId { get; set; }
+
+        /// <summary>The group the role was derived from, or null if direct.</summary>
+        public Actor? Group { get; set; }
     }
 }

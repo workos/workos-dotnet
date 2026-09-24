@@ -1596,6 +1596,7 @@
     "test/WorkOSTests/testdata/user_role_assignment.json",
     "test/WorkOSTests/testdata/user_role_assignment_resource.json",
     "test/WorkOSTests/testdata/user_role_assignment_source.json",
+    "test/WorkOSTests/testdata/user_role_assignment_source_group.json",
     "test/WorkOSTests/testdata/user_role_assignment_source_nulls.json",
     "test/WorkOSTests/testdata/user_sessions_impersonator.json",
     "test/WorkOSTests/testdata/user_sessions_impersonator_nulls.json",
