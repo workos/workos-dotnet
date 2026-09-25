@@ -90,6 +90,25 @@ namespace WorkOS
             return this.DeleteAsync(id, requestOptions, cancellationToken);
         }
 
+        /// <summary>Sync a Directory</summary>
+        /// <remarks>
+        /// Request an asynchronous sync from the directory provider. Currently supports Google Workspace directories in linked or validating state. Manual requests share a five-minute per-directory cooldown across the API, Dashboard, Admin Portal, and MCP. Acceptance means the request was queued, not that the sync has started or completed. A running sync prevents another request from being queued.
+        /// </remarks>
+        /// <param name="id">Unique identifier for the Directory.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="DirectorySyncResponse"/> result.</returns>
+        public virtual async Task<DirectorySyncResponse> SyncAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<DirectorySyncResponse>($"/directories/{Uri.EscapeDataString(id)}/sync", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="SyncAsync"/>.</summary>
+        public virtual Task<DirectorySyncResponse> Sync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.SyncAsync(id, requestOptions, cancellationToken);
+        }
+
         /// <summary>List Directory Groups</summary>
         /// <remarks>
         /// Get a list of all of existing directory groups matching the criteria specified.

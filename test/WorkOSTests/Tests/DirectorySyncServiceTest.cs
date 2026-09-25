@@ -68,6 +68,16 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestSyncAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/directory_sync_response.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/directories/test_id/sync", HttpStatusCode.OK, fixture);
+            var result = await this.service.SyncAsync("test_id");
+            Assert.NotNull(result);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/directories/test_id/sync");
+        }
+
+        [Fact]
         public async Task TestListGroupsAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_directory_group.json");
