@@ -197,6 +197,8 @@
     "src/WorkOS.net/Entities/DirectoryGroup.cs",
     "src/WorkOS.net/Entities/DirectoryMetadata.cs",
     "src/WorkOS.net/Entities/DirectoryMetadataUser.cs",
+    "src/WorkOS.net/Entities/DirectorySyncRateLimitError.cs",
+    "src/WorkOS.net/Entities/DirectorySyncResponse.cs",
     "src/WorkOS.net/Entities/DirectoryUser.cs",
     "src/WorkOS.net/Entities/DirectoryUserEmail.cs",
     "src/WorkOS.net/Entities/DirectoryUserWithGroups.cs",
@@ -1024,6 +1026,8 @@
     "test/WorkOSTests/testdata/directory_metadata.json",
     "test/WorkOSTests/testdata/directory_metadata_user.json",
     "test/WorkOSTests/testdata/directory_nulls.json",
+    "test/WorkOSTests/testdata/directory_sync_rate_limit_error.json",
+    "test/WorkOSTests/testdata/directory_sync_response.json",
     "test/WorkOSTests/testdata/directory_user.json",
     "test/WorkOSTests/testdata/directory_user_email.json",
     "test/WorkOSTests/testdata/directory_user_email_nulls.json",
@@ -2705,6 +2709,10 @@
     "GET /audit_logs/exports/{auditLogExportId}": {
       "sdkMethod": "GetExportAsync",
       "service": "audit_logs"
+    },
+    "POST /directories/{id}/sync": {
+      "sdkMethod": "SyncAsync",
+      "service": "directory_sync"
     }
   }
 }
