@@ -97,21 +97,34 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestCreateDataIntegrationApiKeyAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/data-integrations/test_slug/api-key", HttpStatusCode.OK, fixture);
+            var options = new PipesCreateDataIntegrationApiKeyOptions();
+            options.UserId = "test_user_id";
+            options.Secret = "test_secret";
+            var result = await this.service.CreateDataIntegrationApiKeyAsync("test_slug", options);
+            Assert.NotNull(result);
+            Assert.Equal("data_installation_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.CreatedAt);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.UpdatedAt);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/data-integrations/test_slug/api-key");
+            await this.httpMock.AssertRequestBodyContainsAsync("user_id", "test_user_id");
+            await this.httpMock.AssertRequestBodyContainsAsync("secret", "test_secret");
+        }
+
+        [Fact]
         public async Task TestUpdateDataIntegrationApiKeyAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/data-integrations/test_slug/api-key", HttpStatusCode.OK, fixture);
-            var options = new PipesUpdateDataIntegrationApiKeyOptions();
-            options.UserId = "test_user_id";
-            options.Secret = "test_secret";
-            var result = await this.service.UpdateDataIntegrationApiKeyAsync("test_slug", options);
+            var result = await this.service.UpdateDataIntegrationApiKeyAsync("test_slug", new PipesUpdateDataIntegrationApiKeyOptions());
             Assert.NotNull(result);
             Assert.Equal("data_installation_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
             Assert.Equal("2024-01-16T14:20:00.000Z", result.CreatedAt);
             Assert.Equal("2024-01-16T14:20:00.000Z", result.UpdatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/data-integrations/test_slug/api-key");
-            await this.httpMock.AssertRequestBodyContainsAsync("user_id", "test_user_id");
-            await this.httpMock.AssertRequestBodyContainsAsync("secret", "test_secret");
         }
 
         [Fact]
@@ -129,21 +142,34 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestCreateDataIntegrationClientCredentialAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/data-integrations/test_slug/client-credentials", HttpStatusCode.OK, fixture);
+            var options = new PipesCreateDataIntegrationClientCredentialOptions();
+            options.UserId = "test_user_id";
+            options.ClientId = "test_client_id";
+            var result = await this.service.CreateDataIntegrationClientCredentialAsync("test_slug", options);
+            Assert.NotNull(result);
+            Assert.Equal("data_installation_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.CreatedAt);
+            Assert.Equal("2024-01-16T14:20:00.000Z", result.UpdatedAt);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/data-integrations/test_slug/client-credentials");
+            await this.httpMock.AssertRequestBodyContainsAsync("user_id", "test_user_id");
+            await this.httpMock.AssertRequestBodyContainsAsync("client_id", "test_client_id");
+        }
+
+        [Fact]
         public async Task TestUpdateDataIntegrationClientCredentialsAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/data-integrations/test_slug/client-credentials", HttpStatusCode.OK, fixture);
-            var options = new PipesUpdateDataIntegrationClientCredentialsOptions();
-            options.UserId = "test_user_id";
-            options.ClientId = "test_client_id";
-            var result = await this.service.UpdateDataIntegrationClientCredentialsAsync("test_slug", options);
+            var result = await this.service.UpdateDataIntegrationClientCredentialsAsync("test_slug", new PipesUpdateDataIntegrationClientCredentialsOptions());
             Assert.NotNull(result);
             Assert.Equal("data_installation_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
             Assert.Equal("2024-01-16T14:20:00.000Z", result.CreatedAt);
             Assert.Equal("2024-01-16T14:20:00.000Z", result.UpdatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/data-integrations/test_slug/client-credentials");
-            await this.httpMock.AssertRequestBodyContainsAsync("user_id", "test_user_id");
-            await this.httpMock.AssertRequestBodyContainsAsync("client_id", "test_client_id");
         }
 
         [Fact]
@@ -224,12 +250,15 @@ namespace WorkOSTests
         {
             var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/organizations/test_organization_id/connected_accounts/test_slug", HttpStatusCode.OK, fixture);
-            var result = await this.service.CreateOrganizationConnectedAccountAsync("test_organization_id", "test_slug", new PipesCreateOrganizationConnectedAccountOptions());
+            var options = new PipesCreateOrganizationConnectedAccountOptions();
+            options.UserId = "test_user_id";
+            var result = await this.service.CreateOrganizationConnectedAccountAsync("test_organization_id", "test_slug", options);
             Assert.NotNull(result);
             Assert.Equal("data_installation_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
             Assert.Equal("2024-01-16T14:20:00.000Z", result.CreatedAt);
             Assert.Equal("2024-01-16T14:20:00.000Z", result.UpdatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/organizations/test_organization_id/connected_accounts/test_slug");
+            await this.httpMock.AssertRequestBodyContainsAsync("user_id", "test_user_id");
         }
 
         [Fact]
@@ -237,12 +266,15 @@ namespace WorkOSTests
         {
             var fixture = System.IO.File.ReadAllText("testdata/connected_account.json");
             this.httpMock.MockResponse(HttpMethod.Put, "/organizations/test_organization_id/connected_accounts/test_slug", HttpStatusCode.OK, fixture);
-            var result = await this.service.UpdateOrganizationConnectedAccountAsync("test_organization_id", "test_slug", new PipesUpdateOrganizationConnectedAccountOptions());
+            var options = new PipesUpdateOrganizationConnectedAccountOptions();
+            options.UserId = "test_user_id";
+            var result = await this.service.UpdateOrganizationConnectedAccountAsync("test_organization_id", "test_slug", options);
             Assert.NotNull(result);
             Assert.Equal("data_installation_01EHZNVPK3SFK441A1RGBFSHRT", result.Id);
             Assert.Equal("2024-01-16T14:20:00.000Z", result.CreatedAt);
             Assert.Equal("2024-01-16T14:20:00.000Z", result.UpdatedAt);
             this.httpMock.AssertRequestWasMade(HttpMethod.Put, "/organizations/test_organization_id/connected_accounts/test_slug");
+            await this.httpMock.AssertRequestBodyContainsAsync("user_id", "test_user_id");
         }
 
         [Fact]

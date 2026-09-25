@@ -11,7 +11,7 @@ namespace WorkOS
         public bool? Active { get; set; }
 
         /// <summary>The credential object containing the vended secret.</summary>
-        public DataIntegrationCredentialsResponseCredential? Credential { get; set; }
+        public DataIntegrationVendedCredential? Credential { get; set; }
 
         /// <summary>The reason credentials are unavailable. Additional values may be added in the future; handle unknown values gracefully.</summary>
         /// <remarks>
