@@ -2,7 +2,6 @@
   "user_id": "user_01EHZNVPK3SFK441A1RGBFSHRT",
   "organization_id": null,
   "connection_owner": null,
-  "client_id": "3MVG9...",
-  "client_secret": "shhh-secret",
-  "config": null
+  "secret": "sk-1234567890abcdef",
+  "connection_intent": "add"
 }

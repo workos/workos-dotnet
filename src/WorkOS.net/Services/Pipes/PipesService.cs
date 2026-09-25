@@ -129,9 +129,29 @@ namespace WorkOS
             return this.DeleteDataIntegrationAsync(slug, requestOptions, cancellationToken);
         }
 
+        /// <summary>Create another API key connected account</summary>
+        /// <remarks>
+        /// Creates another API key-based connected account for the specified integration, owned by the user or, when `connection_owner` is `organization`, shared by the organization. Requires `connection_intent: add` and does not accept `connected_account_id`; use PUT to create or rotate the compatibility connection or to update an exact connection. Creating an additional connection is not yet available: until it is, this endpoint succeeds only when the owner has no connection for this integration, which creates the compatibility connection, and otherwise returns 404 `multiple_connections_unavailable`.
+        /// </remarks>
+        /// <param name="slug">The identifier of the integration.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
+        public virtual async Task<ConnectedAccount> CreateDataIntegrationApiKeyAsync(string slug, PipesCreateDataIntegrationApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<ConnectedAccount>($"/data-integrations/{Uri.EscapeDataString(slug)}/api-key", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateDataIntegrationApiKeyAsync"/>.</summary>
+        public virtual Task<ConnectedAccount> CreateDataIntegrationApiKey(string slug, PipesCreateDataIntegrationApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateDataIntegrationApiKeyAsync(slug, options, requestOptions, cancellationToken);
+        }
+
         /// <summary>Upsert an API key for a connected account</summary>
         /// <remarks>
-        /// Creates or updates an API-key-based installation for the specified integration, owned by the user or, when `connection_owner` is `organization`, shared by the organization. If an installation already exists, the stored API key is rotated to the new value.
+        /// Creates or updates an API-key-based installation for the specified integration, owned by the user or, when `connection_owner` is `organization`, shared by the organization. If an installation already exists, the stored API key is rotated to the new value. To create another connection, use POST.
         /// </remarks>
         /// <param name="slug">The identifier of the integration.</param>
         /// <param name="options">Request options.</param>
@@ -169,9 +189,29 @@ namespace WorkOS
             return this.AuthorizeDataIntegrationAsync(slug, options, requestOptions, cancellationToken);
         }
 
+        /// <summary>Create another client credentials connected account</summary>
+        /// <remarks>
+        /// Creates another client credentials-based connected account for the specified integration, owned by the user or, when `connection_owner` is `organization`, shared by the organization. Requires `connection_intent: add` and does not accept `connected_account_id`; use PUT to create or rotate the compatibility connection or to update an exact connection. Creating an additional connection is not yet available: until it is, this endpoint succeeds only when the owner has no connection for this integration, which creates the compatibility connection, and otherwise returns 404 `multiple_connections_unavailable`.
+        /// </remarks>
+        /// <param name="slug">The identifier of the integration.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
+        public virtual async Task<ConnectedAccount> CreateDataIntegrationClientCredentialAsync(string slug, PipesCreateDataIntegrationClientCredentialOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<ConnectedAccount>($"/data-integrations/{Uri.EscapeDataString(slug)}/client-credentials", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateDataIntegrationClientCredentialAsync"/>.</summary>
+        public virtual Task<ConnectedAccount> CreateDataIntegrationClientCredential(string slug, PipesCreateDataIntegrationClientCredentialOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateDataIntegrationClientCredentialAsync(slug, options, requestOptions, cancellationToken);
+        }
+
         /// <summary>Upsert client credentials for a connected account</summary>
         /// <remarks>
-        /// Creates or updates a client-credentials-based installation for the specified integration, owned by the user or, when `connection_owner` is `organization`, shared by the organization. If an installation already exists, the stored client credentials are rotated to the new values.
+        /// Creates or updates a client-credentials-based installation for the specified integration, owned by the user or, when `connection_owner` is `organization`, shared by the organization. If an installation already exists, the stored client credentials are rotated to the new values. To create another connection, use POST.
         /// </remarks>
         /// <param name="slug">The identifier of the integration.</param>
         /// <param name="options">Request options.</param>
@@ -191,7 +231,7 @@ namespace WorkOS
 
         /// <summary>Vend credentials for a connected account</summary>
         /// <remarks>
-        /// Returns credentials for a user's connected account. Branches on the installation's `auth_method`: OAuth installations return an access token (refreshed if needed); API-key installations return the stored secret.
+        /// Returns credentials for a user's connected account. Branches on the installation's `auth_method`: OAuth installations return an access token (refreshed if needed); API-key installations return the stored secret. Every active credential includes `config`: provider-declared, non-secret values from the installation snapshot, with current provider defaults for unset fields. Editing integration or organization configuration does not change the snapshot; reconnect or explicitly rebind the connection to adopt those edits. Defaults remain live, so a changed default can appear in `config` before a cached token is refreshed or re-minted. Credentials that never refresh require a reconnect or rebind when a default changes their routing.
         /// </remarks>
         /// <param name="slug">The identifier of the integration.</param>
         /// <param name="options">Request options.</param>
@@ -309,7 +349,7 @@ namespace WorkOS
 
         /// <summary>Import an organization connected account</summary>
         /// <remarks>
-        /// Imports an organization-owned [connected account](https://workos.com/docs/reference/pipes/connected-account) by providing OAuth tokens directly. Use this to migrate existing connections or set up connections without going through the OAuth flow.
+        /// Imports an organization-owned [connected account](https://workos.com/docs/reference/pipes/connected-account) by providing OAuth tokens directly. Omit `connection_intent` to create only the compatibility connection, or set it to `add` to explicitly create another connection. This creation-only endpoint does not accept `connected_account_id` or reauthorization intent.
         /// </remarks>
         /// <param name="organizationId">An [Organization](https://workos.com/docs/reference/organization) identifier.</param>
         /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
