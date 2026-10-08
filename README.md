@@ -251,6 +251,93 @@ var payload = client.Actions.ConstructAction(rawBody, signatureHeader, signingSe
 var session = await client.Session.AuthenticateAsync(cookieValue, cookiePassword);
 ```
 
+## Feature flag runtime client
+
+The runtime client refreshes one bulk configuration for the API key's environment
+and evaluates boolean flags locally. It does not call the API during evaluation.
+Use one long-lived instance per environment, shared across application requests.
+Runtime code is hand-maintained separately from generated REST services.
+
+```csharp
+using var client = new WorkOSClient(new WorkOSOptions { ApiKey = "sk_..." });
+await using var flags = client.CreateFeatureFlagsRuntimeClient(
+    new FeatureFlagsRuntimeOptions
+    {
+        PollingInterval = TimeSpan.FromSeconds(60),
+        RequestTimeout = TimeSpan.FromSeconds(10),
+    });
+
+// Bound startup waiting. Cancellation cancels this wait, not background polling.
+using var startup = new CancellationTokenSource(TimeSpan.FromSeconds(15));
+await flags.StartAsync(startup.Token);
+
+var context = new FeatureFlagContext(
+    organizationId: "org_acme",
+    userId: "user_jp");
+bool enabled = flags.IsEnabled("new-checkout", context, defaultValue: false);
+IReadOnlyDictionary<string, bool> allFlags = flags.GetAllFlags(context);
+```
+
+`StartAsync` starts polling once and waits for a validated configuration. Without
+one, `IsEnabled` returns its caller-provided fallback (false by default) and
+`GetAllFlags` returns an empty map. `WaitUntilReadyAsync` waits without starting
+polling. `RefreshAsync` explicitly refreshes and propagates any error to its caller;
+manual and background refreshes cannot overlap.
+
+The runtime requests V2 configuration through the SDK transport, reusing its
+API key, custom base URL, HTTP client and retry configuration. The refresh timeout
+bounds transport retries and reading the response. After a failed background
+refresh, polling uses bounded exponential backoff with jitter (up to five minutes
+by default). Failures retain the entire last successful snapshot. A successful
+empty configuration removes previously cached flags. HTTP 401/403 stops background
+polling; correct credentials/access and create a new runtime.
+
+Evaluation follows the server's ordered rule semantics: disabled flags serve
+`off_value`; for enabled flags, the first matching rule wins, otherwise
+`default_value` applies. All conditions in a rule must match. Exact IDs are
+case-sensitive. Empty conditions and unknown rule kinds/operators never match.
+Malformed responses or unsupported payload versions fail the entire refresh
+instead of partially replacing a good cache.
+
+The context describes the subjects for this evaluation. The runtime does not look
+up organization memberships for a user; pass the relevant organization ID yourself.
+Custom targets can be passed as `customTargets: new Dictionary<string, string>
+{ ["project"] = "project_123" }`. Contexts and configuration snapshots are immutable,
+and local evaluation supports concurrent readers during refreshes.
+
+### Bootstrap and observability
+
+Persist `flags.Configuration?.ToJson()` in your own storage and restore it at
+startup, scoped to the same environment/API key. A bootstrap snapshot is immediately
+usable before polling succeeds:
+
+```csharp
+string cachedJson = await LoadCachedConfigurationAsync(); // Your storage.
+await using var flags = client.CreateFeatureFlagsRuntimeClient(
+    new FeatureFlagsRuntimeOptions
+    {
+        BootstrapConfiguration = FeatureFlagsConfiguration.FromJson(cachedJson),
+    });
+await flags.StartAsync(); // Immediately ready; polls in the background.
+```
+
+Bootstrap JSON must be the complete versioned runtime configuration, not a
+`/flag_targets` response. Invalid bootstrap JSON throws before runtime creation;
+handle it as a cache miss. The runtime deliberately does not own distributed cache
+storage or impose an expiry policy. Monitor configuration freshness for your
+application's requirements.
+
+`Status` gives one immutable view of readiness, the current snapshot,
+`LastSuccessfulRefresh` and `LastError`. Bootstrap-only readiness has no successful
+network-refresh timestamp. An optional `IProgress<FeatureFlagsRuntimeStatus>`
+observer receives refresh results independently of polling; callbacks can be
+concurrent or arrive after disposal. Observer exceptions do not interrupt polling.
+
+Dispose the runtime before its `WorkOSClient`, preferably with `await using`.
+`DisposeAsync` cancels and joins background polling and active manual refreshes;
+`Dispose` provides a synchronous equivalent. Neither disposes the supplied SDK
+client or a caller-owned `HttpClient`. Local evaluation methods throw after disposal.
+
 ## Making direct API requests
 
 Every REST endpoint in the WorkOS OpenAPI spec has a typed wrapper on one of

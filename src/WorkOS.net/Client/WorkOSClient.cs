@@ -103,6 +103,17 @@ namespace WorkOS
         private HttpClient HttpClient { get; }
 
         /// <summary>
+        /// Creates a caller-owned feature flags runtime using this client's transport.
+        /// Call StartAsync to begin polling and dispose the runtime before disposing this client.
+        /// </summary>
+        /// <param name="options">Polling and bootstrap options.</param>
+        /// <returns>A locally evaluating runtime client.</returns>
+        public FeatureFlagsRuntimeClient CreateFeatureFlagsRuntimeClient(FeatureFlagsRuntimeOptions? options = null)
+        {
+            return new FeatureFlagsRuntimeClient(this, options);
+        }
+
+        /// <summary>
         /// Creates a new HTTP client instance.
         /// </summary>
         /// <returns>An instance of the HTTP client to make requests.</returns>
