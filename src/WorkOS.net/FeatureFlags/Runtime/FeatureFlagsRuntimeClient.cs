@@ -15,12 +15,18 @@ namespace WorkOS
     /// </summary>
     public sealed class FeatureFlagsRuntimeClient : IDisposable, IAsyncDisposable
     {
+        private const int MinimumPollingIntervalMilliseconds = 5_000;
+        private const int MinimumDelayMilliseconds = 1_000;
+        private const int InitialRetryMilliseconds = 1_000;
+        private const double JitterFactor = 0.1;
+        private const uint MaximumTimerMilliseconds = uint.MaxValue - 1;
         private readonly WorkOSClient client;
         private readonly TimeSpan pollingInterval;
         private readonly TimeSpan requestTimeout;
         private readonly TimeSpan maxRetryDelay;
         private readonly IProgress<FeatureFlagsRuntimeStatus>? progress;
         private readonly object lifecycleLock = new object();
+        private readonly HashSet<Task> pendingRefreshes = new HashSet<Task>();
         private readonly CancellationTokenSource lifetime = new CancellationTokenSource();
         private readonly SemaphoreSlim refreshGate = new SemaphoreSlim(1, 1);
         private readonly TaskCompletionSource ready = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -36,16 +42,14 @@ namespace WorkOS
         {
             ArgumentNullException.ThrowIfNull(client);
             options ??= new FeatureFlagsRuntimeOptions();
-            ValidateDuration(options.PollingInterval, nameof(options.PollingInterval));
+            var minimumPollingInterval = TimeSpan.FromMilliseconds(MinimumPollingIntervalMilliseconds);
+            var pollingInterval = options.PollingInterval < minimumPollingInterval ? minimumPollingInterval : options.PollingInterval;
+            ValidateDuration(pollingInterval, nameof(options.PollingInterval));
             ValidateDuration(options.RequestTimeout, nameof(options.RequestTimeout));
             ValidateDuration(options.MaxRetryDelay, nameof(options.MaxRetryDelay));
-            if (options.MaxRetryDelay < options.PollingInterval)
-            {
-                throw new ArgumentOutOfRangeException(nameof(options.MaxRetryDelay), "Maximum retry delay must be at least the polling interval.");
-            }
 
             this.client = client;
-            this.pollingInterval = options.PollingInterval;
+            this.pollingInterval = pollingInterval;
             this.requestTimeout = options.RequestTimeout;
             this.maxRetryDelay = options.MaxRetryDelay;
             this.progress = options.Progress;
@@ -101,57 +105,21 @@ namespace WorkOS
         /// </summary>
         /// <param name="cancellationToken">Cancellation for this refresh.</param>
         /// <returns>A task completed after a new validated snapshot is installed.</returns>
-        public async Task RefreshAsync(CancellationToken cancellationToken = default)
+        public Task RefreshAsync(CancellationToken cancellationToken = default)
         {
             CancellationTokenSource cancellation;
+            var completion = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
             lock (this.lifecycleLock)
             {
                 this.ThrowIfDisposed();
                 cancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, this.lifetime.Token);
+
+                // Register before waiting for the gate so disposal can join queued refreshes.
+                this.pendingRefreshes.Add(completion.Task);
             }
 
-            using (cancellation)
-            {
-                await this.refreshGate.WaitAsync(cancellation.Token).ConfigureAwait(false);
-                try
-                {
-                    cancellation.CancelAfter(this.requestTimeout);
-                    var request = new WorkOSRequest { Method = HttpMethod.Get, Path = "/sdk/feature-flags" };
-                    request.AddQueryParam("payload_version", "2");
-                    using var response = await this.client.MakeRawAPIRequest(request, cancellation.Token).ConfigureAwait(false);
-                    var json = await response.Content.ReadAsStringAsync(cancellation.Token).ConfigureAwait(false);
-                    var configuration = FeatureFlagsConfiguration.FromJson(json);
-                    cancellation.Token.ThrowIfCancellationRequested();
-                    var successful = new FeatureFlagsRuntimeStatus(configuration, DateTimeOffset.UtcNow, null);
-                    Volatile.Write(ref this.status, successful);
-                    this.ready.TrySetResult();
-                    this.ReportStatus(successful);
-                }
-                catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested || this.lifetime.IsCancellationRequested)
-                {
-                    throw;
-                }
-                catch (Exception exception)
-                {
-                    var error = exception is OperationCanceledException
-                        ? new TimeoutException("Feature flag configuration refresh exceeded its request timeout.", exception)
-                        : exception;
-                    var previous = this.Status;
-                    var failed = new FeatureFlagsRuntimeStatus(previous.Configuration, previous.LastSuccessfulRefresh, error);
-                    Volatile.Write(ref this.status, failed);
-                    this.ReportStatus(failed);
-                    if (error != exception)
-                    {
-                        throw error;
-                    }
-
-                    throw;
-                }
-                finally
-                {
-                    this.refreshGate.Release();
-                }
-            }
+            _ = this.RefreshAndCompleteAsync(cancellationToken, cancellation, completion);
+            return completion.Task;
         }
 
         /// <summary>
@@ -191,7 +159,7 @@ namespace WorkOS
             this.DisposeAsync().AsTask().GetAwaiter().GetResult();
         }
 
-        /// <summary>Cancels and joins polling and any active refresh before releasing resources.</summary>
+        /// <summary>Cancels and joins polling and all active or queued refreshes before releasing resources.</summary>
         /// <returns>A task completed when network activity has stopped.</returns>
         public ValueTask DisposeAsync()
         {
@@ -200,7 +168,9 @@ namespace WorkOS
                 if (this.disposalTask == null)
                 {
                     Volatile.Write(ref this.disposed, true);
-                    this.disposalTask = this.DisposeCoreAsync();
+                    var refreshes = new Task[this.pendingRefreshes.Count];
+                    this.pendingRefreshes.CopyTo(refreshes);
+                    this.disposalTask = this.DisposeCoreAsync(refreshes);
                 }
 
                 return new ValueTask(this.disposalTask);
@@ -209,9 +179,77 @@ namespace WorkOS
 
         private static void ValidateDuration(TimeSpan value, string name)
         {
-            if (value <= TimeSpan.Zero || value.TotalMilliseconds > uint.MaxValue - 1)
+            if (value < TimeSpan.FromMilliseconds(1) || value.TotalMilliseconds > MaximumTimerMilliseconds)
             {
-                throw new ArgumentOutOfRangeException(name, "Duration must be positive and supported by .NET timers.");
+                throw new ArgumentOutOfRangeException(name, "Duration must be at least one millisecond and supported by .NET timers.");
+            }
+        }
+
+        private async Task RefreshAndCompleteAsync(CancellationToken cancellationToken, CancellationTokenSource cancellation, TaskCompletionSource completion)
+        {
+            try
+            {
+                using (cancellation)
+                {
+                    await this.refreshGate.WaitAsync(cancellation.Token).ConfigureAwait(false);
+                    try
+                    {
+                        // Cancellation callbacks may not yet have reached this linked token.
+                        this.lifetime.Token.ThrowIfCancellationRequested();
+                        cancellation.CancelAfter(this.requestTimeout);
+                        var request = new WorkOSRequest { Method = HttpMethod.Get, Path = "/sdk/feature-flags" };
+                        request.AddQueryParam("payload_version", "2");
+                        using var response = await this.client.MakeRawAPIRequest(request, cancellation.Token).ConfigureAwait(false);
+                        var json = await response.Content.ReadAsStringAsync(cancellation.Token).ConfigureAwait(false);
+                        var configuration = FeatureFlagsConfiguration.FromJson(json);
+                        cancellation.Token.ThrowIfCancellationRequested();
+                        var successful = new FeatureFlagsRuntimeStatus(configuration, DateTimeOffset.UtcNow, null);
+                        Volatile.Write(ref this.status, successful);
+                        this.ready.TrySetResult();
+                        this.ReportStatus(successful);
+                    }
+                    catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested || this.lifetime.IsCancellationRequested)
+                    {
+                        throw;
+                    }
+                    catch (Exception exception)
+                    {
+                        var error = exception is OperationCanceledException
+                            ? new TimeoutException("Feature flag configuration refresh exceeded its request timeout.", exception)
+                            : exception;
+                        var previous = this.Status;
+                        var failed = new FeatureFlagsRuntimeStatus(previous.Configuration, previous.LastSuccessfulRefresh, error);
+                        Volatile.Write(ref this.status, failed);
+                        this.ReportStatus(failed);
+                        if (error != exception)
+                        {
+                            throw error;
+                        }
+
+                        throw;
+                    }
+                    finally
+                    {
+                        this.refreshGate.Release();
+                    }
+                }
+
+                completion.TrySetResult();
+            }
+            catch (OperationCanceledException exception)
+            {
+                completion.TrySetCanceled(exception.CancellationToken);
+            }
+            catch (Exception exception)
+            {
+                completion.TrySetException(exception);
+            }
+            finally
+            {
+                lock (this.lifecycleLock)
+                {
+                    this.pendingRefreshes.Remove(completion.Task);
+                }
             }
         }
 
@@ -239,12 +277,16 @@ namespace WorkOS
                     failures = Math.Min(failures + 1, 20);
                 }
 
-                var delay = this.pollingInterval;
+                var baseDelay = this.pollingInterval.TotalMilliseconds;
                 if (failures > 0)
                 {
-                    var cap = Math.Min(this.maxRetryDelay.TotalMilliseconds, this.pollingInterval.TotalMilliseconds * Math.Pow(2, failures));
-                    delay = TimeSpan.FromMilliseconds(cap * (0.5 + (Random.Shared.NextDouble() * 0.5)));
+                    var backoff = Math.Min(this.maxRetryDelay.TotalMilliseconds, InitialRetryMilliseconds * Math.Pow(2, failures - 1));
+                    baseDelay = Math.Max(baseDelay, backoff);
                 }
+
+                var jitter = 1 + (((Random.Shared.NextDouble() * 2) - 1) * JitterFactor);
+                var milliseconds = Math.Min(MaximumTimerMilliseconds, Math.Max(MinimumDelayMilliseconds, baseDelay * jitter));
+                var delay = TimeSpan.FromMilliseconds(milliseconds);
 
                 try
                 {
@@ -257,7 +299,7 @@ namespace WorkOS
             }
         }
 
-        private async Task DisposeCoreAsync()
+        private async Task DisposeCoreAsync(Task[] refreshes)
         {
             this.lifetime.Cancel();
             this.ready.TrySetCanceled(this.lifetime.Token);
@@ -266,9 +308,15 @@ namespace WorkOS
                 await this.pollingTask.ConfigureAwait(false);
             }
 
-            // Join manual refreshes too, including when background polling was never started.
-            await this.refreshGate.WaitAsync().ConfigureAwait(false);
-            this.refreshGate.Release();
+            try
+            {
+                await Task.WhenAll(refreshes).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                // Refresh errors belong to their callers; all refreshes have now finished.
+            }
+
             this.refreshGate.Dispose();
             this.lifetime.Dispose();
         }

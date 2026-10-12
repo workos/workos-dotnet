@@ -286,9 +286,13 @@ manual and background refreshes cannot overlap.
 
 The runtime requests V2 configuration through the SDK transport, reusing its
 API key, custom base URL, HTTP client and retry configuration. The refresh timeout
-bounds transport retries and reading the response. After a failed background
-refresh, polling uses bounded exponential backoff with jitter (up to five minutes
-by default). Failures retain the entire last successful snapshot. A successful
+bounds transport retries and reading the response. Like the Node runtime client,
+polling defaults to 30 seconds, clamps configured intervals to at least 5 seconds,
+and applies 10% jitter in either direction. Failed polls use exponential backoff
+starting at one second and capped at 60 seconds by default, before jitter; the base
+delay is never shorter than the polling interval. Jittered delays have a one-second
+floor. Request timeouts and backoff limits must be at least one millisecond.
+Failures retain the entire last successful snapshot. A successful
 empty configuration removes previously cached flags. HTTP 401/403 stops background
 polling; correct credentials/access and create a new runtime.
 
@@ -334,7 +338,7 @@ observer receives refresh results independently of polling; callbacks can be
 concurrent or arrive after disposal. Observer exceptions do not interrupt polling.
 
 Dispose the runtime before its `WorkOSClient`, preferably with `await using`.
-`DisposeAsync` cancels and joins background polling and active manual refreshes;
+`DisposeAsync` cancels and joins background polling and all active or queued manual refreshes;
 `Dispose` provides a synchronous equivalent. Neither disposes the supplied SDK
 client or a caller-owned `HttpClient`. Local evaluation methods throw after disposal.
 

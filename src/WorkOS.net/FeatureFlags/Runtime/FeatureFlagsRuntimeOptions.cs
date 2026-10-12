@@ -6,14 +6,14 @@ namespace WorkOS
     /// <summary>Configuration for a locally evaluating feature flags runtime client.</summary>
     public sealed class FeatureFlagsRuntimeOptions
     {
-        /// <summary>Interval between successful refreshes. Defaults to 60 seconds.</summary>
-        public TimeSpan PollingInterval { get; set; } = TimeSpan.FromSeconds(60);
+        /// <summary>Interval between refreshes before jitter. Defaults to 30 seconds and is clamped to at least 5 seconds.</summary>
+        public TimeSpan PollingInterval { get; set; } = TimeSpan.FromSeconds(30);
 
-        /// <summary>Deadline for an entire refresh, including transport retries. Defaults to 10 seconds.</summary>
+        /// <summary>Deadline for an entire refresh, including transport retries. Defaults to 10 seconds; must be at least 1 millisecond.</summary>
         public TimeSpan RequestTimeout { get; set; } = TimeSpan.FromSeconds(10);
 
-        /// <summary>Maximum delay after failed polls. Defaults to 5 minutes and must be at least the polling interval.</summary>
-        public TimeSpan MaxRetryDelay { get; set; } = TimeSpan.FromMinutes(5);
+        /// <summary>Maximum exponential backoff before jitter. Defaults to 60 seconds. Retries never use a base delay shorter than the polling interval.</summary>
+        public TimeSpan MaxRetryDelay { get; set; } = TimeSpan.FromSeconds(60);
 
         /// <summary>Optional validated cached configuration, immediately usable before polling starts.</summary>
         public FeatureFlagsConfiguration? BootstrapConfiguration { get; set; }

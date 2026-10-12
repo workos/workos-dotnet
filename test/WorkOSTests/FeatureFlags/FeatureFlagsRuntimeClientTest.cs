@@ -4,6 +4,7 @@ namespace WorkOSTests
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -138,8 +139,8 @@ namespace WorkOSTests
             });
             using var http = new HttpClient(handler);
             using var client = Client(http);
-            await using var runtime = client.CreateFeatureFlagsRuntimeClient(FastOptions());
-            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(PollingOptions());
+            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(15));
             await runtime.StartAsync(timeout.Token);
             Assert.True(handler.RequestCount >= 2);
             Assert.True(runtime.IsEnabled("ordered"));
@@ -155,10 +156,10 @@ namespace WorkOSTests
             using var handler = new ScriptedHandler((_, _, _) => Task.FromResult(Response("{}", status)));
             using var http = new HttpClient(handler);
             using var client = Client(http);
-            await using var runtime = client.CreateFeatureFlagsRuntimeClient(FastOptions());
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(PollingOptions());
             var error = await Assert.ThrowsAnyAsync<ApiException>(() => runtime.StartAsync());
             Assert.Equal(status, error.StatusCode);
-            await Task.Delay(TimeSpan.FromMilliseconds(100));
+            await Task.Delay(TimeSpan.FromSeconds(6));
             Assert.Equal(1, handler.RequestCount);
             Assert.False(runtime.IsReady);
             Assert.Same(error, runtime.Status.LastError);
@@ -194,7 +195,7 @@ namespace WorkOSTests
             });
             using var http = new HttpClient(handler);
             using var client = Client(http);
-            var options = FastOptions();
+            var options = PollingOptions();
             options.RequestTimeout = TimeSpan.FromMilliseconds(40);
             await using var runtime = client.CreateFeatureFlagsRuntimeClient(options);
             await Assert.ThrowsAsync<TimeoutException>(() => runtime.RefreshAsync());
@@ -267,6 +268,86 @@ namespace WorkOSTests
             }
 
             await Task.WhenAll(readers);
+        }
+
+        [Fact]
+        public async Task DisposalJoinsQueuedManualRefreshes()
+        {
+            for (var iteration = 0; iteration < 20; iteration++)
+            {
+                var entered = Signal();
+                using var handler = new ScriptedHandler(async (_, _, token) =>
+                {
+                    entered.TrySetResult();
+                    await Task.Delay(Timeout.InfiniteTimeSpan, token);
+                    return Response(OrderedPayload);
+                });
+                using var http = new HttpClient(handler);
+                using var client = Client(http);
+                await using var runtime = client.CreateFeatureFlagsRuntimeClient();
+                var active = runtime.RefreshAsync();
+                await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));
+                var queued = Enumerable.Range(0, 256).Select(_ => runtime.RefreshAsync()).ToArray();
+
+                await runtime.DisposeAsync().AsTask().WaitAsync(TimeSpan.FromSeconds(5));
+
+                Assert.True(active.IsCompleted);
+                Assert.All(queued, refresh => Assert.True(refresh.IsCompleted));
+                await Assert.ThrowsAnyAsync<OperationCanceledException>(() => active);
+                foreach (var refresh in queued)
+                {
+                    await Assert.ThrowsAnyAsync<OperationCanceledException>(() => refresh);
+                }
+
+                Assert.Equal(0, handler.ActiveRequests);
+            }
+        }
+
+        [Theory]
+        [InlineData(60)]
+        [InlineData(0)]
+        public async Task ShortPollingIntervalsAreClampedToNodeMinimum(long ticks)
+        {
+            var elapsed = new Stopwatch();
+            var nextPoll = new TaskCompletionSource<TimeSpan>(TaskCreationOptions.RunContinuationsAsynchronously);
+            using var handler = new ScriptedHandler((attempt, _, _) =>
+            {
+                if (attempt == 1)
+                {
+                    elapsed.Start();
+                }
+                else
+                {
+                    nextPoll.TrySetResult(elapsed.Elapsed);
+                }
+
+                return Task.FromResult(Response(OrderedPayload));
+            });
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
+            {
+                PollingInterval = TimeSpan.FromTicks(ticks),
+            });
+            await runtime.StartAsync();
+
+            var interval = await nextPoll.Task.WaitAsync(TimeSpan.FromSeconds(15));
+
+            // Node's five-second minimum permits ten percent jitter in either direction.
+            Assert.True(interval >= TimeSpan.FromSeconds(4.4), $"Polling interval was {interval}.");
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(9999)]
+        public void SubMillisecondRequestTimeoutsAreRejected(long ticks)
+        {
+            using var client = new WorkOSClient(new WorkOSOptions { ApiKey = "sk_test" });
+            var error = Assert.Throws<ArgumentOutOfRangeException>(() => client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
+            {
+                RequestTimeout = TimeSpan.FromTicks(ticks),
+            }));
+            Assert.Equal(nameof(FeatureFlagsRuntimeOptions.RequestTimeout), error.ParamName);
         }
 
         [Theory]
@@ -362,10 +443,9 @@ namespace WorkOSTests
         private static string SingleFlag(string rule) =>
             "{\"version\":2,\"flags\":{\"test\":{\"slug\":\"test\",\"enabled\":true,\"default_value\":false,\"off_value\":false,\"rules\":[" + rule + "]}}}";
 
-        private static FeatureFlagsRuntimeOptions FastOptions() => new FeatureFlagsRuntimeOptions
+        private static FeatureFlagsRuntimeOptions PollingOptions() => new FeatureFlagsRuntimeOptions
         {
-            PollingInterval = TimeSpan.FromMilliseconds(20),
-            MaxRetryDelay = TimeSpan.FromMilliseconds(80),
+            PollingInterval = TimeSpan.FromSeconds(5),
         };
 
         private static WorkOSClient Client(HttpClient http) => new WorkOSClient(new WorkOSOptions
