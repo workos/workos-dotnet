@@ -38,10 +38,10 @@ namespace WorkOSTests
             """;
 
         [Fact]
-        public void BootstrapEvaluatesOrderedRulesOffValuesDefaultsAndAllConditionTypesLocally()
+        public async Task BootstrapEvaluatesOrderedRulesOffValuesDefaultsAndAllConditionTypesLocally()
         {
             using var client = new WorkOSClient(new WorkOSOptions { ApiKey = "sk_test" });
-            using var runtime = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
             {
                 BootstrapConfiguration = FeatureFlagsConfiguration.FromJson(OrderedPayload),
             });
@@ -81,10 +81,10 @@ namespace WorkOSTests
         [InlineData("{\"id\":\"r1\",\"kind\":\"conditions\",\"value\":true,\"conditions\":[]}")]
         [InlineData("{\"id\":\"r1\",\"kind\":\"conditions\",\"value\":true,\"conditions\":[{\"operator\":\"future\"}]}")]
         [InlineData("{\"id\":\"r1\",\"kind\":\"conditions\",\"value\":true,\"conditions\":[{\"operator\":\"one_of\",\"target_type\":\"organization\",\"values\":[]}]}")]
-        public void UnknownAndEmptyRulesNeverMatchEveryone(string rule)
+        public async Task UnknownAndEmptyRulesNeverMatchEveryone(string rule)
         {
             using var client = new WorkOSClient(new WorkOSOptions { ApiKey = "sk_test" });
-            using var runtime = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
             {
                 BootstrapConfiguration = FeatureFlagsConfiguration.FromJson(SingleFlag(rule)),
             });
@@ -178,7 +178,7 @@ namespace WorkOSTests
             await Assert.ThrowsAsync<ServerException>(() => runtime.RefreshAsync());
             Assert.Same(bootstrap, runtime.Configuration);
             Assert.True(runtime.IsReady);
-            using var restored = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
+            await using var restored = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
             {
                 BootstrapConfiguration = FeatureFlagsConfiguration.FromJson(runtime.Configuration!.ToJson()),
             });
@@ -206,6 +206,48 @@ namespace WorkOSTests
             var wait = runtime.WaitUntilReadyAsync(cancellation.Token);
             cancellation.Cancel();
             await Assert.ThrowsAnyAsync<OperationCanceledException>(() => wait);
+        }
+
+        [Fact]
+        public async Task QueuedRefreshTimesOutWithoutSendingOrChangingActiveRefreshStatus()
+        {
+            var entered = Signal();
+            var release = Signal();
+            using var handler = new ScriptedHandler(async (_, _, _) =>
+            {
+                entered.TrySetResult();
+
+                // A transport can take time to finish after cancellation. Keep the gate occupied.
+                await release.Task;
+                return Response(OrderedPayload);
+            });
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            var bootstrap = FeatureFlagsConfiguration.FromJson(OrderedPayload);
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
+            {
+                BootstrapConfiguration = bootstrap,
+                RequestTimeout = TimeSpan.FromMilliseconds(100),
+            });
+            var active = runtime.RefreshAsync();
+            await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            var queued = runtime.RefreshAsync();
+
+            try
+            {
+                await Assert.ThrowsAsync<TimeoutException>(() => queued).WaitAsync(TimeSpan.FromSeconds(5));
+                Assert.Equal(1, handler.RequestCount);
+                Assert.Equal(1, handler.ActiveRequests);
+                Assert.Same(bootstrap, runtime.Configuration);
+                Assert.Null(runtime.Status.LastError);
+            }
+            finally
+            {
+                release.TrySetResult();
+                await Assert.ThrowsAsync<TimeoutException>(() => active).WaitAsync(TimeSpan.FromSeconds(5));
+            }
+
+            Assert.IsType<TimeoutException>(runtime.Status.LastError);
         }
 
         [Fact]
@@ -418,9 +460,9 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task SynchronousStatusObserverCanDisposeRuntimeWithoutDeadlock()
+        public async Task StatusObserverCanBeginAsyncDisposalWithoutDeadlock()
         {
-            var disposed = Signal();
+            var disposal = new TaskCompletionSource<Task>(TaskCreationOptions.RunContinuationsAsynchronously);
             using var handler = new ScriptedHandler((_, _, _) => Task.FromResult(Response(OrderedPayload)));
             using var http = new HttpClient(handler);
             using var client = Client(http);
@@ -429,13 +471,13 @@ namespace WorkOSTests
             {
                 Progress = new InlineProgress(_ =>
                 {
-                    runtime!.Dispose();
-                    disposed.TrySetResult();
+                    disposal.TrySetResult(runtime!.DisposeAsync().AsTask());
                     throw new InvalidOperationException("Observer exceptions must not escape polling.");
                 }),
             });
             await runtime.StartAsync();
-            await disposed.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            var disposalTask = await disposal.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            await disposalTask.WaitAsync(TimeSpan.FromSeconds(5));
             await runtime.DisposeAsync();
             Assert.Equal(0, handler.ActiveRequests);
         }

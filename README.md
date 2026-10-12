@@ -286,7 +286,9 @@ manual and background refreshes cannot overlap.
 
 The runtime requests V2 configuration through the SDK transport, reusing its
 API key, custom base URL, HTTP client and retry configuration. The refresh timeout
-bounds transport retries and reading the response. Like the Node runtime client,
+includes time queued behind another refresh, transport retries and reading the
+response. A refresh that times out while queued sends no request and leaves the
+active refresh's status unchanged. Like the Node runtime client,
 polling defaults to 30 seconds, clamps configured intervals to at least 5 seconds,
 and applies 10% jitter in either direction. Failed polls use exponential backoff
 starting at one second and capped at 60 seconds by default, before jitter; the base
@@ -337,10 +339,12 @@ network-refresh timestamp. An optional `IProgress<FeatureFlagsRuntimeStatus>`
 observer receives refresh results independently of polling; callbacks can be
 concurrent or arrive after disposal. Observer exceptions do not interrupt polling.
 
-Dispose the runtime before its `WorkOSClient`, preferably with `await using`.
+Dispose the runtime asynchronously before its `WorkOSClient`, with `await using`
+or by awaiting `DisposeAsync()`.
 `DisposeAsync` cancels and joins background polling and all active or queued manual refreshes;
-`Dispose` provides a synchronous equivalent. Neither disposes the supplied SDK
-client or a caller-owned `HttpClient`. Local evaluation methods throw after disposal.
+the runtime implements `IAsyncDisposable` only so shutdown does not block a
+calling synchronization context. It does not dispose the supplied SDK client or a
+caller-owned `HttpClient`. Local evaluation methods throw after disposal.
 
 ## Making direct API requests
 

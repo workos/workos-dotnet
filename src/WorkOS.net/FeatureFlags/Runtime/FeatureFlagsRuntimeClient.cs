@@ -11,9 +11,9 @@ namespace WorkOS
 
     /// <summary>
     /// Polls bulk configuration and evaluates boolean flags locally from immutable snapshots.
-    /// Own one instance per environment/API key, and dispose it before its WorkOSClient.
+    /// Own one instance per environment/API key, and dispose it asynchronously before its WorkOSClient.
     /// </summary>
-    public sealed class FeatureFlagsRuntimeClient : IDisposable, IAsyncDisposable
+    public sealed class FeatureFlagsRuntimeClient : IAsyncDisposable
     {
         private const int MinimumPollingIntervalMilliseconds = 5_000;
         private const int MinimumDelayMilliseconds = 1_000;
@@ -101,7 +101,8 @@ namespace WorkOS
 
         /// <summary>
         /// Performs a complete refresh through the SDK transport. Concurrent refreshes are
-        /// serialized. Errors propagate to the caller and retain the last good snapshot.
+        /// serialized, and the timeout includes waiting for an earlier refresh. Errors propagate
+        /// to the caller and retain the last good snapshot.
         /// </summary>
         /// <param name="cancellationToken">Cancellation for this refresh.</param>
         /// <returns>A task completed after a new validated snapshot is installed.</returns>
@@ -113,6 +114,7 @@ namespace WorkOS
             {
                 this.ThrowIfDisposed();
                 cancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, this.lifetime.Token);
+                cancellation.CancelAfter(this.requestTimeout);
 
                 // Register before waiting for the gate so disposal can join queued refreshes.
                 this.pendingRefreshes.Add(completion.Task);
@@ -153,12 +155,6 @@ namespace WorkOS
                 : configuration.Flags.ToFrozenDictionary(entry => entry.Key, entry => entry.Value.Evaluate(context), StringComparer.Ordinal);
         }
 
-        /// <summary>Cancels and joins polling. Does not dispose the caller-owned WorkOSClient.</summary>
-        public void Dispose()
-        {
-            this.DisposeAsync().AsTask().GetAwaiter().GetResult();
-        }
-
         /// <summary>Cancels and joins polling and all active or queued refreshes before releasing resources.</summary>
         /// <returns>A task completed when network activity has stopped.</returns>
         public ValueTask DisposeAsync()
@@ -196,7 +192,6 @@ namespace WorkOS
                     {
                         // Cancellation callbacks may not yet have reached this linked token.
                         this.lifetime.Token.ThrowIfCancellationRequested();
-                        cancellation.CancelAfter(this.requestTimeout);
                         var request = new WorkOSRequest { Method = HttpMethod.Get, Path = "/sdk/feature-flags" };
                         request.AddQueryParam("payload_version", "2");
                         using var response = await this.client.MakeRawAPIRequest(request, cancellation.Token).ConfigureAwait(false);
@@ -235,6 +230,11 @@ namespace WorkOS
                 }
 
                 completion.TrySetResult();
+            }
+            catch (OperationCanceledException exception) when (!cancellationToken.IsCancellationRequested && !this.lifetime.IsCancellationRequested)
+            {
+                // Queue timeouts belong to this caller, not the in-flight network refresh's status.
+                completion.TrySetException(new TimeoutException("Feature flag configuration refresh exceeded its request timeout.", exception));
             }
             catch (OperationCanceledException exception)
             {

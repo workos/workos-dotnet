@@ -9,7 +9,7 @@ namespace WorkOS
         /// <summary>Interval between refreshes before jitter. Defaults to 30 seconds and is clamped to at least 5 seconds.</summary>
         public TimeSpan PollingInterval { get; set; } = TimeSpan.FromSeconds(30);
 
-        /// <summary>Deadline for an entire refresh, including transport retries. Defaults to 10 seconds; must be at least 1 millisecond.</summary>
+        /// <summary>Deadline for an entire refresh, including queued time and transport retries. Defaults to 10 seconds; must be at least 1 millisecond.</summary>
         public TimeSpan RequestTimeout { get; set; } = TimeSpan.FromSeconds(10);
 
         /// <summary>Maximum exponential backoff before jitter. Defaults to 60 seconds. Retries never use a base delay shorter than the polling interval.</summary>
