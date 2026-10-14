@@ -3,6 +3,7 @@
   "client_secret": "sk_example_123456789",
   "code": null,
   "grant_type": "authorization_code",
+  "code_verifier": null,
   "subject_token": null,
   "subject_token_type": null,
   "organization_id": null

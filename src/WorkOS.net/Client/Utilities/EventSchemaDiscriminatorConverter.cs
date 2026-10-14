@@ -144,6 +144,7 @@ namespace WorkOS
                 case "vault.data.updated": target = new VaultDataUpdated(); break;
                 case "vault.dek.decrypted": target = new VaultDekDecrypted(); break;
                 case "vault.dek.read": target = new VaultDekRead(); break;
+                case "vault.dek.rekeyed": target = new VaultDekRekeyed(); break;
                 case "vault.kek.created": target = new VaultKekCreated(); break;
                 case "vault.kek.deleted": target = new VaultKekDeleted(); break;
                 case "vault.metadata.read": target = new VaultMetadataRead(); break;
