@@ -11,7 +11,7 @@ namespace WorkOS
     public class PipesListDataIntegrationsOptions : ListOptions
     {
         /// <summary>Only return Data Integrations with this ownership: `user` for the integrations users connect their own accounts to, or `organization` for the roots organizations connect to. Omit to return both.</summary>
-        public CreateDataIntegrationOwnership? Ownership { get; set; }
+        public AddDataIntegrationsGetDataIntegrationAuthorizeUrlRequestConnectionOwner? Ownership { get; set; }
 
     }
 
@@ -22,7 +22,7 @@ namespace WorkOS
         public string Provider { get; set; } = default!;
 
         /// <summary>Who owns the Data Integration. `user` (the default) creates the integration users connect their own accounts to; `organization` creates the root organizations connect to. Ownership is fixed at creation, and one integration of each ownership may exist per provider. Independent of `credentials.type`.</summary>
-        public CreateDataIntegrationOwnership? Ownership { get; set; }
+        public AddDataIntegrationsGetDataIntegrationAuthorizeUrlRequestConnectionOwner? Ownership { get; set; }
 
         /// <summary>An optional description of the Data Integration.</summary>
         public string? Description { get; set; }
@@ -73,60 +73,59 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="PipesService.UpdateDataIntegrationApiKeyAsync"/>: Upsert an API key for a connected account</summary>
-    public class PipesUpdateDataIntegrationApiKeyOptions : BaseOptions
+    /// <summary>Request options for <see cref="PipesService.CreateDataIntegrationApiKeyAsync"/>: Create another API key connected account</summary>
+    public class PipesCreateDataIntegrationApiKeyOptions : BaseOptions
     {
+        /// <summary>A mutable, non-unique label. Omit to preserve an existing label; null clears it. Labels are never account identifiers.</summary>
+        public string? AccountDisplayName { get; set; }
+
+        /// <summary>A developer-attested provider account identifier, never inferred from a label or credential. Omit to preserve an existing identifier; null clears it.</summary>
+        public string? AccountIdentifier { get; set; }
+
         /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>
         public string UserId { get; set; } = default!;
 
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization. Required when `connection_owner` is `organization`.</summary>
         public string? OrganizationId { get; set; }
 
-        /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to rotate a specific existing connection.</summary>
-        public string? ConnectedAccountId { get; set; }
-
         /// <summary>Whose connection to create or rotate. `user` (the default) addresses the connection owned by `user_id`. `organization` addresses the connection shared by every member of `organization_id`; `user_id` then identifies the member performing the request and must be an active member of the organization.</summary>
-        public CreateDataIntegrationOwnership? ConnectionOwner { get; set; }
+        public AddDataIntegrationsGetDataIntegrationAuthorizeUrlRequestConnectionOwner? ConnectionOwner { get; set; }
 
         /// <summary>The API key secret to store for this integration.</summary>
         public string Secret { get; set; } = default!;
 
+        /// <summary>Must be `add`: this endpoint only creates another connection. The first connection for an owner shape fills the compatibility slot; later connections are standard. Creating an additional connection is not yet available: until it is, `add` succeeds only when the owner has no connection for this integration and otherwise returns 404 `multiple_connections_unavailable`.</summary>
+        public string ConnectionIntent { get; set; } = default!;
+
+    }
+
+    /// <summary>Request options for <see cref="PipesService.UpdateDataIntegrationApiKeyAsync"/>: Upsert an API key for a connected account</summary>
+    public class PipesUpdateDataIntegrationApiKeyOptions : BaseOptions
+    {
     }
 
     /// <summary>Request options for <see cref="PipesService.AuthorizeDataIntegrationAsync"/>: Get authorization URL</summary>
     public class PipesAuthorizeDataIntegrationOptions : BaseOptions
     {
-        /// <summary>The ID of the user to authorize. When `connection_owner` is `organization`, this is the user authorizing on behalf of the organization; they must be an active member of the organization and do not become the owner of the resulting connected account.</summary>
-        public string UserId { get; set; } = default!;
-
-        /// <summary>An organization ID to scope the authorization to a specific organization. Required when `connection_owner` is `organization`.</summary>
-        public string? OrganizationId { get; set; }
-
-        /// <summary>Who will own the connected account. `user` (the default) connects the user's own account. `organization` connects the organization's shared account and requires `organization_id`.</summary>
-        public CreateDataIntegrationOwnership? ConnectionOwner { get; set; }
-
-        /// <summary>The URL to redirect the user to after authorization.</summary>
-        public string? ReturnTo { get; set; }
-
-        /// <summary>Connect-time config values for the provider-declared `installation`-scope fields (e.g. a Zendesk `subdomain`), keyed by the config field. Only fields the provider declares may be supplied, and required fields must be provided unless already pinned on the integration.</summary>
-        public Dictionary<string, string>? Config { get; set; }
-
     }
 
-    /// <summary>Request options for <see cref="PipesService.UpdateDataIntegrationClientCredentialsAsync"/>: Upsert client credentials for a connected account</summary>
-    public class PipesUpdateDataIntegrationClientCredentialsOptions : BaseOptions
+    /// <summary>Request options for <see cref="PipesService.CreateDataIntegrationClientCredentialAsync"/>: Create another client credentials connected account</summary>
+    public class PipesCreateDataIntegrationClientCredentialOptions : BaseOptions
     {
+        /// <summary>A mutable, non-unique label. Omit to preserve an existing label; null clears it. Labels are never account identifiers.</summary>
+        public string? AccountDisplayName { get; set; }
+
+        /// <summary>A developer-attested provider account identifier, never inferred from a label or credential. Omit to preserve an existing identifier; null clears it.</summary>
+        public string? AccountIdentifier { get; set; }
+
         /// <summary>A [User](https://workos.com/docs/reference/authkit/user) identifier.</summary>
         public string UserId { get; set; } = default!;
 
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter to scope the connection to a specific organization. Required when `connection_owner` is `organization`.</summary>
         public string? OrganizationId { get; set; }
 
-        /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to rotate a specific existing connection.</summary>
-        public string? ConnectedAccountId { get; set; }
-
         /// <summary>Whose connection to create or rotate. `user` (the default) addresses the connection owned by `user_id`. `organization` addresses the connection shared by every member of `organization_id`; `user_id` then identifies the member performing the request and must be an active member of the organization.</summary>
-        public CreateDataIntegrationOwnership? ConnectionOwner { get; set; }
+        public AddDataIntegrationsGetDataIntegrationAuthorizeUrlRequestConnectionOwner? ConnectionOwner { get; set; }
 
         /// <summary>The OAuth client ID to store for this integration.</summary>
         public string ClientId { get; set; } = default!;
@@ -137,6 +136,14 @@ namespace WorkOS
         /// <summary>Provider-specific configuration values collected for this installation, keyed by the provider's config field descriptors.</summary>
         public Dictionary<string, string>? Config { get; set; }
 
+        /// <summary>Must be `add`: this endpoint only creates another connection. The first connection for an owner shape fills the compatibility slot; later connections are standard. Creating an additional connection is not yet available: until it is, `add` succeeds only when the owner has no connection for this integration and otherwise returns 404 `multiple_connections_unavailable`.</summary>
+        public string ConnectionIntent { get; set; } = default!;
+
+    }
+
+    /// <summary>Request options for <see cref="PipesService.UpdateDataIntegrationClientCredentialsAsync"/>: Upsert client credentials for a connected account</summary>
+    public class PipesUpdateDataIntegrationClientCredentialsOptions : BaseOptions
+    {
     }
 
     /// <summary>Request options for <see cref="PipesService.CreateDataIntegrationCredentialAsync"/>: Vend credentials for a connected account</summary>
@@ -152,7 +159,7 @@ namespace WorkOS
         public string? ConnectedAccountId { get; set; }
 
         /// <summary>Which connection to vend from. `user` (the default) vends the user's own connection and requires `user_id`. `organization` vends the organization's shared connection and requires `organization_id`.</summary>
-        public CreateDataIntegrationOwnership? ConnectionOwner { get; set; }
+        public AddDataIntegrationsGetDataIntegrationAuthorizeUrlRequestConnectionOwner? ConnectionOwner { get; set; }
 
         /// <summary>Set to `true` to use the plural connection contract. If no `connected_account_id` is supplied and several connections match, the request returns `account_selection_required`. When omitted or `false`, only the compatibility connection is considered.</summary>
         public bool? SupportsMultipleConnections { get; set; }
@@ -195,7 +202,7 @@ namespace WorkOS
         public string? ConnectedAccountId { get; set; }
 
         /// <summary>Which connection to vend from. `user` (the default) vends the user's own connection and requires `user_id`. `organization` vends the organization's shared connection and requires `organization_id`.</summary>
-        public CreateDataIntegrationOwnership? ConnectionOwner { get; set; }
+        public AddDataIntegrationsGetDataIntegrationAuthorizeUrlRequestConnectionOwner? ConnectionOwner { get; set; }
 
         /// <summary>Set to `true` to use the plural connection contract. If no `connected_account_id` is supplied and several connections match, the request returns `account_selection_required`. When omitted or `false`, only the compatibility connection is considered.</summary>
         public bool? SupportsMultipleConnections { get; set; }
@@ -216,6 +223,12 @@ namespace WorkOS
     /// <summary>Request options for <see cref="PipesService.CreateOrganizationConnectedAccountAsync"/>: Import an organization connected account</summary>
     public class PipesCreateOrganizationConnectedAccountOptions : BaseOptions
     {
+        /// <summary>A mutable, non-unique connection label; null clears it. Not an account identifier.</summary>
+        public string? AccountDisplayName { get; set; }
+
+        /// <summary>A developer-attested account identifier; null clears it.</summary>
+        public string? AccountIdentifier { get; set; }
+
         /// <summary>The OAuth access token for the connected account.</summary>
         public string? AccessToken { get; set; }
 
@@ -230,12 +243,24 @@ namespace WorkOS
 
         /// <summary>Explicitly set the state of the connected account. When omitted, the state is derived from the token combination provided.</summary>
         public ConnectedAccountInputState? State { get; set; }
+
+        /// <summary>The [User](https://workos.com/docs/reference/authkit/user) identifier of the organization member on whose behalf the connected account is being imported or updated. The user must be an active member of the organization.</summary>
+        public string UserId { get; set; } = default!;
+
+        /// <summary>Set to `add` to create another connected account. Omit this field for permanent compatibility behavior. Creating an additional connection is not yet available: until it is, `add` succeeds only when the owner has no connection for this integration, which creates the compatibility connection, and otherwise returns 404 `multiple_connections_unavailable`.</summary>
+        public string? ConnectionIntent { get; set; }
 
     }
 
     /// <summary>Request options for <see cref="PipesService.UpdateOrganizationConnectedAccountAsync"/>: Update an organization connected account</summary>
     public class PipesUpdateOrganizationConnectedAccountOptions : BaseOptions
     {
+        /// <summary>A mutable, non-unique connection label; null clears it. Not an account identifier.</summary>
+        public string? AccountDisplayName { get; set; }
+
+        /// <summary>A developer-attested account identifier; null clears it.</summary>
+        public string? AccountIdentifier { get; set; }
+
         /// <summary>The OAuth access token for the connected account.</summary>
         public string? AccessToken { get; set; }
 
@@ -251,11 +276,17 @@ namespace WorkOS
         /// <summary>Explicitly set the state of the connected account. When omitted, the state is derived from the token combination provided.</summary>
         public ConnectedAccountInputState? State { get; set; }
 
-        /// <summary>Set to `true` to use the plural connection contract. When omitted or `false`, only the compatibility connection is considered.</summary>
+        /// <summary>The [User](https://workos.com/docs/reference/authkit/user) identifier of the organization member on whose behalf the connected account is being imported or updated. The user must be an active member of the organization.</summary>
+        public string UserId { get; set; } = default!;
+
+        /// <summary>Accepted for compatibility; does not change update targeting. Omit intent and selector to update the compatibility connection, or supply `connected_account_id` to update an exact connection.</summary>
         public bool? SupportsMultipleConnections { get; set; }
 
         /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select the connection to update.</summary>
         public string? ConnectedAccountId { get; set; }
+
+        /// <summary>Set to `reauthorize` with `connected_account_id` to update one exact connection. The intent may be omitted when supplying an ID. Omit both for permanent compatibility behavior.</summary>
+        public string? ConnectionIntent { get; set; }
 
     }
 
@@ -295,6 +326,12 @@ namespace WorkOS
     /// <summary>Request options for <see cref="PipesService.CreateUserConnectedAccountAsync"/>: Import a connected account</summary>
     public class PipesCreateUserConnectedAccountOptions : BaseOptions
     {
+        /// <summary>A mutable, non-unique connection label; null clears it. Not an account identifier.</summary>
+        public string? AccountDisplayName { get; set; }
+
+        /// <summary>A developer-attested account identifier; null clears it.</summary>
+        public string? AccountIdentifier { get; set; }
+
         /// <summary>The OAuth access token for the connected account.</summary>
         public string? AccessToken { get; set; }
 
@@ -309,6 +346,9 @@ namespace WorkOS
 
         /// <summary>Explicitly set the state of the connected account. When omitted, the state is derived from the token combination provided.</summary>
         public ConnectedAccountInputState? State { get; set; }
+
+        /// <summary>Set to `add` to create another connected account. Omit this field for permanent compatibility behavior. Creating an additional connection is not yet available: until it is, `add` succeeds only when the owner has no connection for this integration, which creates the compatibility connection, and otherwise returns 404 `multiple_connections_unavailable`.</summary>
+        public string? ConnectionIntent { get; set; }
 
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         public string? OrganizationId { get; set; }
@@ -318,6 +358,12 @@ namespace WorkOS
     /// <summary>Request options for <see cref="PipesService.UpdateUserConnectedAccountAsync"/>: Update a connected account</summary>
     public class PipesUpdateUserConnectedAccountOptions : BaseOptions
     {
+        /// <summary>A mutable, non-unique connection label; null clears it. Not an account identifier.</summary>
+        public string? AccountDisplayName { get; set; }
+
+        /// <summary>A developer-attested account identifier; null clears it.</summary>
+        public string? AccountIdentifier { get; set; }
+
         /// <summary>The OAuth access token for the connected account.</summary>
         public string? AccessToken { get; set; }
 
@@ -336,11 +382,14 @@ namespace WorkOS
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier. Optional parameter if the connection is scoped to an organization.</summary>
         public string? OrganizationId { get; set; }
 
-        /// <summary>Set to `true` to use the plural connection contract. When omitted or `false`, only the compatibility connection is considered.</summary>
+        /// <summary>Accepted for compatibility; does not change update targeting. Omit intent and selector to update the compatibility connection, or supply `connected_account_id` to update an exact connection.</summary>
         public bool? SupportsMultipleConnections { get; set; }
 
         /// <summary>A [connected account](https://workos.com/docs/reference/pipes/connected-account) identifier. Use this to select the connection to update.</summary>
         public string? ConnectedAccountId { get; set; }
+
+        /// <summary>Set to `reauthorize` with `connected_account_id` to update one exact connection. The intent may be omitted when supplying an ID. Omit both for permanent compatibility behavior.</summary>
+        public string? ConnectionIntent { get; set; }
 
     }
 

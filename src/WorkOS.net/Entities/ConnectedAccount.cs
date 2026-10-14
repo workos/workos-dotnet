@@ -48,18 +48,28 @@ namespace WorkOS
         /// <summary>The last four characters of the client secret supplied for this connection, or `null` when it can't be read. Only present when `auth_method` is `client_credentials`.</summary>
         public string? ClientSecretLast4 { get; set; }
 
-        /// <summary>The connection-level configuration values stored for this connection — the fields the provider declares at `installation` scope, excluding any it declares as secret. Only present when `auth_method` is `client_credentials`.</summary>
+        /// <summary>The connection-level configuration values stored for this connection — the fields the provider declares at `installation` scope, excluding secret and undeclared fields. Returned for every authentication method; empty when no stored values can be disclosed.</summary>
         public Dictionary<string, string>? Config { get; set; }
 
         /// <summary>The state of the connected account:</summary>
         /// <remarks>
         /// - `connected`: The connection is active and tokens are valid.
-        /// - `needs_reauthorization`: The user needs to reauthorize the connection, typically because required scopes have changed.
+        /// - `needs_reauthorization`: The user needs to reauthorize the connection, typically because required scopes have changed. `state_reason` explains why when WorkOS invalidated the connection itself.
         /// - `disconnected`: The connection has been disconnected.
         /// </remarks>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public ConnectedAccountState State { get; set; }
+
+        /// <summary>The [User](https://workos.com/docs/reference/authkit/user) whose authorization established this connection. `null` when the connection is developer-managed or its establisher is unknown, and when the establishing member lost access to the organization — in which case `state_reason` is `establishing_member_membership_ended`.</summary>
+        public string? EstablishedByUserId { get; set; }
+
+        /// <summary>Why WorkOS put the connection in its current `state`, or `null` when there is no WorkOS-recorded reason:</summary>
+        /// <remarks>
+        /// - `establishing_member_membership_ended`: The member who established this organization-owned connection is no longer an active member of the organization, so its credentials were cleared. An organization admin must provide new credentials.
+        /// Additional values may be added; treat an unrecognized value as an unknown reason.
+        /// </remarks>
+        public string? StateReason { get; set; }
 
         /// <summary>The timestamp when the connection was created.</summary>
         public string CreatedAt { get; set; } = default!;

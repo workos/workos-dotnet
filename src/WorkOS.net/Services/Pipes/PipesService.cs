@@ -129,22 +129,42 @@ namespace WorkOS
             return this.DeleteDataIntegrationAsync(slug, requestOptions, cancellationToken);
         }
 
-        /// <summary>Upsert an API key for a connected account</summary>
+        /// <summary>Create another API key connected account</summary>
         /// <remarks>
-        /// Creates or updates an API-key-based installation for the specified integration, owned by the user or, when `connection_owner` is `organization`, shared by the organization. If an installation already exists, the stored API key is rotated to the new value.
+        /// Creates another API key-based connected account for the specified integration, owned by the user or, when `connection_owner` is `organization`, shared by the organization. Requires `connection_intent: add` and does not accept `connected_account_id`; use PUT to create or rotate the compatibility connection or to update an exact connection. Creating an additional connection is not yet available: until it is, this endpoint succeeds only when the owner has no connection for this integration, which creates the compatibility connection, and otherwise returns 404 `multiple_connections_unavailable`.
         /// </remarks>
         /// <param name="slug">The identifier of the integration.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
-        public virtual async Task<ConnectedAccount> UpdateDataIntegrationApiKeyAsync(string slug, PipesUpdateDataIntegrationApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ConnectedAccountWriteResponse"/> result.</returns>
+        public virtual async Task<ConnectedAccountWriteResponse> CreateDataIntegrationApiKeyAsync(string slug, PipesCreateDataIntegrationApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<ConnectedAccount>($"/data-integrations/{Uri.EscapeDataString(slug)}/api-key", options, requestOptions, cancellationToken);
+            return await this.PostAsync<ConnectedAccountWriteResponse>($"/data-integrations/{Uri.EscapeDataString(slug)}/api-key", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateDataIntegrationApiKeyAsync"/>.</summary>
+        public virtual Task<ConnectedAccountWriteResponse> CreateDataIntegrationApiKey(string slug, PipesCreateDataIntegrationApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateDataIntegrationApiKeyAsync(slug, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Upsert an API key for a connected account</summary>
+        /// <remarks>
+        /// Creates or updates an API-key-based installation for the specified integration, owned by the user or, when `connection_owner` is `organization`, shared by the organization. If an installation already exists, the stored API key is rotated to the new value. To create another connection, use POST.
+        /// </remarks>
+        /// <param name="slug">The identifier of the integration.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ConnectedAccountWriteResponse"/> result.</returns>
+        public virtual async Task<ConnectedAccountWriteResponse> UpdateDataIntegrationApiKeyAsync(string slug, PipesUpdateDataIntegrationApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PutAsync<ConnectedAccountWriteResponse>($"/data-integrations/{Uri.EscapeDataString(slug)}/api-key", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="UpdateDataIntegrationApiKeyAsync"/>.</summary>
-        public virtual Task<ConnectedAccount> UpdateDataIntegrationApiKey(string slug, PipesUpdateDataIntegrationApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<ConnectedAccountWriteResponse> UpdateDataIntegrationApiKey(string slug, PipesUpdateDataIntegrationApiKeyOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.UpdateDataIntegrationApiKeyAsync(slug, options, requestOptions, cancellationToken);
         }
@@ -169,29 +189,49 @@ namespace WorkOS
             return this.AuthorizeDataIntegrationAsync(slug, options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Upsert client credentials for a connected account</summary>
+        /// <summary>Create another client credentials connected account</summary>
         /// <remarks>
-        /// Creates or updates a client-credentials-based installation for the specified integration, owned by the user or, when `connection_owner` is `organization`, shared by the organization. If an installation already exists, the stored client credentials are rotated to the new values.
+        /// Creates another client credentials-based connected account for the specified integration, owned by the user or, when `connection_owner` is `organization`, shared by the organization. Requires `connection_intent: add` and does not accept `connected_account_id`; use PUT to create or rotate the compatibility connection or to update an exact connection. Creating an additional connection is not yet available: until it is, this endpoint succeeds only when the owner has no connection for this integration, which creates the compatibility connection, and otherwise returns 404 `multiple_connections_unavailable`.
         /// </remarks>
         /// <param name="slug">The identifier of the integration.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
-        public virtual async Task<ConnectedAccount> UpdateDataIntegrationClientCredentialsAsync(string slug, PipesUpdateDataIntegrationClientCredentialsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ConnectedAccountWriteResponse"/> result.</returns>
+        public virtual async Task<ConnectedAccountWriteResponse> CreateDataIntegrationClientCredentialAsync(string slug, PipesCreateDataIntegrationClientCredentialOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<ConnectedAccount>($"/data-integrations/{Uri.EscapeDataString(slug)}/client-credentials", options, requestOptions, cancellationToken);
+            return await this.PostAsync<ConnectedAccountWriteResponse>($"/data-integrations/{Uri.EscapeDataString(slug)}/client-credentials", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateDataIntegrationClientCredentialAsync"/>.</summary>
+        public virtual Task<ConnectedAccountWriteResponse> CreateDataIntegrationClientCredential(string slug, PipesCreateDataIntegrationClientCredentialOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateDataIntegrationClientCredentialAsync(slug, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Upsert client credentials for a connected account</summary>
+        /// <remarks>
+        /// Creates or updates a client-credentials-based installation for the specified integration, owned by the user or, when `connection_owner` is `organization`, shared by the organization. If an installation already exists, the stored client credentials are rotated to the new values. To create another connection, use POST.
+        /// </remarks>
+        /// <param name="slug">The identifier of the integration.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="ConnectedAccountWriteResponse"/> result.</returns>
+        public virtual async Task<ConnectedAccountWriteResponse> UpdateDataIntegrationClientCredentialsAsync(string slug, PipesUpdateDataIntegrationClientCredentialsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PutAsync<ConnectedAccountWriteResponse>($"/data-integrations/{Uri.EscapeDataString(slug)}/client-credentials", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="UpdateDataIntegrationClientCredentialsAsync"/>.</summary>
-        public virtual Task<ConnectedAccount> UpdateDataIntegrationClientCredentials(string slug, PipesUpdateDataIntegrationClientCredentialsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<ConnectedAccountWriteResponse> UpdateDataIntegrationClientCredentials(string slug, PipesUpdateDataIntegrationClientCredentialsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.UpdateDataIntegrationClientCredentialsAsync(slug, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Vend credentials for a connected account</summary>
         /// <remarks>
-        /// Returns credentials for a user's connected account. Branches on the installation's `auth_method`: OAuth installations return an access token (refreshed if needed); API-key installations return the stored secret.
+        /// Returns credentials for a user's connected account. Branches on the installation's `auth_method`: OAuth installations return an access token (refreshed if needed); API-key installations return the stored secret. Every active credential includes `config`: provider-declared, non-secret values from the installation snapshot, with current provider defaults for unset fields. Editing integration or organization configuration does not change the snapshot; reconnect or explicitly rebind the connection to adopt those edits. Defaults remain live, so a changed default can appear in `config` before a cached token is refreshed or re-minted. Credentials that never refresh require a reconnect or rebind when a default changes their routing.
         /// </remarks>
         /// <param name="slug">The identifier of the integration.</param>
         /// <param name="options">Request options.</param>
@@ -309,21 +349,21 @@ namespace WorkOS
 
         /// <summary>Import an organization connected account</summary>
         /// <remarks>
-        /// Imports an organization-owned [connected account](https://workos.com/docs/reference/pipes/connected-account) by providing OAuth tokens directly. Use this to migrate existing connections or set up connections without going through the OAuth flow.
+        /// Imports an organization-owned [connected account](https://workos.com/docs/reference/pipes/connected-account) by providing OAuth tokens directly. Omit `connection_intent` to create only the compatibility connection, or set it to `add` to explicitly create another connection. This creation-only endpoint does not accept `connected_account_id` or reauthorization intent.
         /// </remarks>
         /// <param name="organizationId">An [Organization](https://workos.com/docs/reference/organization) identifier.</param>
         /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
-        public virtual async Task<ConnectedAccount> CreateOrganizationConnectedAccountAsync(string organizationId, string slug, PipesCreateOrganizationConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ConnectedAccountWriteResponse"/> result.</returns>
+        public virtual async Task<ConnectedAccountWriteResponse> CreateOrganizationConnectedAccountAsync(string organizationId, string slug, PipesCreateOrganizationConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<ConnectedAccount>($"/organizations/{Uri.EscapeDataString(organizationId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
+            return await this.PostAsync<ConnectedAccountWriteResponse>($"/organizations/{Uri.EscapeDataString(organizationId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="CreateOrganizationConnectedAccountAsync"/>.</summary>
-        public virtual Task<ConnectedAccount> CreateOrganizationConnectedAccount(string organizationId, string slug, PipesCreateOrganizationConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<ConnectedAccountWriteResponse> CreateOrganizationConnectedAccount(string organizationId, string slug, PipesCreateOrganizationConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.CreateOrganizationConnectedAccountAsync(organizationId, slug, options, requestOptions, cancellationToken);
         }
@@ -337,14 +377,14 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
-        public virtual async Task<ConnectedAccount> UpdateOrganizationConnectedAccountAsync(string organizationId, string slug, PipesUpdateOrganizationConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ConnectedAccountWriteResponse"/> result.</returns>
+        public virtual async Task<ConnectedAccountWriteResponse> UpdateOrganizationConnectedAccountAsync(string organizationId, string slug, PipesUpdateOrganizationConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<ConnectedAccount>($"/organizations/{Uri.EscapeDataString(organizationId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
+            return await this.PutAsync<ConnectedAccountWriteResponse>($"/organizations/{Uri.EscapeDataString(organizationId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="UpdateOrganizationConnectedAccountAsync"/>.</summary>
-        public virtual Task<ConnectedAccount> UpdateOrganizationConnectedAccount(string organizationId, string slug, PipesUpdateOrganizationConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<ConnectedAccountWriteResponse> UpdateOrganizationConnectedAccount(string organizationId, string slug, PipesUpdateOrganizationConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.UpdateOrganizationConnectedAccountAsync(organizationId, slug, options, requestOptions, cancellationToken);
         }
@@ -419,14 +459,14 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
-        public virtual async Task<ConnectedAccount> CreateUserConnectedAccountAsync(string userId, string slug, PipesCreateUserConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ConnectedAccountWriteResponse"/> result.</returns>
+        public virtual async Task<ConnectedAccountWriteResponse> CreateUserConnectedAccountAsync(string userId, string slug, PipesCreateUserConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<ConnectedAccount>($"/user_management/users/{Uri.EscapeDataString(userId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
+            return await this.PostAsync<ConnectedAccountWriteResponse>($"/user_management/users/{Uri.EscapeDataString(userId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="CreateUserConnectedAccountAsync"/>.</summary>
-        public virtual Task<ConnectedAccount> CreateUserConnectedAccount(string userId, string slug, PipesCreateUserConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<ConnectedAccountWriteResponse> CreateUserConnectedAccount(string userId, string slug, PipesCreateUserConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.CreateUserConnectedAccountAsync(userId, slug, options, requestOptions, cancellationToken);
         }
@@ -440,14 +480,14 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="ConnectedAccount"/> result.</returns>
-        public virtual async Task<ConnectedAccount> UpdateUserConnectedAccountAsync(string userId, string slug, PipesUpdateUserConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="ConnectedAccountWriteResponse"/> result.</returns>
+        public virtual async Task<ConnectedAccountWriteResponse> UpdateUserConnectedAccountAsync(string userId, string slug, PipesUpdateUserConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PutAsync<ConnectedAccount>($"/user_management/users/{Uri.EscapeDataString(userId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
+            return await this.PutAsync<ConnectedAccountWriteResponse>($"/user_management/users/{Uri.EscapeDataString(userId)}/connected_accounts/{Uri.EscapeDataString(slug)}", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="UpdateUserConnectedAccountAsync"/>.</summary>
-        public virtual Task<ConnectedAccount> UpdateUserConnectedAccount(string userId, string slug, PipesUpdateUserConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<ConnectedAccountWriteResponse> UpdateUserConnectedAccount(string userId, string slug, PipesUpdateUserConnectedAccountOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.UpdateUserConnectedAccountAsync(userId, slug, options, requestOptions, cancellationToken);
         }
