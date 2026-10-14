@@ -35,9 +35,17 @@ namespace WorkOSTests
             options.Organization = "test_organization";
             var result = await this.service.GenerateLinkAsync(options);
             Assert.NotNull(result);
-            Assert.Equal("https://setup.workos.com?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", result.Link);
+            Assert.Equal("https://setup.workos.com/init?apiToken=01EHZNVPK3SFK441A1RGBFSHRT", result.Link);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/portal/generate_link");
             await this.httpMock.AssertRequestBodyContainsAsync("organization", "test_organization");
+        }
+
+        [Fact]
+        public async Task TestCreateRevokeLinkAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Post, "/portal/revoke_link", HttpStatusCode.OK, "");
+            await this.service.CreateRevokeLinkAsync(new AdminPortalCreateRevokeLinkOptions());
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/portal/revoke_link");
         }
 
         [Fact]

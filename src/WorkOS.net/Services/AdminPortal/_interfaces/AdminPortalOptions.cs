@@ -19,6 +19,9 @@ namespace WorkOS
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier.</summary>
         public string Organization { get; set; } = default!;
 
+        /// <summary>The ID of the user in your application the link is generated for. The link and any Admin Portal sessions started from it can later be revoked by this ID, for example when that user is deprovisioned from your application.</summary>
+        public string? ExternalUserId { get; set; }
+
         /// <summary>The intent of the Admin Portal.</summary>
         /// <remarks>
         /// - `sso` - Launch Admin Portal for creating SSO connections
@@ -33,6 +36,17 @@ namespace WorkOS
 
         /// <summary>The email addresses of the IT contacts to grant access to the Admin Portal for the given organization. Accepts up to 20 emails.</summary>
         public List<string>? ItContactEmails { get; set; }
+
+    }
+
+    /// <summary>Request options for <see cref="AdminPortalService.CreateRevokeLinkAsync"/>: Revoke Portal Links</summary>
+    public class AdminPortalCreateRevokeLinkOptions : BaseOptions
+    {
+        /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier.</summary>
+        public string Organization { get; set; } = default!;
+
+        /// <summary>The `external_user_id` the Portal Links were generated with for this organization. Every matching link is revoked, along with any Admin Portal sessions started from those links.</summary>
+        public string ExternalUserId { get; set; } = default!;
 
     }
 }

@@ -2,6 +2,7 @@
   "return_url": null,
   "success_url": null,
   "organization": "org_01EHZNVPK3SFK441A1RGBFSHRT",
+  "external_user_id": null,
   "intent": null,
   "it_contact_emails": null
 }

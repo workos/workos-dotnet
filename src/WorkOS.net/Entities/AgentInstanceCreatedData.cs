@@ -27,7 +27,7 @@ namespace WorkOS
         /// <summary>Whether the instance acts on behalf of a user (`delegated`) or as itself within an organization (`autonomous`).</summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
-        public AgentInstanceCreatedDataType Type { get; set; }
+        public AgentBlueprintCreatedDataInvocableAsInstanceTypes Type { get; set; }
 
         /// <summary>The timestamp when the agent instance was created.</summary>
         public string CreatedAt { get; set; } = default!;
