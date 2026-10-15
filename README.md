@@ -340,9 +340,12 @@ application's requirements.
 `Status` gives one immutable view of readiness, the current snapshot,
 `LastSuccessfulRefresh` and `LastError`. Bootstrap-only readiness has no successful
 network-refresh timestamp. An optional `IProgress<FeatureFlagsRuntimeStatus>`
-observer receives refresh results independently of polling; callbacks are delivered
-one at a time in refresh order and may arrive after disposal. Observer exceptions do
-not interrupt polling.
+observer receives refresh results independently of polling. The runtime calls
+`Report` one at a time in refresh order, and reports may arrive after disposal.
+Implement `IProgress<T>` directly to handle reports in that order; `Progress<T>`
+posts each callback to its captured synchronization context, or to the thread pool
+without one, so those callbacks can overlap or complete out of order. Observer
+exceptions do not interrupt polling.
 
 Dispose the runtime asynchronously before its `WorkOSClient`, with `await using`
 or by awaiting `DisposeAsync()`.

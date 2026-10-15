@@ -19,9 +19,11 @@ namespace WorkOS
         public FeatureFlagsConfiguration? BootstrapConfiguration { get; set; }
 
         /// <summary>
-        /// Optional refresh status observer. Reports are delivered one at a time in refresh order,
-        /// independently of polling, and may arrive after disposal. Observer failures do not affect
-        /// polling. A Progress instance can marshal callbacks to your synchronization context.
+        /// Optional refresh status observer. The runtime calls Report one at a time in refresh order,
+        /// independently of polling, and reports may arrive after disposal. Observer failures do not
+        /// affect polling. Implement IProgress directly to handle reports in that order; a Progress
+        /// instance posts callbacks to its captured synchronization context, or to the thread pool
+        /// without one, where they can overlap or complete out of order.
         /// </summary>
         public IProgress<FeatureFlagsRuntimeStatus>? Progress { get; set; }
 

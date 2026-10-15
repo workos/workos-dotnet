@@ -375,9 +375,9 @@ namespace WorkOS
                 return;
             }
 
-            // Reports are delivered one at a time in refresh order, never on the polling task or
-            // while owning the refresh gate. In particular, a synchronous observer may dispose the
-            // runtime safely.
+            // Report is called one at a time in refresh order, never on the polling task or while
+            // owning the refresh gate, so a synchronous observer may dispose the runtime safely.
+            // Progress<T> observers post onward to their own context; only the Report calls are ordered.
             lock (this.reportLock)
             {
                 this.reportChain = this.reportChain.ContinueWith(
