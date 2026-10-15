@@ -678,6 +678,52 @@ namespace WorkOSTests
             Assert.Null(runtime.Status.LastRefreshAttempt);
         }
 
+        [Theory]
+        [InlineData(HttpStatusCode.Unauthorized, true)]
+        [InlineData(HttpStatusCode.Forbidden, true)]
+        [InlineData(HttpStatusCode.Unauthorized, false)]
+        [InlineData(HttpStatusCode.Forbidden, false)]
+        public async Task AuthenticationFailuresReportThatPollingStopped(HttpStatusCode status, bool afterReadiness)
+        {
+            var time = new TestTimeProvider();
+            using var handler = new ScriptedHandler((attempt, _, _) => Task.FromResult(
+                afterReadiness && attempt == 1 ? Response(OrderedPayload) : Response("{}", status)));
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            var stopped = new TaskCompletionSource<FeatureFlagsRuntimeStatus>(TaskCreationOptions.RunContinuationsAsynchronously);
+            var options = PollingOptions(time);
+            options.Progress = new InlineProgress(report =>
+            {
+                if (report.IsPollingStopped)
+                {
+                    stopped.TrySetResult(report);
+                }
+            });
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(options);
+
+            if (afterReadiness)
+            {
+                await runtime.StartAsync().WaitAsync(TimeSpan.FromSeconds(5));
+                Assert.False(runtime.Status.IsPollingStopped);
+                time.Advance(await time.NextTimerAsync(due => due != options.RequestTimeout));
+            }
+            else
+            {
+                await Assert.ThrowsAnyAsync<ApiException>(() => runtime.StartAsync());
+                Assert.True(runtime.Status.IsPollingStopped); // Visible as soon as readiness fails.
+            }
+
+            var report = await stopped.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            Assert.Equal(status, Assert.IsAssignableFrom<ApiException>(report.LastError).StatusCode);
+            Assert.Equal(afterReadiness, report.IsReady); // The last good snapshot is kept.
+            Assert.True(runtime.Status.IsPollingStopped);
+
+            var requests = handler.RequestCount;
+            time.Advance(TimeSpan.FromMinutes(5));
+            Assert.Equal(requests, handler.RequestCount);
+            Assert.Equal(afterReadiness, runtime.IsEnabled("ordered"));
+        }
+
         private static string SingleFlag(string rule) =>
             "{\"version\":2,\"flags\":{\"test\":{\"slug\":\"test\",\"enabled\":true,\"default_value\":false,\"off_value\":false,\"rules\":[" + rule + "]}}}";
 

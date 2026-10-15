@@ -243,7 +243,8 @@ namespace WorkOS
                             null,
                             previous.RefreshCount + 1,
                             previous.FailedRefreshCount,
-                            attempted));
+                            attempted,
+                            previous.IsPollingStopped));
                         this.ready.TrySetResult();
                     }
                     catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested || this.lifetime.IsCancellationRequested)
@@ -261,7 +262,8 @@ namespace WorkOS
                             error,
                             previous.RefreshCount + 1,
                             previous.FailedRefreshCount + 1,
-                            attempted));
+                            attempted,
+                            previous.IsPollingStopped));
                         if (error != exception)
                         {
                             throw error;
@@ -315,6 +317,8 @@ namespace WorkOS
                 }
                 catch (ApiException exception) when (exception.StatusCode == HttpStatusCode.Unauthorized || exception.StatusCode == HttpStatusCode.Forbidden)
                 {
+                    // Publish before failing readiness so a caller woken by it already sees the stop.
+                    this.Publish(previous => previous.WithPollingStopped());
                     this.ready.TrySetException(exception);
                     return;
                 }

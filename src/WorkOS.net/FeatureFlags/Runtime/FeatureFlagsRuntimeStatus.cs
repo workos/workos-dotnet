@@ -12,7 +12,8 @@ namespace WorkOS
             Exception? lastError,
             long refreshCount = 0,
             long failedRefreshCount = 0,
-            DateTimeOffset? lastRefreshAttempt = null)
+            DateTimeOffset? lastRefreshAttempt = null,
+            bool isPollingStopped = false)
         {
             this.Configuration = configuration;
             this.LastSuccessfulRefresh = lastSuccessfulRefresh;
@@ -20,6 +21,7 @@ namespace WorkOS
             this.RefreshCount = refreshCount;
             this.FailedRefreshCount = failedRefreshCount;
             this.LastRefreshAttempt = lastRefreshAttempt;
+            this.IsPollingStopped = isPollingStopped;
         }
 
         /// <summary>Whether a validated bootstrap or remote configuration is available.</summary>
@@ -46,5 +48,21 @@ namespace WorkOS
 
         /// <summary>Start time of the most recent counted refresh; null until one finishes.</summary>
         public DateTimeOffset? LastRefreshAttempt { get; }
+
+        /// <summary>
+        /// Whether background polling stopped permanently after an HTTP 401 or 403. The last good
+        /// snapshot stays usable but will not be refreshed again; correct the credentials or access
+        /// and create a new runtime. Disposal does not set this.
+        /// </summary>
+        public bool IsPollingStopped { get; }
+
+        internal FeatureFlagsRuntimeStatus WithPollingStopped() => new FeatureFlagsRuntimeStatus(
+            this.Configuration,
+            this.LastSuccessfulRefresh,
+            this.LastError,
+            this.RefreshCount,
+            this.FailedRefreshCount,
+            this.LastRefreshAttempt,
+            isPollingStopped: true);
     }
 }

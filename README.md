@@ -297,7 +297,9 @@ floor. Request timeouts and backoff limits must be at least one millisecond. Sup
 `TimeProvider` to control polling delays and refresh deadlines in tests.
 Failures retain the entire last successful snapshot. A successful
 empty configuration removes previously cached flags. HTTP 401/403 stops background
-polling; correct credentials/access and create a new runtime.
+polling permanently: `Status.IsPollingStopped` becomes true and is reported to any
+`Progress` observer, while the last good snapshot stays usable. Alert on it, then
+correct credentials/access and create a new runtime.
 
 Evaluation follows the server's ordered rule semantics: disabled flags serve
 `off_value`; for enabled flags, the first matching rule wins, otherwise
