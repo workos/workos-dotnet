@@ -30,7 +30,8 @@ namespace WorkOS
 
         /// <summary>
         /// Parses a V2 SDK configuration. Malformed or unsupported payload versions throw
-        /// <see cref="JsonException"/>. Unknown rule kinds and operators are skipped safely.
+        /// <see cref="JsonException"/>. Unknown rule kinds and operators are skipped safely, and a
+        /// flag whose served value is not a boolean has no answer, so callers receive their own default.
         /// </summary>
         /// <param name="json">The complete SDK poll response.</param>
         /// <returns>An immutable configuration snapshot.</returns>
@@ -68,8 +69,8 @@ namespace WorkOS
                 var rules = RequireArray(flag["rules"], "rules").Select(ParseRule).ToArray();
                 flags.Add(entry.Name, new Flag(
                     RequireBoolean(flag["enabled"], "enabled"),
-                    RequireBoolean(flag["default_value"], "default_value"),
-                    RequireBoolean(flag["off_value"], "off_value"),
+                    ServedValue(flag["default_value"]),
+                    ServedValue(flag["off_value"]),
                     rules));
             }
 
@@ -89,7 +90,7 @@ namespace WorkOS
                 return Rule.NoMatch;
             }
 
-            var value = RequireBoolean(rule["value"], "rule.value");
+            var value = ServedValue(rule["value"]);
             var conditions = new List<Condition>();
             foreach (var tokenCondition in RequireArray(rule["conditions"], "rule.conditions"))
             {
@@ -129,16 +130,22 @@ namespace WorkOS
         private static bool RequireBoolean(JToken? token, string field) =>
             token?.Type == JTokenType.Boolean ? token.Value<bool>() : throw InvalidPayload($"Expected a boolean for {field}.");
 
+        // Mirrors the server's definition: a served value that is not a boolean, such as a future
+        // multivariate variant, makes the flag have no answer rather than failing the refresh or
+        // silently turning the flag off. The caller's own default applies instead.
+        private static bool? ServedValue(JToken? token) =>
+            token?.Type == JTokenType.Boolean ? token.Value<bool>() : null;
+
         private static JsonSerializationException InvalidPayload(string message) => new JsonSerializationException(message);
 
         internal sealed class Flag
         {
             private readonly bool enabled;
-            private readonly bool defaultValue;
-            private readonly bool offValue;
+            private readonly bool? defaultValue;
+            private readonly bool? offValue;
             private readonly Rule[] rules;
 
-            internal Flag(bool enabled, bool defaultValue, bool offValue, Rule[] rules)
+            internal Flag(bool enabled, bool? defaultValue, bool? offValue, Rule[] rules)
             {
                 this.enabled = enabled;
                 this.defaultValue = defaultValue;
@@ -146,7 +153,8 @@ namespace WorkOS
                 this.rules = rules;
             }
 
-            internal bool Evaluate(FeatureFlagContext? context)
+            // Null means the flag has no boolean answer for this context and the caller's default applies.
+            internal bool? Evaluate(FeatureFlagContext? context)
             {
                 if (!this.enabled)
                 {
@@ -171,13 +179,13 @@ namespace WorkOS
 
             private readonly Condition[] conditions;
 
-            internal Rule(bool value, Condition[] conditions)
+            internal Rule(bool? value, Condition[] conditions)
             {
                 this.Value = value;
                 this.conditions = conditions;
             }
 
-            internal bool Value { get; }
+            internal bool? Value { get; }
 
             internal bool Matches(FeatureFlagContext? context) =>
                 this.conditions.Length > 0 && this.conditions.All(condition => condition.Matches(context));

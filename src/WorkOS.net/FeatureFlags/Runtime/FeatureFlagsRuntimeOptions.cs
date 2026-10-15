@@ -19,10 +19,16 @@ namespace WorkOS
         public FeatureFlagsConfiguration? BootstrapConfiguration { get; set; }
 
         /// <summary>
-        /// Optional refresh status observer, dispatched independently of polling. Reports may arrive
-        /// after disposal or concurrently. Observer failures do not affect polling. A Progress instance
-        /// can marshal callbacks to your synchronization context.
+        /// Optional refresh status observer. Reports are delivered one at a time in refresh order,
+        /// independently of polling, and may arrive after disposal. Observer failures do not affect
+        /// polling. A Progress instance can marshal callbacks to your synchronization context.
         /// </summary>
         public IProgress<FeatureFlagsRuntimeStatus>? Progress { get; set; }
+
+        /// <summary>
+        /// Clock for polling delays, refresh deadlines, and refresh timestamps. Defaults to
+        /// <see cref="System.TimeProvider.System"/>; supply a fake provider to control time in tests.
+        /// </summary>
+        public TimeProvider? TimeProvider { get; set; }
     }
 }

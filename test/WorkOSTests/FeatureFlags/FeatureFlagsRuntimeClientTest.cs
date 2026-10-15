@@ -4,12 +4,13 @@ namespace WorkOSTests
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading;
+    using System.Threading.Channels;
     using System.Threading.Tasks;
+    using Microsoft.Extensions.Time.Testing;
     using Newtonsoft.Json;
     using WorkOS;
     using Xunit;
@@ -34,6 +35,19 @@ namespace WorkOSTests
               "custom":{"slug":"custom","enabled":true,"default_value":false,"off_value":false,"rules":[
                 {"id":"r1","kind":"conditions","value":true,"conditions":[{"target_type":"project","operator":"one_of","values":["project_1"]}]}
               ]}
+            }}
+            """;
+
+        // Served values that are not booleans, as a multivariate server would send them.
+        private const string VariantPayload = """
+            {"version":2,"flags":{
+              "boolean":{"slug":"boolean","enabled":true,"default_value":true,"off_value":false,"rules":[]},
+              "variant_default":{"slug":"variant_default","enabled":true,"default_value":"variant-a","off_value":false,"rules":[]},
+              "variant_off":{"slug":"variant_off","enabled":false,"default_value":true,"off_value":"variant-off","rules":[]},
+              "variant_rule":{"slug":"variant_rule","enabled":true,"default_value":false,"off_value":false,"rules":[
+                {"id":"r1","kind":"conditions","value":"variant-b","conditions":[{"target_type":"organization","operator":"one_of","values":["org_acme"]}]}
+              ]},
+              "missing_default":{"slug":"missing_default","enabled":true,"off_value":false,"rules":[]}
             }}
             """;
 
@@ -74,6 +88,40 @@ namespace WorkOSTests
             custom["project"] = "different";
             Assert.True(runtime.IsEnabled("custom", customContext));
             Assert.False(runtime.IsEnabled("custom", new FeatureFlagContext(customTargets: custom)));
+        }
+
+        [Fact]
+        public async Task NonBooleanServedValuesFallThroughToCallerDefaultWithoutFailingTheRefresh()
+        {
+            using var handler = new ScriptedHandler((_, _, _) => Task.FromResult(Response(VariantPayload)));
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient();
+            await runtime.RefreshAsync();
+            var organization = new FeatureFlagContext(organizationId: "org_acme");
+
+            Assert.Null(runtime.Status.LastError);
+            Assert.Equal(5, runtime.Configuration!.Count);
+            Assert.True(runtime.IsEnabled("boolean"));
+            Assert.False(runtime.IsEnabled("variant_default"));
+            Assert.True(runtime.IsEnabled("variant_default", defaultValue: true));
+            Assert.False(runtime.IsEnabled("variant_off"));
+            Assert.True(runtime.IsEnabled("variant_off", defaultValue: true));
+            Assert.False(runtime.IsEnabled("missing_default"));
+            Assert.True(runtime.IsEnabled("missing_default", defaultValue: true));
+
+            // Only a served non-boolean has no answer; an unmatched variant rule leaves the flag default intact.
+            Assert.True(runtime.IsEnabled("variant_rule", organization, defaultValue: true));
+            Assert.False(runtime.IsEnabled("variant_rule", organization, defaultValue: false));
+            Assert.False(runtime.IsEnabled("variant_rule", defaultValue: true));
+
+            Assert.Equal(new Dictionary<string, bool> { ["boolean"] = true }, runtime.GetAllFlags(organization));
+            Assert.Equal(new Dictionary<string, bool> { ["boolean"] = true, ["variant_rule"] = false }, runtime.GetAllFlags());
+            await using var restored = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
+            {
+                BootstrapConfiguration = FeatureFlagsConfiguration.FromJson(runtime.Configuration!.ToJson()),
+            });
+            Assert.Equal(runtime.GetAllFlags(), restored.GetAllFlags());
         }
 
         [Theory]
@@ -127,6 +175,7 @@ namespace WorkOSTests
         [Fact]
         public async Task PollUsesSdkAuthenticationVersionQueryAndRecoversFromTransientFailure()
         {
+            var time = new TestTimeProvider();
             using var handler = new ScriptedHandler((attempt, request, _) =>
             {
                 Assert.Equal(HttpMethod.Get, request.Method);
@@ -139,12 +188,22 @@ namespace WorkOSTests
             });
             using var http = new HttpClient(handler);
             using var client = Client(http);
-            await using var runtime = client.CreateFeatureFlagsRuntimeClient(PollingOptions());
-            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(15));
-            await runtime.StartAsync(timeout.Token);
-            Assert.True(handler.RequestCount >= 2);
+            var options = PollingOptions(time);
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(options);
+            var start = runtime.StartAsync();
+
+            // One failure backs off by max(polling interval, 1s) with ten percent jitter.
+            var retryDelay = await time.NextTimerAsync(due => due != options.RequestTimeout);
+            Assert.InRange(retryDelay, TimeSpan.FromSeconds(4.5), TimeSpan.FromSeconds(5.5));
+            Assert.Equal(1, handler.RequestCount);
+            Assert.IsType<ServerException>(runtime.Status.LastError);
+
+            time.Advance(retryDelay);
+            await start.WaitAsync(TimeSpan.FromSeconds(5));
+            Assert.Equal(2, handler.RequestCount);
             Assert.True(runtime.IsEnabled("ordered"));
             Assert.Null(runtime.Status.LastError);
+            Assert.Equal(time.GetUtcNow(), runtime.Status.LastSuccessfulRefresh);
             Assert.Equal(1, handler.MaxConcurrentRequests);
         }
 
@@ -153,16 +212,20 @@ namespace WorkOSTests
         [InlineData(HttpStatusCode.Forbidden)]
         public async Task AuthenticationFailuresStopPollingAndFailReadiness(HttpStatusCode status)
         {
+            var time = new TestTimeProvider();
             using var handler = new ScriptedHandler((_, _, _) => Task.FromResult(Response("{}", status)));
             using var http = new HttpClient(handler);
             using var client = Client(http);
-            await using var runtime = client.CreateFeatureFlagsRuntimeClient(PollingOptions());
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(PollingOptions(time));
             var error = await Assert.ThrowsAnyAsync<ApiException>(() => runtime.StartAsync());
             Assert.Equal(status, error.StatusCode);
-            await Task.Delay(TimeSpan.FromSeconds(6));
+
+            // No retry is ever scheduled, so advancing the clock sends nothing.
+            time.Advance(TimeSpan.FromMinutes(5));
             Assert.Equal(1, handler.RequestCount);
             Assert.False(runtime.IsReady);
             Assert.Same(error, runtime.Status.LastError);
+            await Assert.ThrowsAnyAsync<ApiException>(() => runtime.WaitUntilReadyAsync());
         }
 
         [Fact]
@@ -188,17 +251,23 @@ namespace WorkOSTests
         [Fact]
         public async Task RefreshTimeoutRetainsSnapshotAndReadinessWaitCanBeCancelled()
         {
+            var time = new TestTimeProvider();
+            var entered = Signal();
             using var handler = new ScriptedHandler(async (_, _, token) =>
             {
+                entered.TrySetResult();
                 await Task.Delay(Timeout.InfiniteTimeSpan, token);
                 return Response(OrderedPayload);
             });
             using var http = new HttpClient(handler);
             using var client = Client(http);
-            var options = PollingOptions();
-            options.RequestTimeout = TimeSpan.FromMilliseconds(40);
+            var options = PollingOptions(time);
             await using var runtime = client.CreateFeatureFlagsRuntimeClient(options);
-            await Assert.ThrowsAsync<TimeoutException>(() => runtime.RefreshAsync());
+            var refresh = runtime.RefreshAsync();
+            await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));
+
+            time.Advance(options.RequestTimeout);
+            await Assert.ThrowsAsync<TimeoutException>(() => refresh).WaitAsync(TimeSpan.FromSeconds(5));
             Assert.IsType<TimeoutException>(runtime.Status.LastError);
             Assert.False(runtime.IsReady);
             Assert.True(runtime.IsEnabled("missing", defaultValue: true));
@@ -211,6 +280,7 @@ namespace WorkOSTests
         [Fact]
         public async Task QueuedRefreshTimesOutWithoutSendingOrChangingActiveRefreshStatus()
         {
+            var time = new TestTimeProvider();
             var entered = Signal();
             var release = Signal();
             using var handler = new ScriptedHandler(async (_, _, _) =>
@@ -224,14 +294,17 @@ namespace WorkOSTests
             using var http = new HttpClient(handler);
             using var client = Client(http);
             var bootstrap = FeatureFlagsConfiguration.FromJson(OrderedPayload);
-            await using var runtime = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
+            var options = new FeatureFlagsRuntimeOptions
             {
                 BootstrapConfiguration = bootstrap,
                 RequestTimeout = TimeSpan.FromMilliseconds(100),
-            });
+                TimeProvider = time,
+            };
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(options);
             var active = runtime.RefreshAsync();
             await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));
             var queued = runtime.RefreshAsync();
+            time.Advance(options.RequestTimeout);
 
             try
             {
@@ -313,6 +386,51 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task StatusReportsArriveInRefreshOrderOneAtATime()
+        {
+            const int refreshes = 50;
+            const string truePayload = "{\"version\":2,\"flags\":{\"a\":{\"slug\":\"a\",\"enabled\":true,\"default_value\":true,\"off_value\":false,\"rules\":[]}}}";
+            var falsePayload = truePayload.Replace("\"default_value\":true", "\"default_value\":false", StringComparison.Ordinal);
+            using var handler = new ScriptedHandler((attempt, _, _) => Task.FromResult(Response(attempt % 2 == 0 ? truePayload : falsePayload)));
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            var reported = new List<FeatureFlagsConfiguration?>();
+            var delivered = Signal();
+            var active = 0;
+            var maxActive = 0;
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
+            {
+                Progress = new InlineProgress(status =>
+                {
+                    var concurrent = Interlocked.Increment(ref active);
+                    InterlockedMax(ref maxActive, concurrent);
+                    Thread.Sleep(1); // Widen the window so overlapping deliveries would be observed.
+                    lock (reported)
+                    {
+                        reported.Add(status.Configuration);
+                        if (reported.Count == refreshes)
+                        {
+                            delivered.TrySetResult();
+                        }
+                    }
+
+                    Interlocked.Decrement(ref active);
+                }),
+            });
+
+            var expected = new List<FeatureFlagsConfiguration?>();
+            for (var i = 0; i < refreshes; i++)
+            {
+                await runtime.RefreshAsync();
+                expected.Add(runtime.Configuration);
+            }
+
+            await delivered.Task.WaitAsync(TimeSpan.FromSeconds(10));
+            Assert.Equal(expected, reported);
+            Assert.Equal(1, maxActive);
+        }
+
+        [Fact]
         public async Task DisposalJoinsQueuedManualRefreshes()
         {
             for (var iteration = 0; iteration < 20; iteration++)
@@ -350,33 +468,35 @@ namespace WorkOSTests
         [InlineData(0)]
         public async Task ShortPollingIntervalsAreClampedToNodeMinimum(long ticks)
         {
-            var elapsed = new Stopwatch();
-            var nextPoll = new TaskCompletionSource<TimeSpan>(TaskCreationOptions.RunContinuationsAsynchronously);
+            var time = new TestTimeProvider();
+            var secondPoll = Signal();
             using var handler = new ScriptedHandler((attempt, _, _) =>
             {
-                if (attempt == 1)
+                if (attempt == 2)
                 {
-                    elapsed.Start();
-                }
-                else
-                {
-                    nextPoll.TrySetResult(elapsed.Elapsed);
+                    secondPoll.TrySetResult();
                 }
 
                 return Task.FromResult(Response(OrderedPayload));
             });
             using var http = new HttpClient(handler);
             using var client = Client(http);
-            await using var runtime = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
+            var options = new FeatureFlagsRuntimeOptions
             {
                 PollingInterval = TimeSpan.FromTicks(ticks),
-            });
-            await runtime.StartAsync();
-
-            var interval = await nextPoll.Task.WaitAsync(TimeSpan.FromSeconds(15));
+                TimeProvider = time,
+            };
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(options);
+            await runtime.StartAsync().WaitAsync(TimeSpan.FromSeconds(5));
 
             // Node's five-second minimum permits ten percent jitter in either direction.
-            Assert.True(interval >= TimeSpan.FromSeconds(4.4), $"Polling interval was {interval}.");
+            var interval = await time.NextTimerAsync(due => due != options.RequestTimeout);
+            Assert.InRange(interval, TimeSpan.FromSeconds(4.5), TimeSpan.FromSeconds(5.5));
+            Assert.Equal(1, handler.RequestCount);
+
+            time.Advance(interval);
+            await secondPoll.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            Assert.Equal(2, handler.RequestCount);
         }
 
         [Theory]
@@ -428,9 +548,27 @@ namespace WorkOSTests
             Assert.True(cancelled.Task.IsCompleted);
             Assert.Equal(0, handler.ActiveRequests);
             await runtime.DisposeAsync();
-            Assert.Throws<ObjectDisposedException>(() => runtime.IsEnabled("ordered"));
+            await Assert.ThrowsAsync<ObjectDisposedException>(() => runtime.StartAsync());
+            await Assert.ThrowsAsync<ObjectDisposedException>(() => runtime.RefreshAsync());
             using var response = await http.GetAsync("https://custom.example.com/still-owned");
             Assert.True(response.IsSuccessStatusCode);
+        }
+
+        [Fact]
+        public async Task DisposedRuntimeServesCallerFallbacksButKeepsItsLastSnapshotReadable()
+        {
+            var bootstrap = FeatureFlagsConfiguration.FromJson(OrderedPayload);
+            using var client = new WorkOSClient(new WorkOSOptions { ApiKey = "sk_test" });
+            var runtime = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions { BootstrapConfiguration = bootstrap });
+            Assert.True(runtime.IsEnabled("ordered"));
+
+            await runtime.DisposeAsync();
+
+            Assert.False(runtime.IsEnabled("ordered"));
+            Assert.True(runtime.IsEnabled("ordered", defaultValue: true));
+            Assert.Empty(runtime.GetAllFlags());
+            Assert.Same(bootstrap, runtime.Configuration);
+            Assert.True(runtime.Status.IsReady);
         }
 
         [Fact]
@@ -485,9 +623,10 @@ namespace WorkOSTests
         private static string SingleFlag(string rule) =>
             "{\"version\":2,\"flags\":{\"test\":{\"slug\":\"test\",\"enabled\":true,\"default_value\":false,\"off_value\":false,\"rules\":[" + rule + "]}}}";
 
-        private static FeatureFlagsRuntimeOptions PollingOptions() => new FeatureFlagsRuntimeOptions
+        private static FeatureFlagsRuntimeOptions PollingOptions(TestTimeProvider? time = null) => new FeatureFlagsRuntimeOptions
         {
             PollingInterval = TimeSpan.FromSeconds(5),
+            TimeProvider = time,
         };
 
         private static WorkOSClient Client(HttpClient http) => new WorkOSClient(new WorkOSOptions
@@ -497,6 +636,14 @@ namespace WorkOSTests
             HttpClient = http,
             MaxRetries = 0,
         });
+
+        private static void InterlockedMax(ref int location, int value)
+        {
+            int current;
+            while ((current = Volatile.Read(ref location)) < value && Interlocked.CompareExchange(ref location, value, current) != current)
+            {
+            }
+        }
 
         private static TaskCompletionSource Signal() => new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -510,6 +657,32 @@ namespace WorkOSTests
             internal InlineProgress(Action<FeatureFlagsRuntimeStatus> callback) => this.callback = callback;
 
             public void Report(FeatureFlagsRuntimeStatus value) => this.callback(value);
+        }
+
+        /// <summary>A controllable clock that also exposes the due time of every timer the runtime schedules.</summary>
+        private sealed class TestTimeProvider : FakeTimeProvider
+        {
+            private readonly Channel<TimeSpan> timers = Channel.CreateUnbounded<TimeSpan>();
+
+            public override ITimer CreateTimer(TimerCallback callback, object? state, TimeSpan dueTime, TimeSpan period)
+            {
+                var timer = base.CreateTimer(callback, state, dueTime, period);
+                this.timers.Writer.TryWrite(dueTime);
+                return timer;
+            }
+
+            internal async Task<TimeSpan> NextTimerAsync(Func<TimeSpan, bool> predicate)
+            {
+                using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+                while (true)
+                {
+                    var due = await this.timers.Reader.ReadAsync(deadline.Token);
+                    if (predicate(due))
+                    {
+                        return due;
+                    }
+                }
+            }
         }
 
         private sealed class ScriptedHandler : HttpMessageHandler

@@ -293,7 +293,8 @@ polling defaults to 30 seconds, clamps configured intervals to at least 5 second
 and applies 10% jitter in either direction. Failed polls use exponential backoff
 starting at one second and capped at 60 seconds by default, before jitter; the base
 delay is never shorter than the polling interval. Jittered delays have a one-second
-floor. Request timeouts and backoff limits must be at least one millisecond.
+floor. Request timeouts and backoff limits must be at least one millisecond. Supply
+`TimeProvider` to control polling delays and refresh deadlines in tests.
 Failures retain the entire last successful snapshot. A successful
 empty configuration removes previously cached flags. HTTP 401/403 stops background
 polling; correct credentials/access and create a new runtime.
@@ -303,7 +304,10 @@ Evaluation follows the server's ordered rule semantics: disabled flags serve
 `default_value` applies. All conditions in a rule must match. Exact IDs are
 case-sensitive. Empty conditions and unknown rule kinds/operators never match.
 Malformed responses or unsupported payload versions fail the entire refresh
-instead of partially replacing a good cache.
+instead of partially replacing a good cache. A flag whose served value is not a
+boolean, such as a future multivariate variant, has no answer: `IsEnabled` returns
+its caller-provided fallback and `GetAllFlags` omits it, while other flags evaluate
+normally.
 
 The context describes the subjects for this evaluation. The runtime does not look
 up organization memberships for a user; pass the relevant organization ID yourself.
@@ -336,15 +340,19 @@ application's requirements.
 `Status` gives one immutable view of readiness, the current snapshot,
 `LastSuccessfulRefresh` and `LastError`. Bootstrap-only readiness has no successful
 network-refresh timestamp. An optional `IProgress<FeatureFlagsRuntimeStatus>`
-observer receives refresh results independently of polling; callbacks can be
-concurrent or arrive after disposal. Observer exceptions do not interrupt polling.
+observer receives refresh results independently of polling; callbacks are delivered
+one at a time in refresh order and may arrive after disposal. Observer exceptions do
+not interrupt polling.
 
 Dispose the runtime asynchronously before its `WorkOSClient`, with `await using`
 or by awaiting `DisposeAsync()`.
 `DisposeAsync` cancels and joins background polling and all active or queued manual refreshes;
 the runtime implements `IAsyncDisposable` only so shutdown does not block a
 calling synchronization context. It does not dispose the supplied SDK client or a
-caller-owned `HttpClient`. Local evaluation methods throw after disposal.
+caller-owned `HttpClient`. After disposal, `IsEnabled` returns its fallback and
+`GetAllFlags` returns an empty map, so a late evaluation during shutdown cannot fail
+a request; `Status` and `Configuration` remain readable for persisting the last
+snapshot. Lifecycle methods throw `ObjectDisposedException`.
 
 ## Making direct API requests
 

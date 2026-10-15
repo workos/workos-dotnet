@@ -24,13 +24,16 @@ namespace WorkOS
         private readonly TimeSpan pollingInterval;
         private readonly TimeSpan requestTimeout;
         private readonly TimeSpan maxRetryDelay;
+        private readonly TimeProvider timeProvider;
         private readonly IProgress<FeatureFlagsRuntimeStatus>? progress;
         private readonly object lifecycleLock = new object();
+        private readonly object reportLock = new object();
         private readonly HashSet<Task> pendingRefreshes = new HashSet<Task>();
         private readonly CancellationTokenSource lifetime = new CancellationTokenSource();
         private readonly SemaphoreSlim refreshGate = new SemaphoreSlim(1, 1);
         private readonly TaskCompletionSource ready = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         private FeatureFlagsRuntimeStatus status;
+        private Task reportChain = Task.CompletedTask;
         private Task? pollingTask;
         private Task? disposalTask;
         private bool disposed;
@@ -52,6 +55,7 @@ namespace WorkOS
             this.pollingInterval = pollingInterval;
             this.requestTimeout = options.RequestTimeout;
             this.maxRetryDelay = options.MaxRetryDelay;
+            this.timeProvider = options.TimeProvider ?? TimeProvider.System;
             this.progress = options.Progress;
             this.status = new FeatureFlagsRuntimeStatus(options.BootstrapConfiguration, null, null);
             if (this.status.IsReady)
@@ -66,8 +70,10 @@ namespace WorkOS
         /// <summary>Whether a validated configuration is available for local evaluation.</summary>
         public bool IsReady => this.Status.IsReady;
 
-        /// <summary>Current immutable snapshot, suitable for persisting with ToJson.</summary>
+        /// <summary>Current immutable snapshot, suitable for persisting with ToJson. Remains readable after disposal.</summary>
         public FeatureFlagsConfiguration? Configuration => this.Status.Configuration;
+
+        private FeatureFlagsConfiguration? EvaluableConfiguration => Volatile.Read(ref this.disposed) ? null : this.Configuration;
 
         /// <summary>
         /// Starts background polling once and waits for a valid configuration. Bootstrap makes
@@ -108,69 +114,95 @@ namespace WorkOS
         /// <returns>A task completed after a new validated snapshot is installed.</returns>
         public Task RefreshAsync(CancellationToken cancellationToken = default)
         {
+            CancellationTokenSource timeout;
             CancellationTokenSource cancellation;
             var completion = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
             lock (this.lifecycleLock)
             {
                 this.ThrowIfDisposed();
-                cancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, this.lifetime.Token);
-                cancellation.CancelAfter(this.requestTimeout);
+                timeout = new CancellationTokenSource(this.requestTimeout, this.timeProvider);
+                cancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, this.lifetime.Token, timeout.Token);
 
                 // Register before waiting for the gate so disposal can join queued refreshes.
                 this.pendingRefreshes.Add(completion.Task);
             }
 
-            _ = this.RefreshAndCompleteAsync(cancellationToken, cancellation, completion);
+            _ = this.RefreshAndCompleteAsync(cancellationToken, timeout, cancellation, completion);
             return completion.Task;
         }
 
         /// <summary>
-        /// Evaluates locally with no network request. Missing flags or an unready client return
-        /// defaultValue. For enabled flags, the first matching rule wins; otherwise the flag default
-        /// applies. Disabled flags serve their off value.
+        /// Evaluates locally with no network request. Missing flags, an unready or disposed client,
+        /// and flags without a boolean answer return defaultValue. For enabled flags, the first
+        /// matching rule wins; otherwise the flag default applies. Disabled flags serve their off value.
         /// </summary>
         /// <param name="slug">Flag slug.</param>
         /// <param name="context">Optional exact target IDs.</param>
-        /// <param name="defaultValue">Caller fallback for a missing flag/configuration.</param>
+        /// <param name="defaultValue">Caller fallback for a missing flag, answer, or configuration.</param>
         /// <returns>The evaluated boolean value.</returns>
         public bool IsEnabled(string slug, FeatureFlagContext? context = null, bool defaultValue = false)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(slug);
-            this.ThrowIfDisposed();
-            var configuration = this.Configuration;
+            var configuration = this.EvaluableConfiguration;
             return configuration != null && configuration.Flags.TryGetValue(slug, out var flag)
-                ? flag.Evaluate(context)
+                ? flag.Evaluate(context) ?? defaultValue
                 : defaultValue;
         }
 
-        /// <summary>Evaluates all flags from one snapshot. An unready client returns an empty map.</summary>
+        /// <summary>
+        /// Evaluates all flags from one snapshot. Flags without a boolean answer are omitted. An
+        /// unready or disposed client returns an empty map.
+        /// </summary>
         /// <param name="context">Optional exact target IDs.</param>
-        /// <returns>An immutable slug to boolean map, including false values.</returns>
+        /// <returns>A read-only slug to boolean map, including false values.</returns>
         public IReadOnlyDictionary<string, bool> GetAllFlags(FeatureFlagContext? context = null)
         {
-            this.ThrowIfDisposed();
-            var configuration = this.Configuration;
-            return configuration == null
-                ? FrozenDictionary<string, bool>.Empty
-                : configuration.Flags.ToFrozenDictionary(entry => entry.Key, entry => entry.Value.Evaluate(context), StringComparer.Ordinal);
+            var configuration = this.EvaluableConfiguration;
+            if (configuration == null)
+            {
+                return FrozenDictionary<string, bool>.Empty;
+            }
+
+            var values = new Dictionary<string, bool>(configuration.Count, StringComparer.Ordinal);
+            foreach (var entry in configuration.Flags)
+            {
+                if (entry.Value.Evaluate(context) is bool value)
+                {
+                    values[entry.Key] = value;
+                }
+            }
+
+            return values;
         }
 
         /// <summary>Cancels and joins polling and all active or queued refreshes before releasing resources.</summary>
         /// <returns>A task completed when network activity has stopped.</returns>
         public ValueTask DisposeAsync()
         {
+            var refreshes = Array.Empty<Task>();
+            TaskCompletionSource? completion = null;
+            Task disposal;
             lock (this.lifecycleLock)
             {
                 if (this.disposalTask == null)
                 {
                     Volatile.Write(ref this.disposed, true);
-                    var refreshes = new Task[this.pendingRefreshes.Count];
+                    refreshes = new Task[this.pendingRefreshes.Count];
                     this.pendingRefreshes.CopyTo(refreshes);
-                    this.disposalTask = this.DisposeCoreAsync(refreshes);
+                    completion = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+                    this.disposalTask = completion.Task;
                 }
 
-                return new ValueTask(this.disposalTask);
+                disposal = this.disposalTask;
             }
+
+            if (completion != null)
+            {
+                // Cancellation runs registered callbacks inline; never own the lifecycle lock while it does.
+                _ = this.DisposeCoreAsync(refreshes, completion);
+            }
+
+            return new ValueTask(disposal);
         }
 
         private static void ValidateDuration(TimeSpan value, string name)
@@ -181,10 +213,15 @@ namespace WorkOS
             }
         }
 
-        private async Task RefreshAndCompleteAsync(CancellationToken cancellationToken, CancellationTokenSource cancellation, TaskCompletionSource completion)
+        private async Task RefreshAndCompleteAsync(
+            CancellationToken cancellationToken,
+            CancellationTokenSource timeout,
+            CancellationTokenSource cancellation,
+            TaskCompletionSource completion)
         {
             try
             {
+                using (timeout)
                 using (cancellation)
                 {
                     await this.refreshGate.WaitAsync(cancellation.Token).ConfigureAwait(false);
@@ -198,7 +235,7 @@ namespace WorkOS
                         var json = await response.Content.ReadAsStringAsync(cancellation.Token).ConfigureAwait(false);
                         var configuration = FeatureFlagsConfiguration.FromJson(json);
                         cancellation.Token.ThrowIfCancellationRequested();
-                        var successful = new FeatureFlagsRuntimeStatus(configuration, DateTimeOffset.UtcNow, null);
+                        var successful = new FeatureFlagsRuntimeStatus(configuration, this.timeProvider.GetUtcNow(), null);
                         Volatile.Write(ref this.status, successful);
                         this.ready.TrySetResult();
                         this.ReportStatus(successful);
@@ -290,7 +327,7 @@ namespace WorkOS
 
                 try
                 {
-                    await Task.Delay(delay, this.lifetime.Token).ConfigureAwait(false);
+                    await Task.Delay(delay, this.timeProvider, this.lifetime.Token).ConfigureAwait(false);
                 }
                 catch (OperationCanceledException) when (this.lifetime.IsCancellationRequested)
                 {
@@ -299,45 +336,65 @@ namespace WorkOS
             }
         }
 
-        private async Task DisposeCoreAsync(Task[] refreshes)
+        private async Task DisposeCoreAsync(Task[] refreshes, TaskCompletionSource completion)
         {
-            this.lifetime.Cancel();
-            this.ready.TrySetCanceled(this.lifetime.Token);
-            if (this.pollingTask != null)
-            {
-                await this.pollingTask.ConfigureAwait(false);
-            }
-
             try
             {
-                await Task.WhenAll(refreshes).ConfigureAwait(false);
-            }
-            catch (Exception)
-            {
-                // Refresh errors belong to their callers; all refreshes have now finished.
-            }
+                this.lifetime.Cancel();
+                this.ready.TrySetCanceled(this.lifetime.Token);
+                var polling = Volatile.Read(ref this.pollingTask);
+                if (polling != null)
+                {
+                    await polling.ConfigureAwait(false);
+                }
 
-            this.refreshGate.Dispose();
-            this.lifetime.Dispose();
+                try
+                {
+                    await Task.WhenAll(refreshes).ConfigureAwait(false);
+                }
+                catch (Exception)
+                {
+                    // Refresh errors belong to their callers; all refreshes have now finished.
+                }
+
+                this.refreshGate.Dispose();
+                this.lifetime.Dispose();
+                completion.TrySetResult();
+            }
+            catch (Exception exception)
+            {
+                completion.TrySetException(exception);
+            }
         }
 
         private void ReportStatus(FeatureFlagsRuntimeStatus value)
         {
-            if (this.progress != null)
+            var progress = this.progress;
+            if (progress == null)
             {
-                // Never run application code on the polling task or while owning the refresh gate.
-                // In particular, a synchronous observer may dispose the runtime safely.
-                ThreadPool.QueueUserWorkItem(_ =>
-                {
-                    try
+                return;
+            }
+
+            // Reports are delivered one at a time in refresh order, never on the polling task or
+            // while owning the refresh gate. In particular, a synchronous observer may dispose the
+            // runtime safely.
+            lock (this.reportLock)
+            {
+                this.reportChain = this.reportChain.ContinueWith(
+                    _ =>
                     {
-                        this.progress.Report(value);
-                    }
-                    catch (Exception)
-                    {
-                        // Observer failures must not interrupt polling or invalidate a snapshot.
-                    }
-                });
+                        try
+                        {
+                            progress.Report(value);
+                        }
+                        catch (Exception)
+                        {
+                            // Observer failures must not interrupt polling or invalidate a snapshot.
+                        }
+                    },
+                    CancellationToken.None,
+                    TaskContinuationOptions.DenyChildAttach,
+                    TaskScheduler.Default);
             }
         }
 
