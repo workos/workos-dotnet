@@ -724,6 +724,89 @@ namespace WorkOSTests
             Assert.Equal(afterReadiness, runtime.IsEnabled("ordered"));
         }
 
+        [Fact]
+        public async Task GetFlagReturnsConfigurationAsReceivedAndMissingFlagsAsNull()
+        {
+            using var client = new WorkOSClient(new WorkOSOptions { ApiKey = "sk_test" });
+            var unready = client.CreateFeatureFlagsRuntimeClient();
+            Assert.Null(unready.GetFlag("ordered"));
+            await unready.DisposeAsync();
+
+            var bootstrap = FeatureFlagsConfiguration.FromJson(OrderedPayload);
+            var runtime = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions { BootstrapConfiguration = bootstrap });
+
+            var flag = runtime.GetFlag("ordered");
+            Assert.NotNull(flag);
+            Assert.Equal("ordered", flag.Slug);
+            Assert.True(flag.Enabled);
+            Assert.True(flag.DefaultValue);
+            Assert.False(flag.OffValue);
+            Assert.Equal(new[] { "r1", "r2" }, flag.Rules.Select(rule => rule.Id));
+            var first = flag.Rules[0];
+            Assert.Equal("conditions", first.Kind);
+            Assert.False(first.Value);
+            var condition = Assert.Single(first.Conditions);
+            Assert.Equal("organization", condition.TargetType);
+            Assert.Equal("one_of", condition.Operator);
+            Assert.Equal(new[] { "org_acme" }, condition.Values);
+            Assert.Equal(2, runtime.GetFlag("both")!.Rules[0].Conditions.Count);
+
+            Assert.Null(runtime.GetFlag("missing"));
+            Assert.False(bootstrap.TryGetFlag("missing", out _));
+            Assert.True(bootstrap.TryGetFlag("ordered", out var fromSnapshot));
+            Assert.Same(flag, fromSnapshot);
+            Assert.Throws<ArgumentException>(() => runtime.GetFlag(" "));
+
+            // Inspection stays available for persisting or debugging after disposal, like Configuration.
+            await runtime.DisposeAsync();
+            Assert.Same(flag, runtime.GetFlag("ordered"));
+        }
+
+        [Fact]
+        public async Task GetFlagShowsRulesTheSdkCannotEvaluateWithoutEvaluatingThem()
+        {
+            const string payload = """
+                {"version":2,"flags":{"test":{"slug":"test","enabled":true,"default_value":false,"off_value":"variant-off","rules":[
+                  {"id":"rollout","kind":"percentage","value":true,"percentage":5},
+                  {"id":"pattern","kind":"conditions","value":true,"conditions":[
+                    {"target_type":"organization","operator":"one_of","values":["org_acme"]},
+                    {"target_type":"email","operator":"ends_with","values":["@acme.com",7]},
+                    {"operator":"one_of"},
+                    "not an object"
+                  ]},
+                  {"id":"variant","kind":"conditions","value":"variant-b","conditions":[{"target_type":"user","operator":"one_of","values":["user_jp"]}]}
+                ]}}}
+                """;
+            using var client = new WorkOSClient(new WorkOSOptions { ApiKey = "sk_test" });
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
+            {
+                BootstrapConfiguration = FeatureFlagsConfiguration.FromJson(payload),
+            });
+            var flag = runtime.GetFlag("test")!;
+            Assert.Null(flag.OffValue);
+
+            var rollout = flag.Rules[0];
+            Assert.Equal("percentage", rollout.Kind);
+            Assert.True(rollout.Value);
+            Assert.Empty(rollout.Conditions);
+
+            // The unknown operator and everything after it are reported best effort, never validated.
+            var pattern = flag.Rules[1];
+            Assert.Equal(new string?[] { "one_of", "ends_with", "one_of" }, pattern.Conditions.Select(condition => condition.Operator));
+            Assert.Equal("email", pattern.Conditions[1].TargetType);
+            Assert.Equal(new[] { "@acme.com" }, pattern.Conditions[1].Values);
+            Assert.Null(pattern.Conditions[2].TargetType);
+            Assert.Empty(pattern.Conditions[2].Values);
+
+            Assert.Null(flag.Rules[2].Value);
+
+            // Evaluation is unchanged: neither unknown rule matches, and the variant rule has no answer.
+            var context = new FeatureFlagContext(userId: "user_jp", organizationId: "org_acme");
+            Assert.False(runtime.IsEnabled("test", new FeatureFlagContext(organizationId: "org_acme")));
+            Assert.True(runtime.IsEnabled("test", context, defaultValue: true));
+            Assert.False(runtime.IsEnabled("test", context, defaultValue: false));
+        }
+
         private static string SingleFlag(string rule) =>
             "{\"version\":2,\"flags\":{\"test\":{\"slug\":\"test\",\"enabled\":true,\"default_value\":false,\"off_value\":false,\"rules\":[" + rule + "]}}}";
 

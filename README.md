@@ -317,6 +317,12 @@ Custom targets can be passed as `customTargets: new Dictionary<string, string>
 { ["project"] = "project_123" }`. Contexts and configuration snapshots are immutable,
 and local evaluation supports concurrent readers during refreshes.
 
+To see why a flag evaluates the way it does, `flags.GetFlag("new-checkout")` (or
+`TryGetFlag` on a `FeatureFlagsConfiguration`) returns the flag's configuration as
+received: enabled state, default and off values, and its rules in order with their
+conditions. Rule kinds and operators this SDK does not evaluate are shown as received
+and never match.
+
 ### Bootstrap and observability
 
 Persist `flags.Configuration?.ToJson()` in your own storage and restore it at

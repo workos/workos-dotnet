@@ -4,6 +4,7 @@ namespace WorkOS
     using System;
     using System.Collections.Frozen;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using Newtonsoft.Json;
@@ -67,11 +68,15 @@ namespace WorkOS
                 }
 
                 var rules = RequireArray(flag["rules"], "rules").Select(ParseRule).ToArray();
+                var enabled = RequireBoolean(flag["enabled"], "enabled");
+                var defaultValue = ServedValue(flag["default_value"]);
+                var offValue = ServedValue(flag["off_value"]);
                 flags.Add(entry.Name, new Flag(
-                    RequireBoolean(flag["enabled"], "enabled"),
-                    ServedValue(flag["default_value"]),
-                    ServedValue(flag["off_value"]),
-                    rules));
+                    enabled,
+                    defaultValue,
+                    offValue,
+                    rules.Select(rule => rule.Rule).ToArray(),
+                    new FeatureFlagDefinition(entry.Name, enabled, defaultValue, offValue, rules.Select(rule => rule.Definition))));
             }
 
             return new FeatureFlagsConfiguration(payload.ToString(Formatting.None), flags.ToFrozenDictionary(StringComparer.Ordinal));
@@ -81,35 +86,82 @@ namespace WorkOS
         /// <returns>JSON suitable for caller-owned caching and bootstrap.</returns>
         public string ToJson() => this.json;
 
-        private static Rule ParseRule(JToken token)
+        /// <summary>Looks up one flag's configuration in this snapshot, for inspection.</summary>
+        /// <param name="slug">Flag slug.</param>
+        /// <param name="flag">The flag's configuration, when present.</param>
+        /// <returns>Whether the snapshot contains the flag.</returns>
+        public bool TryGetFlag(string slug, [NotNullWhen(true)] out FeatureFlagDefinition? flag)
+        {
+            ArgumentNullException.ThrowIfNull(slug);
+            flag = this.Flags.TryGetValue(slug, out var value) ? value.Definition : null;
+            return flag != null;
+        }
+
+        private static (Rule Rule, FeatureFlagRuleDefinition Definition) ParseRule(JToken token)
         {
             var rule = RequireObject(token, "rule");
-            RequireString(rule["id"], "rule.id");
-            if (RequireString(rule["kind"], "rule.kind") != "conditions")
+            var id = RequireString(rule["id"], "rule.id");
+            var kind = RequireString(rule["kind"], "rule.kind");
+            var value = ServedValue(rule["value"]);
+            if (kind != "conditions")
             {
-                return Rule.NoMatch;
+                // A future rule kind may have entirely different fields. Record what is recognizable
+                // for inspection, but never evaluate it.
+                return (Rule.NoMatch, new FeatureFlagRuleDefinition(id, kind, value, InspectConditions(rule["conditions"] as JArray, 0)));
             }
 
-            var value = ServedValue(rule["value"]);
+            var tokens = RequireArray(rule["conditions"], "rule.conditions");
             var conditions = new List<Condition>();
-            foreach (var tokenCondition in RequireArray(rule["conditions"], "rule.conditions"))
+            var definitions = new List<FeatureFlagConditionDefinition>();
+            for (var index = 0; index < tokens.Count; index++)
             {
-                var condition = RequireObject(tokenCondition, "condition");
-                if (RequireString(condition["operator"], "condition.operator") != "one_of")
+                var condition = RequireObject(tokens[index], "condition");
+                var conditionOperator = RequireString(condition["operator"], "condition.operator");
+                if (conditionOperator != "one_of")
                 {
-                    // Future operators may have entirely different operands. Do not interpret them.
-                    return Rule.NoMatch;
+                    // Future operators may have entirely different operands. Do not interpret them,
+                    // or anything after them; only record them for inspection.
+                    definitions.AddRange(InspectConditions(tokens, index));
+                    return (Rule.NoMatch, new FeatureFlagRuleDefinition(id, kind, value, definitions));
                 }
 
-                conditions.Add(new Condition(
-                    RequireString(condition["target_type"], "condition.target_type"),
-                    RequireArray(condition["values"], "condition.values")
-                        .Select(id => RequireString(id, "condition.values[]"))
-                        .ToFrozenSet(StringComparer.Ordinal)));
+                var targetType = RequireString(condition["target_type"], "condition.target_type");
+                var values = RequireArray(condition["values"], "condition.values")
+                    .Select(target => RequireString(target, "condition.values[]"))
+                    .ToArray();
+                conditions.Add(new Condition(targetType, values.ToFrozenSet(StringComparer.Ordinal)));
+                definitions.Add(new FeatureFlagConditionDefinition(targetType, conditionOperator, values));
             }
 
-            return new Rule(value, conditions.ToArray());
+            return (new Rule(value, conditions.ToArray()), new FeatureFlagRuleDefinition(id, kind, value, definitions));
         }
+
+        // Reads conditions this SDK does not evaluate without validating them, so an unfamiliar shape
+        // can never fail a refresh.
+        private static IEnumerable<FeatureFlagConditionDefinition> InspectConditions(JArray? tokens, int start)
+        {
+            if (tokens == null)
+            {
+                yield break;
+            }
+
+            for (var index = start; index < tokens.Count; index++)
+            {
+                if (tokens[index] is JObject condition)
+                {
+                    var values = condition["values"] is JArray array
+                        ? array.Where(target => target.Type == JTokenType.String).Select(target => target.Value<string>()!)
+                        : Array.Empty<string>();
+                    yield return new FeatureFlagConditionDefinition(
+                        OptionalString(condition["target_type"]),
+                        OptionalString(condition["operator"]),
+                        values);
+                }
+            }
+        }
+
+        private static string? OptionalString(JToken? token) =>
+            token?.Type == JTokenType.String ? token.Value<string>() : null;
 
         private static JObject RequireObject(JToken? token, string field) =>
             token is JObject value ? value : throw InvalidPayload($"Expected an object for {field}.");
@@ -145,13 +197,16 @@ namespace WorkOS
             private readonly bool? offValue;
             private readonly Rule[] rules;
 
-            internal Flag(bool enabled, bool? defaultValue, bool? offValue, Rule[] rules)
+            internal Flag(bool enabled, bool? defaultValue, bool? offValue, Rule[] rules, FeatureFlagDefinition definition)
             {
                 this.enabled = enabled;
                 this.defaultValue = defaultValue;
                 this.offValue = offValue;
                 this.rules = rules;
+                this.Definition = definition;
             }
+
+            internal FeatureFlagDefinition Definition { get; }
 
             // Null means the flag has no boolean answer for this context and the caller's default applies.
             internal bool? Evaluate(FeatureFlagContext? context)

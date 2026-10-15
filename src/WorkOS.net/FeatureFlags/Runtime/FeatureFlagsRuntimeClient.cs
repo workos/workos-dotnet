@@ -175,6 +175,19 @@ namespace WorkOS
             return values;
         }
 
+        /// <summary>
+        /// Returns one flag's configuration from the current snapshot, for inspection and debugging.
+        /// Use <see cref="IsEnabled"/> for decisions. Like <see cref="Configuration"/>, it remains
+        /// readable after disposal.
+        /// </summary>
+        /// <param name="slug">Flag slug.</param>
+        /// <returns>The flag's configuration, or null when the client is unready or the flag is missing.</returns>
+        public FeatureFlagDefinition? GetFlag(string slug)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(slug);
+            return this.Configuration is { } configuration && configuration.TryGetFlag(slug, out var flag) ? flag : null;
+        }
+
         /// <summary>Cancels and joins polling and all active or queued refreshes before releasing resources.</summary>
         /// <returns>A task completed when network activity has stopped.</returns>
         public ValueTask DisposeAsync()
