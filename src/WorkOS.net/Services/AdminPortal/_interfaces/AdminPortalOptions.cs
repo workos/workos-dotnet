@@ -39,8 +39,8 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="AdminPortalService.CreateRevokeLinkAsync"/>: Revoke Portal Links</summary>
-    public class AdminPortalCreateRevokeLinkOptions : BaseOptions
+    /// <summary>Request options for <see cref="AdminPortalService.RevokeLinkAsync"/>: Revoke Portal Links</summary>
+    public class AdminPortalRevokeLinkOptions : BaseOptions
     {
         /// <summary>An [Organization](https://workos.com/docs/reference/organization) identifier.</summary>
         public string Organization { get; set; } = default!;

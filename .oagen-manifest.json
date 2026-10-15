@@ -2357,7 +2357,7 @@
       "service": "admin_portal"
     },
     "POST /portal/revoke_link": {
-      "sdkMethod": "CreateRevokeLinkAsync",
+      "sdkMethod": "RevokeLinkAsync",
       "service": "admin_portal"
     },
     "POST /radar/attempts": {
