@@ -225,6 +225,7 @@ namespace WorkOS
                 using (cancellation)
                 {
                     await this.refreshGate.WaitAsync(cancellation.Token).ConfigureAwait(false);
+                    var attempted = this.timeProvider.GetUtcNow();
                     try
                     {
                         // Cancellation callbacks may not yet have reached this linked token.
@@ -235,10 +236,15 @@ namespace WorkOS
                         var json = await response.Content.ReadAsStringAsync(cancellation.Token).ConfigureAwait(false);
                         var configuration = FeatureFlagsConfiguration.FromJson(json);
                         cancellation.Token.ThrowIfCancellationRequested();
-                        var successful = new FeatureFlagsRuntimeStatus(configuration, this.timeProvider.GetUtcNow(), null);
-                        Volatile.Write(ref this.status, successful);
+                        var refreshed = this.timeProvider.GetUtcNow();
+                        this.Publish(previous => new FeatureFlagsRuntimeStatus(
+                            configuration,
+                            refreshed,
+                            null,
+                            previous.RefreshCount + 1,
+                            previous.FailedRefreshCount,
+                            attempted));
                         this.ready.TrySetResult();
-                        this.ReportStatus(successful);
                     }
                     catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested || this.lifetime.IsCancellationRequested)
                     {
@@ -249,10 +255,13 @@ namespace WorkOS
                         var error = exception is OperationCanceledException
                             ? new TimeoutException("Feature flag configuration refresh exceeded its request timeout.", exception)
                             : exception;
-                        var previous = this.Status;
-                        var failed = new FeatureFlagsRuntimeStatus(previous.Configuration, previous.LastSuccessfulRefresh, error);
-                        Volatile.Write(ref this.status, failed);
-                        this.ReportStatus(failed);
+                        this.Publish(previous => new FeatureFlagsRuntimeStatus(
+                            previous.Configuration,
+                            previous.LastSuccessfulRefresh,
+                            error,
+                            previous.RefreshCount + 1,
+                            previous.FailedRefreshCount + 1,
+                            attempted));
                         if (error != exception)
                         {
                             throw error;
@@ -367,19 +376,23 @@ namespace WorkOS
             }
         }
 
-        private void ReportStatus(FeatureFlagsRuntimeStatus value)
+        // Status transitions are derived from the current status, and a manual refresh can finish
+        // while polling records a stop, so each transition and its report are published atomically.
+        private void Publish(Func<FeatureFlagsRuntimeStatus, FeatureFlagsRuntimeStatus> transition)
         {
-            var progress = this.progress;
-            if (progress == null)
-            {
-                return;
-            }
-
-            // Report is called one at a time in refresh order, never on the polling task or while
-            // owning the refresh gate, so a synchronous observer may dispose the runtime safely.
-            // Progress<T> observers post onward to their own context; only the Report calls are ordered.
             lock (this.reportLock)
             {
+                var value = transition(Volatile.Read(ref this.status));
+                Volatile.Write(ref this.status, value);
+                var progress = this.progress;
+                if (progress == null)
+                {
+                    return;
+                }
+
+                // Report is called one at a time in refresh order, never on the polling task or while
+                // owning the refresh gate, so a synchronous observer may dispose the runtime safely.
+                // Progress<T> observers post onward to their own context; only the Report calls are ordered.
                 this.reportChain = this.reportChain.ContinueWith(
                     _ =>
                     {

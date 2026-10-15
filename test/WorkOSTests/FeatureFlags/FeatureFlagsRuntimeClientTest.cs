@@ -620,6 +620,64 @@ namespace WorkOSTests
             Assert.Equal(0, handler.ActiveRequests);
         }
 
+        [Fact]
+        public async Task StatusCountsPolledAndManualRefreshesAndTheirFailures()
+        {
+            var time = new TestTimeProvider();
+            using var handler = new ScriptedHandler((attempt, _, _) => Task.FromResult(attempt == 2
+                ? Response("{}", HttpStatusCode.InternalServerError)
+                : Response(OrderedPayload)));
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(PollingOptions(time));
+            Assert.Equal(0, runtime.Status.RefreshCount);
+            Assert.Equal(0, runtime.Status.FailedRefreshCount);
+            Assert.Null(runtime.Status.LastRefreshAttempt);
+
+            await runtime.StartAsync().WaitAsync(TimeSpan.FromSeconds(5));
+            Assert.Equal(1, runtime.Status.RefreshCount);
+            Assert.Equal(0, runtime.Status.FailedRefreshCount);
+            Assert.Equal(time.GetUtcNow(), runtime.Status.LastRefreshAttempt);
+            var succeeded = runtime.Status.LastSuccessfulRefresh;
+
+            // Manual refreshes between polls are counted with the polls.
+            time.Advance(TimeSpan.FromSeconds(1));
+            await Assert.ThrowsAsync<ServerException>(() => runtime.RefreshAsync());
+            Assert.Equal(2, runtime.Status.RefreshCount);
+            Assert.Equal(1, runtime.Status.FailedRefreshCount);
+            Assert.Equal(time.GetUtcNow(), runtime.Status.LastRefreshAttempt);
+            Assert.Equal(succeeded, runtime.Status.LastSuccessfulRefresh);
+
+            await runtime.RefreshAsync();
+            Assert.Equal(3, runtime.Status.RefreshCount);
+            Assert.Equal(1, runtime.Status.FailedRefreshCount);
+            Assert.Null(runtime.Status.LastError);
+        }
+
+        [Fact]
+        public async Task CancelledRefreshesAreNotCounted()
+        {
+            var entered = Signal();
+            using var handler = new ScriptedHandler(async (_, _, token) =>
+            {
+                entered.TrySetResult();
+                await Task.Delay(Timeout.InfiniteTimeSpan, token);
+                return Response(OrderedPayload);
+            });
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient();
+            using var cancellation = new CancellationTokenSource();
+            var refresh = runtime.RefreshAsync(cancellation.Token);
+            await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            cancellation.Cancel();
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() => refresh);
+
+            Assert.Equal(0, runtime.Status.RefreshCount);
+            Assert.Equal(0, runtime.Status.FailedRefreshCount);
+            Assert.Null(runtime.Status.LastRefreshAttempt);
+        }
+
         private static string SingleFlag(string rule) =>
             "{\"version\":2,\"flags\":{\"test\":{\"slug\":\"test\",\"enabled\":true,\"default_value\":false,\"off_value\":false,\"rules\":[" + rule + "]}}}";
 
