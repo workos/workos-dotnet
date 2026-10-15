@@ -3,13 +3,13 @@
   "isRoot": true,
   "tools": {
     "docfx": {
-      "version": "2.78.5",
+      "version": "2.81.0",
       "commands": [
         "docfx"
       ]
     },
     "defaultdocumentation.console": {
-      "version": "1.2.5",
+      "version": "1.2.6",
       "commands": [
         "defaultdocumentation"
       ]
