@@ -41,10 +41,10 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task TestCreateRevokeLinkAsync()
+        public async Task TestRevokeLinkAsync()
         {
             this.httpMock.MockResponse(HttpMethod.Post, "/portal/revoke_link", HttpStatusCode.OK, "");
-            await this.service.CreateRevokeLinkAsync(new AdminPortalCreateRevokeLinkOptions());
+            await this.service.RevokeLinkAsync(new AdminPortalRevokeLinkOptions());
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/portal/revoke_link");
         }
 

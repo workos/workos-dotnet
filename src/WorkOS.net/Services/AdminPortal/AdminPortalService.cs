@@ -50,15 +50,15 @@ namespace WorkOS
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public virtual async Task CreateRevokeLinkAsync(AdminPortalCreateRevokeLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task RevokeLinkAsync(AdminPortalRevokeLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             await this.PostAsync<object>("/portal/revoke_link", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Compatibility wrapper for <see cref="CreateRevokeLinkAsync"/>.</summary>
-        public virtual Task CreateRevokeLink(AdminPortalCreateRevokeLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <summary>Compatibility wrapper for <see cref="RevokeLinkAsync"/>.</summary>
+        public virtual Task RevokeLink(AdminPortalRevokeLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.CreateRevokeLinkAsync(options, requestOptions, cancellationToken);
+            return this.RevokeLinkAsync(options, requestOptions, cancellationToken);
         }
     }
 }
