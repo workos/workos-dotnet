@@ -6,17 +6,17 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents agent instance created data type values.</summary>
+    /// <summary>Represents add data integrations get data integration authorize url request connection owner values.</summary>
     [JsonConverter(typeof(WorkOSNewtonsoftStringEnumConverter))]
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
-    public enum AgentInstanceCreatedDataType
+    public enum AddDataIntegrationsGetDataIntegrationAuthorizeUrlRequestConnectionOwner
     {
         [EnumMember(Value = "unknown")]
         Unknown,
 
-        [EnumMember(Value = "delegated")]
-        Delegated,
-        [EnumMember(Value = "autonomous")]
-        Autonomous,
+        [EnumMember(Value = "user")]
+        User,
+        [EnumMember(Value = "organization")]
+        Organization,
     }
 }

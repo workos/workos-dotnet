@@ -42,5 +42,23 @@ namespace WorkOS
         {
             return this.GenerateLinkAsync(options, requestOptions, cancellationToken);
         }
+
+        /// <summary>Revoke Portal Links</summary>
+        /// <remarks>
+        /// Revokes every Portal Link generated for the given organization with the given `external_user_id`, and immediately ends any Admin Portal sessions that were started from those links. Use this when an admin is deprovisioned from your application: unopened links stop working, and their already-open portal sessions are ended. Only links that were generated with an `external_user_id` can be revoked, so pass one to `generate_link` for every admin you may later need to deprovision.
+        /// </remarks>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task CreateRevokeLinkAsync(AdminPortalCreateRevokeLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.PostAsync<object>("/portal/revoke_link", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="CreateRevokeLinkAsync"/>.</summary>
+        public virtual Task CreateRevokeLink(AdminPortalCreateRevokeLinkOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.CreateRevokeLinkAsync(options, requestOptions, cancellationToken);
+        }
     }
 }

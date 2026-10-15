@@ -179,6 +179,9 @@ namespace WorkOS
         /// <summary>The authorization code received from the authorization callback. Required when `grant_type` is `authorization_code`.</summary>
         public string? Code { get; set; }
 
+        /// <summary>The PKCE code verifier matching the `code_challenge` sent with the authorization request. Required when the authorization request included a `code_challenge`. Must be sent in the request body.</summary>
+        public string? CodeVerifier { get; set; }
+
         /// <summary>The OIDC ID token to exchange. Required when `grant_type` is `urn:ietf:params:oauth:grant-type:token-exchange`. Must be sent in the request body.</summary>
         public string? SubjectToken { get; set; }
 

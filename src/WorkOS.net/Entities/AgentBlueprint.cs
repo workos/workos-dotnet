@@ -27,6 +27,9 @@ namespace WorkOS
         /// <summary>Who may mint sessions from this blueprint.</summary>
         public AgentBlueprintCreatedDataInvocableBy InvocableBy { get; set; } = default!;
 
+        /// <summary>How sessions may be minted from this blueprint.</summary>
+        public AgentBlueprintCreatedDataInvocableAs InvocableAs { get; set; } = default!;
+
         /// <summary>Token and session lifetimes for sessions minted from this blueprint.</summary>
         public AgentBlueprintSessionSetting SessionSettings { get; set; } = default!;
 

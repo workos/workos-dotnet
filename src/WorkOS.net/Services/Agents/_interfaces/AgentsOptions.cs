@@ -27,6 +27,9 @@ namespace WorkOS
         /// <summary>Who may mint sessions from this blueprint.</summary>
         public AgentBlueprintsCreateRequestInvocableBy? InvocableBy { get; set; }
 
+        /// <summary>How sessions may be minted from this blueprint.</summary>
+        public AgentBlueprintsCreateRequestInvocableAs? InvocableAs { get; set; }
+
         /// <summary>Token and session lifetimes for sessions minted from this blueprint.</summary>
         public AgentBlueprintSessionSetting? SessionSettings { get; set; }
 
@@ -46,6 +49,9 @@ namespace WorkOS
 
         /// <summary>Who may mint sessions from this blueprint. Omitted lists are left unchanged.</summary>
         public AgentBlueprintsCreateRequestInvocableBy? InvocableBy { get; set; }
+
+        /// <summary>How sessions may be minted from this blueprint. Omitted lists are left unchanged.</summary>
+        public AgentBlueprintsCreateRequestInvocableAs? InvocableAs { get; set; }
 
         /// <summary>Token and session lifetimes for sessions minted from this blueprint. Omitted fields are left unchanged.</summary>
         public AgentBlueprintsUpdateRequestSessionSetting? SessionSettings { get; set; }

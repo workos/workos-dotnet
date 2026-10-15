@@ -1,4 +1,6 @@
 {
+  "account_display_name": null,
+  "account_identifier": null,
   "access_token": null,
   "refresh_token": null,
   "expires_at": null,

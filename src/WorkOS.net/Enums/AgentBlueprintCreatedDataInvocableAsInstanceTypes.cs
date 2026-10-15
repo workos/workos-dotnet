@@ -6,17 +6,17 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents create data integration ownership values.</summary>
+    /// <summary>Represents agent blueprint created data invocable as instance types values.</summary>
     [JsonConverter(typeof(WorkOSNewtonsoftStringEnumConverter))]
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
-    public enum CreateDataIntegrationOwnership
+    public enum AgentBlueprintCreatedDataInvocableAsInstanceTypes
     {
         [EnumMember(Value = "unknown")]
         Unknown,
 
-        [EnumMember(Value = "user")]
-        User,
-        [EnumMember(Value = "organization")]
-        Organization,
+        [EnumMember(Value = "delegated")]
+        Delegated,
+        [EnumMember(Value = "autonomous")]
+        Autonomous,
     }
 }

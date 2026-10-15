@@ -3,5 +3,6 @@
   "description": null,
   "permissions": null,
   "invocable_by": null,
+  "invocable_as": null,
   "session_settings": null
 }

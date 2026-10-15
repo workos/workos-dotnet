@@ -28,5 +28,7 @@ namespace WorkOS
         Connections,
         [EnumMember(Value = "directoryUsers")]
         DirectoryUsers,
+        [EnumMember(Value = "scimLogs")]
+        SCIMLogs,
     }
 }

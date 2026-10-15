@@ -174,7 +174,7 @@ namespace WorkOS
     /// <summary>Request options for <see cref="UserManagementService.CreateAsync"/>: Create a user</summary>
     public class UserManagementCreateOptions : BaseOptions
     {
-        /// <summary>The email address of the user.</summary>
+        /// <summary>The email address of the user. WorkOS trims whitespace and converts the address to lowercase before storing it.</summary>
         public string Email { get; set; } = default!;
 
         /// <summary>The first name of the user.</summary>
