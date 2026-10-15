@@ -64,6 +64,18 @@ namespace WorkOS
             }
         }
 
+        /// <summary>
+        /// Raised after a successful refresh installs a configuration that differs from the previous
+        /// snapshot, including the first load and the first refresh after an outdated bootstrap. Not
+        /// raised for identical configurations or failed refreshes. Persist
+        /// <see cref="FeatureFlagsChangedEventArgs.Current"/> here to keep a bootstrap cache fresh.
+        /// Handlers run one at a time in refresh order, after any <see cref="FeatureFlagsRuntimeOptions.Progress"/>
+        /// report for the same refresh, and never on the polling task or during a refresh, so a handler
+        /// may dispose the runtime. Handler exceptions do not affect polling or later handlers.
+        /// Subscribe before <see cref="StartAsync"/> to observe the first load; events may arrive after disposal.
+        /// </summary>
+        public event EventHandler<FeatureFlagsChangedEventArgs>? ConfigurationChanged;
+
         /// <summary>Current readiness, snapshot, refresh timestamp, and last error.</summary>
         public FeatureFlagsRuntimeStatus Status => Volatile.Read(ref this.status);
 
@@ -399,32 +411,66 @@ namespace WorkOS
         {
             lock (this.reportLock)
             {
-                var value = transition(Volatile.Read(ref this.status));
+                var previous = Volatile.Read(ref this.status);
+                var value = transition(previous);
                 Volatile.Write(ref this.status, value);
                 var progress = this.progress;
-                if (progress == null)
+                if (progress == null && ReferenceEquals(previous.Configuration, value.Configuration))
                 {
                     return;
                 }
 
-                // Report is called one at a time in refresh order, never on the polling task or while
-                // owning the refresh gate, so a synchronous observer may dispose the runtime safely.
-                // Progress<T> observers post onward to their own context; only the Report calls are ordered.
+                // Report and change events are delivered one at a time in refresh order, never on the
+                // polling task or while owning the refresh gate, so a synchronous observer may dispose
+                // the runtime safely. Progress<T> observers post onward to their own context; only the
+                // Report calls are ordered.
                 this.reportChain = this.reportChain.ContinueWith(
-                    _ =>
-                    {
-                        try
-                        {
-                            progress.Report(value);
-                        }
-                        catch (Exception)
-                        {
-                            // Observer failures must not interrupt polling or invalidate a snapshot.
-                        }
-                    },
+                    _ => this.Deliver(progress, previous, value),
                     CancellationToken.None,
                     TaskContinuationOptions.DenyChildAttach,
                     TaskScheduler.Default);
+            }
+        }
+
+        private void Deliver(IProgress<FeatureFlagsRuntimeStatus>? progress, FeatureFlagsRuntimeStatus previous, FeatureFlagsRuntimeStatus value)
+        {
+            try
+            {
+                progress?.Report(value);
+            }
+            catch (Exception)
+            {
+                // Observer failures must not interrupt polling or invalidate a snapshot.
+            }
+
+            // Failed refreshes keep the same snapshot instance, so only a successful refresh gets here.
+            var handlers = this.ConfigurationChanged;
+            if (handlers == null || value.Configuration is not { } current || ReferenceEquals(previous.Configuration, current))
+            {
+                return;
+            }
+
+            // Diffing here keeps the comparison off the refresh path.
+            var changed = FeatureFlagsConfiguration.ChangedFlags(previous.Configuration, current);
+            if (previous.Configuration != null && changed.Count == 0)
+            {
+                return;
+            }
+
+            var args = new FeatureFlagsChangedEventArgs(previous.Configuration, current, changed);
+            foreach (var handler in handlers.GetInvocationList())
+            {
+                try
+                {
+                    if (handler is EventHandler<FeatureFlagsChangedEventArgs> changedHandler)
+                    {
+                        changedHandler(this, args);
+                    }
+                }
+                catch (Exception)
+                {
+                    // One failing handler must not stop polling or starve the handlers after it.
+                }
             }
         }
 

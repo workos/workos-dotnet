@@ -339,6 +339,22 @@ await using var flags = client.CreateFeatureFlagsRuntimeClient(
 await flags.StartAsync(); // Immediately ready; polls in the background.
 ```
 
+To keep that cache fresh, persist each new snapshot from `ConfigurationChanged`.
+It is raised after a successful refresh installs a configuration that differs from
+the previous one, including the first load and the first refresh after an outdated
+bootstrap; identical refreshes and failures raise nothing. `ChangedFlags` lists the
+added, removed and modified slugs. Subscribe before `StartAsync`:
+
+```csharp
+flags.ConfigurationChanged += (_, change) =>
+    _ = SaveCachedConfigurationAsync(change.Current.ToJson()); // Your storage; handle its errors.
+await flags.StartAsync();
+```
+
+Handlers run one at a time in refresh order on the thread pool, never during a
+refresh, and their exceptions cannot stop polling. Like `Progress` reports, events
+may arrive after disposal.
+
 Bootstrap JSON must be the complete versioned runtime configuration, not a
 `/flag_targets` response. Invalid bootstrap JSON throws before runtime creation;
 handle it as a cache miss. The runtime deliberately does not own distributed cache

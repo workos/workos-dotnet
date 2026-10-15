@@ -97,6 +97,35 @@ namespace WorkOS
             return flag != null;
         }
 
+        // Compares configuration content rather than JSON, because the server does not guarantee flag
+        // order. Every slug changes on the first load.
+        internal static FrozenSet<string> ChangedFlags(FeatureFlagsConfiguration? previous, FeatureFlagsConfiguration current)
+        {
+            if (previous == null)
+            {
+                return current.Flags.Keys.ToFrozenSet(StringComparer.Ordinal);
+            }
+
+            var changed = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var entry in current.Flags)
+            {
+                if (!previous.Flags.TryGetValue(entry.Key, out var before) || !before.Definition.HasSameConfiguration(entry.Value.Definition))
+                {
+                    changed.Add(entry.Key);
+                }
+            }
+
+            foreach (var slug in previous.Flags.Keys)
+            {
+                if (!current.Flags.ContainsKey(slug))
+                {
+                    changed.Add(slug);
+                }
+            }
+
+            return changed.ToFrozenSet(StringComparer.Ordinal);
+        }
+
         private static (Rule Rule, FeatureFlagRuleDefinition Definition) ParseRule(JToken token)
         {
             var rule = RequireObject(token, "rule");
