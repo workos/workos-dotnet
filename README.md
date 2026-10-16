@@ -343,12 +343,34 @@ To keep that cache fresh, persist each new snapshot from `ConfigurationChanged`.
 It is raised after a successful refresh installs a configuration that differs from
 the previous one, including the first load and the first refresh after an outdated
 bootstrap; identical refreshes and failures raise nothing. `ChangedFlags` lists the
-added, removed and modified slugs. Subscribe before `StartAsync`:
+added, removed and modified slugs.
+
+Save from a single background loop so an older snapshot can never finish saving
+after a newer one. The handler only hands off the latest JSON, and a burst of
+changes coalesces into one save. Subscribe before `StartAsync`:
 
 ```csharp
-flags.ConfigurationChanged += (_, change) =>
-    _ = SaveCachedConfigurationAsync(change.Current.ToJson()); // Your storage; handle its errors.
+var pending = Channel.CreateBounded<string>(
+    new BoundedChannelOptions(1) { FullMode = BoundedChannelFullMode.DropOldest });
+flags.ConfigurationChanged += (_, change) => pending.Writer.TryWrite(change.Current.ToJson());
+
+var saving = Task.Run(async () =>
+{
+    await foreach (var json in pending.Reader.ReadAllAsync())
+    {
+        try
+        {
+            await SaveCachedConfigurationAsync(json); // Your storage.
+        }
+        catch (Exception exception)
+        {
+            LogSaveFailure(exception); // Your logging; the next change saves again.
+        }
+    }
+});
+
 await flags.StartAsync();
+// On shutdown: pending.Writer.Complete(); await saving;
 ```
 
 Handlers run one at a time in refresh order on the thread pool, never during a
