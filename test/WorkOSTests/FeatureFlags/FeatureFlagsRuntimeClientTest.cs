@@ -922,6 +922,35 @@ namespace WorkOSTests
             Assert.Equal(new[] { "beta", "delta", "gamma" }, refreshed.ChangedFlags.Order());
         }
 
+        // Content the SDK cannot evaluate still reaches ToJson, so a cache fed by the event must see it change.
+        [Theory]
+        [InlineData( // A field of a rule kind the SDK does not evaluate.
+            "\"enabled\":true,\"default_value\":false,\"off_value\":false,\"rules\":[{\"id\":\"r1\",\"kind\":\"percentage\",\"value\":true,\"percentage\":5}]",
+            "\"enabled\":true,\"default_value\":false,\"off_value\":false,\"rules\":[{\"id\":\"r1\",\"kind\":\"percentage\",\"value\":true,\"percentage\":10}]")]
+        [InlineData( // Two served values that are both not booleans.
+            "\"enabled\":true,\"default_value\":\"variant-a\",\"off_value\":false,\"rules\":[]",
+            "\"enabled\":true,\"default_value\":\"variant-b\",\"off_value\":false,\"rules\":[]")]
+        [InlineData( // Values of an unknown operator may be ordered, so their order counts.
+            "\"enabled\":true,\"default_value\":false,\"off_value\":false,\"rules\":[{\"id\":\"r1\",\"kind\":\"conditions\",\"value\":true,\"conditions\":[{\"target_type\":\"email\",\"operator\":\"ends_with\",\"values\":[\"@a.com\",\"@b.com\"]}]}]",
+            "\"enabled\":true,\"default_value\":false,\"off_value\":false,\"rules\":[{\"id\":\"r1\",\"kind\":\"conditions\",\"value\":true,\"conditions\":[{\"target_type\":\"email\",\"operator\":\"ends_with\",\"values\":[\"@b.com\",\"@a.com\"]}]}]")]
+        public async Task ConfigurationChangedReportsChangesToContentTheSdkDoesNotEvaluate(string before, string after)
+        {
+            static string Payload(string flag) => "{\"version\":2,\"flags\":{\"test\":{\"slug\":\"test\"," + flag + "}}}";
+            using var handler = new ScriptedHandler((attempt, _, _) => Task.FromResult(Response(Payload(attempt == 1 ? before : after))));
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient();
+            var changes = RecordChanges(runtime);
+
+            await runtime.RefreshAsync();
+            var evaluated = runtime.GetAllFlags();
+            await runtime.RefreshAsync();
+
+            Assert.Null((await NextChangeAsync(changes)).Previous);
+            Assert.Equal(new[] { "test" }, (await NextChangeAsync(changes)).ChangedFlags);
+            Assert.Equal(evaluated, runtime.GetAllFlags()); // Evaluation is unaffected either way.
+        }
+
         [Fact]
         public async Task ThrowingChangeHandlerDoesNotStopPollingOrLaterHandlers()
         {

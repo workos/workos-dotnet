@@ -42,14 +42,6 @@ namespace WorkOS
 
         /// <summary>Rules in evaluation order; the first matching rule wins.</summary>
         public IReadOnlyList<FeatureFlagRuleDefinition> Rules { get; }
-
-        // Rule order is significant; see the rule and condition comparisons for the rest.
-        internal bool HasSameConfiguration(FeatureFlagDefinition other) =>
-            this.Enabled == other.Enabled &&
-            this.DefaultValue == other.DefaultValue &&
-            this.OffValue == other.OffValue &&
-            this.Rules.Count == other.Rules.Count &&
-            this.Rules.Zip(other.Rules).All(pair => pair.First.HasSameConfiguration(pair.Second));
     }
 
     /// <summary>One rule of a <see cref="FeatureFlagDefinition"/>, in the form the runtime received it.</summary>
@@ -84,13 +76,6 @@ namespace WorkOS
         /// read on a best-effort basis and may be incomplete.
         /// </summary>
         public IReadOnlyList<FeatureFlagConditionDefinition> Conditions { get; }
-
-        internal bool HasSameConfiguration(FeatureFlagRuleDefinition other) =>
-            this.Id == other.Id &&
-            this.Kind == other.Kind &&
-            this.Value == other.Value &&
-            this.Conditions.Count == other.Conditions.Count &&
-            this.Conditions.Zip(other.Conditions).All(pair => pair.First.HasSameConfiguration(pair.Second));
     }
 
     /// <summary>One condition of a <see cref="FeatureFlagRuleDefinition"/>.</summary>
@@ -117,11 +102,5 @@ namespace WorkOS
 
         /// <summary>Exact, case-sensitive IDs, in the order received.</summary>
         public IReadOnlyList<string> Values { get; }
-
-        // Values are a membership set: the server's ID order carries no meaning.
-        internal bool HasSameConfiguration(FeatureFlagConditionDefinition other) =>
-            this.TargetType == other.TargetType &&
-            this.Operator == other.Operator &&
-            new HashSet<string>(this.Values, StringComparer.Ordinal).SetEquals(other.Values);
     }
 }

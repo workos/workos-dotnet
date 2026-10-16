@@ -76,7 +76,8 @@ namespace WorkOS
                     defaultValue,
                     offValue,
                     rules.Select(rule => rule.Rule).ToArray(),
-                    new FeatureFlagDefinition(entry.Name, enabled, defaultValue, offValue, rules.Select(rule => rule.Definition))));
+                    new FeatureFlagDefinition(entry.Name, enabled, defaultValue, offValue, rules.Select(rule => rule.Definition)),
+                    flag));
             }
 
             return new FeatureFlagsConfiguration(payload.ToString(Formatting.None), flags.ToFrozenDictionary(StringComparer.Ordinal));
@@ -97,7 +98,7 @@ namespace WorkOS
             return flag != null;
         }
 
-        // Compares configuration content rather than JSON, because the server does not guarantee flag
+        // Compares each flag's complete content per slug, because the server does not guarantee flag
         // order. Every slug changes on the first load.
         internal static FrozenSet<string> ChangedFlags(FeatureFlagsConfiguration? previous, FeatureFlagsConfiguration current)
         {
@@ -109,7 +110,7 @@ namespace WorkOS
             var changed = new HashSet<string>(StringComparer.Ordinal);
             foreach (var entry in current.Flags)
             {
-                if (!previous.Flags.TryGetValue(entry.Key, out var before) || !before.Definition.HasSameConfiguration(entry.Value.Definition))
+                if (!previous.Flags.TryGetValue(entry.Key, out var before) || !SameFlagContent(before.Content, entry.Value.Content))
                 {
                     changed.Add(entry.Key);
                 }
@@ -125,6 +126,75 @@ namespace WorkOS
 
             return changed.ToFrozenSet(StringComparer.Ordinal);
         }
+
+        // Compares like JToken.DeepEquals, so object property order never matters, except that the IDs
+        // of a one_of condition in a conditions rule form a set. Every other array, including those under
+        // rule kinds and operators this SDK does not evaluate, stays order-sensitive: a spurious change
+        // only costs a redundant save, but a missed one leaves a cache stale.
+        private static bool SameFlagContent(JObject previous, JObject current) =>
+            SameProperties(previous, current, (name, before, after) =>
+                name == "rules" && before is JArray beforeRules && after is JArray afterRules
+                    ? SameElements(beforeRules, afterRules, SameRuleContent)
+                    : JToken.DeepEquals(before, after));
+
+        private static bool SameRuleContent(JToken previous, JToken current)
+        {
+            if (previous is not JObject before || current is not JObject after ||
+                OptionalString(before["kind"]) != "conditions" || OptionalString(after["kind"]) != "conditions")
+            {
+                return JToken.DeepEquals(previous, current);
+            }
+
+            return SameProperties(before, after, (name, beforeValue, afterValue) =>
+                name == "conditions" && beforeValue is JArray beforeConditions && afterValue is JArray afterConditions
+                    ? SameElements(beforeConditions, afterConditions, SameConditionContent)
+                    : JToken.DeepEquals(beforeValue, afterValue));
+        }
+
+        private static bool SameConditionContent(JToken previous, JToken current)
+        {
+            if (previous is not JObject before || current is not JObject after ||
+                OptionalString(before["operator"]) != "one_of" || OptionalString(after["operator"]) != "one_of")
+            {
+                return JToken.DeepEquals(previous, current);
+            }
+
+            return SameProperties(before, after, (name, beforeValue, afterValue) =>
+                name == "values" ? SameTargetIds(beforeValue, afterValue) : JToken.DeepEquals(beforeValue, afterValue));
+        }
+
+        private static bool SameTargetIds(JToken previous, JToken current)
+        {
+            if (previous is not JArray before || current is not JArray after ||
+                before.Any(id => id.Type != JTokenType.String) || after.Any(id => id.Type != JTokenType.String))
+            {
+                return JToken.DeepEquals(previous, current);
+            }
+
+            return new HashSet<string>(before.Select(id => id.Value<string>()!), StringComparer.Ordinal)
+                .SetEquals(after.Select(id => id.Value<string>()!));
+        }
+
+        private static bool SameProperties(JObject previous, JObject current, Func<string, JToken, JToken, bool> same)
+        {
+            if (previous.Count != current.Count)
+            {
+                return false;
+            }
+
+            foreach (var property in previous.Properties())
+            {
+                if (!current.TryGetValue(property.Name, out var value) || !same(property.Name, property.Value, value))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool SameElements(JArray previous, JArray current, Func<JToken, JToken, bool> same) =>
+            previous.Count == current.Count && previous.Zip(current).All(pair => same(pair.First, pair.Second));
 
         private static (Rule Rule, FeatureFlagRuleDefinition Definition) ParseRule(JToken token)
         {
@@ -226,16 +296,20 @@ namespace WorkOS
             private readonly bool? offValue;
             private readonly Rule[] rules;
 
-            internal Flag(bool enabled, bool? defaultValue, bool? offValue, Rule[] rules, FeatureFlagDefinition definition)
+            internal Flag(bool enabled, bool? defaultValue, bool? offValue, Rule[] rules, FeatureFlagDefinition definition, JObject content)
             {
                 this.enabled = enabled;
                 this.defaultValue = defaultValue;
                 this.offValue = offValue;
                 this.rules = rules;
                 this.Definition = definition;
+                this.Content = content;
             }
 
             internal FeatureFlagDefinition Definition { get; }
+
+            // The flag exactly as received, including fields this SDK does not interpret. Never mutated.
+            internal JObject Content { get; }
 
             // Null means the flag has no boolean answer for this context and the caller's default applies.
             internal bool? Evaluate(FeatureFlagContext? context)
