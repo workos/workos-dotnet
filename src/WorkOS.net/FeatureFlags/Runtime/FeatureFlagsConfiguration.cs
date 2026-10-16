@@ -5,6 +5,7 @@ namespace WorkOS
     using System.Collections.Frozen;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using Newtonsoft.Json;
@@ -77,7 +78,7 @@ namespace WorkOS
                     offValue,
                     rules.Select(rule => rule.Rule).ToArray(),
                     new FeatureFlagDefinition(entry.Name, enabled, defaultValue, offValue, rules.Select(rule => rule.Definition)),
-                    flag));
+                    CanonicalContent(flag)));
             }
 
             return new FeatureFlagsConfiguration(payload.ToString(Formatting.None), flags.ToFrozenDictionary(StringComparer.Ordinal));
@@ -110,7 +111,7 @@ namespace WorkOS
             var changed = new HashSet<string>(StringComparer.Ordinal);
             foreach (var entry in current.Flags)
             {
-                if (!previous.Flags.TryGetValue(entry.Key, out var before) || !SameFlagContent(before.Content, entry.Value.Content))
+                if (!previous.Flags.TryGetValue(entry.Key, out var before) || before.CanonicalContent != entry.Value.CanonicalContent)
                 {
                     changed.Add(entry.Key);
                 }
@@ -127,74 +128,112 @@ namespace WorkOS
             return changed.ToFrozenSet(StringComparer.Ordinal);
         }
 
-        // Compares like JToken.DeepEquals, so object property order never matters, except that the IDs
-        // of a one_of condition in a conditions rule form a set. Every other array, including those under
-        // rule kinds and operators this SDK does not evaluate, stays order-sensitive: a spurious change
-        // only costs a redundant save, but a missed one leaves a cache stale.
-        private static bool SameFlagContent(JObject previous, JObject current) =>
-            SameProperties(previous, current, (name, before, after) =>
-                name == "rules" && before is JArray beforeRules && after is JArray afterRules
-                    ? SameElements(beforeRules, afterRules, SameRuleContent)
-                    : JToken.DeepEquals(before, after));
-
-        private static bool SameRuleContent(JToken previous, JToken current)
+        // Writes a flag's complete content in a canonical form, so that change detection compares
+        // strings and the parsed payload can be collected once parsing ends. Object property order
+        // never matters, and the IDs of a one_of condition in a conditions rule form a set. Every other
+        // array, including those under rule kinds and operators this SDK does not evaluate, stays
+        // order-sensitive: a spurious change only costs a redundant save, but a missed one leaves a
+        // cache stale.
+        private static string CanonicalContent(JObject flag)
         {
-            if (previous is not JObject before || current is not JObject after ||
-                OptionalString(before["kind"]) != "conditions" || OptionalString(after["kind"]) != "conditions")
+            var text = new StringWriter(CultureInfo.InvariantCulture);
+            using (var writer = new JsonTextWriter(text))
             {
-                return JToken.DeepEquals(previous, current);
+                WriteCanonicalObject(writer, flag, "rules", rules => WriteCanonicalArray(writer, rules, WriteCanonicalRule));
             }
 
-            return SameProperties(before, after, (name, beforeValue, afterValue) =>
-                name == "conditions" && beforeValue is JArray beforeConditions && afterValue is JArray afterConditions
-                    ? SameElements(beforeConditions, afterConditions, SameConditionContent)
-                    : JToken.DeepEquals(beforeValue, afterValue));
+            return text.ToString();
         }
 
-        private static bool SameConditionContent(JToken previous, JToken current)
+        private static void WriteCanonicalRule(JsonWriter writer, JToken token)
         {
-            if (previous is not JObject before || current is not JObject after ||
-                OptionalString(before["operator"]) != "one_of" || OptionalString(after["operator"]) != "one_of")
+            if (token is JObject rule && OptionalString(rule["kind"]) == "conditions")
             {
-                return JToken.DeepEquals(previous, current);
+                WriteCanonicalObject(writer, rule, "conditions", conditions => WriteCanonicalArray(writer, conditions, WriteCanonicalCondition));
             }
-
-            return SameProperties(before, after, (name, beforeValue, afterValue) =>
-                name == "values" ? SameTargetIds(beforeValue, afterValue) : JToken.DeepEquals(beforeValue, afterValue));
+            else
+            {
+                WriteCanonicalToken(writer, token);
+            }
         }
 
-        private static bool SameTargetIds(JToken previous, JToken current)
+        private static void WriteCanonicalCondition(JsonWriter writer, JToken token)
         {
-            if (previous is not JArray before || current is not JArray after ||
-                before.Any(id => id.Type != JTokenType.String) || after.Any(id => id.Type != JTokenType.String))
+            if (token is JObject condition && OptionalString(condition["operator"]) == "one_of")
             {
-                return JToken.DeepEquals(previous, current);
+                WriteCanonicalObject(writer, condition, "values", ids => WriteCanonicalTargetIds(writer, ids));
             }
-
-            return new HashSet<string>(before.Select(id => id.Value<string>()!), StringComparer.Ordinal)
-                .SetEquals(after.Select(id => id.Value<string>()!));
+            else
+            {
+                WriteCanonicalToken(writer, token);
+            }
         }
 
-        private static bool SameProperties(JObject previous, JObject current, Func<string, JToken, JToken, bool> same)
+        private static void WriteCanonicalTargetIds(JsonWriter writer, JArray ids)
         {
-            if (previous.Count != current.Count)
+            if (ids.Any(id => id.Type != JTokenType.String))
             {
-                return false;
+                WriteCanonicalArray(writer, ids, WriteCanonicalToken);
+                return;
             }
 
-            foreach (var property in previous.Properties())
+            writer.WriteStartArray();
+            foreach (var id in ids.Select(id => id.Value<string>()!).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal))
             {
-                if (!current.TryGetValue(property.Name, out var value) || !same(property.Name, property.Value, value))
+                writer.WriteValue(id);
+            }
+
+            writer.WriteEndArray();
+        }
+
+        // Any token: object properties sorted by name, arrays in order.
+        private static void WriteCanonicalToken(JsonWriter writer, JToken token)
+        {
+            switch (token)
+            {
+                case JObject value:
+                    WriteCanonicalObject(writer, value);
+                    break;
+                case JArray value:
+                    WriteCanonicalArray(writer, value, WriteCanonicalToken);
+                    break;
+                default:
+                    token.WriteTo(writer);
+                    break;
+            }
+        }
+
+        // Properties are sorted by name. The one named arrayName, when it is an array, is written by
+        // writeArray; every other value is written as any token.
+        private static void WriteCanonicalObject(JsonWriter writer, JObject value, string? arrayName = null, Action<JArray>? writeArray = null)
+        {
+            writer.WriteStartObject();
+            foreach (var property in value.Properties().OrderBy(property => property.Name, StringComparer.Ordinal))
+            {
+                writer.WritePropertyName(property.Name);
+                if (property.Name == arrayName && property.Value is JArray array && writeArray != null)
                 {
-                    return false;
+                    writeArray(array);
+                }
+                else
+                {
+                    WriteCanonicalToken(writer, property.Value);
                 }
             }
 
-            return true;
+            writer.WriteEndObject();
         }
 
-        private static bool SameElements(JArray previous, JArray current, Func<JToken, JToken, bool> same) =>
-            previous.Count == current.Count && previous.Zip(current).All(pair => same(pair.First, pair.Second));
+        private static void WriteCanonicalArray(JsonWriter writer, JArray value, Action<JsonWriter, JToken> writeElement)
+        {
+            writer.WriteStartArray();
+            foreach (var element in value)
+            {
+                writeElement(writer, element);
+            }
+
+            writer.WriteEndArray();
+        }
 
         private static (Rule Rule, FeatureFlagRuleDefinition Definition) ParseRule(JToken token)
         {
@@ -296,20 +335,22 @@ namespace WorkOS
             private readonly bool? offValue;
             private readonly Rule[] rules;
 
-            internal Flag(bool enabled, bool? defaultValue, bool? offValue, Rule[] rules, FeatureFlagDefinition definition, JObject content)
+            internal Flag(bool enabled, bool? defaultValue, bool? offValue, Rule[] rules, FeatureFlagDefinition definition, string canonicalContent)
             {
                 this.enabled = enabled;
                 this.defaultValue = defaultValue;
                 this.offValue = offValue;
                 this.rules = rules;
                 this.Definition = definition;
-                this.Content = content;
+                this.CanonicalContent = canonicalContent;
             }
 
             internal FeatureFlagDefinition Definition { get; }
 
-            // The flag exactly as received, including fields this SDK does not interpret. Never mutated.
-            internal JObject Content { get; }
+            // The flag's complete content, including fields this SDK does not interpret, in the canonical
+            // form that change detection compares. Holding a string rather than the parsed JObject lets
+            // the payload tree be collected after parsing.
+            internal string CanonicalContent { get; }
 
             // Null means the flag has no boolean answer for this context and the caller's default applies.
             internal bool? Evaluate(FeatureFlagContext? context)
