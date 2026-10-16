@@ -1,5 +1,28 @@
 # Changelog
 
+## [6.5.0](https://github.com/workos/workos-dotnet/compare/v6.4.0...v6.5.0) (2026-10-16)
+
+
+### Features
+
+* **admin_portal:** Update admin portal API surface ([#320](https://github.com/workos/workos-dotnet/issues/320)) ([e723375](https://github.com/workos/workos-dotnet/commit/e723375caacfe840c874d2101ea2d3cdac066e40))
+* **audit_logs:** Update audit log API surface ([#320](https://github.com/workos/workos-dotnet/issues/320)) ([e723375](https://github.com/workos/workos-dotnet/commit/e723375caacfe840c874d2101ea2d3cdac066e40))
+* **authorization:** Update authorization API surface ([#320](https://github.com/workos/workos-dotnet/issues/320)) ([e723375](https://github.com/workos/workos-dotnet/commit/e723375caacfe840c874d2101ea2d3cdac066e40))
+* Evaluate feature flags locally from cached configuration ([#318](https://github.com/workos/workos-dotnet/issues/318)) ([34a1b81](https://github.com/workos/workos-dotnet/commit/34a1b814fa5f11b1111fe829220b48c9234b8e6e))
+* **feature_flags:** Update feature flag API surface ([#320](https://github.com/workos/workos-dotnet/issues/320)) ([e723375](https://github.com/workos/workos-dotnet/commit/e723375caacfe840c874d2101ea2d3cdac066e40))
+* **feature-flags:** Add change events, polling state, flag inspection, and refresh stats to the runtime client ([#324](https://github.com/workos/workos-dotnet/issues/324)) ([f72e0fd](https://github.com/workos/workos-dotnet/commit/f72e0fdcfa69f04b18965422d893bec283bba6fb))
+* **generated:** Authorization (batch c64ce1e7) ([#314](https://github.com/workos/workos-dotnet/issues/314)) ([e74b588](https://github.com/workos/workos-dotnet/commit/e74b588896fe7ec8b1ed50ef7872545c7619b191))
+* **organizations:** Update organization API surface ([#320](https://github.com/workos/workos-dotnet/issues/320)) ([e723375](https://github.com/workos/workos-dotnet/commit/e723375caacfe840c874d2101ea2d3cdac066e40))
+* **pipes:** Update Pipes API surface ([#320](https://github.com/workos/workos-dotnet/issues/320)) ([e723375](https://github.com/workos/workos-dotnet/commit/e723375caacfe840c874d2101ea2d3cdac066e40))
+* **radar:** Update radar API surface ([#320](https://github.com/workos/workos-dotnet/issues/320)) ([e723375](https://github.com/workos/workos-dotnet/commit/e723375caacfe840c874d2101ea2d3cdac066e40))
+* **user_management:** Update user management API surface ([#320](https://github.com/workos/workos-dotnet/issues/320)) ([e723375](https://github.com/workos/workos-dotnet/commit/e723375caacfe840c874d2101ea2d3cdac066e40))
+* **user_management:** Update user management API surface ([#323](https://github.com/workos/workos-dotnet/issues/323)) ([0c03b59](https://github.com/workos/workos-dotnet/commit/0c03b590aab6c9109b2b0e91e17f5918bc6e52b7))
+
+
+### Bug Fixes
+
+* **user_management:** Change errors for endpoint `POST /user_management/authenticate` ([#323](https://github.com/workos/workos-dotnet/issues/323)) ([0c03b59](https://github.com/workos/workos-dotnet/commit/0c03b590aab6c9109b2b0e91e17f5918bc6e52b7))
+
 ## [6.4.0](https://github.com/workos/workos-dotnet/compare/v6.3.0...v6.4.0) (2026-09-18)
 
 ### Bug Fixes
