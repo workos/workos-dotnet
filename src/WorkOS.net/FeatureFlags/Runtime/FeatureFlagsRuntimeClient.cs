@@ -64,6 +64,18 @@ namespace WorkOS
             }
         }
 
+        /// <summary>
+        /// Raised after a successful refresh installs a configuration that differs from the previous
+        /// snapshot, including the first load and the first refresh after an outdated bootstrap. Not
+        /// raised for identical configurations or failed refreshes. Persist
+        /// <see cref="FeatureFlagsChangedEventArgs.Current"/> here to keep a bootstrap cache fresh.
+        /// Handlers run one at a time in refresh order, after any <see cref="FeatureFlagsRuntimeOptions.Progress"/>
+        /// report for the same refresh, and never on the polling task or during a refresh, so a handler
+        /// may dispose the runtime. Handler exceptions do not affect polling or later handlers.
+        /// Subscribe before <see cref="StartAsync"/> to observe the first load; events may arrive after disposal.
+        /// </summary>
+        public event EventHandler<FeatureFlagsChangedEventArgs>? ConfigurationChanged;
+
         /// <summary>Current readiness, snapshot, refresh timestamp, and last error.</summary>
         public FeatureFlagsRuntimeStatus Status => Volatile.Read(ref this.status);
 
@@ -175,6 +187,19 @@ namespace WorkOS
             return values;
         }
 
+        /// <summary>
+        /// Returns one flag's configuration from the current snapshot, for inspection and debugging.
+        /// Use <see cref="IsEnabled"/> for decisions. Like <see cref="Configuration"/>, it remains
+        /// readable after disposal.
+        /// </summary>
+        /// <param name="slug">Flag slug.</param>
+        /// <returns>The flag's configuration, or null when the client is unready or the flag is missing.</returns>
+        public FeatureFlagDefinition? GetFlag(string slug)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(slug);
+            return this.Configuration is { } configuration && configuration.TryGetFlag(slug, out var flag) ? flag : null;
+        }
+
         /// <summary>Cancels and joins polling and all active or queued refreshes before releasing resources.</summary>
         /// <returns>A task completed when network activity has stopped.</returns>
         public ValueTask DisposeAsync()
@@ -225,6 +250,7 @@ namespace WorkOS
                 using (cancellation)
                 {
                     await this.refreshGate.WaitAsync(cancellation.Token).ConfigureAwait(false);
+                    var attempted = this.timeProvider.GetUtcNow();
                     try
                     {
                         // Cancellation callbacks may not yet have reached this linked token.
@@ -235,10 +261,16 @@ namespace WorkOS
                         var json = await response.Content.ReadAsStringAsync(cancellation.Token).ConfigureAwait(false);
                         var configuration = FeatureFlagsConfiguration.FromJson(json);
                         cancellation.Token.ThrowIfCancellationRequested();
-                        var successful = new FeatureFlagsRuntimeStatus(configuration, this.timeProvider.GetUtcNow(), null);
-                        Volatile.Write(ref this.status, successful);
+                        var refreshed = this.timeProvider.GetUtcNow();
+                        this.Publish(previous => new FeatureFlagsRuntimeStatus(
+                            configuration,
+                            refreshed,
+                            null,
+                            previous.RefreshCount + 1,
+                            previous.FailedRefreshCount,
+                            attempted,
+                            previous.IsPollingStopped));
                         this.ready.TrySetResult();
-                        this.ReportStatus(successful);
                     }
                     catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested || this.lifetime.IsCancellationRequested)
                     {
@@ -249,10 +281,14 @@ namespace WorkOS
                         var error = exception is OperationCanceledException
                             ? new TimeoutException("Feature flag configuration refresh exceeded its request timeout.", exception)
                             : exception;
-                        var previous = this.Status;
-                        var failed = new FeatureFlagsRuntimeStatus(previous.Configuration, previous.LastSuccessfulRefresh, error);
-                        Volatile.Write(ref this.status, failed);
-                        this.ReportStatus(failed);
+                        this.Publish(previous => new FeatureFlagsRuntimeStatus(
+                            previous.Configuration,
+                            previous.LastSuccessfulRefresh,
+                            error,
+                            previous.RefreshCount + 1,
+                            previous.FailedRefreshCount + 1,
+                            attempted,
+                            previous.IsPollingStopped));
                         if (error != exception)
                         {
                             throw error;
@@ -306,6 +342,8 @@ namespace WorkOS
                 }
                 catch (ApiException exception) when (exception.StatusCode == HttpStatusCode.Unauthorized || exception.StatusCode == HttpStatusCode.Forbidden)
                 {
+                    // Publish before failing readiness so a caller woken by it already sees the stop.
+                    this.Publish(previous => previous.WithPollingStopped());
                     this.ready.TrySetException(exception);
                     return;
                 }
@@ -367,34 +405,72 @@ namespace WorkOS
             }
         }
 
-        private void ReportStatus(FeatureFlagsRuntimeStatus value)
+        // Status transitions are derived from the current status, and a manual refresh can finish
+        // while polling records a stop, so each transition and its report are published atomically.
+        private void Publish(Func<FeatureFlagsRuntimeStatus, FeatureFlagsRuntimeStatus> transition)
         {
-            var progress = this.progress;
-            if (progress == null)
+            lock (this.reportLock)
+            {
+                var previous = Volatile.Read(ref this.status);
+                var value = transition(previous);
+                Volatile.Write(ref this.status, value);
+                var progress = this.progress;
+                if (progress == null && ReferenceEquals(previous.Configuration, value.Configuration))
+                {
+                    return;
+                }
+
+                // Report and change events are delivered one at a time in refresh order, never on the
+                // polling task or while owning the refresh gate, so a synchronous observer may dispose
+                // the runtime safely. Progress<T> observers post onward to their own context; only the
+                // Report calls are ordered.
+                this.reportChain = this.reportChain.ContinueWith(
+                    _ => this.Deliver(progress, previous, value),
+                    CancellationToken.None,
+                    TaskContinuationOptions.DenyChildAttach,
+                    TaskScheduler.Default);
+            }
+        }
+
+        private void Deliver(IProgress<FeatureFlagsRuntimeStatus>? progress, FeatureFlagsRuntimeStatus previous, FeatureFlagsRuntimeStatus value)
+        {
+            try
+            {
+                progress?.Report(value);
+            }
+            catch (Exception)
+            {
+                // Observer failures must not interrupt polling or invalidate a snapshot.
+            }
+
+            // Failed refreshes keep the same snapshot instance, so only a successful refresh gets here.
+            var handlers = this.ConfigurationChanged;
+            if (handlers == null || value.Configuration is not { } current || ReferenceEquals(previous.Configuration, current))
             {
                 return;
             }
 
-            // Report is called one at a time in refresh order, never on the polling task or while
-            // owning the refresh gate, so a synchronous observer may dispose the runtime safely.
-            // Progress<T> observers post onward to their own context; only the Report calls are ordered.
-            lock (this.reportLock)
+            // Diffing here keeps the comparison off the refresh path.
+            var changed = FeatureFlagsConfiguration.ChangedFlags(previous.Configuration, current);
+            if (previous.Configuration != null && changed.Count == 0)
             {
-                this.reportChain = this.reportChain.ContinueWith(
-                    _ =>
+                return;
+            }
+
+            var args = new FeatureFlagsChangedEventArgs(previous.Configuration, current, changed);
+            foreach (var handler in handlers.GetInvocationList())
+            {
+                try
+                {
+                    if (handler is EventHandler<FeatureFlagsChangedEventArgs> changedHandler)
                     {
-                        try
-                        {
-                            progress.Report(value);
-                        }
-                        catch (Exception)
-                        {
-                            // Observer failures must not interrupt polling or invalidate a snapshot.
-                        }
-                    },
-                    CancellationToken.None,
-                    TaskContinuationOptions.DenyChildAttach,
-                    TaskScheduler.Default);
+                        changedHandler(this, args);
+                    }
+                }
+                catch (Exception)
+                {
+                    // One failing handler must not stop polling or starve the handlers after it.
+                }
             }
         }
 

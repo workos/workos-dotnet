@@ -51,6 +51,52 @@ namespace WorkOSTests
             }}
             """;
 
+        // Configuration sequences for change detection. The reordered base differs only in flag,
+        // property and target ID order, none of which carries meaning.
+        private const string ChangeBase = """
+            {"version":2,"flags":{
+              "alpha":{"slug":"alpha","enabled":true,"default_value":false,"off_value":false,"rules":[
+                {"id":"r1","kind":"conditions","value":true,"conditions":[{"target_type":"organization","operator":"one_of","values":["org_a","org_b"]}]},
+                {"id":"r2","kind":"conditions","value":false,"conditions":[{"target_type":"user","operator":"one_of","values":["user_x"]}]}
+              ]},
+              "beta":{"slug":"beta","enabled":true,"default_value":true,"off_value":false,"rules":[]},
+              "gamma":{"slug":"gamma","enabled":false,"default_value":false,"off_value":false,"rules":[]}
+            }}
+            """;
+
+        private const string ChangeBaseReordered = """
+            {"version":2,"flags":{
+              "gamma":{"slug":"gamma","enabled":false,"default_value":false,"off_value":false,"rules":[]},
+              "beta":{"rules":[],"slug":"beta","off_value":false,"default_value":true,"enabled":true},
+              "alpha":{"slug":"alpha","enabled":true,"default_value":false,"off_value":false,"rules":[
+                {"id":"r1","kind":"conditions","value":true,"conditions":[{"target_type":"organization","operator":"one_of","values":["org_b","org_a"]}]},
+                {"id":"r2","kind":"conditions","value":false,"conditions":[{"target_type":"user","operator":"one_of","values":["user_x"]}]}
+              ]}
+            }}
+            """;
+
+        private const string ChangeEdited = """
+            {"version":2,"flags":{
+              "alpha":{"slug":"alpha","enabled":true,"default_value":false,"off_value":false,"rules":[
+                {"id":"r1","kind":"conditions","value":true,"conditions":[{"target_type":"organization","operator":"one_of","values":["org_a","org_b"]}]},
+                {"id":"r2","kind":"conditions","value":false,"conditions":[{"target_type":"user","operator":"one_of","values":["user_x"]}]}
+              ]},
+              "beta":{"slug":"beta","enabled":true,"default_value":false,"off_value":false,"rules":[]},
+              "delta":{"slug":"delta","enabled":true,"default_value":true,"off_value":false,"rules":[]}
+            }}
+            """;
+
+        private const string ChangeRulesReordered = """
+            {"version":2,"flags":{
+              "alpha":{"slug":"alpha","enabled":true,"default_value":false,"off_value":false,"rules":[
+                {"id":"r2","kind":"conditions","value":false,"conditions":[{"target_type":"user","operator":"one_of","values":["user_x"]}]},
+                {"id":"r1","kind":"conditions","value":true,"conditions":[{"target_type":"organization","operator":"one_of","values":["org_a","org_b"]}]}
+              ]},
+              "beta":{"slug":"beta","enabled":true,"default_value":false,"off_value":false,"rules":[]},
+              "delta":{"slug":"delta","enabled":true,"default_value":true,"off_value":false,"rules":[]}
+            }}
+            """;
+
         [Fact]
         public async Task BootstrapEvaluatesOrderedRulesOffValuesDefaultsAndAllConditionTypesLocally()
         {
@@ -618,6 +664,325 @@ namespace WorkOSTests
             await disposalTask.WaitAsync(TimeSpan.FromSeconds(5));
             await runtime.DisposeAsync();
             Assert.Equal(0, handler.ActiveRequests);
+        }
+
+        [Fact]
+        public async Task StatusCountsPolledAndManualRefreshesAndTheirFailures()
+        {
+            var time = new TestTimeProvider();
+            using var handler = new ScriptedHandler((attempt, _, _) => Task.FromResult(attempt == 2
+                ? Response("{}", HttpStatusCode.InternalServerError)
+                : Response(OrderedPayload)));
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(PollingOptions(time));
+            Assert.Equal(0, runtime.Status.RefreshCount);
+            Assert.Equal(0, runtime.Status.FailedRefreshCount);
+            Assert.Null(runtime.Status.LastRefreshAttempt);
+
+            await runtime.StartAsync().WaitAsync(TimeSpan.FromSeconds(5));
+            Assert.Equal(1, runtime.Status.RefreshCount);
+            Assert.Equal(0, runtime.Status.FailedRefreshCount);
+            Assert.Equal(time.GetUtcNow(), runtime.Status.LastRefreshAttempt);
+            var succeeded = runtime.Status.LastSuccessfulRefresh;
+
+            // Manual refreshes between polls are counted with the polls.
+            time.Advance(TimeSpan.FromSeconds(1));
+            await Assert.ThrowsAsync<ServerException>(() => runtime.RefreshAsync());
+            Assert.Equal(2, runtime.Status.RefreshCount);
+            Assert.Equal(1, runtime.Status.FailedRefreshCount);
+            Assert.Equal(time.GetUtcNow(), runtime.Status.LastRefreshAttempt);
+            Assert.Equal(succeeded, runtime.Status.LastSuccessfulRefresh);
+
+            await runtime.RefreshAsync();
+            Assert.Equal(3, runtime.Status.RefreshCount);
+            Assert.Equal(1, runtime.Status.FailedRefreshCount);
+            Assert.Null(runtime.Status.LastError);
+        }
+
+        [Fact]
+        public async Task CancelledRefreshesAreNotCounted()
+        {
+            var entered = Signal();
+            using var handler = new ScriptedHandler(async (_, _, token) =>
+            {
+                entered.TrySetResult();
+                await Task.Delay(Timeout.InfiniteTimeSpan, token);
+                return Response(OrderedPayload);
+            });
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient();
+            using var cancellation = new CancellationTokenSource();
+            var refresh = runtime.RefreshAsync(cancellation.Token);
+            await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            cancellation.Cancel();
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() => refresh);
+
+            Assert.Equal(0, runtime.Status.RefreshCount);
+            Assert.Equal(0, runtime.Status.FailedRefreshCount);
+            Assert.Null(runtime.Status.LastRefreshAttempt);
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.Unauthorized, true)]
+        [InlineData(HttpStatusCode.Forbidden, true)]
+        [InlineData(HttpStatusCode.Unauthorized, false)]
+        [InlineData(HttpStatusCode.Forbidden, false)]
+        public async Task AuthenticationFailuresReportThatPollingStopped(HttpStatusCode status, bool afterReadiness)
+        {
+            var time = new TestTimeProvider();
+            using var handler = new ScriptedHandler((attempt, _, _) => Task.FromResult(
+                afterReadiness && attempt == 1 ? Response(OrderedPayload) : Response("{}", status)));
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            var stopped = new TaskCompletionSource<FeatureFlagsRuntimeStatus>(TaskCreationOptions.RunContinuationsAsynchronously);
+            var options = PollingOptions(time);
+            options.Progress = new InlineProgress(report =>
+            {
+                if (report.IsPollingStopped)
+                {
+                    stopped.TrySetResult(report);
+                }
+            });
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(options);
+
+            if (afterReadiness)
+            {
+                await runtime.StartAsync().WaitAsync(TimeSpan.FromSeconds(5));
+                Assert.False(runtime.Status.IsPollingStopped);
+                time.Advance(await time.NextTimerAsync(due => due != options.RequestTimeout));
+            }
+            else
+            {
+                await Assert.ThrowsAnyAsync<ApiException>(() => runtime.StartAsync());
+                Assert.True(runtime.Status.IsPollingStopped); // Visible as soon as readiness fails.
+            }
+
+            var report = await stopped.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            Assert.Equal(status, Assert.IsAssignableFrom<ApiException>(report.LastError).StatusCode);
+            Assert.Equal(afterReadiness, report.IsReady); // The last good snapshot is kept.
+            Assert.True(runtime.Status.IsPollingStopped);
+
+            var requests = handler.RequestCount;
+            time.Advance(TimeSpan.FromMinutes(5));
+            Assert.Equal(requests, handler.RequestCount);
+            Assert.Equal(afterReadiness, runtime.IsEnabled("ordered"));
+        }
+
+        [Fact]
+        public async Task GetFlagReturnsConfigurationAsReceivedAndMissingFlagsAsNull()
+        {
+            using var client = new WorkOSClient(new WorkOSOptions { ApiKey = "sk_test" });
+            var unready = client.CreateFeatureFlagsRuntimeClient();
+            Assert.Null(unready.GetFlag("ordered"));
+            await unready.DisposeAsync();
+
+            var bootstrap = FeatureFlagsConfiguration.FromJson(OrderedPayload);
+            var runtime = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions { BootstrapConfiguration = bootstrap });
+
+            var flag = runtime.GetFlag("ordered");
+            Assert.NotNull(flag);
+            Assert.Equal("ordered", flag.Slug);
+            Assert.True(flag.Enabled);
+            Assert.True(flag.DefaultValue);
+            Assert.False(flag.OffValue);
+            Assert.Equal(new[] { "r1", "r2" }, flag.Rules.Select(rule => rule.Id));
+            var first = flag.Rules[0];
+            Assert.Equal("conditions", first.Kind);
+            Assert.False(first.Value);
+            var condition = Assert.Single(first.Conditions);
+            Assert.Equal("organization", condition.TargetType);
+            Assert.Equal("one_of", condition.Operator);
+            Assert.Equal(new[] { "org_acme" }, condition.Values);
+            Assert.Equal(2, runtime.GetFlag("both")!.Rules[0].Conditions.Count);
+
+            Assert.Null(runtime.GetFlag("missing"));
+            Assert.False(bootstrap.TryGetFlag("missing", out _));
+            Assert.True(bootstrap.TryGetFlag("ordered", out var fromSnapshot));
+            Assert.Same(flag, fromSnapshot);
+            Assert.Throws<ArgumentException>(() => runtime.GetFlag(" "));
+
+            // Inspection stays available for persisting or debugging after disposal, like Configuration.
+            await runtime.DisposeAsync();
+            Assert.Same(flag, runtime.GetFlag("ordered"));
+        }
+
+        [Fact]
+        public async Task GetFlagShowsRulesTheSdkCannotEvaluateWithoutEvaluatingThem()
+        {
+            const string payload = """
+                {"version":2,"flags":{"test":{"slug":"test","enabled":true,"default_value":false,"off_value":"variant-off","rules":[
+                  {"id":"rollout","kind":"percentage","value":true,"percentage":5},
+                  {"id":"pattern","kind":"conditions","value":true,"conditions":[
+                    {"target_type":"organization","operator":"one_of","values":["org_acme"]},
+                    {"target_type":"email","operator":"ends_with","values":["@acme.com",7]},
+                    {"operator":"one_of"},
+                    "not an object"
+                  ]},
+                  {"id":"variant","kind":"conditions","value":"variant-b","conditions":[{"target_type":"user","operator":"one_of","values":["user_jp"]}]}
+                ]}}}
+                """;
+            using var client = new WorkOSClient(new WorkOSOptions { ApiKey = "sk_test" });
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions
+            {
+                BootstrapConfiguration = FeatureFlagsConfiguration.FromJson(payload),
+            });
+            var flag = runtime.GetFlag("test")!;
+            Assert.Null(flag.OffValue);
+
+            var rollout = flag.Rules[0];
+            Assert.Equal("percentage", rollout.Kind);
+            Assert.True(rollout.Value);
+            Assert.Empty(rollout.Conditions);
+
+            // The unknown operator and everything after it are reported best effort, never validated.
+            var pattern = flag.Rules[1];
+            Assert.Equal(new string?[] { "one_of", "ends_with", "one_of" }, pattern.Conditions.Select(condition => condition.Operator));
+            Assert.Equal("email", pattern.Conditions[1].TargetType);
+            Assert.Equal(new[] { "@acme.com" }, pattern.Conditions[1].Values);
+            Assert.Null(pattern.Conditions[2].TargetType);
+            Assert.Empty(pattern.Conditions[2].Values);
+
+            Assert.Null(flag.Rules[2].Value);
+
+            // Evaluation is unchanged: neither unknown rule matches, and the variant rule has no answer.
+            var context = new FeatureFlagContext(userId: "user_jp", organizationId: "org_acme");
+            Assert.False(runtime.IsEnabled("test", new FeatureFlagContext(organizationId: "org_acme")));
+            Assert.True(runtime.IsEnabled("test", context, defaultValue: true));
+            Assert.False(runtime.IsEnabled("test", context, defaultValue: false));
+        }
+
+        [Fact]
+        public async Task ConfigurationChangedFiresOnFirstLoadAndOnlyForRealChanges()
+        {
+            using var handler = new ScriptedHandler((attempt, _, _) => Task.FromResult(attempt switch
+            {
+                1 => Response(ChangeBase),
+                2 => Response(ChangeBaseReordered),
+                3 => Response("{}", HttpStatusCode.InternalServerError),
+                4 => Response(ChangeEdited),
+                _ => Response(ChangeRulesReordered),
+            }));
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient();
+            var changes = RecordChanges(runtime);
+
+            await runtime.RefreshAsync();
+            var installed = runtime.Configuration;
+            await runtime.RefreshAsync(); // Same content: flag order and target ID order differ.
+            await Assert.ThrowsAsync<ServerException>(() => runtime.RefreshAsync());
+            var beforeEdit = runtime.Configuration;
+            await runtime.RefreshAsync();
+            var edited = runtime.Configuration;
+            await runtime.RefreshAsync();
+
+            // Events arrive in refresh order, so the next event after the first load being the edit
+            // proves the identical and failed refreshes raised nothing.
+            var firstLoad = await NextChangeAsync(changes);
+            Assert.Null(firstLoad.Previous);
+            Assert.Same(installed, firstLoad.Current);
+            Assert.Equal(new[] { "alpha", "beta", "gamma" }, firstLoad.ChangedFlags.Order());
+
+            var edit = await NextChangeAsync(changes);
+            Assert.Same(beforeEdit, edit.Previous);
+            Assert.Same(edited, edit.Current);
+            Assert.Equal(new[] { "beta", "delta", "gamma" }, edit.ChangedFlags.Order()); // Modified, added, removed.
+
+            var reorder = await NextChangeAsync(changes);
+            Assert.Equal(new[] { "alpha" }, reorder.ChangedFlags); // Rule order decides evaluation.
+            Assert.Same(runtime.Configuration, reorder.Current);
+            Assert.False(changes.Reader.TryRead(out _));
+        }
+
+        [Fact]
+        public async Task ConfigurationChangedComparesTheFirstRefreshWithTheBootstrap()
+        {
+            var bootstrap = FeatureFlagsConfiguration.FromJson(ChangeBase);
+            using var handler = new ScriptedHandler((attempt, _, _) => Task.FromResult(Response(attempt == 1 ? ChangeBaseReordered : ChangeEdited)));
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            await using var current = client.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions { BootstrapConfiguration = bootstrap });
+            var changes = RecordChanges(current);
+            await current.RefreshAsync(); // Matches the bootstrap: no event.
+            await current.RefreshAsync();
+            var change = await NextChangeAsync(changes);
+            Assert.Equal(new[] { "beta", "delta", "gamma" }, change.ChangedFlags.Order());
+
+            // An outdated bootstrap is reported as the previous snapshot of the first refresh.
+            using var outdatedHandler = new ScriptedHandler((_, _, _) => Task.FromResult(Response(ChangeEdited)));
+            using var outdatedHttp = new HttpClient(outdatedHandler);
+            using var outdatedClient = Client(outdatedHttp);
+            await using var outdated = outdatedClient.CreateFeatureFlagsRuntimeClient(new FeatureFlagsRuntimeOptions { BootstrapConfiguration = bootstrap });
+            var outdatedChanges = RecordChanges(outdated);
+            await outdated.RefreshAsync();
+            var refreshed = await NextChangeAsync(outdatedChanges);
+            Assert.Same(bootstrap, refreshed.Previous);
+            Assert.Equal(new[] { "beta", "delta", "gamma" }, refreshed.ChangedFlags.Order());
+        }
+
+        // Content the SDK cannot evaluate still reaches ToJson, so a cache fed by the event must see it change.
+        [Theory]
+        [InlineData( // A field of a rule kind the SDK does not evaluate.
+            "\"enabled\":true,\"default_value\":false,\"off_value\":false,\"rules\":[{\"id\":\"r1\",\"kind\":\"percentage\",\"value\":true,\"percentage\":5}]",
+            "\"enabled\":true,\"default_value\":false,\"off_value\":false,\"rules\":[{\"id\":\"r1\",\"kind\":\"percentage\",\"value\":true,\"percentage\":10}]")]
+        [InlineData( // Two served values that are both not booleans.
+            "\"enabled\":true,\"default_value\":\"variant-a\",\"off_value\":false,\"rules\":[]",
+            "\"enabled\":true,\"default_value\":\"variant-b\",\"off_value\":false,\"rules\":[]")]
+        [InlineData( // Values of an unknown operator may be ordered, so their order counts.
+            "\"enabled\":true,\"default_value\":false,\"off_value\":false,\"rules\":[{\"id\":\"r1\",\"kind\":\"conditions\",\"value\":true,\"conditions\":[{\"target_type\":\"email\",\"operator\":\"ends_with\",\"values\":[\"@a.com\",\"@b.com\"]}]}]",
+            "\"enabled\":true,\"default_value\":false,\"off_value\":false,\"rules\":[{\"id\":\"r1\",\"kind\":\"conditions\",\"value\":true,\"conditions\":[{\"target_type\":\"email\",\"operator\":\"ends_with\",\"values\":[\"@b.com\",\"@a.com\"]}]}]")]
+        public async Task ConfigurationChangedReportsChangesToContentTheSdkDoesNotEvaluate(string before, string after)
+        {
+            static string Payload(string flag) => "{\"version\":2,\"flags\":{\"test\":{\"slug\":\"test\"," + flag + "}}}";
+            using var handler = new ScriptedHandler((attempt, _, _) => Task.FromResult(Response(Payload(attempt == 1 ? before : after))));
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient();
+            var changes = RecordChanges(runtime);
+
+            await runtime.RefreshAsync();
+            var evaluated = runtime.GetAllFlags();
+            await runtime.RefreshAsync();
+
+            Assert.Null((await NextChangeAsync(changes)).Previous);
+            Assert.Equal(new[] { "test" }, (await NextChangeAsync(changes)).ChangedFlags);
+            Assert.Equal(evaluated, runtime.GetAllFlags()); // Evaluation is unaffected either way.
+        }
+
+        [Fact]
+        public async Task ThrowingChangeHandlerDoesNotStopPollingOrLaterHandlers()
+        {
+            var time = new TestTimeProvider();
+            using var handler = new ScriptedHandler((attempt, _, _) => Task.FromResult(Response(attempt == 1 ? ChangeBase : ChangeEdited)));
+            using var http = new HttpClient(handler);
+            using var client = Client(http);
+            var options = PollingOptions(time);
+            await using var runtime = client.CreateFeatureFlagsRuntimeClient(options);
+            runtime.ConfigurationChanged += (_, _) => throw new InvalidOperationException("Handler exceptions must not escape polling.");
+            var changes = RecordChanges(runtime);
+
+            await runtime.StartAsync().WaitAsync(TimeSpan.FromSeconds(5));
+            Assert.Null((await NextChangeAsync(changes)).Previous);
+
+            time.Advance(await time.NextTimerAsync(due => due != options.RequestTimeout));
+            var polled = await NextChangeAsync(changes);
+            Assert.Equal(new[] { "beta", "delta", "gamma" }, polled.ChangedFlags.Order());
+            Assert.Equal(2, handler.RequestCount);
+        }
+
+        private static Channel<FeatureFlagsChangedEventArgs> RecordChanges(FeatureFlagsRuntimeClient runtime)
+        {
+            var changes = Channel.CreateUnbounded<FeatureFlagsChangedEventArgs>();
+            runtime.ConfigurationChanged += (_, change) => changes.Writer.TryWrite(change);
+            return changes;
+        }
+
+        private static async Task<FeatureFlagsChangedEventArgs> NextChangeAsync(Channel<FeatureFlagsChangedEventArgs> changes)
+        {
+            using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            return await changes.Reader.ReadAsync(deadline.Token);
         }
 
         private static string SingleFlag(string rule) =>

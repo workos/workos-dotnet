@@ -297,7 +297,9 @@ floor. Request timeouts and backoff limits must be at least one millisecond. Sup
 `TimeProvider` to control polling delays and refresh deadlines in tests.
 Failures retain the entire last successful snapshot. A successful
 empty configuration removes previously cached flags. HTTP 401/403 stops background
-polling; correct credentials/access and create a new runtime.
+polling permanently: `Status.IsPollingStopped` becomes true and is reported to any
+`Progress` observer, while the last good snapshot stays usable. Alert on it, then
+correct credentials/access and create a new runtime.
 
 Evaluation follows the server's ordered rule semantics: disabled flags serve
 `off_value`; for enabled flags, the first matching rule wins, otherwise
@@ -315,6 +317,12 @@ Custom targets can be passed as `customTargets: new Dictionary<string, string>
 { ["project"] = "project_123" }`. Contexts and configuration snapshots are immutable,
 and local evaluation supports concurrent readers during refreshes.
 
+To see why a flag evaluates the way it does, `flags.GetFlag("new-checkout")` (or
+`TryGetFlag` on a `FeatureFlagsConfiguration`) returns the flag's configuration as
+received: enabled state, default and off values, and its rules in order with their
+conditions. Rule kinds and operators this SDK does not evaluate are shown as received
+and never match.
+
 ### Bootstrap and observability
 
 Persist `flags.Configuration?.ToJson()` in your own storage and restore it at
@@ -331,6 +339,44 @@ await using var flags = client.CreateFeatureFlagsRuntimeClient(
 await flags.StartAsync(); // Immediately ready; polls in the background.
 ```
 
+To keep that cache fresh, persist each new snapshot from `ConfigurationChanged`.
+It is raised after a successful refresh installs a configuration that differs from
+the previous one, including the first load and the first refresh after an outdated
+bootstrap; identical refreshes and failures raise nothing. `ChangedFlags` lists the
+added, removed and modified slugs.
+
+Save from a single background loop so an older snapshot can never finish saving
+after a newer one. The handler only hands off the latest JSON, and a burst of
+changes coalesces into one save. Subscribe before `StartAsync`:
+
+```csharp
+var pending = Channel.CreateBounded<string>(
+    new BoundedChannelOptions(1) { FullMode = BoundedChannelFullMode.DropOldest });
+flags.ConfigurationChanged += (_, change) => pending.Writer.TryWrite(change.Current.ToJson());
+
+var saving = Task.Run(async () =>
+{
+    await foreach (var json in pending.Reader.ReadAllAsync())
+    {
+        try
+        {
+            await SaveCachedConfigurationAsync(json); // Your storage.
+        }
+        catch (Exception exception)
+        {
+            LogSaveFailure(exception); // Your logging; the next change saves again.
+        }
+    }
+});
+
+await flags.StartAsync();
+// On shutdown: pending.Writer.Complete(); await saving;
+```
+
+Handlers run one at a time in refresh order on the thread pool, never during a
+refresh, and their exceptions cannot stop polling. Like `Progress` reports, events
+may arrive after disposal.
+
 Bootstrap JSON must be the complete versioned runtime configuration, not a
 `/flag_targets` response. Invalid bootstrap JSON throws before runtime creation;
 handle it as a cache miss. The runtime deliberately does not own distributed cache
@@ -339,7 +385,9 @@ application's requirements.
 
 `Status` gives one immutable view of readiness, the current snapshot,
 `LastSuccessfulRefresh` and `LastError`. Bootstrap-only readiness has no successful
-network-refresh timestamp. An optional `IProgress<FeatureFlagsRuntimeStatus>`
+network-refresh timestamp. `RefreshCount`, `FailedRefreshCount` and
+`LastRefreshAttempt` cover every finished refresh, polled or manual; refreshes
+cancelled by their caller or by disposal are not counted. An optional `IProgress<FeatureFlagsRuntimeStatus>`
 observer receives refresh results independently of polling. The runtime calls
 `Report` one at a time in refresh order, and reports may arrive after disposal.
 Implement `IProgress<T>` directly to handle reports in that order; `Progress<T>`
