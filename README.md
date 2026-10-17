@@ -387,7 +387,7 @@ application's requirements.
 `LastSuccessfulRefresh` and `LastError`. Bootstrap-only readiness has no successful
 network-refresh timestamp. `RefreshCount`, `FailedRefreshCount` and
 `LastRefreshAttempt` cover every finished refresh, polled or manual; refreshes
-cancelled by their caller or by disposal are not counted. An optional `IProgress<FeatureFlagsRuntimeStatus>`
+canceled by their caller or by disposal are not counted. An optional `IProgress<FeatureFlagsRuntimeStatus>`
 observer receives refresh results independently of polling. The runtime calls
 `Report` one at a time in refresh order, and reports may arrive after disposal.
 Implement `IProgress<T>` directly to handle reports in that order; `Progress<T>`
