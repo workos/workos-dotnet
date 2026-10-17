@@ -38,7 +38,7 @@ namespace WorkOS
 
         /// <summary>
         /// Refreshes that sent a request and finished, successfully or not, whether polled or manual.
-        /// Refreshes cancelled by their caller or by disposal, and queued refreshes that time out
+        /// Refreshes canceled by their caller or by disposal, and queued refreshes that time out
         /// before sending, are not counted.
         /// </summary>
         public long RefreshCount { get; }

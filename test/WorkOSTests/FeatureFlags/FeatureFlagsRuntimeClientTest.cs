@@ -295,7 +295,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task RefreshTimeoutRetainsSnapshotAndReadinessWaitCanBeCancelled()
+        public async Task RefreshTimeoutRetainsSnapshotAndReadinessWaitCanBeCanceled()
         {
             var time = new TestTimeProvider();
             var entered = Signal();
@@ -564,7 +564,7 @@ namespace WorkOSTests
         public async Task DisposalCancelsAndJoinsActivePollOrManualRefreshWithoutDisposingHttpClient(bool background)
         {
             var entered = Signal();
-            var cancelled = Signal();
+            var canceled = Signal();
             using var handler = new ScriptedHandler(async (attempt, _, token) =>
             {
                 if (attempt == 1)
@@ -576,7 +576,7 @@ namespace WorkOSTests
                     }
                     finally
                     {
-                        cancelled.TrySetResult();
+                        canceled.TrySetResult();
                     }
                 }
 
@@ -591,7 +591,7 @@ namespace WorkOSTests
             await runtime.DisposeAsync().AsTask().WaitAsync(TimeSpan.FromSeconds(5));
             await Assert.ThrowsAnyAsync<OperationCanceledException>(() => operation);
             await Assert.ThrowsAnyAsync<OperationCanceledException>(() => readyWait);
-            Assert.True(cancelled.Task.IsCompleted);
+            Assert.True(canceled.Task.IsCompleted);
             Assert.Equal(0, handler.ActiveRequests);
             await runtime.DisposeAsync();
             await Assert.ThrowsAsync<ObjectDisposedException>(() => runtime.StartAsync());
@@ -618,7 +618,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task CancellingStartWaitDoesNotStopBackgroundRecovery()
+        public async Task CancelingStartWaitDoesNotStopBackgroundRecovery()
         {
             var entered = Signal();
             var release = Signal();
@@ -701,7 +701,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task CancelledRefreshesAreNotCounted()
+        public async Task CanceledRefreshesAreNotCounted()
         {
             var entered = Signal();
             using var handler = new ScriptedHandler(async (_, _, token) =>
