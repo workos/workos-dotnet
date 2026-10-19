@@ -24,6 +24,9 @@ namespace WorkOS
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public AgentRegistrationCreatedDataStatus Status { get; set; }
 
+        /// <summary>The timestamp when the registration was revoked, or `null` if it has not been revoked.</summary>
+        public DateTimeOffset? RevokedAt { get; set; }
+
         /// <summary>The kind of agent registration.</summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]

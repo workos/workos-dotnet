@@ -1195,6 +1195,8 @@
     "test/WorkOSTests/testdata/flag_updated_context_previous_attribute.json",
     "test/WorkOSTests/testdata/flag_updated_context_previous_attribute_data.json",
     "test/WorkOSTests/testdata/flag_updated_context_previous_attribute_data_nulls.json",
+    "test/WorkOSTests/testdata/flag_updated_context_previous_attribute_data_owner.json",
+    "test/WorkOSTests/testdata/flag_updated_context_previous_attribute_data_owner_nulls.json",
     "test/WorkOSTests/testdata/flag_updated_context_previous_attribute_nulls.json",
     "test/WorkOSTests/testdata/flag_updated_data.json",
     "test/WorkOSTests/testdata/flag_updated_data_nulls.json",
@@ -1754,6 +1756,10 @@
     },
     "GET /agents/registrations/{id}": {
       "sdkMethod": "GetRegistrationAsync",
+      "service": "agents"
+    },
+    "POST /agents/registrations/{id}/revoke": {
+      "sdkMethod": "RevokeRegistrationAsync",
       "service": "agents"
     },
     "GET /agents/instances": {

@@ -161,6 +161,18 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestRevokeRegistrationAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/agent_registration.json");
+            this.httpMock.MockResponse(HttpMethod.Post, "/agents/registrations/test_id/revoke", HttpStatusCode.OK, fixture);
+            var result = await this.service.RevokeRegistrationAsync("test_id");
+            Assert.NotNull(result);
+            Assert.Equal("agent_reg_01EHWNCE74X7JSDV0X3SZ3KJNY", result.Id);
+            Assert.Equal("org_01EHQMYV6MBK39QC5PZXHY59C3", result.OrganizationId);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/agents/registrations/test_id/revoke");
+        }
+
+        [Fact]
         public async Task TestListInstancesAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/list_agent_instance.json");

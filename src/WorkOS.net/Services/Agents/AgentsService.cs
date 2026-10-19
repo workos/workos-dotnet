@@ -226,6 +226,25 @@ namespace WorkOS
             return this.GetRegistrationAsync(id, requestOptions, cancellationToken);
         }
 
+        /// <summary>Revoke an agent registration</summary>
+        /// <remarks>
+        /// Revoke an agent registration by ID. Revocation is permanent: the registration, its identity assertions, and every access token or API key issued from it stop working, and the agent must register again. Revoking an already revoked registration succeeds and returns the original `revoked_at`. The registration is scoped to the environment of the API key used to authenticate the request.
+        /// </remarks>
+        /// <param name="id">The unique ID of the agent registration.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="AgentRegistration"/> result.</returns>
+        public virtual async Task<AgentRegistration> RevokeRegistrationAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.PostAsync<AgentRegistration>($"/agents/registrations/{Uri.EscapeDataString(id)}/revoke", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="RevokeRegistrationAsync"/>.</summary>
+        public virtual Task<AgentRegistration> RevokeRegistration(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.RevokeRegistrationAsync(id, requestOptions, cancellationToken);
+        }
+
         /// <summary>List agent instances</summary>
         /// <remarks>
         /// Lists the agent instances in the current environment. Instances are created implicitly when tokens are minted.

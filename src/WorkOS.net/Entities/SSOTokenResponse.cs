@@ -2,6 +2,8 @@
 
 namespace WorkOS
 {
+    using Newtonsoft.Json;
+    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an SSO token response.</summary>
     public class SSOTokenResponse
@@ -20,6 +22,8 @@ namespace WorkOS
         public Profile Profile { get; set; } = default!;
 
         /// <summary>OAuth tokens issued by the identity provider, if available.</summary>
+        [JsonProperty("oauth_tokens")]
+        [STJS.JsonPropertyName("oauth_tokens")]
         public AuthenticateResponseOAuthToken? OAuthTokens { get; set; }
     }
 }

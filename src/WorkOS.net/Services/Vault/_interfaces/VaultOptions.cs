@@ -41,6 +41,8 @@ namespace WorkOS
         public string? Search { get; set; }
 
         /// <summary>ISO 8601 timestamp to filter by last modified time.</summary>
+        [JsonProperty("updatedAfter")]
+        [STJS.JsonPropertyName("updatedAfter")]
         public DateTimeOffset? UpdatedAfter { get; set; }
 
     }
