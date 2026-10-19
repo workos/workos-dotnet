@@ -2,19 +2,16 @@
 
 ## [6.6.0](https://github.com/workos/workos-dotnet/compare/v6.5.0...v6.6.0) (2026-10-19)
 
-
-### ⚠ BREAKING CHANGES
-
-* **vault:** SDK surface change: `VaultListKvOptions.UpdatedAfter` was renamed to `VaultListKvOptions.updatedAfter` ([#326](https://github.com/workos/workos-dotnet/issues/326))
-
-### Features
-
-* **vault:** SDK surface change: `VaultListKvOptions.UpdatedAfter` was renamed to `VaultListKvOptions.updatedAfter` ([#326](https://github.com/workos/workos-dotnet/issues/326)) ([859a019](https://github.com/workos/workos-dotnet/commit/859a0191d4735d6b52ee930db355a4ce149e2ed2))
-
-
 ### Miscellaneous Chores
 
 * release 6.6.0 ([7eb65ae](https://github.com/workos/workos-dotnet/commit/7eb65aec33bf0bad8eaf293f0d968695b4d63db6))
+
+* [#326](https://github.com/workos/workos-dotnet/pull/326) feat(generated)!: regenerate from spec (1 change)
+
+  **Features**
+  * **[agents](https://workos.com/docs/reference/agents)**:
+    * Added `revoked_at` to `AgentRegistration`
+    * Added endpoint `POST /agents/registrations/{id}/revoke`
 
 ## [6.5.0](https://github.com/workos/workos-dotnet/compare/v6.4.0...v6.5.0) (2026-10-16)
 
