@@ -45,6 +45,8 @@ namespace WorkOS
         public ConnectedAccountAuthMethod? AuthMethod { get; set; }
 
         /// <summary>The last four characters of the API key, or null for other authentication methods. Historical events may omit this field.</summary>
+        [JsonProperty("api_key_last_4")]
+        [STJS.JsonPropertyName("api_key_last_4")]
         public string? ApiKeyLast4 { get; set; }
 
         /// <summary>The state of the connected account.</summary>

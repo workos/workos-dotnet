@@ -3,6 +3,8 @@
 namespace WorkOS
 {
     using System.Collections.Generic;
+    using Newtonsoft.Json;
+    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents a jwks response keys.</summary>
     public class JwksResponseKeys
@@ -18,6 +20,8 @@ namespace WorkOS
         public string Use { get; internal set; } = "sig";
 
         /// <summary>X.509 certificate chain.</summary>
+        [JsonProperty("x5c")]
+        [STJS.JsonPropertyName("x5c")]
         public List<string> X5C { get; set; } = default!;
 
         /// <summary>RSA modulus.</summary>
@@ -30,6 +34,8 @@ namespace WorkOS
         public string Kid { get; set; } = default!;
 
         /// <summary>X.509 certificate SHA-256 thumbprint.</summary>
+        [JsonProperty("x5t#S256")]
+        [STJS.JsonPropertyName("x5t#S256")]
         public string X5TS256 { get; set; } = default!;
     }
 }

@@ -40,12 +40,16 @@ namespace WorkOS
         public ConnectedAccountAuthMethod? AuthMethod { get; set; }
 
         /// <summary>The last four characters of the API key, or `null` for OAuth connections.</summary>
+        [JsonProperty("api_key_last_4")]
+        [STJS.JsonPropertyName("api_key_last_4")]
         public string? ApiKeyLast4 { get; set; }
 
         /// <summary>The client ID supplied for this connection. Only present when `auth_method` is `client_credentials`.</summary>
         public string? ClientId { get; set; }
 
         /// <summary>The last four characters of the client secret supplied for this connection, or `null` when it can't be read. Only present when `auth_method` is `client_credentials`.</summary>
+        [JsonProperty("client_secret_last_4")]
+        [STJS.JsonPropertyName("client_secret_last_4")]
         public string? ClientSecretLast4 { get; set; }
 
         /// <summary>The connection-level configuration values stored for this connection — the fields the provider declares at `installation` scope, excluding secret and undeclared fields. Returned for every authentication method; empty when no stored values can be disclosed.</summary>

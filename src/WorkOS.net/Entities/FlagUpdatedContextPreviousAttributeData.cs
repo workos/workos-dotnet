@@ -17,6 +17,9 @@ namespace WorkOS
         /// <summary>The previous tags of the flag.</summary>
         public List<string>? Tags { get; set; }
 
+        /// <summary>The previous owner of the flag, or `null` if it had none.</summary>
+        public FeatureFlagOwner? Owner { get; set; }
+
         /// <summary>Whether the flag was previously enabled.</summary>
         public bool? Enabled { get; set; }
 

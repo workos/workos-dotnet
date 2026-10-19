@@ -30,6 +30,8 @@ namespace WorkOS
         public string? OrganizationId { get; set; }
 
         /// <summary>The last four characters of the stored API key. The full key is never returned.</summary>
+        [JsonProperty("api_key_last_4")]
+        [STJS.JsonPropertyName("api_key_last_4")]
         public string? ApiKeyLast4 { get; set; }
     }
 }

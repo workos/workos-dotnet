@@ -3,6 +3,8 @@
 namespace WorkOS
 {
     using System.Collections.Generic;
+    using Newtonsoft.Json;
+    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an organization authorized connect application list data.</summary>
     public class OrganizationAuthorizedConnectApplicationListData
@@ -18,6 +20,8 @@ namespace WorkOS
         public List<string> GrantedScopes { get; set; } = default!;
 
         /// <summary>The OAuth resource associated with the authorized connect application, if one was requested.</summary>
+        [JsonProperty("oauth_resource")]
+        [STJS.JsonPropertyName("oauth_resource")]
         public string? OAuthResource { get; set; }
         public ConnectApplication Application { get; set; } = default!;
 

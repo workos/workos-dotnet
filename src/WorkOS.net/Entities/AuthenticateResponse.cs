@@ -2,6 +2,8 @@
 
 namespace WorkOS
 {
+    using Newtonsoft.Json;
+    using STJS = System.Text.Json.Serialization;
 
     /// <summary>Represents an authenticate response.</summary>
     public class AuthenticateResponse
@@ -29,6 +31,8 @@ namespace WorkOS
         public AuthenticateResponseImpersonator? Impersonator { get; set; }
 
         /// <summary>The OAuth tokens from the identity provider, if applicable.</summary>
+        [JsonProperty("oauth_tokens")]
+        [STJS.JsonPropertyName("oauth_tokens")]
         public AuthenticateResponseOAuthToken? OAuthTokens { get; set; }
     }
 }
