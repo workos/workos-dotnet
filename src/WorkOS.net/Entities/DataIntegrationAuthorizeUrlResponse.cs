@@ -9,5 +9,8 @@ namespace WorkOS
 
         /// <summary>The OAuth authorization URL to redirect the user to.</summary>
         public string Url { get; set; } = default!;
+
+        /// <summary>`finish_required` when the request included `code_challenge`: the connection will be held until your app finishes it. Omitted otherwise. If you sent `code_challenge` and this is missing, don't redirect the user.</summary>
+        public string? Completion { get; set; }
     }
 }

@@ -4,5 +4,9 @@
   "organization_id": null,
   "connection_owner": null,
   "return_to": null,
-  "config": null
+  "code_challenge": null,
+  "code_challenge_method": null,
+  "config": null,
+  "connection_intent": null,
+  "connected_account_id": null
 }
