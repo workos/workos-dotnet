@@ -4,7 +4,7 @@ namespace WorkOS
 {
     using System;
 
-    /// <summary>Represents an agent registration claim.</summary>
+    /// <summary>The claim associated with this registration, or `null` if the registration has no claim.</summary>
     public class AgentRegistrationClaim
     {
 

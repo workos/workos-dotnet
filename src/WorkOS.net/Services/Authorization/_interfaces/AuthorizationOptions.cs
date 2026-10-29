@@ -37,6 +37,17 @@ namespace WorkOS
 
     }
 
+    /// <summary>Request options for <see cref="AuthorizationService.PatchGroupRoleAssignmentsAsync"/>: Update role assignments for a group</summary>
+    public class AuthorizationPatchGroupRoleAssignmentsOptions : BaseOptions
+    {
+        /// <summary>Role assignments to add to the group. Assignments that already exist are skipped.</summary>
+        public List<AssignRole>? Add { get; set; }
+
+        /// <summary>Role assignments to remove from the group. Entries that match no assignment are skipped.</summary>
+        public List<AssignRole>? Remove { get; set; }
+
+    }
+
     /// <summary>Request options for <see cref="AuthorizationService.DeleteGroupRoleAssignmentsAsync"/>: Remove group role assignments by criteria</summary>
     public class AuthorizationDeleteGroupRoleAssignmentsOptions : BaseOptions
     {

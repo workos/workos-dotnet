@@ -782,18 +782,19 @@ namespace WorkOS
         /// Sends an email that contains a one-time code used to verify a user's email address.
         /// </remarks>
         /// <param name="id">The ID of the user.</param>
+        /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="ResetPasswordResponse"/> result.</returns>
-        public virtual async Task<ResetPasswordResponse> SendVerificationEmailAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<ResetPasswordResponse> SendVerificationEmailAsync(string id, UserManagementSendVerificationEmailOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.PostAsync<ResetPasswordResponse>($"/user_management/users/{Uri.EscapeDataString(id)}/email_verification/send", null, requestOptions, cancellationToken);
+            return await this.PostAsync<ResetPasswordResponse>($"/user_management/users/{Uri.EscapeDataString(id)}/email_verification/send", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="SendVerificationEmailAsync"/>.</summary>
-        public virtual Task<ResetPasswordResponse> SendVerificationEmail(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<ResetPasswordResponse> SendVerificationEmail(string id, UserManagementSendVerificationEmailOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.SendVerificationEmailAsync(id, requestOptions, cancellationToken);
+            return this.SendVerificationEmailAsync(id, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Get user identities</summary>
@@ -1246,25 +1247,16 @@ namespace WorkOS
         /// </remarks>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="Waitlist"/> results.</returns>
-        public virtual async Task<WorkOSList<Waitlist>> ListWaitlistsAsync(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="WaitlistListResponse"/> result.</returns>
+        public virtual async Task<WaitlistListResponse> ListWaitlistsAsync(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<Waitlist>>("/user_management/waitlists", null, requestOptions, cancellationToken);
+            return await this.GetAsync<WaitlistListResponse>("/user_management/waitlists", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="ListWaitlistsAsync"/>.</summary>
-        public virtual Task<WorkOSList<Waitlist>> ListWaitlists(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<WaitlistListResponse> ListWaitlists(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.ListWaitlistsAsync(requestOptions, cancellationToken);
-        }
-
-        /// <summary>Auto-paging variant of <see cref="ListWaitlistsAsync"/>. Yields individual items across all pages.</summary>
-        /// <param name="requestOptions">Per-request configuration overrides.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="Waitlist"/> items.</returns>
-        public virtual IAsyncEnumerable<Waitlist> ListWaitlistsAutoPagingAsync(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
-        {
-            return this.ListAutoPagingAsync<Waitlist>("/user_management/waitlists", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Get a waitlist</summary>

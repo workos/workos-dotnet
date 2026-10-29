@@ -13,11 +13,11 @@ namespace WorkOS
         /// <summary>Filter events by one or more event types (e.g. `dsync.user.created`).</summary>
         public List<string> Events { get; set; } = default!;
 
-        /// <summary>ISO-8601 date string to filter events created after this date.</summary>
-        public string? RangeStart { get; set; }
+        /// <summary>ISO 8601 UTC timestamp with a `Z` suffix to filter events created after this date. Timezone offsets such as `+00:00` are not accepted.</summary>
+        public DateTimeOffset? RangeStart { get; set; }
 
-        /// <summary>ISO-8601 date string to filter events created before this date.</summary>
-        public string? RangeEnd { get; set; }
+        /// <summary>ISO 8601 UTC timestamp with a `Z` suffix to filter events created before this date. Timezone offsets such as `+00:00` are not accepted.</summary>
+        public DateTimeOffset? RangeEnd { get; set; }
 
         /// <summary>Filter events by the [Organization](https://workos.com/docs/reference/organization) that the event is associated with.</summary>
         public string? OrganizationId { get; set; }

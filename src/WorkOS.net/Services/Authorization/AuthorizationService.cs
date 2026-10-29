@@ -95,6 +95,25 @@ namespace WorkOS
             return this.UpdateGroupRoleAssignmentsAsync(groupId, options, requestOptions, cancellationToken);
         }
 
+        /// <summary>Update role assignments for a group</summary>
+        /// <remarks>
+        /// Add and remove role assignments for a group in a single atomic operation. Additions that already exist and removals that match no assignment are skipped. An assignment in both lists is rejected. `add` and `remove` must contain between 1 and 100 entries combined.
+        /// </remarks>
+        /// <param name="groupId">The ID of the group.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task PatchGroupRoleAssignmentsAsync(string groupId, AuthorizationPatchGroupRoleAssignmentsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.PatchAsync<object>($"/authorization/groups/{Uri.EscapeDataString(groupId)}/role_assignments", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="PatchGroupRoleAssignmentsAsync"/>.</summary>
+        public virtual Task PatchGroupRoleAssignments(string groupId, AuthorizationPatchGroupRoleAssignmentsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.PatchGroupRoleAssignmentsAsync(groupId, options, requestOptions, cancellationToken);
+        }
+
         /// <summary>Remove group role assignments by criteria</summary>
         /// <remarks>
         /// Remove role assignments from a group that match the provided criteria. Returns 404 when no matching active assignment is found.

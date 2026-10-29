@@ -39,6 +39,9 @@ namespace WorkOS
         /// <summary>The redirect URIs configured for this application.</summary>
         public List<ConnectApplicationOAuthRedirectUris> RedirectUris { get; set; } = default!;
 
+        /// <summary>The CORS origins allowed to call the OAuth token endpoint for this application from a browser.</summary>
+        public List<string> CorsOrigins { get; set; } = default!;
+
         /// <summary>Whether the application uses PKCE for authorization.</summary>
         public bool UsesPkce { get; set; }
 

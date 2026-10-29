@@ -4,6 +4,7 @@
   "description": null,
   "scopes": null,
   "redirect_uris": null,
+  "cors_origins": null,
   "uses_pkce": null,
   "is_first_party": true,
   "organization_id": null

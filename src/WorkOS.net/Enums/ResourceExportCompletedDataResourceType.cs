@@ -30,5 +30,7 @@ namespace WorkOS
         DirectoryUsers,
         [EnumMember(Value = "scimLogs")]
         SCIMLogs,
+        [EnumMember(Value = "radarDetections")]
+        RadarDetections,
     }
 }

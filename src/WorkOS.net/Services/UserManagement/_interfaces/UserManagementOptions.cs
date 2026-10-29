@@ -143,6 +143,9 @@ namespace WorkOS
         /// <summary>The email address of the user requesting a password reset.</summary>
         public string Email { get; set; } = default!;
 
+        /// <summary>The locale to use when rendering the password reset email. Defaults to the environment's default locale. See [supported locales](https://workos.com/docs/authkit/hosted-ui#localization).</summary>
+        public CreateMagicCodeAndReturnLocale? Locale { get; set; }
+
     }
 
     /// <summary>Request options for <see cref="UserManagementService.ConfirmPasswordResetAsync"/>: Reset the password</summary>
@@ -275,6 +278,9 @@ namespace WorkOS
         /// <summary>The new email address to change to.</summary>
         public string NewEmail { get; set; } = default!;
 
+        /// <summary>The locale to use when rendering the email change email. Defaults to the environment's default locale. See [supported locales](https://workos.com/docs/authkit/hosted-ui#localization).</summary>
+        public CreateMagicCodeAndReturnLocale? Locale { get; set; }
+
     }
 
     /// <summary>Request options for <see cref="UserManagementService.VerifyEmailAsync"/>: Verify email</summary>
@@ -282,6 +288,14 @@ namespace WorkOS
     {
         /// <summary>The one-time email verification code.</summary>
         public string Code { get; set; } = default!;
+
+    }
+
+    /// <summary>Request options for <see cref="UserManagementService.SendVerificationEmailAsync"/>: Send verification email</summary>
+    public class UserManagementSendVerificationEmailOptions : BaseOptions
+    {
+        /// <summary>The locale to use when rendering the verification email. Defaults to the environment's default locale. See [supported locales](https://workos.com/docs/authkit/hosted-ui#localization).</summary>
+        public CreateMagicCodeAndReturnLocale? Locale { get; set; }
 
     }
 
@@ -319,16 +333,16 @@ namespace WorkOS
         /// <summary>The ID of the [user](https://workos.com/docs/reference/authkit/user) who invites the recipient. The invitation email will mention the name of this user.</summary>
         public string? InviterUserId { get; set; }
 
-        /// <summary>The locale to use when rendering the invitation email. See [supported locales](https://workos.com/docs/authkit/hosted-ui/localization).</summary>
-        public CreateUserInviteOptionsLocale? Locale { get; set; }
+        /// <summary>The locale to use when rendering the invitation email. Defaults to the environment's default locale. See [supported locales](https://workos.com/docs/authkit/hosted-ui#localization).</summary>
+        public CreateMagicCodeAndReturnLocale? Locale { get; set; }
 
     }
 
     /// <summary>Request options for <see cref="UserManagementService.ResendInvitationAsync"/>: Resend an invitation</summary>
     public class UserManagementResendInvitationOptions : BaseOptions
     {
-        /// <summary>The locale to use when rendering the invitation email. See [supported locales](https://workos.com/docs/authkit/hosted-ui/localization).</summary>
-        public CreateUserInviteOptionsLocale? Locale { get; set; }
+        /// <summary>The locale to use when rendering the invitation email. Defaults to the environment's default locale. See [supported locales](https://workos.com/docs/authkit/hosted-ui#localization).</summary>
+        public CreateMagicCodeAndReturnLocale? Locale { get; set; }
 
     }
 
@@ -360,6 +374,9 @@ namespace WorkOS
 
         /// <summary>An optional Radar signals ID to correlate client-side signals with this request.</summary>
         public string? SignalsId { get; set; }
+
+        /// <summary>The locale to use when rendering the Magic Auth email. Defaults to the environment's default locale. See [supported locales](https://workos.com/docs/authkit/hosted-ui#localization).</summary>
+        public CreateMagicCodeAndReturnLocale? Locale { get; set; }
 
     }
 
