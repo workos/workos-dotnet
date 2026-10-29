@@ -6,7 +6,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a data integrations list response data connected account.</summary>
+    /// <summary>The user's compatibility [connected account](https://workos.com/docs/reference/pipes/connected-account) for this provider, or `null` when the compatibility slot is empty. This legacy field never selects a standard connection.</summary>
     public class DataIntegrationsListResponseDataConnectedAccount
     {
 
@@ -80,6 +80,9 @@ namespace WorkOS
 
         /// <summary>The timestamp when the connection was last updated.</summary>
         public string UpdatedAt { get; set; } = default!;
+
+        /// <summary>Non-blocking warnings about an explicitly supplied label. Only writes return it, and only when another connection already uses the label; reads omit it.</summary>
+        public List<ConnectedAccountWarning>? Warnings { get; set; }
 
         /// <summary>Use `user_id` instead.</summary>
         [System.Obsolete("This field is deprecated Use `user_id` instead.")]

@@ -26,7 +26,7 @@ namespace WorkOS
         /// <summary>Who owns the Data Integration: `user` when users connect their own accounts, `organization` when organizations connect. Fixed at creation.</summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
-        public AddDataIntegrationsGetDataIntegrationAuthorizeUrlRequestConnectionOwner Ownership { get; set; }
+        public CreateDataIntegrationOwnership Ownership { get; set; }
 
         /// <summary>An optional description of the Data Integration.</summary>
         public string? Description { get; set; }

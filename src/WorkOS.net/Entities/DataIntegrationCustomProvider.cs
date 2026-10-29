@@ -6,7 +6,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a data integration custom provider.</summary>
+    /// <summary>The OAuth definition when this is a custom provider; `null` for built-in providers.</summary>
     public class DataIntegrationCustomProvider
     {
 

@@ -80,5 +80,8 @@ namespace WorkOS
 
         /// <summary>The timestamp when the connection was last updated.</summary>
         public string UpdatedAt { get; set; } = default!;
+
+        /// <summary>Non-blocking warnings about an explicitly supplied label. Only writes return it, and only when another connection already uses the label; reads omit it.</summary>
+        public List<ConnectedAccountWarning>? Warnings { get; set; }
     }
 }
