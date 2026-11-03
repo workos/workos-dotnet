@@ -12,8 +12,8 @@ namespace WorkOS
         /// <summary>Identifier of what happened.</summary>
         public string Action { get; set; } = default!;
 
-        /// <summary>ISO-8601 value of when the action occurred.</summary>
-        public DateTimeOffset OccurredAt { get; set; }
+        /// <summary>ISO-8601 value of when the action occurred. When omitted, defaults to the time WorkOS accepts the event.</summary>
+        public DateTimeOffset? OccurredAt { get; set; }
 
         /// <summary>The entity that performed the action.</summary>
         public AuditLogEventActor Actor { get; set; } = default!;
