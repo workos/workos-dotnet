@@ -5,7 +5,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a data integration credential.</summary>
+    /// <summary>The integration-level OAuth app credentials. `null` for `api_key` and `client_credentials` integrations, which hold no integration-level credentials (secrets are installed per-tenant).</summary>
     public class DataIntegrationCredential
     {
 
