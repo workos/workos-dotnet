@@ -5,7 +5,7 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents a data integration installation.</summary>
+    /// <summary>The tenant installation created when an API key was supplied at creation time; `null` otherwise. Not populated on list/get responses.</summary>
     public class DataIntegrationInstallation
     {
 

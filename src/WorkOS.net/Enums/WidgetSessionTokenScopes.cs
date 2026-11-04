@@ -16,6 +16,10 @@ namespace WorkOS
 
         [EnumMember(Value = "widgets:users-table:manage")]
         WidgetsUsersTableManage,
+        [EnumMember(Value = "widgets:user-api-keys:manage-self")]
+        WidgetsUserApiKeysManageSelf,
+        [EnumMember(Value = "widgets:user-api-keys:manage-all")]
+        WidgetsUserApiKeysManageAll,
         [EnumMember(Value = "widgets:domain-verification:manage")]
         WidgetsDomainVerificationManage,
         [EnumMember(Value = "widgets:sso:manage")]

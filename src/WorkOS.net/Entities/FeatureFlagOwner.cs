@@ -3,7 +3,7 @@
 namespace WorkOS
 {
 
-    /// <summary>Represents a feature flag owner.</summary>
+    /// <summary>The owner of the Feature Flag.</summary>
     public class FeatureFlagOwner
     {
 

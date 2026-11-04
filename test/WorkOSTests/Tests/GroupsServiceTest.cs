@@ -133,6 +133,14 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestUpdateOrganizationMembershipsAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Patch, "/organizations/test_organizationId/groups/test_groupId/organization-memberships", HttpStatusCode.OK, "");
+            await this.service.UpdateOrganizationMembershipsAsync("test_organizationId", "test_groupId", new GroupsUpdateOrganizationMembershipsOptions());
+            this.httpMock.AssertRequestWasMade(HttpMethod.Patch, "/organizations/test_organizationId/groups/test_groupId/organization-memberships");
+        }
+
+        [Fact]
         public async Task TestDeleteOrganizationMembershipAsync()
         {
             this.httpMock.MockResponse(HttpMethod.Delete, "/organizations/test_organizationId/groups/test_groupId/organization-memberships/test_omId", HttpStatusCode.NoContent, "");

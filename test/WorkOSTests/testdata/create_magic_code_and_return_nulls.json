@@ -4,5 +4,6 @@
   "ip_address": null,
   "user_agent": null,
   "radar_auth_attempt_id": null,
-  "signals_id": null
+  "signals_id": null,
+  "locale": null
 }

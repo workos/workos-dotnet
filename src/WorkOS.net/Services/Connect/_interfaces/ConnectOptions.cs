@@ -47,5 +47,8 @@ namespace WorkOS
         /// <summary>Updated redirect URIs for the application. OAuth applications only.</summary>
         public List<RedirectUriInput>? RedirectUris { get; set; }
 
+        /// <summary>Updated origins allowed to call the OAuth token endpoint for this application from a browser. Replaces the existing list. OAuth applications only.</summary>
+        public List<string>? CorsOrigins { get; set; }
+
     }
 }

@@ -23,6 +23,9 @@ namespace WorkOS
         /// <summary>Redirect URIs for the application.</summary>
         public List<RedirectUriInput>? RedirectUris { get; set; }
 
+        /// <summary>Origins allowed to call the OAuth token endpoint for this application from a browser.</summary>
+        public List<string>? CorsOrigins { get; set; }
+
         /// <summary>Whether the application uses PKCE (Proof Key for Code Exchange).</summary>
         public bool? UsesPkce { get; set; }
 

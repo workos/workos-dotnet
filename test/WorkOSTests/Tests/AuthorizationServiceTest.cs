@@ -72,6 +72,14 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestPatchGroupRoleAssignmentsAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Patch, "/authorization/groups/test_group_id/role_assignments", HttpStatusCode.OK, "");
+            await this.service.PatchGroupRoleAssignmentsAsync("test_group_id", new AuthorizationPatchGroupRoleAssignmentsOptions());
+            this.httpMock.AssertRequestWasMade(HttpMethod.Patch, "/authorization/groups/test_group_id/role_assignments");
+        }
+
+        [Fact]
         public async Task TestDeleteGroupRoleAssignmentsAsync()
         {
             this.httpMock.MockResponse(HttpMethod.Delete, "/authorization/groups/test_group_id/role_assignments", HttpStatusCode.NoContent, "");

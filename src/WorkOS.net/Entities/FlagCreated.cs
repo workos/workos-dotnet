@@ -9,9 +9,9 @@ namespace WorkOS
     {
 
         /// <summary>The event payload.</summary>
-        public new FlagCreatedData Data { get; set; } = default!;
+        public new FeatureFlagsFlagCreatedData Data { get; set; } = default!;
 
         /// <summary>Additional context about the event.</summary>
-        public new FlagCreatedContext Context { get; set; } = default!;
+        public new FeatureFlagsFlagCreatedContext Context { get; set; } = default!;
     }
 }

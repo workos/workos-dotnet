@@ -20,7 +20,7 @@ namespace WorkOS
         /// <summary>The email address the user supplied for a profile the identity provider left without one.</summary>
         public string Email { get; set; } = default!;
 
-        /// <summary>The IP address of the user's request.</summary>
+        /// <summary>The IP address of the user's request. Required when Radar is in Decision mode.</summary>
         public string? IpAddress { get; set; }
 
         /// <summary>A unique identifier for the device.</summary>
