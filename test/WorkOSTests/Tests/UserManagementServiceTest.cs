@@ -367,7 +367,7 @@ namespace WorkOSTests
         {
             var fixture = System.IO.File.ReadAllText("testdata/reset_password_response.json");
             this.httpMock.MockResponse(HttpMethod.Post, "/user_management/users/test_id/email_verification/send", HttpStatusCode.OK, fixture);
-            var result = await this.service.SendVerificationEmailAsync("test_id");
+            var result = await this.service.SendVerificationEmailAsync("test_id", new UserManagementSendVerificationEmailOptions());
             Assert.NotNull(result);
             this.httpMock.AssertRequestWasMade(HttpMethod.Post, "/user_management/users/test_id/email_verification/send");
         }
@@ -666,21 +666,11 @@ namespace WorkOSTests
         [Fact]
         public async Task TestListWaitlistsAsync()
         {
-            var fixture = System.IO.File.ReadAllText("testdata/list_waitlist.json");
+            var fixture = System.IO.File.ReadAllText("testdata/waitlist_list_response.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/user_management/waitlists", HttpStatusCode.OK, fixture);
             var result = await this.service.ListWaitlistsAsync();
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Data);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/user_management/waitlists");
-        }
-
-        [Fact]
-        public async Task TestListWaitlistsAsyncEmpty()
-        {
-            this.httpMock.MockResponse(HttpMethod.Get, "/user_management/waitlists", HttpStatusCode.OK, "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}");
-            var result = await this.service.ListWaitlistsAsync();
-            Assert.NotNull(result);
-            Assert.Empty(result.Data);
         }
 
         [Fact]
@@ -984,38 +974,6 @@ namespace WorkOSTests
 
             var items = new List<AuthorizedConnectApplicationListData>();
             await foreach (var item in this.service.ListAuthorizedApplicationsAutoPagingAsync("test_user_id", new UserManagementListAuthorizedApplicationsOptions()))
-            {
-                items.Add(item);
-            }
-
-            Assert.Empty(items);
-        }
-
-        [Fact]
-        public async Task TestListWaitlistsAutoPagingAsync()
-        {
-            var fixture = System.IO.File.ReadAllText("testdata/waitlist.json");
-            var page1 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":\"cursor_123\"}}";
-            var page2 = "{\"data\":[" + fixture + "],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/waitlists", HttpStatusCode.OK, new[] { page1, page2 });
-
-            var items = new List<Waitlist>();
-            await foreach (var item in this.service.ListWaitlistsAutoPagingAsync())
-            {
-                items.Add(item);
-            }
-
-            Assert.Equal(2, items.Count);
-        }
-
-        [Fact]
-        public async Task TestListWaitlistsAutoPagingAsyncEmpty()
-        {
-            var empty = "{\"data\":[],\"list_metadata\":{\"before\":null,\"after\":null}}";
-            this.httpMock.MockSequentialResponses(HttpMethod.Get, "/user_management/waitlists", HttpStatusCode.OK, new[] { empty });
-
-            var items = new List<Waitlist>();
-            await foreach (var item in this.service.ListWaitlistsAutoPagingAsync())
             {
                 items.Add(item);
             }

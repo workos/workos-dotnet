@@ -17,7 +17,7 @@ namespace WorkOS
         /// <summary>An invitation token to accept during authentication.</summary>
         public string? InvitationToken { get; set; }
 
-        /// <summary>The IP address of the user's request.</summary>
+        /// <summary>The IP address of the user's request. Required when Radar is in Decision mode.</summary>
         public string? IpAddress { get; set; }
 
         /// <summary>A unique identifier for the device.</summary>
@@ -51,7 +51,7 @@ namespace WorkOS
         /// <summary>An invitation token to accept during authentication.</summary>
         public string? InvitationToken { get; set; }
 
-        /// <summary>The IP address of the user's request.</summary>
+        /// <summary>The IP address of the user's request. Required when Radar is in Decision mode.</summary>
         public string? IpAddress { get; set; }
 
         /// <summary>A unique identifier for the device.</summary>

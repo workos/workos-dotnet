@@ -4,7 +4,7 @@ namespace WorkOS
 {
     using System;
 
-    /// <summary>Represents an agent registration claim claim completion.</summary>
+    /// <summary>The completion record for the claim, or `null` if the claim has not been completed.</summary>
     public class AgentRegistrationClaimClaimCompletion
     {
 

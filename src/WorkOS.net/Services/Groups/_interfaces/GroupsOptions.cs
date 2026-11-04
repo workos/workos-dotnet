@@ -49,4 +49,15 @@ namespace WorkOS
         public string OrganizationMembershipId { get; set; } = default!;
 
     }
+
+    /// <summary>Request options for <see cref="GroupsService.UpdateOrganizationMembershipsAsync"/>: Update Group members</summary>
+    public class GroupsUpdateOrganizationMembershipsOptions : BaseOptions
+    {
+        /// <summary>The IDs of the organization memberships to add to the group. Adding a membership that's already in the group has no effect.</summary>
+        public List<string>? Add { get; set; }
+
+        /// <summary>The IDs of the organization memberships to remove from the group. Removing a membership that isn't in the group has no effect.</summary>
+        public List<string>? Remove { get; set; }
+
+    }
 }

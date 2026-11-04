@@ -189,6 +189,26 @@ namespace WorkOS
             return this.CreateOrganizationMembershipAsync(organizationId, groupId, options, requestOptions, cancellationToken);
         }
 
+        /// <summary>Update Group members</summary>
+        /// <remarks>
+        /// Adds and removes organization memberships for a group in a single atomic operation. Organization memberships not listed in `add` or `remove` are left unchanged. Adding a member that is already in the group or removing a member that isn't in the group has no effect. A membership listed in both `add` and `remove` is rejected. `add` and `remove` must contain between 1 and 100 entries combined.
+        /// </remarks>
+        /// <param name="organizationId">Unique identifier of the Organization.</param>
+        /// <param name="groupId">Unique identifier of the Group.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task UpdateOrganizationMembershipsAsync(string organizationId, string groupId, GroupsUpdateOrganizationMembershipsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.PatchAsync<object>($"/organizations/{Uri.EscapeDataString(organizationId)}/groups/{Uri.EscapeDataString(groupId)}/organization-memberships", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="UpdateOrganizationMembershipsAsync"/>.</summary>
+        public virtual Task UpdateOrganizationMemberships(string organizationId, string groupId, GroupsUpdateOrganizationMembershipsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.UpdateOrganizationMembershipsAsync(organizationId, groupId, options, requestOptions, cancellationToken);
+        }
+
         /// <summary>Remove a member from a Group</summary>
         /// <remarks>
         /// Remove an organization membership from a group.

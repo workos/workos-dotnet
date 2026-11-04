@@ -26,7 +26,7 @@ namespace WorkOS
 
         /// <summary>List events</summary>
         /// <remarks>
-        /// List events for the current environment.
+        /// List events for the current environment. Events are returned oldest first; use `after` to page forward.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
