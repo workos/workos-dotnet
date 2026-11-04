@@ -136,6 +136,22 @@ namespace WorkOS
         FlagUpdated,
         [EnumMember(Value = "flag.rule_updated")]
         FlagRuleUpdated,
+        [EnumMember(Value = "feature_flags.flag.created")]
+        FeatureFlagsFlagCreated,
+        [EnumMember(Value = "feature_flags.flag.updated")]
+        FeatureFlagsFlagUpdated,
+        [EnumMember(Value = "feature_flags.flag.deleted")]
+        FeatureFlagsFlagDeleted,
+        [EnumMember(Value = "feature_flags.flag_rule.created")]
+        FeatureFlagsFlagRuleCreated,
+        [EnumMember(Value = "feature_flags.flag_rule.updated")]
+        FeatureFlagsFlagRuleUpdated,
+        [EnumMember(Value = "feature_flags.flag_target.created")]
+        FeatureFlagsFlagTargetCreated,
+        [EnumMember(Value = "feature_flags.flag_rule.deleted")]
+        FeatureFlagsFlagRuleDeleted,
+        [EnumMember(Value = "feature_flags.flag_target.deleted")]
+        FeatureFlagsFlagTargetDeleted,
         [EnumMember(Value = "invitation.accepted")]
         InvitationAccepted,
         [EnumMember(Value = "invitation.created")]
