@@ -81,9 +81,17 @@ namespace WorkOS
                 case "dsync.group.user_removed": target = new DsyncGroupUserRemoved(); break;
                 case "dsync.user.updated": target = new DsyncUserUpdated(); break;
                 case "email_verification.created": target = new EmailVerificationCreated(); break;
+                case "feature_flags.flag.created": target = new FeatureFlagsFlagCreated(); break;
+                case "feature_flags.flag.deleted": target = new FeatureFlagsFlagDeleted(); break;
+                case "feature_flags.flag_rule.created": target = new FeatureFlagsFlagRuleCreated(); break;
+                case "feature_flags.flag_rule.deleted": target = new FeatureFlagsFlagRuleDeleted(); break;
+                case "feature_flags.flag_rule.updated": target = new FeatureFlagsFlagRuleUpdated(); break;
+                case "feature_flags.flag.updated": target = new FeatureFlagsFlagUpdated(); break;
                 case "flag.created": target = new FlagCreated(); break;
                 case "flag.deleted": target = new FlagDeleted(); break;
                 case "flag.rule_updated": target = new FlagRuleUpdated(); break;
+                case "feature_flags.flag_target.created": target = new FeatureFlagsFlagTargetCreated(); break;
+                case "feature_flags.flag_target.deleted": target = new FeatureFlagsFlagTargetDeleted(); break;
                 case "flag.updated": target = new FlagUpdated(); break;
                 case "group.created": target = new GroupCreated(); break;
                 case "group.deleted": target = new GroupDeleted(); break;
