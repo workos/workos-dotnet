@@ -1,5 +1,19 @@
 # Changelog
 
+## [6.7.0](https://github.com/workos/workos-dotnet/compare/v6.6.0...v6.7.0) (2026-11-04)
+
+
+### Features
+
+* **feature_flags:** Add feature flag API surface ([#330](https://github.com/workos/workos-dotnet/issues/330)) ([1e2589e](https://github.com/workos/workos-dotnet/commit/1e2589e163e508a09d67a56c270e380a2f2cd900))
+* **pipes:** Change Pipes API surface ([#330](https://github.com/workos/workos-dotnet/issues/330)) ([1e2589e](https://github.com/workos/workos-dotnet/commit/1e2589e163e508a09d67a56c270e380a2f2cd900))
+* **webhooks:** Add webhook API surface ([#330](https://github.com/workos/workos-dotnet/issues/330)) ([1e2589e](https://github.com/workos/workos-dotnet/commit/1e2589e163e508a09d67a56c270e380a2f2cd900))
+
+
+### Bug Fixes
+
+* **events:** Updated model `EventSchema` ([#330](https://github.com/workos/workos-dotnet/issues/330)) ([1e2589e](https://github.com/workos/workos-dotnet/commit/1e2589e163e508a09d67a56c270e380a2f2cd900))
+
 ## [6.6.0](https://github.com/workos/workos-dotnet/compare/v6.5.0...v6.6.0) (2026-10-19)
 
 ### Miscellaneous Chores
