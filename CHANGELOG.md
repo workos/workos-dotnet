@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.7.1](https://github.com/workos/workos-dotnet/compare/v6.7.0...v6.7.1) (2026-11-06)
+
+
+### Bug Fixes
+
+* **session:** Reject non-user access tokens in session cookies ([#332](https://github.com/workos/workos-dotnet/issues/332)) ([334841e](https://github.com/workos/workos-dotnet/commit/334841e59de4a904f7e4589209719db3b2a0d789))
+
 ## [6.7.0](https://github.com/workos/workos-dotnet/compare/v6.6.0...v6.7.0) (2026-11-04)
 
 * [#330](https://github.com/workos/workos-dotnet/pull/330) feat(generated)!: regenerate from spec (4 changes)
