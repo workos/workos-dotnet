@@ -274,6 +274,11 @@ namespace WorkOS
             handler.ValidateToken(token, validationParameters, out _);
 
             var jwt = handler.ReadJwtToken(token);
+            if (!IsUserAccessToken(jwt.Payload))
+            {
+                throw new SecurityTokenValidationException("Token is not a user access token.");
+            }
+
             var claims = new Dictionary<string, object>();
             foreach (var claim in jwt.Claims)
             {
@@ -281,6 +286,19 @@ namespace WorkOS
             }
 
             return claims;
+        }
+
+        // Other token types signed by the same environment key (agent and
+        // widget tokens) must not authenticate a session cookie.
+        private static bool IsUserAccessToken(JwtPayload payload)
+        {
+            payload.TryGetValue("sid", out var sid);
+            payload.TryGetValue("auth_time", out var authTime);
+            payload.TryGetValue("sub_profile", out var subProfile);
+            return sid is string
+                && authTime is int or long or double or decimal
+                && (subProfile == null || subProfile is "user")
+                && !payload.ContainsKey("sub_type");
         }
     }
 }

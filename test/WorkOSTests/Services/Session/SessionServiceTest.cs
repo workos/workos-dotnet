@@ -2,6 +2,7 @@
 namespace WorkOSTests
 {
     using System;
+    using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Security.Claims;
@@ -48,6 +49,10 @@ namespace WorkOSTests
                     new Claim("role", "admin"),
                     new Claim("sub", "user_01TEST"),
                 }),
+                Claims = new Dictionary<string, object>
+                {
+                    ["auth_time"] = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                },
                 Expires = now.AddHours(1),
                 NotBefore = now.AddSeconds(-5),
                 IssuedAt = now,
@@ -121,6 +126,11 @@ namespace WorkOSTests
             {
                 Issuer = "test-issuer",
                 Audience = "test-audience",
+                Claims = new Dictionary<string, object>
+                {
+                    ["sid"] = "session_01TEST",
+                    ["auth_time"] = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                },
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.RsaSha256),
             });
@@ -137,6 +147,70 @@ namespace WorkOSTests
             var sessionService = client.Session;
             sessionService.ValidIssuer = validIssuer;
             sessionService.ValidAudience = validAudience;
+            sessionService.SetJwksManagerForTesting(new ConfigurationManager<OpenIdConnectConfiguration>(
+                $"https://api.workos.com/sso/jwks/{ClientId}",
+                new JwksConfigurationRetriever(),
+                new StaticDocumentRetriever(jwksJson)));
+
+            var result = await sessionService.AuthenticateAsync(sealedSession, CookiePassword);
+
+            Assert.Equal(expectedAuthenticated, result.Authenticated);
+            Assert.Equal(expectedAuthenticated ? null : SessionFailureReason.InvalidJwt, result.Reason);
+        }
+
+        [Theory]
+        [InlineData("sub_profile", "user", true)]
+        [InlineData("sub_profile", "ai_agent", false)]
+        [InlineData("sub_type", "authkit", false)]
+        [InlineData("auth_time", null, false)]
+        [InlineData("auth_time", "1700000000", false)]
+        [InlineData("sid", null, false)]
+        [InlineData("sid", 123, false)]
+        public async Task AuthenticateAsync_RequiresUserAccessTokenClaims(
+            string claim,
+            object value,
+            bool expectedAuthenticated)
+        {
+            using var rsa = RSA.Create(2048);
+            var key = new RsaSecurityKey(rsa) { KeyId = "test-key-id" };
+            var jwk = JsonWebKeyConverter.ConvertFromRSASecurityKey(key);
+            var jwksJson = System.Text.Json.JsonSerializer.Serialize(new
+            {
+                keys = new[] { jwk },
+            });
+
+            var claims = new Dictionary<string, object>
+            {
+                ["sub"] = "user_01TEST",
+                ["sid"] = "session_01TEST",
+                ["auth_time"] = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+            };
+            if (value == null)
+            {
+                claims.Remove(claim);
+            }
+            else
+            {
+                claims[claim] = value;
+            }
+
+            var accessToken = new JwtSecurityTokenHandler().CreateEncodedJwt(new SecurityTokenDescriptor
+            {
+                Claims = claims,
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.RsaSha256),
+            });
+            var sealedSession = SessionService.SealSessionFromAuthResponse(
+                accessToken,
+                "refresh_token_value",
+                CookiePassword);
+
+            var client = new WorkOSClient(new WorkOSOptions
+            {
+                ApiKey = "sk_test",
+                ClientId = ClientId,
+            });
+            var sessionService = client.Session;
             sessionService.SetJwksManagerForTesting(new ConfigurationManager<OpenIdConnectConfiguration>(
                 $"https://api.workos.com/sso/jwks/{ClientId}",
                 new JwksConfigurationRetriever(),
