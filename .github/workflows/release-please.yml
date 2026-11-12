@@ -22,10 +22,16 @@ jobs:
   # the app token also fires the `release: published` event that release.yml
   # uses to publish to NuGet. This job is kept minimal so nothing downstream
   # (changelog enrichment, release notes) can fail it.
+  #
+  # The repo releases four packages: the SDK at "." and one workload identity
+  # provider per directory under src/WorkOS.WorkloadIdentity.*. Each has its own
+  # release PR (separate-pull-requests) and its own tag: vX.Y.Z for the SDK,
+  # <PackageId>-vX.Y.Z for a provider. release_created and tag_name are the
+  # action's root-package outputs, so they still describe the SDK alone.
   release-please:
     runs-on: ubuntu-latest
     outputs:
-      pr: ${{ steps.release.outputs.pr }}
+      pr: ${{ steps.sdk-pr.outputs.pr }}
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
@@ -43,7 +49,21 @@ jobs:
         with:
           token: ${{ steps.generate-token.outputs.token }}
 
-  # While the release PR is open, enrich it before it merges. Runs as its
+      # With one release PR per package, the action's `pr` output is whichever
+      # PR it lists first, which can be a provider's. enrich-release-pr edits
+      # the SDK's CHANGELOG.md, so hand it the SDK's PR only: the one whose
+      # title has no package name in it ("chore(main): release 6.8.0", not
+      # "chore(main): release WorkOS.WorkloadIdentity.Gcp 0.1.0"). Any failure
+      # here yields an empty output, which skips the enrichment and nothing else.
+      - name: Select the SDK release PR
+        id: sdk-pr
+        env:
+          PRS: ${{ steps.release.outputs.prs }}
+        run: |
+          pr="$(jq -c '[.[] | select(.title | test("release [0-9]"))][0] // empty' <<<"${PRS:-[]}" || true)"
+          echo "pr=${pr}" >> "$GITHUB_OUTPUT"
+
+  # While the SDK's release PR is open, enrich it before it merges. Runs as its
   # own job (gated on the PR existing) so a failure here can never block the
   # release or any publish that depends on release-please.
   enrich-release-pr:

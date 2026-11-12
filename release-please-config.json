@@ -1,5 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "separate-pull-requests": true,
   "packages": {
     ".": {
       "release-type": "simple",
@@ -7,6 +8,39 @@
       "include-component-in-tag": false,
       "extra-files": [
         "src/WorkOS.net/WorkOS.net.csproj"
+      ],
+      "changelog-path": "CHANGELOG.md"
+    },
+    "src/WorkOS.WorkloadIdentity.GitHubActions": {
+      "release-type": "simple",
+      "component": "WorkOS.WorkloadIdentity.GitHubActions",
+      "package-name": "WorkOS.WorkloadIdentity.GitHubActions",
+      "include-component-in-tag": true,
+      "initial-version": "0.1.0",
+      "extra-files": [
+        "WorkOS.WorkloadIdentity.GitHubActions.csproj"
+      ],
+      "changelog-path": "CHANGELOG.md"
+    },
+    "src/WorkOS.WorkloadIdentity.Gcp": {
+      "release-type": "simple",
+      "component": "WorkOS.WorkloadIdentity.Gcp",
+      "package-name": "WorkOS.WorkloadIdentity.Gcp",
+      "include-component-in-tag": true,
+      "initial-version": "0.1.0",
+      "extra-files": [
+        "WorkOS.WorkloadIdentity.Gcp.csproj"
+      ],
+      "changelog-path": "CHANGELOG.md"
+    },
+    "src/WorkOS.WorkloadIdentity.Aws": {
+      "release-type": "simple",
+      "component": "WorkOS.WorkloadIdentity.Aws",
+      "package-name": "WorkOS.WorkloadIdentity.Aws",
+      "include-component-in-tag": true,
+      "initial-version": "0.1.0",
+      "extra-files": [
+        "WorkOS.WorkloadIdentity.Aws.csproj"
       ],
       "changelog-path": "CHANGELOG.md"
     }

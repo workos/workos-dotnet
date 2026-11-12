@@ -19,6 +19,9 @@ namespace WorkOS
     {
         private readonly bool ownsHttpClient;
 
+        // Every request authenticates through this, a static API key included.
+        private readonly ICredentials credentials;
+
         // Non-spec service backing fields (hand-maintained)
         private PasswordlessService? passwordless;
         private ActionsService? actions;
@@ -29,15 +32,26 @@ namespace WorkOS
         /// Initializes a new instance of the <see cref="WorkOSClient"/> class.
         /// </summary>
         /// <param name="options">Parameters to create the client with.</param>
+        /// <exception cref="ArgumentException">Neither an API key nor credentials were given, or both were.</exception>
         public WorkOSClient(WorkOSOptions options)
         {
-            if (string.IsNullOrEmpty(options.ApiKey))
+            var hasApiKey = !string.IsNullOrEmpty(options.ApiKey);
+
+            if (options.Credentials != null && hasApiKey)
+            {
+                throw new ArgumentException(
+                    "Set either ApiKey or Credentials, not both.",
+                    nameof(options));
+            }
+
+            if (options.Credentials == null && !hasApiKey)
             {
                 throw new ArgumentException("API Key is required", nameof(options.ApiKey));
             }
 
             this.ApiBaseURL = options.ApiBaseURL ?? DefaultApiBaseURL;
-            this.ApiKey = options.ApiKey;
+            this.ApiKey = options.ApiKey ?? string.Empty;
+            this.credentials = options.Credentials ?? new StaticKeyCredentials(this.ApiKey);
             this.ClientId = options.ClientId;
             this.MaxRetries = options.MaxRetries;
             this.ownsHttpClient = options.HttpClient == null;
@@ -69,7 +83,8 @@ namespace WorkOS
         public string ApiBaseURL { get; }
 
         /// <summary>
-        /// The API key used to authenticate requests to the WorkOS API.
+        /// The API key used to authenticate requests to the WorkOS API. Empty when the client
+        /// was constructed with <see cref="WorkOSOptions.Credentials"/> instead of a key.
         /// </summary>
         public string ApiKey { get; }
 
@@ -96,6 +111,12 @@ namespace WorkOS
 
         /// <summary>Gets the Session service for sealed session management and JWT validation.</summary>
         public virtual SessionService Session => this.session ??= new SessionService(this);
+
+        /// <summary>
+        /// The <c>User-Agent</c> the SDK sends, on API requests and on the workload identity
+        /// token exchange.
+        /// </summary>
+        internal static string UserAgent => $"workos-dotnet/{SdkVersion}";
 
         /// <summary>
         /// The client used to make HTTP requests to the WorkOS API.
@@ -194,8 +215,11 @@ namespace WorkOS
                 idempotencyKey = Guid.NewGuid().ToString();
             }
 
+            // One 401 recovery per logical request. Set once and never cleared, however
+            // many transport retries follow, so a rejected credential cannot loop.
+            var recoveryUsed = false;
+
             HttpResponseMessage? response = null;
-            Exception? lastException = null;
 
             for (int attempt = 0; attempt <= maxRetries; attempt++)
             {
@@ -205,41 +229,35 @@ namespace WorkOS
                     await Task.Delay(delay, cancellationToken).ConfigureAwait(false);
                 }
 
-                // Must build a fresh HttpRequestMessage per attempt because
-                // HttpClient disposes the content after sending.
-                var requestMessage = this.CreateHttpRequestMessage(request, idempotencyKey);
+                var canRetry = attempt < maxRetries;
 
-                try
+                // Resolve before every attempt, transport retries included, so a retry
+                // never sends an expired token. Resolving happens outside the send, so a
+                // credential failure is final and is never retried as a network error.
+                var snapshot = await this.ResolveCredentialsAsync(request, cancellationToken).ConfigureAwait(false);
+                response = await this.SendAttemptAsync(request, idempotencyKey, snapshot, canRetry, cancellationToken)
+                    .ConfigureAwait(false);
+
+                if (response != null
+                    && response.StatusCode == HttpStatusCode.Unauthorized
+                    && snapshot.Recoverable
+                    && !recoveryUsed)
                 {
-                    response = await this.HttpClient.SendAsync(requestMessage, cancellationToken)
+                    // The credential this attempt used was rejected. Invalidate that
+                    // generation (not whichever is current), resolve again and resend the
+                    // same request at once: no backoff, and no transport retry spent.
+                    recoveryUsed = true;
+                    response.Dispose();
+                    this.credentials.Invalidate(snapshot.Generation);
+                    snapshot = await this.ResolveCredentialsAsync(request, cancellationToken).ConfigureAwait(false);
+                    response = await this.SendAttemptAsync(request, idempotencyKey, snapshot, canRetry, cancellationToken)
                         .ConfigureAwait(false);
-                    lastException = null;
                 }
-                catch (HttpRequestException ex)
+
+                if (response == null)
                 {
-                    lastException = ex;
-                    response = null;
-
-                    // Retryable transport error — retry if we have attempts left.
-                    if (attempt < maxRetries)
-                    {
-                        continue;
-                    }
-
-                    throw;
-                }
-                catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested)
-                {
-                    // Timeout (not caller cancellation) — retryable.
-                    lastException = ex;
-                    response = null;
-
-                    if (attempt < maxRetries)
-                    {
-                        continue;
-                    }
-
-                    throw;
+                    // Retryable transport error, and we have attempts left.
+                    continue;
                 }
 
                 if (response.IsSuccessStatusCode)
@@ -260,11 +278,6 @@ namespace WorkOS
             }
 
             // Should not be reachable, but satisfy the compiler.
-            if (lastException != null)
-            {
-                throw lastException;
-            }
-
             return response!;
         }
 
@@ -345,29 +358,15 @@ namespace WorkOS
             }
         }
 
-        private static Exception MapError(HttpStatusCode statusCode, string body)
-        {
-            switch ((int)statusCode)
-            {
-                case 401:
-                    return new AuthenticationException(body);
-                case 404:
-                    return new NotFoundException(body);
-                case 422:
-                    return new UnprocessableEntityException(body);
-                case 429:
-                    return new RateLimitExceededException(body);
-                default:
-                    if ((int)statusCode >= 500)
-                    {
-                        return new ServerException(body);
-                    }
-
-                    return new ApiException(body, statusCode);
-            }
-        }
-
-        private static TimeSpan ComputeRetryDelay(int attempt, HttpResponseMessage? response)
+        /// <summary>
+        /// The delay before a retry: exponential backoff with full jitter, and never less
+        /// than the previous response's <c>Retry-After</c>. Shared with the workload identity
+        /// token exchange, so both retry the same way.
+        /// </summary>
+        /// <param name="attempt">The number of the attempt about to be made; the first retry is 1.</param>
+        /// <param name="response">The response that is being retried, if there was one.</param>
+        /// <returns>How long to wait.</returns>
+        internal static TimeSpan ComputeRetryDelay(int attempt, HttpResponseMessage? response)
         {
             // Base delay: 0.5s * 2^(attempt-1) → 0.5s, 1s, 2s, 4s, ...
             var baseDelay = TimeSpan.FromMilliseconds(500 * Math.Pow(2, attempt - 1));
@@ -406,6 +405,60 @@ namespace WorkOS
             return delay;
         }
 
+        private static Exception MapError(HttpStatusCode statusCode, string body)
+        {
+            switch ((int)statusCode)
+            {
+                case 401:
+                    return new AuthenticationException(body);
+                case 404:
+                    return new NotFoundException(body);
+                case 422:
+                    return new UnprocessableEntityException(body);
+                case 429:
+                    return new RateLimitExceededException(body);
+                default:
+                    if ((int)statusCode >= 500)
+                    {
+                        return new ServerException(body);
+                    }
+
+                    return new ApiException(body, statusCode);
+            }
+        }
+
+        // Sets the credential's headers on a request. Authorization goes through the typed
+        // setter, which replaces any existing value and throws on a malformed credential,
+        // where an unvalidated add would drop the header and send the request without one.
+        private static void ApplyCredentialHeaders(HttpRequestMessage requestMessage, CredentialSnapshot snapshot)
+        {
+            foreach (var header in snapshot.Headers)
+            {
+                if (string.Equals(header.Key, "Authorization", StringComparison.OrdinalIgnoreCase))
+                {
+                    var separator = header.Value.IndexOf(' ');
+                    var scheme = separator < 0 ? header.Value : header.Value.Substring(0, separator);
+                    try
+                    {
+                        requestMessage.Headers.Authorization = separator < 0
+                            ? new AuthenticationHeaderValue(scheme)
+                            : new AuthenticationHeaderValue(scheme, header.Value.Substring(separator + 1));
+                    }
+                    catch (FormatException ex) when (ex.Message.Contains(scheme, StringComparison.Ordinal))
+                    {
+                        // The runtime quotes an invalid scheme in its message. For a value with
+                        // no scheme, that text is the credential itself, so it is not repeated.
+                        throw new FormatException("The credentials returned an Authorization header that is not a valid header value.");
+                    }
+
+                    continue;
+                }
+
+                requestMessage.Headers.Remove(header.Key);
+                requestMessage.Headers.Add(header.Key, header.Value);
+            }
+        }
+
         /// <summary>
         /// Releases managed resources owned by the client.
         /// </summary>
@@ -428,7 +481,57 @@ namespace WorkOS
         private static bool UsesQueryString(HttpMethod method) =>
             method == HttpMethod.Get || method == HttpMethod.Delete;
 
-        private HttpRequestMessage CreateHttpRequestMessage(WorkOSRequest request, string? idempotencyKey = null)
+        // The credential one attempt of this request is sent with. A per-request access
+        // token or API key keeps its precedence over the client's credentials; such a
+        // request is never recoverable, because the override is fixed and a 401 on it is final.
+        private Task<CredentialSnapshot> ResolveCredentialsAsync(WorkOSRequest request, CancellationToken cancellationToken)
+        {
+            if (!string.IsNullOrWhiteSpace(request.AccessToken))
+            {
+                return Task.FromResult(StaticKeyCredentials.Snapshot(request.AccessToken));
+            }
+
+            // Per-request API key override via RequestOptions
+            var apiKeyOverride = request.RequestOptions?.ApiKey;
+            if (apiKeyOverride != null)
+            {
+                return Task.FromResult(StaticKeyCredentials.Snapshot(apiKeyOverride));
+            }
+
+            return this.credentials.ResolveAsync(cancellationToken);
+        }
+
+        // Sends one HTTP attempt. Returns null for a retryable transport failure when another
+        // attempt is allowed; when none is, the failure propagates to the caller.
+        private async Task<HttpResponseMessage?> SendAttemptAsync(
+            WorkOSRequest request,
+            string? idempotencyKey,
+            CredentialSnapshot snapshot,
+            bool canRetry,
+            CancellationToken cancellationToken)
+        {
+            // Must build a fresh HttpRequestMessage per attempt because
+            // HttpClient disposes the content after sending.
+            var requestMessage = this.CreateHttpRequestMessage(request, idempotencyKey, snapshot);
+
+            try
+            {
+                return await this.HttpClient.SendAsync(requestMessage, cancellationToken)
+                    .ConfigureAwait(false);
+            }
+            catch (HttpRequestException) when (canRetry)
+            {
+                // Retryable transport error.
+                return null;
+            }
+            catch (TaskCanceledException) when (canRetry && !cancellationToken.IsCancellationRequested)
+            {
+                // Timeout (not caller cancellation) — retryable.
+                return null;
+            }
+        }
+
+        private HttpRequestMessage CreateHttpRequestMessage(WorkOSRequest request, string? idempotencyKey, CredentialSnapshot snapshot)
         {
             Uri uri = this.BuildUri(request);
             HttpContent? content = null;
@@ -438,21 +541,12 @@ namespace WorkOS
                 content = RequestUtilities.CreateHttpContent(request);
             }
 
-            var userAgentString = $"workos-dotnet/{SdkVersion}";
             var requestMessage = new HttpRequestMessage(request.Method, uri);
             requestMessage.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("utf-8"));
 
-            // Per-request API key override via RequestOptions
-            var apiKey = request.RequestOptions?.ApiKey ?? this.ApiKey;
-
-            if (!string.IsNullOrWhiteSpace(request.AccessToken))
-            {
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", request.AccessToken);
-            }
-            else
-            {
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
-            }
+            // The credential resolved for this attempt: the API key, a per-request
+            // override, or a workload identity token with its environment header.
+            ApplyCredentialHeaders(requestMessage, snapshot);
 
             // Idempotency key is resolved once per logical request in
             // MakeRawAPIRequest (outside the retry loop) and passed in here so
@@ -465,7 +559,7 @@ namespace WorkOS
                 requestMessage.Headers.TryAddWithoutValidation("Idempotency-Key", effectiveIdempotencyKey);
             }
 
-            requestMessage.Headers.TryAddWithoutValidation("User-Agent", userAgentString);
+            requestMessage.Headers.TryAddWithoutValidation("User-Agent", UserAgent);
             if (request.WorkOSHeaders != null)
             {
                 foreach (var header in request.WorkOSHeaders)

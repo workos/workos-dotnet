@@ -2,6 +2,16 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      package:
+        description: The package to publish
+        type: choice
+        default: WorkOS.net
+        options:
+          - WorkOS.net
+          - WorkOS.WorkloadIdentity.GitHubActions
+          - WorkOS.WorkloadIdentity.Gcp
+          - WorkOS.WorkloadIdentity.Aws
   release:
     types: [published]
 
@@ -9,9 +19,21 @@ defaults:
   run:
     shell: bash
 
+# release-please publishes one GitHub Release per package, and each one fires
+# this workflow. The tag says which package it is: vX.Y.Z is the SDK, and
+# <PackageId>-vX.Y.Z is a workload identity provider. Every job below publishes
+# one package and runs only for its own tag (or when picked in a manual run).
+#
+# The providers depend on WorkOS.net, but each release is its own run of this
+# workflow, so the jobs cannot order themselves with `needs`. That is safe as
+# long as a provider's WorkOSSdkMinVersion names an SDK version that is already
+# on NuGet when the provider is released.
 jobs:
   publish:
     name: Publish to NuGet
+    if: >-
+      (github.event_name == 'workflow_dispatch' && inputs.package == 'WorkOS.net')
+      || (github.event_name == 'release' && !startsWith(github.event.release.tag_name, 'WorkOS.WorkloadIdentity.'))
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -34,5 +56,119 @@ jobs:
 
       - name: Publish
         run: dotnet nuget push src/WorkOS.net/bin/Release/WorkOS.net.*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+
+  publish-workload-identity-github-actions:
+    name: Publish WorkOS.WorkloadIdentity.GitHubActions to NuGet
+    if: >-
+      (github.event_name == 'workflow_dispatch' && inputs.package == 'WorkOS.WorkloadIdentity.GitHubActions')
+      || (github.event_name == 'release' && startsWith(github.event.release.tag_name, 'WorkOS.WorkloadIdentity.GitHubActions-v'))
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - name: Setup DotNet
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build
+        run: dotnet pack -c Release src/WorkOS.WorkloadIdentity.GitHubActions/WorkOS.WorkloadIdentity.GitHubActions.csproj
+
+      # The capped range comes from an MSBuild target that rewrites one of NuGet's
+      # own items. If a future SDK renames that item, the package would quietly
+      # depend on "WorkOS.net >= x" with no cap, so check before anything is pushed.
+      - name: Verify the WorkOS.net dependency range
+        run: |
+          unzip -p src/WorkOS.WorkloadIdentity.GitHubActions/bin/Release/WorkOS.WorkloadIdentity.GitHubActions.*.nupkg '*.nuspec' \
+            | grep -E '<dependency id="WorkOS\.net" version="\[[0-9][^,"]*, [0-9][^)"]*\)"'
+
+      - name: NuGet login (trusted publishing)
+        id: login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        with:
+          user: workos
+
+      - name: Publish
+        run: dotnet nuget push src/WorkOS.WorkloadIdentity.GitHubActions/bin/Release/WorkOS.WorkloadIdentity.GitHubActions.*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+
+  publish-workload-identity-gcp:
+    name: Publish WorkOS.WorkloadIdentity.Gcp to NuGet
+    if: >-
+      (github.event_name == 'workflow_dispatch' && inputs.package == 'WorkOS.WorkloadIdentity.Gcp')
+      || (github.event_name == 'release' && startsWith(github.event.release.tag_name, 'WorkOS.WorkloadIdentity.Gcp-v'))
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - name: Setup DotNet
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build
+        run: dotnet pack -c Release src/WorkOS.WorkloadIdentity.Gcp/WorkOS.WorkloadIdentity.Gcp.csproj
+
+      # The capped range comes from an MSBuild target that rewrites one of NuGet's
+      # own items. If a future SDK renames that item, the package would quietly
+      # depend on "WorkOS.net >= x" with no cap, so check before anything is pushed.
+      - name: Verify the WorkOS.net dependency range
+        run: |
+          unzip -p src/WorkOS.WorkloadIdentity.Gcp/bin/Release/WorkOS.WorkloadIdentity.Gcp.*.nupkg '*.nuspec' \
+            | grep -E '<dependency id="WorkOS\.net" version="\[[0-9][^,"]*, [0-9][^)"]*\)"'
+
+      - name: NuGet login (trusted publishing)
+        id: login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        with:
+          user: workos
+
+      - name: Publish
+        run: dotnet nuget push src/WorkOS.WorkloadIdentity.Gcp/bin/Release/WorkOS.WorkloadIdentity.Gcp.*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+
+  publish-workload-identity-aws:
+    name: Publish WorkOS.WorkloadIdentity.Aws to NuGet
+    if: >-
+      (github.event_name == 'workflow_dispatch' && inputs.package == 'WorkOS.WorkloadIdentity.Aws')
+      || (github.event_name == 'release' && startsWith(github.event.release.tag_name, 'WorkOS.WorkloadIdentity.Aws-v'))
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - name: Setup DotNet
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build
+        run: dotnet pack -c Release src/WorkOS.WorkloadIdentity.Aws/WorkOS.WorkloadIdentity.Aws.csproj
+
+      # The capped range comes from an MSBuild target that rewrites one of NuGet's
+      # own items. If a future SDK renames that item, the package would quietly
+      # depend on "WorkOS.net >= x" with no cap, so check before anything is pushed.
+      - name: Verify the WorkOS.net dependency range
+        run: |
+          unzip -p src/WorkOS.WorkloadIdentity.Aws/bin/Release/WorkOS.WorkloadIdentity.Aws.*.nupkg '*.nuspec' \
+            | grep -E '<dependency id="WorkOS\.net" version="\[[0-9][^,"]*, [0-9][^)"]*\)"'
+
+      - name: NuGet login (trusted publishing)
+        id: login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        with:
+          user: workos
+
+      - name: Publish
+        run: dotnet nuget push src/WorkOS.WorkloadIdentity.Aws/bin/Release/WorkOS.WorkloadIdentity.Aws.*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
         env:
           NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}

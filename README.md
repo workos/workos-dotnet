@@ -34,7 +34,8 @@ Install-Package WorkOS.net
 
 ## Configuration
 
-To use the WorkOS client, you must provide an API key from the WorkOS dashboard.
+To use the WorkOS client, you must provide an API key from the WorkOS dashboard, or
+[workload identity credentials](#workload-identity).
 
 ```c#
 WorkOSConfiguration.SetApiKey("sk_key123");
@@ -70,6 +71,117 @@ WorkOSConfiguration.WorkOSClient = client;
 
 Operations that require a Client ID throw `InvalidOperationException` if one was not
 configured, instead of silently sending an empty string to the API.
+
+## Workload identity
+
+Workload identity federation lets a workload call the WorkOS API without a stored API
+key. The platform the code runs on (GitHub Actions, Google Cloud, AWS) issues the
+workload an identity token. The SDK exchanges that token for a short-lived WorkOS
+access token, keeps it in memory, and refreshes it shortly before it expires.
+
+Install the provider package for your platform next to the SDK:
+
+```sh
+dotnet add package WorkOS.WorkloadIdentity.GitHubActions
+dotnet add package WorkOS.WorkloadIdentity.Gcp
+dotnet add package WorkOS.WorkloadIdentity.Aws
+```
+
+Build the credentials and pass them to the client in place of an API key:
+
+```c#
+using WorkOS;
+using WorkOS.WorkloadIdentity;
+
+var credentials = new WorkloadIdentityCredentials(
+    new WorkloadIdentityCredentialsOptions
+    {
+        ClientId = "client_01H...",
+        TokenUrl = "<the token endpoint for your environment>",
+        EnvironmentId = "environment_01H...",
+        IdentityTokenProvider = GitHubActions.Create("https://api.workos.com"),
+    });
+
+var client = new WorkOSClient(new WorkOSOptions { Credentials = credentials });
+```
+
+| Option                  | Environment variable    | Required | Meaning                                            |
+| ----------------------- | ----------------------- | -------- | -------------------------------------------------- |
+| `ClientId`              | `WORKOS_CLIENT_ID`      | yes      | The M2M application that holds the trust rule      |
+| `TokenUrl`              | `WORKOS_WIF_TOKEN_URL`  | yes      | The token endpoint. There is no built-in default   |
+| `EnvironmentId`         | `WORKOS_ENVIRONMENT_ID` | yes      | The environment; sent with every API request       |
+| `Resource`              |                         | no       | Defaults to `https://api.workos.com`               |
+| `Scope`                 | `WORKOS_WIF_SCOPE`      | no       | Left out of the exchange when unset                |
+| `IdentityTokenProvider` |                         | yes      | Returns the workload's identity token              |
+
+An option you set wins over its environment variable. The variables only fill in
+options you leave out: no environment variable switches workload identity on, and
+installing a provider package selects nothing.
+
+Set either `ApiKey` or `Credentials`. Setting both throws an `ArgumentException`, and
+a client built with credentials never sends an API key. The
+`UserManagement.AuthenticateWith*` methods and `SSO.GetProfileAndTokenAsync` send the
+API key as a client secret, so they need a client built with an API key.
+
+### Providers
+
+Each provider package has one factory. Its argument is the audience to request, which
+must match the audience of the trust rule.
+
+```c#
+// GitHub Actions. The workflow or job needs `permissions: id-token: write`.
+IdentityTokenProvider = GitHubActions.Create("https://api.workos.com"),
+
+// Google Cloud: Compute Engine, GKE, Cloud Run and anywhere else the metadata server answers.
+IdentityTokenProvider = GcpMetadata.Create("https://api.workos.com"),
+
+// AWS. The IAM principal needs `sts:GetWebIdentityToken`. The region is optional when
+// the AWS SDK can resolve one.
+IdentityTokenProvider = AwsSts.Create("https://api.workos.com", region: "us-east-1"),
+```
+
+### Your own identity token
+
+No package is needed when the token comes from a file, an environment variable or
+your own code:
+
+```c#
+// A file that the platform rotates, such as a projected Kubernetes service account token.
+IdentityTokenProvider = IdentityTokenProvider.TokenFile("/var/run/secrets/tokens/workos"),
+
+// An environment variable.
+IdentityTokenProvider = IdentityTokenProvider.TokenEnv("MY_IDENTITY_TOKEN"),
+
+// A callback.
+IdentityTokenCallback = async cancellationToken => await FetchIdentityTokenAsync(cancellationToken),
+```
+
+You can also implement `IIdentityTokenProvider`. The SDK calls the provider once per
+exchange attempt and retries a failure, so a provider neither caches nor retries.
+
+### Errors
+
+A failed exchange throws `WorkloadIdentityException` from the request that needed the
+token. It never falls back to an API key, and the next request tries the exchange again.
+
+```c#
+try
+{
+    var org = await client.Organizations.GetAsync("org_01H...");
+}
+catch (WorkloadIdentityException ex)
+{
+    // ex.Code: an OAuth error code such as invalid_grant, or exchange_failed,
+    // invalid_response, provider_failed or invalid_configuration.
+    Console.Error.WriteLine($"{ex.Code}: {ex.Hint} {ex.Description}");
+    throw;
+}
+```
+
+When the API answers 401 to a request sent with workload identity credentials, the SDK
+exchanges for a new token and sends the request once more. A second 401 is thrown as
+`AuthenticationException`. Requests that pass `RequestOptions.ApiKey` or an access
+token of their own keep using that value.
 
 ## Authentication URLs
 

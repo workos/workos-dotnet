@@ -37,3 +37,46 @@ jobs:
         run: dotnet test -c Release -f net8.0 --no-build test/WorkOSTests/WorkOSTests.csproj
         env:
           DOTNET_ROLL_FORWARD: Major
+
+  # Each workload identity provider is released as its own package, so each is
+  # restored, built and tested from its own projects and not through the solution.
+  providers:
+    name: Test WorkOS.WorkloadIdentity.${{ matrix.provider }} (${{ matrix.dotnet }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        provider:
+          - GitHubActions
+          - Gcp
+          - Aws
+        dotnet:
+          - 8.0.x
+          - 9.0.x
+          - 10.0.x
+    env:
+      PROVIDER_PROJECT: src/WorkOS.WorkloadIdentity.${{ matrix.provider }}/WorkOS.WorkloadIdentity.${{ matrix.provider }}.csproj
+      TEST_PROJECT: test/WorkOS.WorkloadIdentity.${{ matrix.provider }}Tests/WorkOS.WorkloadIdentity.${{ matrix.provider }}Tests.csproj
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - name: Setup dotNet
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
+        with:
+          dotnet-version: ${{ matrix.dotnet }}
+      - name: Restore
+        run: dotnet restore "$TEST_PROJECT"
+      - name: Build
+        run: |
+          dotnet build -c Release "$PROVIDER_PROJECT" --no-restore
+          dotnet build -c Release "$TEST_PROJECT" --no-restore
+      - name: Test
+        run: dotnet test -c Release -f net8.0 --no-build "$TEST_PROJECT"
+        env:
+          DOTNET_ROLL_FORWARD: Major
+      # Packing otherwise runs only at release time. Pack with a stand-in lower bound
+      # and check that the WorkOS.net dependency comes out as a capped range.
+      - name: Check the packed dependency range
+        run: |
+          dotnet pack -c Release "$PROVIDER_PROJECT" --no-build -o "$RUNNER_TEMP/pack" -p:WorkOSSdkMinVersion=0.0.0
+          unzip -p "$RUNNER_TEMP"/pack/*.nupkg '*.nuspec' \
+            | grep -E '<dependency id="WorkOS\.net" version="\[0\.0\.0, [0-9][^)"]*\)"'
