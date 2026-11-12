@@ -6,6 +6,14 @@
       "release-type": "simple",
       "package-name": "WorkOS.net",
       "include-component-in-tag": false,
+      "exclude-paths": [
+        "src/WorkOS.WorkloadIdentity.GitHubActions",
+        "src/WorkOS.WorkloadIdentity.Gcp",
+        "src/WorkOS.WorkloadIdentity.Aws",
+        "test/WorkOS.WorkloadIdentity.GitHubActionsTests",
+        "test/WorkOS.WorkloadIdentity.GcpTests",
+        "test/WorkOS.WorkloadIdentity.AwsTests"
+      ],
       "extra-files": [
         "src/WorkOS.net/WorkOS.net.csproj"
       ],

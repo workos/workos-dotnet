@@ -28,6 +28,17 @@ jobs:
   # release PR (separate-pull-requests) and its own tag: vX.Y.Z for the SDK,
   # <PackageId>-vX.Y.Z for a provider. release_created and tag_name are the
   # action's root-package outputs, so they still describe the SDK alone.
+  #
+  # The SDK's entry in release-please-config.json lists every provider's source
+  # and test directory under exclude-paths. A commit that touches only those
+  # directories releases that provider and leaves the SDK alone. A commit that
+  # also touches any other file still counts for the SDK. A new provider's two
+  # directories must be added to that list.
+  #
+  # Do not force a version with an empty `Release-As:` commit in this repo.
+  # release-please hands an empty commit to every provider and, because of
+  # exclude-paths, not to the SDK. Set "release-as" on that one package's entry
+  # in release-please-config.json instead, and remove it once the release is out.
   release-please:
     runs-on: ubuntu-latest
     outputs:
