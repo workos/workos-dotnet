@@ -31,7 +31,7 @@ namespace WorkOS
         /// <see cref="WorkloadIdentityCredentials"/>. Set this or <see cref="ApiKey"/>, not
         /// both. The client does not dispose the credentials; they stay owned by the caller.
         /// </summary>
-        public ICredentials? Credentials { get; set; }
+        public IWorkOSCredentials? Credentials { get; set; }
 
         /// <summary>
         /// The WorkOS Client ID (e.g., <c>client_01H...</c>) used for SSO and User Management

@@ -9,7 +9,7 @@ namespace WorkOS
     /// Credentials that never change: a static API key, or a per-request key or access token.
     /// A 401 on them is final, because resolving again would return the same value.
     /// </summary>
-    internal sealed class StaticKeyCredentials : ICredentials
+    internal sealed class StaticKeyCredentials : IWorkOSCredentials
     {
         private readonly Task<CredentialSnapshot> resolved;
 

@@ -19,7 +19,7 @@ namespace WorkOS
     /// share one exchange. Pass an instance as <see cref="WorkOSOptions.Credentials"/>.
     /// </para>
     /// </summary>
-    public sealed class WorkloadIdentityCredentials : ICredentials, IDisposable
+    public sealed class WorkloadIdentityCredentials : IWorkOSCredentials, IDisposable
     {
         private readonly object gate = new object();
         private readonly string clientId;

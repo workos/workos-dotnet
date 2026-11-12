@@ -814,14 +814,14 @@ namespace WorkOSTests
         /// Passes every call through, and signals once the expected number of callers hold a
         /// pending resolve, which is the moment "all callers are waiting".
         /// </summary>
-        private sealed class ObservedCredentials : WorkOS.ICredentials
+        private sealed class ObservedCredentials : IWorkOSCredentials
         {
-            private readonly WorkOS.ICredentials inner;
+            private readonly IWorkOSCredentials inner;
             private readonly int expected;
             private readonly TaskCompletionSource<bool> allWaiting = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
             private int resolving;
 
-            internal ObservedCredentials(WorkOS.ICredentials inner, int expected)
+            internal ObservedCredentials(IWorkOSCredentials inner, int expected)
             {
                 this.inner = inner;
                 this.expected = expected;

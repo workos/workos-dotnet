@@ -43,7 +43,7 @@ namespace WorkOS
 
         /// <summary>
         /// Identifies the credential these headers came from. Pass it to
-        /// <see cref="ICredentials.Invalidate"/> when the API rejects this snapshot.
+        /// <see cref="IWorkOSCredentials.Invalidate"/> when the API rejects this snapshot.
         /// </summary>
         public long Generation { get; }
 

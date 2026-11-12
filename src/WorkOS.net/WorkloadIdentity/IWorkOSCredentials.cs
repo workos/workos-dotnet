@@ -8,7 +8,7 @@ namespace WorkOS
     /// Supplies the authorization headers for requests to the WorkOS API. A client resolves
     /// a snapshot before every HTTP attempt, so short-lived credentials are never sent stale.
     /// </summary>
-    public interface ICredentials
+    public interface IWorkOSCredentials
     {
         /// <summary>
         /// Returns the credential to use for one HTTP attempt. May wait for a new token.

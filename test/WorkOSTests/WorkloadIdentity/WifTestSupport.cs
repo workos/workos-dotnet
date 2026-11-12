@@ -58,7 +58,7 @@ namespace WorkOSTests
         }
 
         /// <summary>A client that authenticates with the given credentials against the mock API.</summary>
-        internal static WorkOSClient Client(WorkOS.ICredentials credentials, RecordingHandler api, int? maxRetries = null)
+        internal static WorkOSClient Client(IWorkOSCredentials credentials, RecordingHandler api, int? maxRetries = null)
         {
             var options = new WorkOSOptions
             {

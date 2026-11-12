@@ -442,8 +442,21 @@ namespace WorkOSTests
             Assert.Equal(2, token.ExchangeCount);
         }
 
+        [Fact]
+        public void TheCredentialsContractDoesNotShadowSystemNetICredentials()
+        {
+            // This file imports System.Net and WorkOS, as a caller that sets proxy credentials
+            // does. If the SDK declared a type named ICredentials, the unqualified name below
+            // would be ambiguous (CS0104) and this file, like that caller's, would not compile.
+            ICredentials proxyCredentials = CredentialCache.DefaultCredentials;
+            IWorkOSCredentials credentials = new FixedHeaderCredentials("Bearer fixed");
+
+            Assert.NotNull(proxyCredentials);
+            Assert.NotNull(credentials);
+        }
+
         /// <summary>A caller's own credentials that return one fixed Authorization value.</summary>
-        private sealed class FixedHeaderCredentials : WorkOS.ICredentials
+        private sealed class FixedHeaderCredentials : IWorkOSCredentials
         {
             private readonly string authorization;
 
@@ -464,7 +477,7 @@ namespace WorkOSTests
         /// A caller's own credentials: a new bearer value after each invalidation, plus a
         /// header of its own.
         /// </summary>
-        private sealed class SequenceCredentials : WorkOS.ICredentials
+        private sealed class SequenceCredentials : IWorkOSCredentials
         {
             private readonly List<long> invalidated = new List<long>();
             private long generation = 1;

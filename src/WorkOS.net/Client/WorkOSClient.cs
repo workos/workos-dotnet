@@ -20,7 +20,7 @@ namespace WorkOS
         private readonly bool ownsHttpClient;
 
         // Every request authenticates through this, a static API key included.
-        private readonly ICredentials credentials;
+        private readonly IWorkOSCredentials credentials;
 
         // Non-spec service backing fields (hand-maintained)
         private PasswordlessService? passwordless;
