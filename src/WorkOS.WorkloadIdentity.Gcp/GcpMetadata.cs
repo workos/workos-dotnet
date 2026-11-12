@@ -24,13 +24,10 @@ namespace WorkOS.WorkloadIdentity
         private static readonly TimeSpan HttpTimeout = TimeSpan.FromSeconds(10);
 
         /// <summary>
-        /// The one HTTP client of this package: it does not follow redirects and gives up
-        /// after 10 seconds. It holds no token.
+        /// The one HTTP client of this package: it does not follow redirects, never uses a
+        /// proxy and gives up after 10 seconds. It holds no token.
         /// </summary>
-        internal static HttpClient Http { get; } = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false })
-        {
-            Timeout = HttpTimeout,
-        };
+        internal static HttpClient Http { get; } = NewHttpClient();
 
         /// <summary>
         /// Creates a provider that asks the metadata server for an identity token with the
@@ -61,6 +58,21 @@ namespace WorkOS.WorkloadIdentity
             }
 
             return new Provider($"{baseUrl}{IdentityPath}?audience={Uri.EscapeDataString(audience)}&format=full");
+        }
+
+        /// <summary>
+        /// Builds the HTTP client of this package. Tests build a second one to check its
+        /// settings against real sockets.
+        /// </summary>
+        /// <returns>A client that follows no redirect and uses no proxy.</returns>
+        internal static HttpClient NewHttpClient()
+        {
+            // The metadata server is an address inside the workload's own VM or container.
+            // A proxy from HTTP_PROXY or the system settings is another machine: it cannot
+            // reach that server, and it could answer with its own identity. So the request
+            // always goes direct.
+            var handler = new HttpClientHandler { AllowAutoRedirect = false, UseProxy = false };
+            return new HttpClient(handler) { Timeout = HttpTimeout };
         }
 
         private sealed class Provider : IIdentityTokenProvider

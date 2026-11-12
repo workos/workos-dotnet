@@ -91,6 +91,32 @@ namespace WorkOS.WorkloadIdentity.GcpTests
             Assert.Equal(TimeSpan.FromSeconds(10), GcpMetadata.Http.Timeout);
         }
 
+        [Fact]
+        public async Task TheHttpClientNeverUsesAConfiguredProxy()
+        {
+            // The process-wide default proxy is what HTTP_PROXY or the system settings turn
+            // into. Point it at a server that records whatever it receives.
+            using var proxy = new LoopbackHttpServer(_ => new LoopbackResponse(200, "from-the-proxy"));
+            using var metadata = new LoopbackHttpServer(_ => new LoopbackResponse(200, "gcp-jwt"));
+            var original = HttpClient.DefaultProxy;
+            HttpClient.DefaultProxy = new WebProxy(proxy.BaseUrl);
+            try
+            {
+                // A client reads the default proxy on its first request, and the shared client
+                // may already have made one. So this is a new client from the same factory.
+                using var http = GcpMetadata.NewHttpClient();
+                var body = await http.GetStringAsync(metadata.BaseUrl + "/identity");
+
+                Assert.Equal("gcp-jwt", body);
+                Assert.Single(metadata.Requests);
+                Assert.Empty(proxy.Requests);
+            }
+            finally
+            {
+                HttpClient.DefaultProxy = original;
+            }
+        }
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
