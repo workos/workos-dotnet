@@ -10,7 +10,7 @@ namespace WorkOS.WorkloadIdentity.GcpTests
     using Xunit;
 
     /// <summary>
-    /// The Google Cloud provider cases, WIF-GCP-01 and WIF-GCP-02, and the rest of the
+    /// The Google Cloud provider cases, WIF-GCP-01 to WIF-GCP-03, and the rest of the
     /// provider's contract. The metadata server is a server on a loopback port, reached
     /// through the provider's real HTTP client.
     /// </summary>
@@ -92,7 +92,7 @@ namespace WorkOS.WorkloadIdentity.GcpTests
         }
 
         [Fact]
-        public async Task TheHttpClientNeverUsesAConfiguredProxy()
+        public async Task WIF_GCP_03_TheHttpClientNeverUsesAConfiguredProxy()
         {
             // The process-wide default proxy is what HTTP_PROXY or the system settings turn
             // into. Point it at a server that records whatever it receives.
