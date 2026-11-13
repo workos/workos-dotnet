@@ -592,6 +592,7 @@
     "src/WorkOS.net/Enums/ConnectionState.cs",
     "src/WorkOS.net/Enums/ConnectionType.cs",
     "src/WorkOS.net/Enums/ConnectionsConnectionType.cs",
+    "src/WorkOS.net/Enums/ConnectionsState.cs",
     "src/WorkOS.net/Enums/CreateConnectionOidcOptionsIdTokenSignatureAlgorithm.cs",
     "src/WorkOS.net/Enums/CreateConnectionOidcOptionsTokenAuthenticationMethod.cs",
     "src/WorkOS.net/Enums/CreateDataIntegrationOwnership.cs",
