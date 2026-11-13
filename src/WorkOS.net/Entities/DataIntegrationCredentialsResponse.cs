@@ -6,8 +6,6 @@ namespace WorkOS
     /// <summary>Represents a data integration credentials response.</summary>
     public class DataIntegrationCredentialsResponse
     {
-
-        /// <summary>Indicates credentials are available.</summary>
         public bool? Active { get; set; }
 
         /// <summary>The credential object containing the vended secret.</summary>

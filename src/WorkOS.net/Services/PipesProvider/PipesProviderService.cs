@@ -29,18 +29,19 @@ namespace WorkOS
         /// Returns a list of all providers available to the specified organization, along with any configured custom OAuth scopes, enabled state, and organization-managed credentials where applicable.
         /// </remarks>
         /// <param name="organizationId">An [Organization](https://workos.com/docs/reference/organization) identifier to list provider configurations for.</param>
+        /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="DataIntegrationConfigurationListResponse"/> result.</returns>
-        public virtual async Task<DataIntegrationConfigurationListResponse> ListOrganizationDataIntegrationConfigurationsAsync(string organizationId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<DataIntegrationConfigurationListResponse> ListOrganizationDataIntegrationConfigurationsAsync(string organizationId, PipesProviderListOrganizationDataIntegrationConfigurationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<DataIntegrationConfigurationListResponse>($"/organizations/{Uri.EscapeDataString(organizationId)}/data_integration_configurations", null, requestOptions, cancellationToken);
+            return await this.GetAsync<DataIntegrationConfigurationListResponse>($"/organizations/{Uri.EscapeDataString(organizationId)}/data_integration_configurations", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="ListOrganizationDataIntegrationConfigurationsAsync"/>.</summary>
-        public virtual Task<DataIntegrationConfigurationListResponse> ListOrganizationDataIntegrationConfigurations(string organizationId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<DataIntegrationConfigurationListResponse> ListOrganizationDataIntegrationConfigurations(string organizationId, PipesProviderListOrganizationDataIntegrationConfigurationsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListOrganizationDataIntegrationConfigurationsAsync(organizationId, requestOptions, cancellationToken);
+            return this.ListOrganizationDataIntegrationConfigurationsAsync(organizationId, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Configure a provider for an organization</summary>

@@ -43,7 +43,7 @@ namespace WorkOS
         public CreateDataIntegrationOwnership ConnectionOwner { get; set; }
 
         /// <summary>Use `connection_owner` instead. Legacy spelling of the same value: `userland_user` corresponds to `connection_owner: "user"` and `organization` to `connection_owner: "organization"`.</summary>
-        [System.Obsolete("This field is deprecated Use `connection_owner` instead.")]
+        [System.Obsolete("This field is deprecated. Use `connection_owner` instead.")]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public DataIntegrationsListResponseDataOwnership Ownership { get; set; }

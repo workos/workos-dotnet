@@ -31,6 +31,7 @@
     "src/WorkOS.net/Entities/AgentBlueprintUpdated.cs",
     "src/WorkOS.net/Entities/AgentBlueprintsCreateRequestInvocableAs.cs",
     "src/WorkOS.net/Entities/AgentBlueprintsCreateRequestInvocableBy.cs",
+    "src/WorkOS.net/Entities/AgentBlueprintsCreateRequestSessionSetting.cs",
     "src/WorkOS.net/Entities/AgentBlueprintsUpdateRequestSessionSetting.cs",
     "src/WorkOS.net/Entities/AgentCredentialValidation.cs",
     "src/WorkOS.net/Entities/AgentInstance.cs",
@@ -263,6 +264,7 @@
     "src/WorkOS.net/Entities/EmailVerificationCreatedData.cs",
     "src/WorkOS.net/Entities/EmailVerificationRequiredErrorBody.cs",
     "src/WorkOS.net/Entities/EntityNotFoundErrorBody.cs",
+    "src/WorkOS.net/Entities/ErrorBodyWithCode.cs",
     "src/WorkOS.net/Entities/ErrorBodyWithCodeErrors.cs",
     "src/WorkOS.net/Entities/ErrorBodyWithCodeFieldError.cs",
     "src/WorkOS.net/Entities/ErrorBodyWithCodeFieldErrors.cs",
@@ -481,7 +483,7 @@
     "src/WorkOS.net/Entities/SAMLSpSigningCertificate.cs",
     "src/WorkOS.net/Entities/SSOAuthorizeUrlResponse.cs",
     "src/WorkOS.net/Entities/SSOLogoutAuthorizeResponse.cs",
-    "src/WorkOS.net/Entities/SSORequiredOAuthErrorBodyWithConnectionIdsListEmailPendingAuthenticationToken.cs",
+    "src/WorkOS.net/Entities/SSORequiredOAuthErrorBodyWithConnectionIdsListEmail.cs",
     "src/WorkOS.net/Entities/SSOTokenResponse.cs",
     "src/WorkOS.net/Entities/SendRadarSmsChallengeResponse.cs",
     "src/WorkOS.net/Entities/SessionCreated.cs",
@@ -812,6 +814,7 @@
     "test/WorkOSTests/testdata/agent_registration_claim_completed.json",
     "test/WorkOSTests/testdata/agent_registration_claim_completed_data.json",
     "test/WorkOSTests/testdata/agent_registration_claim_completed_data_claimed_by.json",
+    "test/WorkOSTests/testdata/agent_registration_claim_completed_data_nulls.json",
     "test/WorkOSTests/testdata/agent_registration_claim_completed_nulls.json",
     "test/WorkOSTests/testdata/agent_registration_claim_nulls.json",
     "test/WorkOSTests/testdata/agent_registration_created.json",
@@ -917,6 +920,7 @@
     "test/WorkOSTests/testdata/authentication_email_verification_failed.json",
     "test/WorkOSTests/testdata/authentication_email_verification_failed_data.json",
     "test/WorkOSTests/testdata/authentication_email_verification_failed_data_error.json",
+    "test/WorkOSTests/testdata/authentication_email_verification_failed_data_error_nulls.json",
     "test/WorkOSTests/testdata/authentication_email_verification_failed_data_nulls.json",
     "test/WorkOSTests/testdata/authentication_email_verification_failed_nulls.json",
     "test/WorkOSTests/testdata/authentication_email_verification_succeeded.json",
@@ -936,6 +940,7 @@
     "test/WorkOSTests/testdata/authentication_magic_auth_failed.json",
     "test/WorkOSTests/testdata/authentication_magic_auth_failed_data.json",
     "test/WorkOSTests/testdata/authentication_magic_auth_failed_data_error.json",
+    "test/WorkOSTests/testdata/authentication_magic_auth_failed_data_error_nulls.json",
     "test/WorkOSTests/testdata/authentication_magic_auth_failed_data_nulls.json",
     "test/WorkOSTests/testdata/authentication_magic_auth_failed_nulls.json",
     "test/WorkOSTests/testdata/authentication_magic_auth_succeeded.json",
@@ -947,6 +952,7 @@
     "test/WorkOSTests/testdata/authentication_mfa_failed.json",
     "test/WorkOSTests/testdata/authentication_mfa_failed_data.json",
     "test/WorkOSTests/testdata/authentication_mfa_failed_data_error.json",
+    "test/WorkOSTests/testdata/authentication_mfa_failed_data_error_nulls.json",
     "test/WorkOSTests/testdata/authentication_mfa_failed_data_nulls.json",
     "test/WorkOSTests/testdata/authentication_mfa_failed_nulls.json",
     "test/WorkOSTests/testdata/authentication_mfa_succeeded.json",
@@ -956,6 +962,7 @@
     "test/WorkOSTests/testdata/authentication_oauth_failed.json",
     "test/WorkOSTests/testdata/authentication_oauth_failed_data.json",
     "test/WorkOSTests/testdata/authentication_oauth_failed_data_error.json",
+    "test/WorkOSTests/testdata/authentication_oauth_failed_data_error_nulls.json",
     "test/WorkOSTests/testdata/authentication_oauth_failed_data_nulls.json",
     "test/WorkOSTests/testdata/authentication_oauth_failed_nulls.json",
     "test/WorkOSTests/testdata/authentication_oauth_succeeded.json",
@@ -965,6 +972,7 @@
     "test/WorkOSTests/testdata/authentication_passkey_failed.json",
     "test/WorkOSTests/testdata/authentication_passkey_failed_data.json",
     "test/WorkOSTests/testdata/authentication_passkey_failed_data_error.json",
+    "test/WorkOSTests/testdata/authentication_passkey_failed_data_error_nulls.json",
     "test/WorkOSTests/testdata/authentication_passkey_failed_data_nulls.json",
     "test/WorkOSTests/testdata/authentication_passkey_failed_nulls.json",
     "test/WorkOSTests/testdata/authentication_passkey_succeeded.json",
@@ -974,6 +982,7 @@
     "test/WorkOSTests/testdata/authentication_password_failed.json",
     "test/WorkOSTests/testdata/authentication_password_failed_data.json",
     "test/WorkOSTests/testdata/authentication_password_failed_data_error.json",
+    "test/WorkOSTests/testdata/authentication_password_failed_data_error_nulls.json",
     "test/WorkOSTests/testdata/authentication_password_failed_data_nulls.json",
     "test/WorkOSTests/testdata/authentication_password_failed_nulls.json",
     "test/WorkOSTests/testdata/authentication_password_succeeded.json",
@@ -991,6 +1000,7 @@
     "test/WorkOSTests/testdata/authentication_sso_failed.json",
     "test/WorkOSTests/testdata/authentication_sso_failed_data.json",
     "test/WorkOSTests/testdata/authentication_sso_failed_data_error.json",
+    "test/WorkOSTests/testdata/authentication_sso_failed_data_error_nulls.json",
     "test/WorkOSTests/testdata/authentication_sso_failed_data_nulls.json",
     "test/WorkOSTests/testdata/authentication_sso_failed_data_sso.json",
     "test/WorkOSTests/testdata/authentication_sso_failed_data_sso_nulls.json",
@@ -1010,6 +1020,7 @@
     "test/WorkOSTests/testdata/authentication_sso_timed_out.json",
     "test/WorkOSTests/testdata/authentication_sso_timed_out_data.json",
     "test/WorkOSTests/testdata/authentication_sso_timed_out_data_error.json",
+    "test/WorkOSTests/testdata/authentication_sso_timed_out_data_error_nulls.json",
     "test/WorkOSTests/testdata/authentication_sso_timed_out_data_nulls.json",
     "test/WorkOSTests/testdata/authentication_sso_timed_out_data_sso.json",
     "test/WorkOSTests/testdata/authentication_sso_timed_out_data_sso_nulls.json",
@@ -1538,6 +1549,7 @@
     "test/WorkOSTests/testdata/list_data_integration.json",
     "test/WorkOSTests/testdata/list_directory.json",
     "test/WorkOSTests/testdata/list_directory_group.json",
+    "test/WorkOSTests/testdata/list_directory_user.json",
     "test/WorkOSTests/testdata/list_directory_user_with_groups.json",
     "test/WorkOSTests/testdata/list_empty_agent_blueprint.json",
     "test/WorkOSTests/testdata/list_empty_agent_instance.json",
@@ -1555,6 +1567,7 @@
     "test/WorkOSTests/testdata/list_empty_data_integration.json",
     "test/WorkOSTests/testdata/list_empty_directory.json",
     "test/WorkOSTests/testdata/list_empty_directory_group.json",
+    "test/WorkOSTests/testdata/list_empty_directory_user.json",
     "test/WorkOSTests/testdata/list_empty_directory_user_with_groups.json",
     "test/WorkOSTests/testdata/list_empty_event_schema.json",
     "test/WorkOSTests/testdata/list_empty_flag.json",
@@ -1783,6 +1796,7 @@
     "test/WorkOSTests/testdata/pipes_connected_account_reauthorization_needed_nulls.json",
     "test/WorkOSTests/testdata/pkce_not_supported_oauth_error_body.json",
     "test/WorkOSTests/testdata/policy_denied_error_body.json",
+    "test/WorkOSTests/testdata/policy_denied_error_body_nulls.json",
     "test/WorkOSTests/testdata/portal_link_response.json",
     "test/WorkOSTests/testdata/profile.json",
     "test/WorkOSTests/testdata/profile_nulls.json",
@@ -1888,8 +1902,8 @@
     "test/WorkOSTests/testdata/sso_device_authorization_request.json",
     "test/WorkOSTests/testdata/sso_logout_authorize_request.json",
     "test/WorkOSTests/testdata/sso_logout_authorize_response.json",
-    "test/WorkOSTests/testdata/sso_required_oauth_error_body_with_connection_ids_list_email_pending_authentication_token.json",
-    "test/WorkOSTests/testdata/sso_required_oauth_error_body_with_connection_ids_list_email_pending_authentication_token_nulls.json",
+    "test/WorkOSTests/testdata/sso_required_oauth_error_body_with_connection_ids_list_email.json",
+    "test/WorkOSTests/testdata/sso_required_oauth_error_body_with_connection_ids_list_email_nulls.json",
     "test/WorkOSTests/testdata/sso_token_response.json",
     "test/WorkOSTests/testdata/sso_token_response_nulls.json",
     "test/WorkOSTests/testdata/sso_token_response_oauth_token.json",
@@ -2494,19 +2508,19 @@
       "sdkMethod": "CreateAsync",
       "service": "directory_sync"
     },
-    "GET /directory_groups": {
+    "GET /directories/{directoryId}/groups": {
       "sdkMethod": "ListGroupsAsync",
       "service": "directory_sync"
     },
-    "GET /directory_groups/{id}": {
+    "GET /directories/{directoryId}/groups/{groupId}": {
       "sdkMethod": "GetGroupAsync",
       "service": "directory_sync"
     },
-    "GET /directory_users": {
+    "GET /directories/{directoryId}/users": {
       "sdkMethod": "ListUsersAsync",
       "service": "directory_sync"
     },
-    "GET /directory_users/{id}": {
+    "GET /directories/{directoryId}/users/{userId}": {
       "sdkMethod": "GetUserAsync",
       "service": "directory_sync"
     },
@@ -3121,6 +3135,22 @@
     "GET /audit_logs/exports/{auditLogExportId}": {
       "sdkMethod": "GetExportAsync",
       "service": "audit_logs"
+    },
+    "GET /directory_groups": {
+      "sdkMethod": "ListGroupsAsync",
+      "service": "directory_sync"
+    },
+    "GET /directory_groups/{id}": {
+      "sdkMethod": "GetGroupAsync",
+      "service": "directory_sync"
+    },
+    "GET /directory_users": {
+      "sdkMethod": "ListUsersAsync",
+      "service": "directory_sync"
+    },
+    "GET /directory_users/{id}": {
+      "sdkMethod": "GetUserAsync",
+      "service": "directory_sync"
     }
   }
 }

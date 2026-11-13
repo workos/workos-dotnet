@@ -389,7 +389,7 @@ namespace WorkOS
 
         /// <summary>Update an organization connected account</summary>
         /// <remarks>
-        /// Updates an organization's [connected account](https://workos.com/docs/reference/pipes/connected-account) tokens, scopes, or state for a specific provider.
+        /// Updates an organization's [connected account](https://workos.com/docs/reference/pipes/connected-account) tokens, scopes, state, or provider configuration for a specific provider.
         /// </remarks>
         /// <param name="organizationId">An [Organization](https://workos.com/docs/reference/organization) identifier.</param>
         /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>
@@ -492,7 +492,7 @@ namespace WorkOS
 
         /// <summary>Update a connected account</summary>
         /// <remarks>
-        /// Updates a user's [connected account](https://workos.com/docs/reference/pipes/connected-account) tokens, scopes, or state for a specific provider.
+        /// Updates a user's [connected account](https://workos.com/docs/reference/pipes/connected-account) tokens, scopes, state, or provider configuration for a specific provider.
         /// </remarks>
         /// <param name="userId">A [User](https://workos.com/docs/reference/authkit/user) identifier.</param>
         /// <param name="slug">The slug identifier of the provider (e.g., `github`, `slack`, `notion`).</param>

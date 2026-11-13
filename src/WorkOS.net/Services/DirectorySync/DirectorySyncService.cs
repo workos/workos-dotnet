@@ -109,100 +109,106 @@ namespace WorkOS
             return this.CreateAsync(id, requestOptions, cancellationToken);
         }
 
-        /// <summary>List Directory Groups</summary>
+        /// <summary>List Groups for a Directory</summary>
         /// <remarks>
-        /// Get a list of all of existing directory groups matching the criteria specified.
+        /// Get a list of the Directory Groups in a Directory, optionally filtered to the groups a Directory User belongs to.
         /// </remarks>
+        /// <param name="directoryId">Unique identifier of the Directory.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A page of <see cref="DirectoryGroup"/> results.</returns>
-        public virtual async Task<WorkOSList<DirectoryGroup>> ListGroupsAsync(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<WorkOSList<DirectoryGroup>> ListGroupsAsync(string directoryId, DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<DirectoryGroup>>("/directory_groups", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<DirectoryGroup>>($"/directories/{Uri.EscapeDataString(directoryId)}/groups", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="ListGroupsAsync"/>.</summary>
-        public virtual Task<WorkOSList<DirectoryGroup>> ListGroups(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<WorkOSList<DirectoryGroup>> ListGroups(string directoryId, DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListGroupsAsync(options, requestOptions, cancellationToken);
+            return this.ListGroupsAsync(directoryId, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListGroupsAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="directoryId">Unique identifier of the Directory.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An async sequence of <see cref="DirectoryGroup"/> items.</returns>
-        public virtual IAsyncEnumerable<DirectoryGroup> ListGroupsAutoPagingAsync(DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual IAsyncEnumerable<DirectoryGroup> ListGroupsAutoPagingAsync(string directoryId, DirectorySyncListGroupsOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<DirectoryGroup>("/directory_groups", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<DirectoryGroup>($"/directories/{Uri.EscapeDataString(directoryId)}/groups", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Get a Directory Group</summary>
+        /// <summary>Get a Group for a Directory</summary>
         /// <remarks>
-        /// Get the details of an existing Directory Group.
+        /// Get the details of a Directory Group in a Directory.
         /// </remarks>
-        /// <param name="id">Unique identifier for the Directory Group.</param>
+        /// <param name="directoryId">Unique identifier of the Directory.</param>
+        /// <param name="groupId">Unique identifier for the Directory Group.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The <see cref="DirectoryGroup"/> result.</returns>
-        public virtual async Task<DirectoryGroup> GetGroupAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual async Task<DirectoryGroup> GetGroupAsync(string directoryId, string groupId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<DirectoryGroup>($"/directory_groups/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<DirectoryGroup>($"/directories/{Uri.EscapeDataString(directoryId)}/groups/{Uri.EscapeDataString(groupId)}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="GetGroupAsync"/>.</summary>
-        public virtual Task<DirectoryGroup> GetGroup(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<DirectoryGroup> GetGroup(string directoryId, string groupId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.GetGroupAsync(id, requestOptions, cancellationToken);
+            return this.GetGroupAsync(directoryId, groupId, requestOptions, cancellationToken);
         }
 
-        /// <summary>List Directory Users</summary>
+        /// <summary>List Users for a Directory</summary>
         /// <remarks>
-        /// Get a list of all of existing Directory Users matching the criteria specified.
+        /// Get a list of the Directory Users in a Directory, optionally filtered to the members of a Directory Group.
         /// </remarks>
+        /// <param name="directoryId">Unique identifier of the Directory.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A page of <see cref="DirectoryUserWithGroups"/> results.</returns>
-        public virtual async Task<WorkOSList<DirectoryUserWithGroups>> ListUsersAsync(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>A page of <see cref="DirectoryUser"/> results.</returns>
+        public virtual async Task<WorkOSList<DirectoryUser>> ListUsersAsync(string directoryId, DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<WorkOSList<DirectoryUserWithGroups>>("/directory_users", options, requestOptions, cancellationToken);
+            return await this.GetAsync<WorkOSList<DirectoryUser>>($"/directories/{Uri.EscapeDataString(directoryId)}/users", options, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="ListUsersAsync"/>.</summary>
-        public virtual Task<WorkOSList<DirectoryUserWithGroups>> ListUsers(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<WorkOSList<DirectoryUser>> ListUsers(string directoryId, DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListUsersAsync(options, requestOptions, cancellationToken);
+            return this.ListUsersAsync(directoryId, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Auto-paging variant of <see cref="ListUsersAsync"/>. Yields individual items across all pages.</summary>
+        /// <param name="directoryId">Unique identifier of the Directory.</param>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>An async sequence of <see cref="DirectoryUserWithGroups"/> items.</returns>
-        public virtual IAsyncEnumerable<DirectoryUserWithGroups> ListUsersAutoPagingAsync(DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>An async sequence of <see cref="DirectoryUser"/> items.</returns>
+        public virtual IAsyncEnumerable<DirectoryUser> ListUsersAutoPagingAsync(string directoryId, DirectorySyncListUsersOptions? options = null, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListAutoPagingAsync<DirectoryUserWithGroups>("/directory_users", options, requestOptions, cancellationToken);
+            return this.ListAutoPagingAsync<DirectoryUser>($"/directories/{Uri.EscapeDataString(directoryId)}/users", options, requestOptions, cancellationToken);
         }
 
-        /// <summary>Get a Directory User</summary>
+        /// <summary>Get a User for a Directory</summary>
         /// <remarks>
-        /// Get the details of an existing Directory User.
+        /// Get the details of a Directory User in a Directory.
         /// </remarks>
-        /// <param name="id">Unique identifier for the Directory User.</param>
+        /// <param name="directoryId">Unique identifier of the Directory.</param>
+        /// <param name="userId">Unique identifier for the Directory User.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The <see cref="DirectoryUserWithGroups"/> result.</returns>
-        public virtual async Task<DirectoryUserWithGroups> GetUserAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        /// <returns>The <see cref="DirectoryUser"/> result.</returns>
+        public virtual async Task<DirectoryUser> GetUserAsync(string directoryId, string userId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return await this.GetAsync<DirectoryUserWithGroups>($"/directory_users/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+            return await this.GetAsync<DirectoryUser>($"/directories/{Uri.EscapeDataString(directoryId)}/users/{Uri.EscapeDataString(userId)}", null, requestOptions, cancellationToken);
         }
 
         /// <summary>Compatibility wrapper for <see cref="GetUserAsync"/>.</summary>
-        public virtual Task<DirectoryUserWithGroups> GetUser(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        public virtual Task<DirectoryUser> GetUser(string directoryId, string userId, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.GetUserAsync(id, requestOptions, cancellationToken);
+            return this.GetUserAsync(directoryId, userId, requestOptions, cancellationToken);
         }
     }
 }

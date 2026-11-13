@@ -7,7 +7,7 @@ namespace WorkOS
     public class ClientApiTokenResponse
     {
 
-        /// <summary>The Client API token.</summary>
+        /// <summary>The Widgets API token.</summary>
         public string Token { get; set; } = default!;
     }
 }
