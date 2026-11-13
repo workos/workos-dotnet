@@ -12,5 +12,8 @@ namespace WorkOS
 
         /// <summary>A human-readable description of the error.</summary>
         public string Message { get; set; } = default!;
+
+        /// <summary>The ID of the Radar detection that blocked the request. Only set when Radar blocked it.</summary>
+        public string? RadarDetectionId { get; set; }
     }
 }

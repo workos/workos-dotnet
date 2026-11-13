@@ -7,13 +7,13 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Request options for <see cref="ClientApiService.CreateTokenAsync"/>: Generate a Client API token</summary>
+    /// <summary>Request options for <see cref="ClientApiService.CreateTokenAsync"/>: Generate a Widgets API token</summary>
     public class ClientApiCreateTokenOptions : BaseOptions
     {
-        /// <summary>The ID of the organization to scope the Client API token to.</summary>
+        /// <summary>The ID of the organization to scope the Widgets API token to.</summary>
         public string OrganizationId { get; set; } = default!;
 
-        /// <summary>The ID of the user to issue the Client API token for.</summary>
+        /// <summary>The ID of the user to issue the Widgets API token for.</summary>
         public string UserId { get; set; } = default!;
 
     }

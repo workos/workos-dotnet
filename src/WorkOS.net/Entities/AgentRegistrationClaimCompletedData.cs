@@ -16,6 +16,9 @@ namespace WorkOS
         /// <summary>The ID of the agent registration.</summary>
         public string AgentRegistrationId { get; set; } = default!;
 
+        /// <summary>The ID of the organization the registration belongs to.</summary>
+        public string? OrganizationId { get; set; }
+
         /// <summary>The ID of the claim attempt that completed the claim.</summary>
         public string CompletedByAttemptId { get; set; } = default!;
 
