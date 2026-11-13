@@ -1,5 +1,14 @@
 # Changelog
 
+## [6.8.0](https://github.com/workos/workos-dotnet/compare/v6.7.1...v6.8.0) (2026-11-13)
+
+
+### Features
+
+* **directory_sync:** Change directory sync API surface ([#334](https://github.com/workos/workos-dotnet/issues/334)) ([76b742f](https://github.com/workos/workos-dotnet/commit/76b742f24a0721c6d704c118fe7f86086783525e))
+* **pipes:** Update Pipes API surface ([#334](https://github.com/workos/workos-dotnet/issues/334)) ([76b742f](https://github.com/workos/workos-dotnet/commit/76b742f24a0721c6d704c118fe7f86086783525e))
+* **sso:** Update SSO API surface ([#336](https://github.com/workos/workos-dotnet/issues/336)) ([8c3e488](https://github.com/workos/workos-dotnet/commit/8c3e4889e8b738a1c8370a70d1b943f9a82c0918))
+
 ## [6.7.1](https://github.com/workos/workos-dotnet/compare/v6.7.0...v6.7.1) (2026-11-06)
 
 
