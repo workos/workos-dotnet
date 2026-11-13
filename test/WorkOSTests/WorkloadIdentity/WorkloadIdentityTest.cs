@@ -70,21 +70,22 @@ namespace WorkOSTests
             // The same, with a scope, on a new instance.
             var scopedToken = new TokenEndpoint();
             var scopedOptions = Wif.Options(new CountingProvider("assertion-1"));
-            scopedOptions.Scope = "organizations:write";
+            scopedOptions.Scope = "orgs:write";
             using var scopedCredentials = Wif.Credentials(scopedOptions, scopedToken);
             using var scopedClient = Wif.Client(scopedCredentials, Wif.Api());
 
             await scopedClient.MakeRawAPIRequest(Wif.Get());
 
             var scopedExchange = Assert.Single(scopedToken.Requests);
-            Assert.Equal("organizations:write", scopedExchange.Form["scope"]);
+            Assert.Equal("orgs:write", scopedExchange.Form["scope"]);
             Assert.DoesNotContain("client_secret", scopedExchange.Form.AllKeys);
             Assert.False(scopedExchange.Headers.ContainsKey("Authorization"));
         }
 
         [Fact]
-        public async Task WIF_02_ApiRequestCarriesTheAccessTokenAndTheEnvironmentHeader()
+        public async Task WIF_02_ApiRequestCarriesTheAccessTokenAndTheEnvironmentHeaderOnlyWhenAnEnvironmentIdIsSet()
         {
+            // (a) With an environment ID: the access token and the environment header.
             var api = Wif.Api();
             using var credentials = Wif.Credentials(Wif.Options(new CountingProvider("assertion-1")), new TokenEndpoint());
             using var client = Wif.Client(credentials, api);
@@ -94,6 +95,30 @@ namespace WorkOSTests
             var request = Assert.Single(api.Requests);
             Assert.Equal(Bearer1, request.Headers["Authorization"]);
             Assert.Equal("environment_wif_test", request.Headers[Wif.EnvironmentHeader]);
+
+            // (b) No environment ID, explicitly or in the environment, on a new instance.
+            // The variable is put back when the test's environment scope is disposed.
+            this.environment.Set("WORKOS_ENVIRONMENT_ID", null);
+            var bareOptions = new WorkloadIdentityCredentialsOptions
+            {
+                ClientId = Wif.ClientId,
+                TokenUrl = Wif.TokenUrl,
+                IdentityTokenProvider = new CountingProvider("assertion-1"),
+            };
+            var bareApi = Wif.Api();
+            WorkloadIdentityCredentials? constructed = null;
+            var constructionError = Record.Exception(() => constructed = Wif.Credentials(bareOptions, new TokenEndpoint()));
+
+            // Constructing the credentials is not an error.
+            Assert.Null(constructionError);
+            using var bareCredentials = Assert.IsType<WorkloadIdentityCredentials>(constructed);
+            using var bareClient = Wif.Client(bareCredentials, bareApi);
+
+            await bareClient.MakeRawAPIRequest(Wif.Get());
+
+            var bareRequest = Assert.Single(bareApi.Requests);
+            Assert.Equal(Bearer1, bareRequest.Headers["Authorization"]);
+            Assert.False(bareRequest.Headers.ContainsKey(Wif.EnvironmentHeader));
         }
 
         [Fact]

@@ -25,8 +25,16 @@ namespace WorkOS
         public string? TokenUrl { get; set; }
 
         /// <summary>
-        /// The environment the requests are for. Sent as a header on every API request.
-        /// Defaults to the <c>WORKOS_ENVIRONMENT_ID</c> environment variable. Required.
+        /// The environment the requests are for. Optional. When set, it is sent as the
+        /// <c>x-url-environment-id</c> header on every API request; when not set, the header
+        /// is not sent. Defaults to the <c>WORKOS_ENVIRONMENT_ID</c> environment variable.
+        /// An empty string counts as not set.
+        /// <para>
+        /// The server binds a workload identity client to exactly one environment and takes
+        /// the environment from that binding, so the header selects nothing. Setting it is a
+        /// safety check: a value that names a different environment is refused with
+        /// <c>403 environment_mismatch</c>.
+        /// </para>
         /// </summary>
         public string? EnvironmentId { get; set; }
 

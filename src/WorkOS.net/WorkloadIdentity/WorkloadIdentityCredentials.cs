@@ -24,7 +24,7 @@ namespace WorkOS
         private readonly object gate = new object();
         private readonly string clientId;
         private readonly Uri tokenUrl;
-        private readonly string environmentId;
+        private readonly string? environmentId;
         private readonly string resource;
         private readonly string? scope;
         private readonly IIdentityTokenProvider provider;
@@ -74,7 +74,7 @@ namespace WorkOS
 
             this.clientId = Require(options.ClientId, WorkloadIdentityConstants.ClientIdVariable, nameof(options.ClientId));
             var url = Require(options.TokenUrl, WorkloadIdentityConstants.TokenUrlVariable, nameof(options.TokenUrl));
-            this.environmentId = Require(options.EnvironmentId, WorkloadIdentityConstants.EnvironmentIdVariable, nameof(options.EnvironmentId));
+            this.environmentId = FirstSet(options.EnvironmentId, Environment.GetEnvironmentVariable(WorkloadIdentityConstants.EnvironmentIdVariable));
             this.resource = FirstSet(options.Resource) ?? WorkloadIdentityConstants.DefaultResource;
             this.scope = FirstSet(options.Scope, Environment.GetEnvironmentVariable(WorkloadIdentityConstants.ScopeVariable));
 
@@ -127,7 +127,7 @@ namespace WorkOS
         /// it is fresh; otherwise waits for the one shared exchange.
         /// </summary>
         /// <param name="cancellationToken">Stops this caller's wait. The shared exchange keeps running for the others.</param>
-        /// <returns>The <c>Authorization</c> and environment headers, and their generation.</returns>
+        /// <returns>The <c>Authorization</c> header, the environment header when an environment ID is set, and their generation.</returns>
         /// <exception cref="WorkloadIdentityException">The exchange failed. A failure is not cached; the next call tries again.</exception>
         public Task<CredentialSnapshot> ResolveAsync(CancellationToken cancellationToken)
         {
@@ -268,8 +268,14 @@ namespace WorkOS
                 var headers = new Dictionary<string, string>
                 {
                     ["Authorization"] = "Bearer " + token.AccessToken,
-                    [WorkloadIdentityConstants.EnvironmentHeader] = this.environmentId,
                 };
+
+                // The server takes the environment from the client's own binding, so the
+                // header is only a safety check. It is sent only when an environment ID is set.
+                if (this.environmentId != null)
+                {
+                    headers[WorkloadIdentityConstants.EnvironmentHeader] = this.environmentId;
+                }
 
                 // Store the token and clear the in-flight exchange under one lock, before the
                 // waiters are woken (they wake when this method returns).

@@ -8,7 +8,7 @@ namespace WorkOS
     /// </summary>
     internal static class WorkloadIdentityConstants
     {
-        /// <summary>The header that carries the environment ID on every API request.</summary>
+        /// <summary>The header that carries the environment ID on every API request, when one is set.</summary>
         internal const string EnvironmentHeader = "x-url-environment-id";
 
         /// <summary>The OAuth grant type of the exchange.</summary>

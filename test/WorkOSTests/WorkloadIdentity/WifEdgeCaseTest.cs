@@ -375,7 +375,6 @@ namespace WorkOSTests
         [Theory]
         [InlineData("ClientId", "WORKOS_CLIENT_ID")]
         [InlineData("TokenUrl", "WORKOS_WIF_TOKEN_URL")]
-        [InlineData("EnvironmentId", "WORKOS_ENVIRONMENT_ID")]
         public void AMissingRequiredSettingNamesTheFieldAndItsVariable(string field, string variable)
         {
             var options = Wif.Options(new CountingProvider("assertion-1"));
@@ -386,6 +385,22 @@ namespace WorkOSTests
             Assert.Equal("invalid_configuration", error.Code);
             Assert.Equal($"{field} is required (or set {variable})", error.Description);
             Assert.Equal("Workload identity credentials are missing a required setting.", error.Hint);
+        }
+
+        [Fact]
+        public async Task AnEmptyEnvironmentIdCountsAsNotSet()
+        {
+            var options = Wif.Options(new CountingProvider("assertion-1"));
+            options.EnvironmentId = string.Empty;
+            var api = Wif.Api();
+            using var credentials = Wif.Credentials(options, new TokenEndpoint());
+            using var client = Wif.Client(credentials, api);
+
+            await client.MakeRawAPIRequest(Wif.Get());
+
+            var sent = Assert.Single(api.Requests);
+            Assert.Equal("Bearer access-1", sent.Headers["Authorization"]);
+            Assert.False(sent.Headers.ContainsKey(Wif.EnvironmentHeader));
         }
 
         [Fact]
