@@ -12,18 +12,10 @@ namespace WorkOS
         public string? Object { get; set; }
 
         /// <summary>The authentication method for this credential. Additional values may be added in the future; handle unknown values gracefully.</summary>
-        public string? AuthMethod { get; set; }
-
-        /// <summary>The vended secret. An OAuth access token when `auth_method` is `oauth`, the API key when `api_key`, or the client-credentials access token when `client_credentials`.</summary>
+        public ConnectedAccountAuthMethod? AuthMethod { get; set; }
         public string? Value { get; set; }
-
-        /// <summary>The ISO-8601 formatted timestamp indicating when the credential expires, or `null` if it does not expire. Present for `oauth` and `client_credentials` credentials; absent for `api_key`.</summary>
         public string? ExpiresAt { get; set; }
-
-        /// <summary>The scopes granted to the access token. Present for `oauth` and `client_credentials` credentials; absent for `api_key`.</summary>
         public List<string>? Scopes { get; set; }
-
-        /// <summary>If the integration has requested scopes that aren't present on the access token, they're listed here. Present for `oauth` and `client_credentials` credentials; absent for `api_key`.</summary>
         public List<string>? MissingScopes { get; set; }
 
         /// <summary>Non-sensitive fields captured from the provider token response (e.g. Salesforce `instance_url`), as configured for the provider. Captured on OAuth code exchange and refresh, and on each `client_credentials` mint. A field a later OAuth refresh omits keeps its stored value. Present for `oauth` and `client_credentials` credentials; absent for `api_key`.</summary>
