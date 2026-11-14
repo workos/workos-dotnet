@@ -46,7 +46,7 @@ namespace WorkOS
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkloadIdentityCredentials"/> class.
         /// </summary>
-        /// <param name="options">The settings. Omitted values are read from the environment.</param>
+        /// <param name="options">The settings. Only an omitted client ID is read from the environment.</param>
         /// <exception cref="WorkloadIdentityException">A required setting is missing, with code <c>invalid_configuration</c>.</exception>
         public WorkloadIdentityCredentials(WorkloadIdentityCredentialsOptions options)
             : this(options, handler: null, clock: null, sleeper: null)
@@ -57,7 +57,7 @@ namespace WorkOS
         /// Initializes a new instance of the <see cref="WorkloadIdentityCredentials"/> class
         /// with the test seams filled in.
         /// </summary>
-        /// <param name="options">The settings. Omitted values are read from the environment.</param>
+        /// <param name="options">The settings. Only an omitted client ID is read from the environment.</param>
         /// <param name="handler">Answers the exchange request in place of the network.</param>
         /// <param name="clock">The clock the cache and the exchange deadline run on.</param>
         /// <param name="sleeper">Waits between exchange attempts.</param>
@@ -73,10 +73,13 @@ namespace WorkOS
             }
 
             this.clientId = Require(options.ClientId, WorkloadIdentityConstants.ClientIdVariable, nameof(options.ClientId));
-            var url = Require(options.TokenUrl, WorkloadIdentityConstants.TokenUrlVariable, nameof(options.TokenUrl));
+            var url = FirstSet(options.TokenUrl)
+                ?? throw new WorkloadIdentityException(
+                    WorkloadIdentityException.InvalidConfiguration,
+                    $"{nameof(options.TokenUrl)} is required");
             this.environmentId = FirstSet(options.EnvironmentId);
             this.resource = FirstSet(options.Resource) ?? WorkloadIdentityConstants.DefaultResource;
-            this.scope = FirstSet(options.Scope, Environment.GetEnvironmentVariable(WorkloadIdentityConstants.ScopeVariable));
+            this.scope = FirstSet(options.Scope);
 
             if (!Uri.TryCreate(url, UriKind.Absolute, out var parsedUrl)
                 || (parsedUrl.Scheme != Uri.UriSchemeHttps && parsedUrl.Scheme != Uri.UriSchemeHttp))

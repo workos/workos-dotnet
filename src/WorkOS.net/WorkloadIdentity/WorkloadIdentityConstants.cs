@@ -26,12 +26,6 @@ namespace WorkOS
         /// <summary>Environment variable that supplies the default client ID.</summary>
         internal const string ClientIdVariable = "WORKOS_CLIENT_ID";
 
-        /// <summary>Environment variable that supplies the default token URL.</summary>
-        internal const string TokenUrlVariable = "WORKOS_WIF_TOKEN_URL";
-
-        /// <summary>Environment variable that supplies the default scope.</summary>
-        internal const string ScopeVariable = "WORKOS_WIF_SCOPE";
-
         /// <summary>The refresh threshold never exceeds this, however long the token lives.</summary>
         internal static readonly TimeSpan RefreshThresholdCap = TimeSpan.FromSeconds(60);
 

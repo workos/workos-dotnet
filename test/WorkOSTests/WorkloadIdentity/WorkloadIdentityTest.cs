@@ -607,12 +607,12 @@ namespace WorkOSTests
 
             Assert.Equal(Bearer1, Assert.Single(api.Requests).Headers["Authorization"]);
 
-            // (b) No token URL, explicitly or in the environment: constructing is an error.
+            // (b) No token URL: constructing is an error.
             var incomplete = Wif.Options(new CountingProvider("assertion-1"));
             incomplete.TokenUrl = null;
             var configurationError = Assert.Throws<WorkloadIdentityException>(() => new WorkloadIdentityCredentials(incomplete));
             Assert.Equal("invalid_configuration", configurationError.Code);
-            Assert.Contains("WORKOS_WIF_TOKEN_URL", configurationError.Description);
+            Assert.Equal("TokenUrl is required", configurationError.Description);
 
             // (c) Valid credentials whose exchange fails: the request fails; no fallback.
             var failingApi = Wif.Api();
@@ -662,7 +662,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task WIF_22_TokenEnvAndCallbackSupplyTheAssertionAndOmittedFieldsDefaultFromTheEnvironment()
+        public async Task WIF_22_TokenEnvAndCallbackSupplyTheAssertionAndOnlyTheClientIdDefaultsFromTheEnvironment()
         {
             // (a) token_env reads the named variable.
             this.environment.Set("MY_JWT", "assertion-env");
@@ -699,16 +699,17 @@ namespace WorkOSTests
 
             Assert.Equal("assertion-cb", Assert.Single(callbackToken.Requests).Form["assertion"]);
 
-            // (c) Only a provider is passed; everything else comes from the environment.
-            const string EnvironmentTokenUrl = "https://env.workos.test/oauth2/token";
+            // (c) A provider and the token URL are passed. The client ID comes from the
+            // environment; the token URL and scope variables are set and not read.
             this.environment
                 .Set("WORKOS_CLIENT_ID", "client_env")
-                .Set("WORKOS_WIF_TOKEN_URL", EnvironmentTokenUrl)
+                .Set("WORKOS_WIF_TOKEN_URL", "https://ignored.example.test/oauth2/token")
                 .Set("WORKOS_WIF_SCOPE", "scope_env");
 
             var defaultsToken = new TokenEndpoint();
             var defaultsOptions = new WorkloadIdentityCredentialsOptions
             {
+                TokenUrl = Wif.TokenUrl,
                 IdentityTokenProvider = new CountingProvider("assertion-1"),
             };
             using (var credentials = Wif.Credentials(defaultsOptions, defaultsToken))
@@ -718,16 +719,16 @@ namespace WorkOSTests
             }
 
             var defaultsExchange = Assert.Single(defaultsToken.Requests);
-            Assert.Equal(EnvironmentTokenUrl, defaultsExchange.Uri.ToString());
+            Assert.Equal(Wif.TokenUrl, defaultsExchange.Uri.ToString());
             Assert.Equal("client_env", defaultsExchange.Form["client_id"]);
-            Assert.Equal("scope_env", defaultsExchange.Form["scope"]);
+            Assert.DoesNotContain("scope", defaultsExchange.Form.AllKeys);
 
-            // (d) The same environment, with explicit values: the explicit values win.
+            // (d) The same environment, with an explicit client ID: the explicit value wins.
             var explicitToken = new TokenEndpoint();
             var explicitOptions = new WorkloadIdentityCredentialsOptions
             {
                 ClientId = "client_explicit",
-                Scope = "scope_explicit",
+                TokenUrl = Wif.TokenUrl,
                 IdentityTokenProvider = new CountingProvider("assertion-1"),
             };
             using (var credentials = Wif.Credentials(explicitOptions, explicitToken))
@@ -738,7 +739,15 @@ namespace WorkOSTests
 
             var explicitExchange = Assert.Single(explicitToken.Requests);
             Assert.Equal("client_explicit", explicitExchange.Form["client_id"]);
-            Assert.Equal("scope_explicit", explicitExchange.Form["scope"]);
+
+            // (e) The same environment, with no token URL in code: constructing is an error.
+            var noTokenUrlOptions = new WorkloadIdentityCredentialsOptions
+            {
+                IdentityTokenProvider = new CountingProvider("assertion-1"),
+            };
+            var noTokenUrlError = Assert.Throws<WorkloadIdentityException>(() => new WorkloadIdentityCredentials(noTokenUrlOptions));
+            Assert.Equal("invalid_configuration", noTokenUrlError.Code);
+            Assert.Equal("TokenUrl is required", noTokenUrlError.Description);
         }
 
         [Fact]
@@ -781,10 +790,8 @@ namespace WorkOSTests
         [Fact]
         public async Task WIF_24_StaticApiKeyClientsAreUnchanged()
         {
-            // The WIF variables are set, and still nothing switches WIF on.
-            this.environment
-                .Set("WORKOS_CLIENT_ID", "client_env")
-                .Set("WORKOS_WIF_TOKEN_URL", "https://env.workos.test/oauth2/token");
+            // The client ID variable is set, and still nothing switches WIF on.
+            this.environment.Set("WORKOS_CLIENT_ID", "client_env");
 
             var api = Wif.Api(number => number == 1
                 ? Wif.Json(HttpStatusCode.OK, "{}")

@@ -27,8 +27,6 @@ namespace WorkOSTests
         internal static readonly string[] EnvironmentVariables =
         {
             "WORKOS_CLIENT_ID",
-            "WORKOS_WIF_TOKEN_URL",
-            "WORKOS_WIF_SCOPE",
             "WORKOS_API_KEY",
         };
 

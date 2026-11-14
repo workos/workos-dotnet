@@ -19,8 +19,8 @@ namespace WorkOS
 
         /// <summary>
         /// The token endpoint that exchanges the identity token for an access token.
-        /// Defaults to the <c>WORKOS_WIF_TOKEN_URL</c> environment variable. Required; there
-        /// is no built-in default.
+        /// Required. It is set here only: there is no built-in default, and no environment
+        /// variable is read for it.
         /// </summary>
         public string? TokenUrl { get; set; }
 
@@ -44,8 +44,8 @@ namespace WorkOS
         public string? Resource { get; set; }
 
         /// <summary>
-        /// The scope to request. Defaults to the <c>WORKOS_WIF_SCOPE</c> environment variable;
-        /// left out of the exchange when neither is set.
+        /// The scope to request. Optional; left out of the exchange when not set or empty.
+        /// It is set here only: no environment variable is read for it.
         /// </summary>
         public string? Scope { get; set; }
 

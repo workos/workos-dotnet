@@ -373,18 +373,34 @@ namespace WorkOSTests
         }
 
         [Theory]
-        [InlineData("ClientId", "WORKOS_CLIENT_ID")]
-        [InlineData("TokenUrl", "WORKOS_WIF_TOKEN_URL")]
-        public void AMissingRequiredSettingNamesTheFieldAndItsVariable(string field, string variable)
+        [InlineData("ClientId", null, "ClientId is required (or set WORKOS_CLIENT_ID)")]
+        [InlineData("ClientId", "", "ClientId is required (or set WORKOS_CLIENT_ID)")]
+        [InlineData("TokenUrl", null, "TokenUrl is required")]
+        [InlineData("TokenUrl", "", "TokenUrl is required")]
+        public void AMissingRequiredSettingNamesTheFieldAndItsVariableWhenItHasOne(string field, string? value, string description)
         {
             var options = Wif.Options(new CountingProvider("assertion-1"));
-            typeof(WorkloadIdentityCredentialsOptions).GetProperty(field)!.SetValue(options, null);
+            typeof(WorkloadIdentityCredentialsOptions).GetProperty(field)!.SetValue(options, value);
 
             var error = Assert.Throws<WorkloadIdentityException>(() => new WorkloadIdentityCredentials(options));
 
             Assert.Equal("invalid_configuration", error.Code);
-            Assert.Equal($"{field} is required (or set {variable})", error.Description);
+            Assert.Equal(description, error.Description);
             Assert.Equal("Workload identity credentials are missing a required setting.", error.Hint);
+        }
+
+        [Fact]
+        public async Task AnEmptyScopeCountsAsNotSet()
+        {
+            var options = Wif.Options(new CountingProvider("assertion-1"));
+            options.Scope = string.Empty;
+            var token = new TokenEndpoint();
+            using var credentials = Wif.Credentials(options, token);
+            using var client = Wif.Client(credentials, Wif.Api());
+
+            await client.MakeRawAPIRequest(Wif.Get());
+
+            Assert.DoesNotContain("scope", Assert.Single(token.Requests).Form.AllKeys);
         }
 
         [Fact]

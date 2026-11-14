@@ -108,14 +108,15 @@ var client = new WorkOSClient(new WorkOSOptions { Credentials = credentials });
 | Option                  | Environment variable    | Required | Meaning                                            |
 | ----------------------- | ----------------------- | -------- | -------------------------------------------------- |
 | `ClientId`              | `WORKOS_CLIENT_ID`      | yes      | The M2M application that holds the trust rule      |
-| `TokenUrl`              | `WORKOS_WIF_TOKEN_URL`  | yes      | The token endpoint. There is no built-in default   |
+| `TokenUrl`              |                         | yes      | The token endpoint. There is no built-in default   |
 | `EnvironmentId`         |                         | no       | A safety check; sent with every request when set   |
 | `Resource`              |                         | no       | Defaults to `https://api.workos.com`               |
-| `Scope`                 | `WORKOS_WIF_SCOPE`      | no       | Left out of the exchange when unset                |
+| `Scope`                 |                         | no       | Left out of the exchange when unset                |
 | `IdentityTokenProvider` |                         | yes      | Returns the workload's identity token              |
 
-An option you set wins over its environment variable. The variables only fill in
-options you leave out: no environment variable switches workload identity on, and
+`WORKOS_CLIENT_ID` is the only environment variable the credentials read. It fills in
+`ClientId` when you leave that option out, and a `ClientId` you set wins over it. Every
+other option is set in code. No environment variable switches workload identity on, and
 installing a provider package selects nothing.
 
 `EnvironmentId` is optional, and it is set in code only: no environment variable fills
@@ -156,7 +157,7 @@ your own code:
 ```c#
 // A file that another process writes, such as a sidecar or an earlier CI step that
 // fetches a new token.
-IdentityTokenProvider = IdentityTokenProvider.TokenFile("/var/run/workos/identity-token"),
+IdentityTokenProvider = IdentityTokenProvider.TokenFile("/run/workos/identity-token"),
 
 // An environment variable.
 IdentityTokenProvider = IdentityTokenProvider.TokenEnv("MY_IDENTITY_TOKEN"),
