@@ -29,7 +29,6 @@ namespace WorkOSTests
             "WORKOS_CLIENT_ID",
             "WORKOS_WIF_TOKEN_URL",
             "WORKOS_WIF_SCOPE",
-            "WORKOS_ENVIRONMENT_ID",
             "WORKOS_API_KEY",
         };
 

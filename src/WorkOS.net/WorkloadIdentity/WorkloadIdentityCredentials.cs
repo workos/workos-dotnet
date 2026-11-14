@@ -74,7 +74,7 @@ namespace WorkOS
 
             this.clientId = Require(options.ClientId, WorkloadIdentityConstants.ClientIdVariable, nameof(options.ClientId));
             var url = Require(options.TokenUrl, WorkloadIdentityConstants.TokenUrlVariable, nameof(options.TokenUrl));
-            this.environmentId = FirstSet(options.EnvironmentId, Environment.GetEnvironmentVariable(WorkloadIdentityConstants.EnvironmentIdVariable));
+            this.environmentId = FirstSet(options.EnvironmentId);
             this.resource = FirstSet(options.Resource) ?? WorkloadIdentityConstants.DefaultResource;
             this.scope = FirstSet(options.Scope, Environment.GetEnvironmentVariable(WorkloadIdentityConstants.ScopeVariable));
 

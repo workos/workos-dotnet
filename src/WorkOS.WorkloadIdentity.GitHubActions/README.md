@@ -20,7 +20,7 @@ var credentials = new WorkloadIdentityCredentials(new WorkloadIdentityCredential
 {
     ClientId = "client_123",
     TokenUrl = "<the token endpoint for your environment>",
-    EnvironmentId = "environment_123",
+    EnvironmentId = "environment_123", // Optional.
     IdentityTokenProvider = GitHubActions.Create("https://api.workos.com"),
 });
 

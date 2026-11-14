@@ -13,8 +13,9 @@ namespace WorkOS
     public static class IdentityTokenProvider
     {
         /// <summary>
-        /// Reads the identity token from a file, for example a projected service account
-        /// token. The file is read again on every exchange, so a rotated token is picked up.
+        /// Reads the identity token from a file that another process writes, such as a
+        /// sidecar or an earlier CI step that fetches a new token. The file is read again
+        /// on every exchange, so a rotated token is picked up.
         /// Surrounding whitespace is trimmed; a missing or empty file is a failure.
         /// </summary>
         /// <param name="path">The path of the file that holds the JWT.</param>

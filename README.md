@@ -109,7 +109,7 @@ var client = new WorkOSClient(new WorkOSOptions { Credentials = credentials });
 | ----------------------- | ----------------------- | -------- | -------------------------------------------------- |
 | `ClientId`              | `WORKOS_CLIENT_ID`      | yes      | The M2M application that holds the trust rule      |
 | `TokenUrl`              | `WORKOS_WIF_TOKEN_URL`  | yes      | The token endpoint. There is no built-in default   |
-| `EnvironmentId`         | `WORKOS_ENVIRONMENT_ID` | no       | A safety check; sent with every request when set   |
+| `EnvironmentId`         |                         | no       | A safety check; sent with every request when set   |
 | `Resource`              |                         | no       | Defaults to `https://api.workos.com`               |
 | `Scope`                 | `WORKOS_WIF_SCOPE`      | no       | Left out of the exchange when unset                |
 | `IdentityTokenProvider` |                         | yes      | Returns the workload's identity token              |
@@ -118,12 +118,13 @@ An option you set wins over its environment variable. The variables only fill in
 options you leave out: no environment variable switches workload identity on, and
 installing a provider package selects nothing.
 
-`EnvironmentId` is optional. The server binds a workload identity client to exactly one
-environment and takes the environment from that binding, so the environment ID selects
-nothing. Setting it is a safety check: the SDK then sends it as the
-`x-url-environment-id` header on every API request, and the API refuses a request whose
-header names a different environment with `403 environment_mismatch`. When it is not
-set, the header is not sent. An empty string counts as not set.
+`EnvironmentId` is optional, and it is set in code only: no environment variable fills
+it. The server binds a workload identity client to exactly one environment and takes
+the environment from that binding, so the environment ID selects nothing. Setting it is
+a safety check: the SDK then sends it as the `x-url-environment-id` header on every API
+request, and the API refuses a request whose header names a different environment with
+`403 environment_mismatch`. When it is not set, the header is not sent. An empty string
+counts as not set.
 
 Set either `ApiKey` or `Credentials`. Setting both throws an `ArgumentException`, and
 a client built with credentials never sends an API key. The
@@ -153,8 +154,9 @@ No package is needed when the token comes from a file, an environment variable o
 your own code:
 
 ```c#
-// A file that the platform rotates, such as a projected Kubernetes service account token.
-IdentityTokenProvider = IdentityTokenProvider.TokenFile("/var/run/secrets/tokens/workos"),
+// A file that another process writes, such as a sidecar or an earlier CI step that
+// fetches a new token.
+IdentityTokenProvider = IdentityTokenProvider.TokenFile("/var/run/workos/identity-token"),
 
 // An environment variable.
 IdentityTokenProvider = IdentityTokenProvider.TokenEnv("MY_IDENTITY_TOKEN"),
@@ -167,7 +169,7 @@ The server accepts an identity token for one exchange. `TokenFile` and `TokenEnv
 whatever the file or variable holds, and the SDK exchanges again about every four
 minutes. If the file or variable still holds the same token then, that exchange fails
 with `invalid_grant`. So use these two for a source that something rewrites before each
-exchange, or for a job shorter than five minutes. The platform providers (GitHub
+exchange, or for a job shorter than four minutes. The platform providers (GitHub
 Actions, GCP, AWS) fetch a new token every time.
 
 You can also implement `IIdentityTokenProvider`. The SDK calls the provider once per

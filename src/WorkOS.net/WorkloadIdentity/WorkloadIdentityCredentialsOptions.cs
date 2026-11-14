@@ -27,7 +27,7 @@ namespace WorkOS
         /// <summary>
         /// The environment the requests are for. Optional. When set, it is sent as the
         /// <c>x-url-environment-id</c> header on every API request; when not set, the header
-        /// is not sent. Defaults to the <c>WORKOS_ENVIRONMENT_ID</c> environment variable.
+        /// is not sent. It is set here only: no environment variable is read for it.
         /// An empty string counts as not set.
         /// <para>
         /// The server binds a workload identity client to exactly one environment and takes

@@ -96,9 +96,9 @@ namespace WorkOSTests
             Assert.Equal(Bearer1, request.Headers["Authorization"]);
             Assert.Equal("environment_wif_test", request.Headers[Wif.EnvironmentHeader]);
 
-            // (b) No environment ID, explicitly or in the environment, on a new instance.
-            // The variable is put back when the test's environment scope is disposed.
-            this.environment.Set("WORKOS_ENVIRONMENT_ID", null);
+            // (b) No environment ID in code, on a new instance. The variable is set, and the
+            // SDK does not read it. It is put back when the test's environment scope is disposed.
+            this.environment.Set("WORKOS_ENVIRONMENT_ID", "environment_env");
             var bareOptions = new WorkloadIdentityCredentialsOptions
             {
                 ClientId = Wif.ClientId,
@@ -704,17 +704,15 @@ namespace WorkOSTests
             this.environment
                 .Set("WORKOS_CLIENT_ID", "client_env")
                 .Set("WORKOS_WIF_TOKEN_URL", EnvironmentTokenUrl)
-                .Set("WORKOS_WIF_SCOPE", "scope_env")
-                .Set("WORKOS_ENVIRONMENT_ID", "environment_env");
+                .Set("WORKOS_WIF_SCOPE", "scope_env");
 
             var defaultsToken = new TokenEndpoint();
-            var defaultsApi = Wif.Api();
             var defaultsOptions = new WorkloadIdentityCredentialsOptions
             {
                 IdentityTokenProvider = new CountingProvider("assertion-1"),
             };
             using (var credentials = Wif.Credentials(defaultsOptions, defaultsToken))
-            using (var client = Wif.Client(credentials, defaultsApi))
+            using (var client = Wif.Client(credentials, Wif.Api()))
             {
                 await client.MakeRawAPIRequest(Wif.Get());
             }
@@ -723,20 +721,17 @@ namespace WorkOSTests
             Assert.Equal(EnvironmentTokenUrl, defaultsExchange.Uri.ToString());
             Assert.Equal("client_env", defaultsExchange.Form["client_id"]);
             Assert.Equal("scope_env", defaultsExchange.Form["scope"]);
-            Assert.Equal("environment_env", Assert.Single(defaultsApi.Requests).Headers[Wif.EnvironmentHeader]);
 
             // (d) The same environment, with explicit values: the explicit values win.
             var explicitToken = new TokenEndpoint();
-            var explicitApi = Wif.Api();
             var explicitOptions = new WorkloadIdentityCredentialsOptions
             {
                 ClientId = "client_explicit",
                 Scope = "scope_explicit",
-                EnvironmentId = "environment_explicit",
                 IdentityTokenProvider = new CountingProvider("assertion-1"),
             };
             using (var credentials = Wif.Credentials(explicitOptions, explicitToken))
-            using (var client = Wif.Client(credentials, explicitApi))
+            using (var client = Wif.Client(credentials, Wif.Api()))
             {
                 await client.MakeRawAPIRequest(Wif.Get());
             }
@@ -744,7 +739,6 @@ namespace WorkOSTests
             var explicitExchange = Assert.Single(explicitToken.Requests);
             Assert.Equal("client_explicit", explicitExchange.Form["client_id"]);
             Assert.Equal("scope_explicit", explicitExchange.Form["scope"]);
-            Assert.Equal("environment_explicit", Assert.Single(explicitApi.Requests).Headers[Wif.EnvironmentHeader]);
         }
 
         [Fact]
@@ -790,8 +784,7 @@ namespace WorkOSTests
             // The WIF variables are set, and still nothing switches WIF on.
             this.environment
                 .Set("WORKOS_CLIENT_ID", "client_env")
-                .Set("WORKOS_WIF_TOKEN_URL", "https://env.workos.test/oauth2/token")
-                .Set("WORKOS_ENVIRONMENT_ID", "environment_env");
+                .Set("WORKOS_WIF_TOKEN_URL", "https://env.workos.test/oauth2/token");
 
             var api = Wif.Api(number => number == 1
                 ? Wif.Json(HttpStatusCode.OK, "{}")

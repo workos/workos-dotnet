@@ -32,9 +32,6 @@ namespace WorkOS
         /// <summary>Environment variable that supplies the default scope.</summary>
         internal const string ScopeVariable = "WORKOS_WIF_SCOPE";
 
-        /// <summary>Environment variable that supplies the default environment ID.</summary>
-        internal const string EnvironmentIdVariable = "WORKOS_ENVIRONMENT_ID";
-
         /// <summary>The refresh threshold never exceeds this, however long the token lives.</summary>
         internal static readonly TimeSpan RefreshThresholdCap = TimeSpan.FromSeconds(60);
 
