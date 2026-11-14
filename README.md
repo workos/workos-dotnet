@@ -105,19 +105,18 @@ var credentials = new WorkloadIdentityCredentials(
 var client = new WorkOSClient(new WorkOSOptions { Credentials = credentials });
 ```
 
-| Option                  | Environment variable    | Required | Meaning                                            |
-| ----------------------- | ----------------------- | -------- | -------------------------------------------------- |
-| `ClientId`              | `WORKOS_CLIENT_ID`      | yes      | The M2M application that holds the trust rule      |
-| `TokenUrl`              |                         | yes      | The token endpoint. There is no built-in default   |
-| `EnvironmentId`         |                         | no       | A safety check; sent with every request when set   |
-| `Resource`              |                         | no       | Defaults to `https://api.workos.com`               |
-| `Scope`                 |                         | no       | Left out of the exchange when unset                |
-| `IdentityTokenProvider` |                         | yes      | Returns the workload's identity token              |
+| Option                  | Required | Meaning                                            |
+| ----------------------- | -------- | -------------------------------------------------- |
+| `ClientId`              | yes      | The M2M application that holds the trust rule      |
+| `TokenUrl`              | yes      | The token endpoint. There is no built-in default   |
+| `EnvironmentId`         | no       | A safety check; sent with every request when set   |
+| `Resource`              | no       | Defaults to `https://api.workos.com`               |
+| `Scope`                 | no       | Left out of the exchange when unset                |
+| `IdentityTokenProvider` | yes      | Returns the workload's identity token              |
 
-`WORKOS_CLIENT_ID` is the only environment variable the credentials read. It fills in
-`ClientId` when you leave that option out, and a `ClientId` you set wins over it. Every
-other option is set in code. No environment variable switches workload identity on, and
-installing a provider package selects nothing.
+The credentials read no environment variable for these options: every one is set in
+code. No environment variable switches workload identity on, and installing a provider
+package selects nothing.
 
 `EnvironmentId` is optional, and it is set in code only: no environment variable fills
 it. The server binds a workload identity client to exactly one environment and takes

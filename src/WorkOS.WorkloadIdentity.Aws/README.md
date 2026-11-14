@@ -31,4 +31,4 @@ The audience passed to `AwsSts.Create` must match the audience of the trust rule
 
 This is the only WorkOS package that depends on the AWS SDK (`AWSSDK.SecurityToken`).
 
-See "Workload identity" in the [SDK README](https://github.com/workos/workos-dotnet#workload-identity) for the settings and their environment variables.
+See "Workload identity" in the [SDK README](https://github.com/workos/workos-dotnet#workload-identity) for the settings.

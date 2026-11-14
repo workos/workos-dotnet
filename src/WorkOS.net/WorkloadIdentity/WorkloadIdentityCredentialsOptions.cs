@@ -13,7 +13,7 @@ namespace WorkOS
     {
         /// <summary>
         /// The client ID of the M2M application that holds the trust rule.
-        /// Defaults to the <c>WORKOS_CLIENT_ID</c> environment variable. Required.
+        /// Required. It is set here only: no environment variable is read for it.
         /// </summary>
         public string? ClientId { get; set; }
 

@@ -29,4 +29,4 @@ var client = new WorkOSClient(new WorkOSOptions { Credentials = credentials });
 
 The audience passed to `GitHubActions.Create` must match the audience of the trust rule. The provider reads `ACTIONS_ID_TOKEN_REQUEST_URL` and `ACTIONS_ID_TOKEN_REQUEST_TOKEN`, which GitHub sets for the job.
 
-See "Workload identity" in the [SDK README](https://github.com/workos/workos-dotnet#workload-identity) for the settings and their environment variables.
+See "Workload identity" in the [SDK README](https://github.com/workos/workos-dotnet#workload-identity) for the settings.

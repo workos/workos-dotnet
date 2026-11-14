@@ -662,7 +662,7 @@ namespace WorkOSTests
         }
 
         [Fact]
-        public async Task WIF_22_TokenEnvAndCallbackSupplyTheAssertionAndOnlyTheClientIdDefaultsFromTheEnvironment()
+        public async Task WIF_22_TokenEnvAndCallbackSupplyTheAssertionAndNoSettingDefaultsFromTheEnvironment()
         {
             // (a) token_env reads the named variable.
             this.environment.Set("MY_JWT", "assertion-env");
@@ -699,31 +699,13 @@ namespace WorkOSTests
 
             Assert.Equal("assertion-cb", Assert.Single(callbackToken.Requests).Form["assertion"]);
 
-            // (c) A provider and the token URL are passed. The client ID comes from the
-            // environment; the token URL and scope variables are set and not read.
+            // (c) The three variables are set and none is read: the client ID and the token
+            // URL come from code, and no scope is sent.
             this.environment
                 .Set("WORKOS_CLIENT_ID", "client_env")
                 .Set("WORKOS_WIF_TOKEN_URL", "https://ignored.example.test/oauth2/token")
                 .Set("WORKOS_WIF_SCOPE", "scope_env");
 
-            var defaultsToken = new TokenEndpoint();
-            var defaultsOptions = new WorkloadIdentityCredentialsOptions
-            {
-                TokenUrl = Wif.TokenUrl,
-                IdentityTokenProvider = new CountingProvider("assertion-1"),
-            };
-            using (var credentials = Wif.Credentials(defaultsOptions, defaultsToken))
-            using (var client = Wif.Client(credentials, Wif.Api()))
-            {
-                await client.MakeRawAPIRequest(Wif.Get());
-            }
-
-            var defaultsExchange = Assert.Single(defaultsToken.Requests);
-            Assert.Equal(Wif.TokenUrl, defaultsExchange.Uri.ToString());
-            Assert.Equal("client_env", defaultsExchange.Form["client_id"]);
-            Assert.DoesNotContain("scope", defaultsExchange.Form.AllKeys);
-
-            // (d) The same environment, with an explicit client ID: the explicit value wins.
             var explicitToken = new TokenEndpoint();
             var explicitOptions = new WorkloadIdentityCredentialsOptions
             {
@@ -738,11 +720,24 @@ namespace WorkOSTests
             }
 
             var explicitExchange = Assert.Single(explicitToken.Requests);
+            Assert.Equal(Wif.TokenUrl, explicitExchange.Uri.ToString());
             Assert.Equal("client_explicit", explicitExchange.Form["client_id"]);
+            Assert.DoesNotContain("scope", explicitExchange.Form.AllKeys);
+
+            // (d) The same environment, with no client ID in code: constructing is an error.
+            var noClientIdOptions = new WorkloadIdentityCredentialsOptions
+            {
+                TokenUrl = Wif.TokenUrl,
+                IdentityTokenProvider = new CountingProvider("assertion-1"),
+            };
+            var noClientIdError = Assert.Throws<WorkloadIdentityException>(() => new WorkloadIdentityCredentials(noClientIdOptions));
+            Assert.Equal("invalid_configuration", noClientIdError.Code);
+            Assert.Equal("ClientId is required", noClientIdError.Description);
 
             // (e) The same environment, with no token URL in code: constructing is an error.
             var noTokenUrlOptions = new WorkloadIdentityCredentialsOptions
             {
+                ClientId = Wif.ClientId,
                 IdentityTokenProvider = new CountingProvider("assertion-1"),
             };
             var noTokenUrlError = Assert.Throws<WorkloadIdentityException>(() => new WorkloadIdentityCredentials(noTokenUrlOptions));

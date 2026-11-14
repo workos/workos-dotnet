@@ -23,9 +23,6 @@ namespace WorkOS
         /// <summary>The longest <see cref="WorkloadIdentityException.Description"/> kept from a server response.</summary>
         internal const int DescriptionLimit = 500;
 
-        /// <summary>Environment variable that supplies the default client ID.</summary>
-        internal const string ClientIdVariable = "WORKOS_CLIENT_ID";
-
         /// <summary>The refresh threshold never exceeds this, however long the token lives.</summary>
         internal static readonly TimeSpan RefreshThresholdCap = TimeSpan.FromSeconds(60);
 

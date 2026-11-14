@@ -29,4 +29,4 @@ The audience passed to `GcpMetadata.Create` must match the audience of the trust
 
 The request to the metadata server never goes through a proxy, even when `HTTP_PROXY` is set. That server exists only inside the workload's own VM or container, so a proxy cannot reach it.
 
-See "Workload identity" in the [SDK README](https://github.com/workos/workos-dotnet#workload-identity) for the settings and their environment variables.
+See "Workload identity" in the [SDK README](https://github.com/workos/workos-dotnet#workload-identity) for the settings.

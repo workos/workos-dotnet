@@ -46,7 +46,7 @@ namespace WorkOS
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkloadIdentityCredentials"/> class.
         /// </summary>
-        /// <param name="options">The settings. Only an omitted client ID is read from the environment.</param>
+        /// <param name="options">The settings. They come only from this object; no environment variable is read for them.</param>
         /// <exception cref="WorkloadIdentityException">A required setting is missing, with code <c>invalid_configuration</c>.</exception>
         public WorkloadIdentityCredentials(WorkloadIdentityCredentialsOptions options)
             : this(options, handler: null, clock: null, sleeper: null)
@@ -57,7 +57,7 @@ namespace WorkOS
         /// Initializes a new instance of the <see cref="WorkloadIdentityCredentials"/> class
         /// with the test seams filled in.
         /// </summary>
-        /// <param name="options">The settings. Only an omitted client ID is read from the environment.</param>
+        /// <param name="options">The settings. They come only from this object; no environment variable is read for them.</param>
         /// <param name="handler">Answers the exchange request in place of the network.</param>
         /// <param name="clock">The clock the cache and the exchange deadline run on.</param>
         /// <param name="sleeper">Waits between exchange attempts.</param>
@@ -72,11 +72,8 @@ namespace WorkOS
                 throw new ArgumentNullException(nameof(options));
             }
 
-            this.clientId = Require(options.ClientId, WorkloadIdentityConstants.ClientIdVariable, nameof(options.ClientId));
-            var url = FirstSet(options.TokenUrl)
-                ?? throw new WorkloadIdentityException(
-                    WorkloadIdentityException.InvalidConfiguration,
-                    $"{nameof(options.TokenUrl)} is required");
+            this.clientId = Require(options.ClientId, nameof(options.ClientId));
+            var url = Require(options.TokenUrl, nameof(options.TokenUrl));
             this.environmentId = FirstSet(options.EnvironmentId);
             this.resource = FirstSet(options.Resource) ?? WorkloadIdentityConstants.DefaultResource;
             this.scope = FirstSet(options.Scope);
@@ -193,12 +190,12 @@ namespace WorkOS
             this.httpClient.Dispose();
         }
 
-        private static string Require(string? value, string variable, string field)
+        private static string Require(string? value, string field)
         {
-            return FirstSet(value, Environment.GetEnvironmentVariable(variable))
+            return FirstSet(value)
                 ?? throw new WorkloadIdentityException(
                     WorkloadIdentityException.InvalidConfiguration,
-                    $"{field} is required (or set {variable})");
+                    $"{field} is required");
         }
 
         private static string? FirstSet(params string?[] values)

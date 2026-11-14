@@ -373,11 +373,11 @@ namespace WorkOSTests
         }
 
         [Theory]
-        [InlineData("ClientId", null, "ClientId is required (or set WORKOS_CLIENT_ID)")]
-        [InlineData("ClientId", "", "ClientId is required (or set WORKOS_CLIENT_ID)")]
+        [InlineData("ClientId", null, "ClientId is required")]
+        [InlineData("ClientId", "", "ClientId is required")]
         [InlineData("TokenUrl", null, "TokenUrl is required")]
         [InlineData("TokenUrl", "", "TokenUrl is required")]
-        public void AMissingRequiredSettingNamesTheFieldAndItsVariableWhenItHasOne(string field, string? value, string description)
+        public void AMissingRequiredSettingNamesTheField(string field, string? value, string description)
         {
             var options = Wif.Options(new CountingProvider("assertion-1"));
             typeof(WorkloadIdentityCredentialsOptions).GetProperty(field)!.SetValue(options, value);

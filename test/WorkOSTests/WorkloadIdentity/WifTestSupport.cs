@@ -23,10 +23,9 @@ namespace WorkOSTests
         internal const string TokenUrl = "https://auth.workos.test/oauth2/token";
         internal const string EnvironmentHeader = "x-url-environment-id";
 
-        /// <summary>The environment variables the SDK reads for workload identity, plus the API key variable.</summary>
+        /// <summary>The API key variable, which every case starts without. The SDK reads no variable for workload identity.</summary>
         internal static readonly string[] EnvironmentVariables =
         {
-            "WORKOS_CLIENT_ID",
             "WORKOS_API_KEY",
         };
 
