@@ -2,4 +2,4 @@
 # https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners
 
 # .NET Team and DX
-* @workos/dotnet @workos/dx
+* @workos/dx
