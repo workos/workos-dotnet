@@ -554,7 +554,11 @@ namespace WorkOSTests
 
             var options = Wif.Options(new CountingProvider("assertion-1"));
             options.TokenUrl = first.BaseUrl + "/oauth2/token";
-            using var credentials = new WorkloadIdentityCredentials(options);
+
+            // The loopback servers speak plain http, which the public constructor rejects.
+            // The internal one with nothing injected builds the same handler, clock and
+            // sleeper as the public one, and its test-only flag lets the http URL through.
+            using var credentials = new WorkloadIdentityCredentials(options, handler: null, clock: null, sleeper: null, allowHttpTokenUrl: true);
             var api = Wif.Api();
             using var client = Wif.Client(credentials, api);
 

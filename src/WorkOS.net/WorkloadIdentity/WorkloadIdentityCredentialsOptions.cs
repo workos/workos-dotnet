@@ -21,6 +21,12 @@ namespace WorkOS
         /// The token endpoint that exchanges the identity token for an access token.
         /// Required. It is set here only: there is no built-in default, and no environment
         /// variable is read for it.
+        /// <para>
+        /// It must be an absolute <c>https</c> URL. The request to it carries the workload's
+        /// identity token and the response carries the access token, so any other URL,
+        /// <c>http://localhost</c> included, is rejected when the credentials are constructed,
+        /// with code <c>invalid_configuration</c>.
+        /// </para>
         /// </summary>
         public string? TokenUrl { get; set; }
 

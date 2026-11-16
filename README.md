@@ -108,7 +108,7 @@ var client = new WorkOSClient(new WorkOSOptions { Credentials = credentials });
 | Option                  | Required | Meaning                                            |
 | ----------------------- | -------- | -------------------------------------------------- |
 | `ClientId`              | yes      | The M2M application that holds the trust rule      |
-| `TokenUrl`              | yes      | The token endpoint. There is no built-in default   |
+| `TokenUrl`              | yes      | The token endpoint. Must be an `https` URL         |
 | `EnvironmentId`         | no       | A safety check; sent with every request when set   |
 | `Resource`              | no       | Defaults to `https://api.workos.com`               |
 | `Scope`                 | no       | Left out of the exchange when unset                |
@@ -117,6 +117,11 @@ var client = new WorkOSClient(new WorkOSOptions { Credentials = credentials });
 The credentials read no environment variable for these options: every one is set in
 code. No environment variable switches workload identity on, and installing a provider
 package selects nothing.
+
+`TokenUrl` has no built-in default, and it must be an absolute `https` URL. The request
+to it carries the workload's identity token and the response carries the access token,
+so the constructor rejects any other URL, `http://localhost` included, with a
+`WorkloadIdentityException` whose code is `invalid_configuration`.
 
 `EnvironmentId` is optional, and it is set in code only: no environment variable fills
 it. The server binds a workload identity client to exactly one environment and takes

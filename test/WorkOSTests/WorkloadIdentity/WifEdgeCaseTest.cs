@@ -389,6 +389,82 @@ namespace WorkOSTests
             Assert.Equal("Workload identity credentials are missing a required setting.", error.Hint);
         }
 
+        [Theory]
+        [InlineData("http://example.com/oauth2/token")]
+        [InlineData("http://localhost:8080/oauth2/token")]
+        [InlineData("http://127.0.0.1/oauth2/token")]
+        [InlineData("http://[::1]/oauth2/token")]
+        [InlineData("HTTP://example.com/oauth2/token")]
+        [InlineData("https:///oauth2/token")]
+        [InlineData("https://")]
+        [InlineData("https:oauth2/token")]
+        [InlineData("auth.workos.test/oauth2/token")]
+        [InlineData("//auth.workos.test/oauth2/token")]
+        [InlineData("/oauth2/token")]
+        [InlineData("ftp://auth.workos.test/oauth2/token")]
+        [InlineData("file:///oauth2/token")]
+        public void ATokenUrlThatIsNotAbsoluteHttpsIsAConfigurationError(string tokenUrl)
+        {
+            var provider = new CountingProvider("assertion-1");
+            var options = Wif.Options(provider);
+            options.TokenUrl = tokenUrl;
+
+            var error = Assert.Throws<WorkloadIdentityException>(() => new WorkloadIdentityCredentials(options));
+
+            Assert.Equal("invalid_configuration", error.Code);
+            Assert.Equal("TokenUrl must be an absolute https URL", error.Description);
+            Assert.Equal(0, provider.Count);
+        }
+
+        [Theory]
+        [InlineData("HTTPS://auth.workos.test/oauth2/token")]
+        [InlineData("Https://auth.workos.test/oauth2/token")]
+        public async Task AnHttpsTokenUrlIsAcceptedWhateverTheCaseOfItsScheme(string tokenUrl)
+        {
+            var options = Wif.Options(new CountingProvider("assertion-1"));
+            options.TokenUrl = tokenUrl;
+
+            // The public constructor accepts it.
+            using (new WorkloadIdentityCredentials(options))
+            {
+            }
+
+            var token = new TokenEndpoint();
+            using var credentials = Wif.Credentials(options, token);
+            using var client = Wif.Client(credentials, Wif.Api());
+
+            await client.MakeRawAPIRequest(Wif.Get());
+
+            Assert.Equal(Wif.TokenUrl, Assert.Single(token.Requests).Uri.ToString());
+        }
+
+        [Fact]
+        public void TheTestOnlyHttpTokenUrlFlagIsNotPublicAndAllowsNothingButHttp()
+        {
+            // The flag is out of reach of the public API: the one public constructor takes
+            // the options alone.
+            var constructor = Assert.Single(typeof(WorkloadIdentityCredentials).GetConstructors());
+            Assert.Equal(typeof(WorkloadIdentityCredentialsOptions), Assert.Single(constructor.GetParameters()).ParameterType);
+
+            var http = Wif.Options(new CountingProvider("assertion-1"));
+            http.TokenUrl = "http://127.0.0.1:8080/oauth2/token";
+            using (new WorkloadIdentityCredentials(http, handler: null, clock: null, sleeper: null, allowHttpTokenUrl: true))
+            {
+            }
+
+            foreach (var tokenUrl in new[] { "ftp://127.0.0.1/oauth2/token", "http:///oauth2/token", "/oauth2/token" })
+            {
+                var options = Wif.Options(new CountingProvider("assertion-1"));
+                options.TokenUrl = tokenUrl;
+
+                var error = Assert.Throws<WorkloadIdentityException>(
+                    () => new WorkloadIdentityCredentials(options, handler: null, clock: null, sleeper: null, allowHttpTokenUrl: true));
+
+                Assert.Equal("invalid_configuration", error.Code);
+                Assert.Equal("TokenUrl must be an absolute https URL", error.Description);
+            }
+        }
+
         [Fact]
         public async Task AnEmptyScopeCountsAsNotSet()
         {

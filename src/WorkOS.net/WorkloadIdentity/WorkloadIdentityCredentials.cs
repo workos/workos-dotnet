@@ -47,7 +47,10 @@ namespace WorkOS
         /// Initializes a new instance of the <see cref="WorkloadIdentityCredentials"/> class.
         /// </summary>
         /// <param name="options">The settings. They come only from this object; no environment variable is read for them.</param>
-        /// <exception cref="WorkloadIdentityException">A required setting is missing, with code <c>invalid_configuration</c>.</exception>
+        /// <exception cref="WorkloadIdentityException">
+        /// A required setting is missing, or <see cref="WorkloadIdentityCredentialsOptions.TokenUrl"/>
+        /// is not an absolute <c>https</c> URL, with code <c>invalid_configuration</c>.
+        /// </exception>
         public WorkloadIdentityCredentials(WorkloadIdentityCredentialsOptions options)
             : this(options, handler: null, clock: null, sleeper: null)
         {
@@ -61,11 +64,17 @@ namespace WorkOS
         /// <param name="handler">Answers the exchange request in place of the network.</param>
         /// <param name="clock">The clock the cache and the exchange deadline run on.</param>
         /// <param name="sleeper">Waits between exchange attempts.</param>
+        /// <param name="allowHttpTokenUrl">
+        /// Also accepts a plain <c>http</c> token URL. For tests only, which exchange against
+        /// a loopback server that has no certificate: this is not a public option and is not
+        /// read from the environment.
+        /// </param>
         internal WorkloadIdentityCredentials(
             WorkloadIdentityCredentialsOptions options,
             HttpMessageHandler? handler,
             TimeProvider? clock,
-            Func<TimeSpan, CancellationToken, Task>? sleeper)
+            Func<TimeSpan, CancellationToken, Task>? sleeper,
+            bool allowHttpTokenUrl = false)
         {
             if (options == null)
             {
@@ -78,12 +87,15 @@ namespace WorkOS
             this.resource = FirstSet(options.Resource) ?? WorkloadIdentityConstants.DefaultResource;
             this.scope = FirstSet(options.Scope);
 
+            // https only, with no exception for localhost or a loopback address: the POST
+            // carries the workload's identity token and the response carries the access token.
             if (!Uri.TryCreate(url, UriKind.Absolute, out var parsedUrl)
-                || (parsedUrl.Scheme != Uri.UriSchemeHttps && parsedUrl.Scheme != Uri.UriSchemeHttp))
+                || !IsTokenUrlScheme(parsedUrl.Scheme, allowHttpTokenUrl)
+                || parsedUrl.Host.Length == 0)
             {
                 throw new WorkloadIdentityException(
                     WorkloadIdentityException.InvalidConfiguration,
-                    $"{nameof(options.TokenUrl)} must be an absolute http or https URL");
+                    $"{nameof(options.TokenUrl)} must be an absolute https URL");
             }
 
             this.tokenUrl = parsedUrl;
@@ -196,6 +208,12 @@ namespace WorkOS
                 ?? throw new WorkloadIdentityException(
                     WorkloadIdentityException.InvalidConfiguration,
                     $"{field} is required");
+        }
+
+        // Uri lower-cases the scheme it parsed, so HTTPS:// is https here.
+        private static bool IsTokenUrlScheme(string scheme, bool allowHttp)
+        {
+            return scheme == Uri.UriSchemeHttps || (allowHttp && scheme == Uri.UriSchemeHttp);
         }
 
         private static string? FirstSet(params string?[] values)
