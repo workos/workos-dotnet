@@ -235,10 +235,16 @@ namespace WorkOS
             return share < WorkloadIdentityConstants.RefreshThresholdCap ? share : WorkloadIdentityConstants.RefreshThresholdCap;
         }
 
-        // A server could echo the assertion in its error description. It must not reach an error message.
-        private static string? Scrub(string? description, string assertion)
+        // A token endpoint may repeat the assertion it was sent in its error text. Every
+        // occurrence is replaced before the text is kept, so the assertion reaches no error.
+        private static string? Scrub(string? text, string assertion)
         {
-            return description?.Replace(assertion, "[redacted]", StringComparison.Ordinal);
+            if (text == null || assertion.Length == 0)
+            {
+                return text;
+            }
+
+            return text.Replace(assertion, WorkloadIdentityConstants.Redacted, StringComparison.Ordinal);
         }
 
         // Keeps the failure of a task that nobody waits for any more (every caller gave up,
@@ -400,12 +406,12 @@ namespace WorkOS
                     // The status is checked before the body: a 429 or 5xx is retried even
                     // when its body carries an OAuth error.
                     var status = (int)response.StatusCode;
-                    var body = TokenBody.Parse(await response.Content.ReadAsStringAsync(deadline).ConfigureAwait(false));
+                    var body = TokenBody.Parse(await response.Content.ReadAsStringAsync(deadline).ConfigureAwait(false), assertion);
 
                     if (status == 429 || status >= 500)
                     {
                         failureCode = body.Error ?? WorkloadIdentityException.ExchangeFailed;
-                        failureDescription = Scrub(body.ErrorDescription, assertion) ?? $"The token endpoint returned HTTP {status}.";
+                        failureDescription = body.ErrorDescription ?? $"The token endpoint returned HTTP {status}.";
                         retryResponse = response;
                         continue;
                     }
@@ -415,7 +421,7 @@ namespace WorkOS
                     if (body.Error != null)
                     {
                         // An OAuth error is the server's final answer. It is not retried.
-                        throw new WorkloadIdentityException(body.Error, Scrub(body.ErrorDescription, assertion));
+                        throw new WorkloadIdentityException(body.Error, body.ErrorDescription);
                     }
 
                     if (status >= 300 && status < 400)
@@ -491,7 +497,9 @@ namespace WorkOS
         }
 
         /// <summary>
-        /// The fields of a token endpoint response that the exchange reads.
+        /// The fields of a token endpoint response that the exchange reads. The two error
+        /// fields are the server's own text: the assertion is taken out of them when the
+        /// response is parsed, before anything keeps them.
         /// </summary>
         private readonly struct TokenBody
         {
@@ -514,7 +522,7 @@ namespace WorkOS
 
             internal TimeSpan Lifetime { get; }
 
-            internal static TokenBody Parse(string body)
+            internal static TokenBody Parse(string body, string assertion)
             {
                 try
                 {
@@ -526,8 +534,8 @@ namespace WorkOS
                     }
 
                     return new TokenBody(
-                        StringField(root, "error"),
-                        StringField(root, "error_description"),
+                        Scrub(StringField(root, "error"), assertion),
+                        Scrub(StringField(root, "error_description"), assertion),
                         StringField(root, "access_token"),
                         LifetimeOf(root));
                 }

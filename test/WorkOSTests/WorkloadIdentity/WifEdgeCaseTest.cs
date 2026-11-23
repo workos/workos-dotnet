@@ -372,6 +372,22 @@ namespace WorkOSTests
             Assert.EndsWith(" " + new string('x', 500), error.Message);
         }
 
+        [Fact]
+        public async Task TheAssertionIsTakenOutBeforeTheDescriptionIsCut()
+        {
+            // The assertion starts 10 characters before the limit. Cutting first would leave
+            // its first 10 characters behind, where no replacement could find them.
+            const string Assertion = "SECRET-ASSERTION-VALUE";
+            var token = new TokenEndpoint((_, _, _) => Wif.OAuthError("invalid_grant", new string('x', 490) + Assertion + " was refused"));
+            using var credentials = Wif.Credentials(Wif.Options(new CountingProvider(Assertion)), token);
+
+            var error = await Assert.ThrowsAsync<WorkloadIdentityException>(() => credentials.ResolveAsync(CancellationToken.None));
+
+            Assert.Equal(new string('x', 490) + "[redacted]", error.Description);
+            Assert.DoesNotContain("SECRET", error.Message);
+            Assert.DoesNotContain("SECRET", error.ToString());
+        }
+
         [Theory]
         [InlineData("ClientId", null, "ClientId is required")]
         [InlineData("ClientId", "", "ClientId is required")]

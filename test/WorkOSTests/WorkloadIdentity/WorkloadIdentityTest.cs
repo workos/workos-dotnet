@@ -510,38 +510,65 @@ namespace WorkOSTests
                 var unauthorized = Wif.Api(_ => Wif.Json(HttpStatusCode.Unauthorized, "{\"message\":\"Unauthorized\"}"));
                 errors.Add(await FailureAsync(Wif.Options(new CountingProvider(Assertion)), issuing, unauthorized));
                 Assert.All(unauthorized.Requests, request => Assert.Equal($"Bearer {AccessToken}", request.Headers["Authorization"]));
+
+                // The token endpoint repeats the assertion in a 400.
+                var repeating = new TokenEndpoint((_, _, _) => Wif.OAuthError("invalid_grant", $"JWT {Assertion} failed validation"));
+                errors.Add(await FailureAsync(Wif.Options(new CountingProvider(Assertion)), repeating, Wif.Api()));
+                Assert.Equal(1, repeating.ExchangeCount);
+
+                // The same body on a 503, until the retries run out.
+                var repeatingUnavailable = new TokenEndpoint((_, _, _) => Wif.OAuthError("invalid_grant", $"JWT {Assertion} failed validation", HttpStatusCode.ServiceUnavailable));
+                errors.Add(await FailureAsync(Wif.Options(new CountingProvider(Assertion)), repeatingUnavailable, Wif.Api()));
+                Assert.Equal(3, repeatingUnavailable.ExchangeCount);
             }
             finally
             {
                 Trace.Listeners.Remove(log);
             }
 
-            Assert.Equal(4, errors.Count);
+            Assert.Equal(6, errors.Count);
             Assert.IsType<WorkloadIdentityException>(errors[0]);
             Assert.IsType<WorkloadIdentityException>(errors[1]);
             Assert.IsType<WorkloadIdentityException>(errors[2]);
             Assert.IsType<AuthenticationException>(errors[3]);
 
+            // Where the server repeated the assertion, the description keeps the server's
+            // text with the assertion taken out. A retried failure keeps it the same way.
+            var refused = Assert.IsType<WorkloadIdentityException>(errors[4]);
+            Assert.Equal("invalid_grant", refused.Code);
+            Assert.Equal("JWT [redacted] failed validation", refused.Description);
+            var unavailable = Assert.IsType<WorkloadIdentityException>(errors[5]);
+            Assert.Equal("invalid_grant", unavailable.Code);
+            Assert.Equal("JWT [redacted] failed validation", unavailable.Description);
+
             foreach (var error in errors)
             {
-                // Message, then the full string form, which includes inner errors and stack traces.
-                var texts = new List<string> { error.Message, error.ToString() };
-                if (error is WorkloadIdentityException identityError)
-                {
-                    texts.Add(identityError.Code);
-                    texts.Add(identityError.Description);
-                    texts.Add(identityError.Hint);
-                }
-
-                foreach (var text in texts)
-                {
-                    Assert.DoesNotContain(Assertion, text);
-                    Assert.DoesNotContain(AccessToken, text);
-                }
+                AssertShowsNone(error, Assertion, AccessToken);
             }
 
             Assert.DoesNotContain(Assertion, log.Text);
             Assert.DoesNotContain(AccessToken, log.Text);
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.BadRequest, 1)]
+        [InlineData(HttpStatusCode.ServiceUnavailable, 3)]
+        public async Task WIF_17_AnAssertionRepeatedInTheErrorCodeIsRedactedToo(HttpStatusCode status, int exchanges)
+        {
+            const string Assertion = "SECRET-ASSERTION-VALUE";
+
+            // The code is the server's text as well: a terminal error, and the last failure
+            // when the retries run out, both keep it with the assertion taken out.
+            var token = new TokenEndpoint((_, _, _) => Wif.OAuthError($"rejected:{Assertion}", $"{Assertion} and {Assertion} again", status));
+
+            var error = Assert.IsType<WorkloadIdentityException>(
+                await FailureAsync(Wif.Options(new CountingProvider(Assertion)), token, Wif.Api()));
+
+            Assert.Equal(exchanges, token.ExchangeCount);
+            Assert.Equal("rejected:[redacted]", error.Code);
+            Assert.Equal("[redacted] and [redacted] again", error.Description);
+            Assert.StartsWith("rejected:[redacted]: ", error.Message);
+            AssertShowsNone(error, Assertion);
         }
 
         [Fact]
@@ -814,6 +841,33 @@ namespace WorkOSTests
             Assert.Equal(2, api.Count);
             Assert.Equal("Bearer sk_test_static", api.Requests[1].Headers["Authorization"]);
             Assert.False(api.Requests[1].Headers.ContainsKey(Wif.EnvironmentHeader));
+        }
+
+        // Everything an error can show: its message, its full string form (which includes
+        // inner errors and stack traces), its data, and the same for each error in its
+        // cause chain.
+        private static void AssertShowsNone(Exception error, params string[] secrets)
+        {
+            for (var current = error; current != null; current = current.InnerException)
+            {
+                var texts = new List<string> { current.Message, current.ToString() };
+                foreach (System.Collections.DictionaryEntry entry in current.Data)
+                {
+                    texts.Add($"{entry.Key}={entry.Value}");
+                }
+
+                if (current is WorkloadIdentityException identityError)
+                {
+                    texts.Add(identityError.Code);
+                    texts.Add(identityError.Description);
+                    texts.Add(identityError.Hint);
+                }
+
+                foreach (var text in texts)
+                {
+                    Assert.All(secrets, secret => Assert.DoesNotContain(secret, text));
+                }
+            }
         }
 
         private static async Task<Exception> FailureAsync(

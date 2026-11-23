@@ -23,6 +23,9 @@ namespace WorkOS
         /// <summary>The longest <see cref="WorkloadIdentityException.Description"/> kept from a server response.</summary>
         internal const int DescriptionLimit = 500;
 
+        /// <summary>What replaces the assertion wherever the token endpoint repeats it in its error text.</summary>
+        internal const string Redacted = "[redacted]";
+
         /// <summary>The refresh threshold never exceeds this, however long the token lives.</summary>
         internal static readonly TimeSpan RefreshThresholdCap = TimeSpan.FromSeconds(60);
 
