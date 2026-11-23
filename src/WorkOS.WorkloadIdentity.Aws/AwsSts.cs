@@ -23,6 +23,9 @@ namespace WorkOS.WorkloadIdentity
         // The pseudo-region whose STS endpoint is the global one.
         private const string GlobalRegion = "aws-global";
 
+        /// <summary>How long connecting to STS may take, and how long one request may take.</summary>
+        private static readonly TimeSpan HttpTimeout = TimeSpan.FromSeconds(10);
+
         /// <summary>
         /// Creates a provider that asks STS for a web identity token with the given audience.
         /// The STS client is built once, here, from the AWS SDK's default credential chain.
@@ -59,7 +62,8 @@ namespace WorkOS.WorkloadIdentity
 
         /// <summary>
         /// Builds the STS client configuration for a region. Always regional: STS is never
-        /// called on its global endpoint.
+        /// called on its global endpoint. The client makes one attempt per call and allows
+        /// 10 seconds to connect and 10 seconds for the request.
         /// </summary>
         /// <param name="region">The region the caller asked for, if any.</param>
         /// <param name="resolveRegion">Finds a region when the caller gave none; returns null when there is none.</param>
@@ -82,7 +86,19 @@ namespace WorkOS.WorkloadIdentity
                     "The STS global endpoint is not supported. Use a regional endpoint, for example us-east-1.");
             }
 
-            return new AmazonSecurityTokenServiceConfig { RegionEndpoint = endpoint };
+            return new AmazonSecurityTokenServiceConfig
+            {
+                RegionEndpoint = endpoint,
+
+                // One provider call is one STS request. The AWS SDK would otherwise retry
+                // a throttled or failed call inside the client, and the WorkOS SDK already
+                // calls the provider again on every exchange attempt.
+                MaxErrorRetry = 0,
+
+                // The limit the other providers give their one HTTP request.
+                ConnectTimeout = HttpTimeout,
+                Timeout = HttpTimeout,
+            };
         }
 
         private static void RequireAudience(string audience)

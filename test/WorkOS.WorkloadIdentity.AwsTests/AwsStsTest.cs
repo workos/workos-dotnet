@@ -4,6 +4,9 @@ namespace WorkOS.WorkloadIdentity.AwsTests
     using System;
     using System.Collections.Generic;
     using System.Net;
+    using System.Net.Http;
+    using System.Net.Sockets;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using Amazon;
@@ -102,6 +105,57 @@ namespace WorkOS.WorkloadIdentity.AwsTests
             Assert.Contains("sts:GetWebIdentityToken", error.Message);
         }
 
+        [Theory]
+        [InlineData(HttpStatusCode.BadRequest, "Throttling")]
+        [InlineData(HttpStatusCode.InternalServerError, "InternalFailure")]
+        [InlineData(HttpStatusCode.ServiceUnavailable, "ServiceUnavailable")]
+        public async Task OneProviderCallIsOneStsRequestWhenStsThrottlesOrFails(HttpStatusCode status, string code)
+        {
+            // A real STS client with the provider's own configuration, over a stub HTTP
+            // layer that counts requests. The AWS SDK would retry each of these answers.
+            var sts = new FailingSts(status, code);
+            var config = AwsSts.BuildConfig("us-east-1", () => null);
+            config.HttpClientFactory = new StubHttpClientFactory(sts);
+            using var client = new AmazonSecurityTokenServiceClient(TestCredentials(), config);
+
+            var error = await Assert.ThrowsAsync<InvalidOperationException>(
+                () => AwsSts.Create(Audience, client).GetTokenAsync(CancellationToken.None));
+
+            Assert.Contains(code, error.Message);
+            Assert.Equal(1, sts.Count);
+        }
+
+        [Fact]
+        public void TheStsClientMakesOneAttemptAndAllowsTenSecondsToConnectAndTenForTheRequest()
+        {
+            var config = AwsSts.BuildConfig("us-east-1", () => null);
+
+            Assert.Equal(0, config.MaxErrorRetry);
+            Assert.Equal(TimeSpan.FromSeconds(10), config.ConnectTimeout);
+            Assert.Equal(TimeSpan.FromSeconds(10), config.Timeout);
+        }
+
+        [Fact]
+        public async Task AnStsThatNeverAnswersFailsAtTheRequestLimitAfterOneRequest()
+        {
+            // The provider's configuration with its 10-second request limit shortened, against
+            // a local socket that accepts a connection and never answers.
+            using var sts = new SilentSts();
+            var config = AwsSts.BuildConfig("us-east-1", () => null);
+            config.ServiceURL = $"http://127.0.0.1:{sts.Port}/";
+            config.AuthenticationRegion = "us-east-1";
+            config.Timeout = TimeSpan.FromMilliseconds(250);
+            using var client = new AmazonSecurityTokenServiceClient(TestCredentials(), config);
+
+            await Assert.ThrowsAsync<TimeoutException>(
+                () => AwsSts.Create(Audience, client).GetTokenAsync(CancellationToken.None));
+
+            // The timed-out request was not sent again. A retry would have connected before
+            // the call failed, so the count is final once the listener has seen the first.
+            await sts.Connected.WaitAsync(TimeSpan.FromSeconds(5));
+            Assert.Equal(1, sts.Connections);
+        }
+
         [Fact]
         public void TheRegionArgumentWinsOverTheResolvedRegion()
         {
@@ -138,6 +192,111 @@ namespace WorkOS.WorkloadIdentity.AwsTests
 
             Assert.Throws<ArgumentException>(() => AwsSts.Create(audience!, sts.Object));
             Assert.Throws<ArgumentException>(() => AwsSts.Create(audience!, "us-east-1"));
+        }
+
+        // Static credentials, so that building a client asks no credential source.
+        private static AWSCredentials TestCredentials()
+        {
+            return new BasicAWSCredentials("test-access-key", "test-secret-key");
+        }
+
+        /// <summary>Answers every STS request with the same error and counts the requests.</summary>
+        private sealed class FailingSts : HttpMessageHandler
+        {
+            private readonly HttpStatusCode status;
+            private readonly string code;
+            private int count;
+
+            internal FailingSts(HttpStatusCode status, string code)
+            {
+                this.status = status;
+                this.code = code;
+            }
+
+            internal int Count => Volatile.Read(ref this.count);
+
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                Interlocked.Increment(ref this.count);
+                var body = "<ErrorResponse xmlns=\"https://sts.amazonaws.com/doc/2011-06-15/\">"
+                    + $"<Error><Type>Sender</Type><Code>{this.code}</Code><Message>The request failed.</Message></Error>"
+                    + "<RequestId>request-id</RequestId></ErrorResponse>";
+                return Task.FromResult(new HttpResponseMessage(this.status)
+                {
+                    Content = new StringContent(body, Encoding.UTF8, "text/xml"),
+                    RequestMessage = request,
+                });
+            }
+        }
+
+        /// <summary>Makes the STS client send through a stub handler instead of the network.</summary>
+        private sealed class StubHttpClientFactory : HttpClientFactory
+        {
+            private readonly HttpMessageHandler handler;
+
+            internal StubHttpClientFactory(HttpMessageHandler handler) => this.handler = handler;
+
+            public override HttpClient CreateHttpClient(IClientConfig clientConfig)
+            {
+                return new HttpClient(this.handler, disposeHandler: false);
+            }
+
+            public override bool UseSDKHttpClientCaching(IClientConfig clientConfig) => false;
+
+            public override bool DisposeHttpClientsAfterUse(IClientConfig clientConfig) => true;
+        }
+
+        /// <summary>A loopback listener that accepts connections, counts them, and never answers.</summary>
+        private sealed class SilentSts : IDisposable
+        {
+            private readonly TcpListener listener = new TcpListener(IPAddress.Loopback, 0);
+            private readonly List<Socket> accepted = new List<Socket>();
+            private readonly TaskCompletionSource<bool> connected = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            private int connections;
+
+            internal SilentSts()
+            {
+                this.listener.Start();
+                _ = this.AcceptAsync();
+            }
+
+            internal int Port => ((IPEndPoint)this.listener.LocalEndpoint).Port;
+
+            internal int Connections => Volatile.Read(ref this.connections);
+
+            /// <summary>Completes when the listener has accepted its first connection.</summary>
+            internal Task Connected => this.connected.Task;
+
+            public void Dispose()
+            {
+                this.listener.Stop();
+                lock (this.accepted)
+                {
+                    this.accepted.ForEach(socket => socket.Dispose());
+                }
+            }
+
+            private async Task AcceptAsync()
+            {
+                try
+                {
+                    while (true)
+                    {
+                        var socket = await this.listener.AcceptSocketAsync();
+                        Interlocked.Increment(ref this.connections);
+                        lock (this.accepted)
+                        {
+                            this.accepted.Add(socket);
+                        }
+
+                        this.connected.TrySetResult(true);
+                    }
+                }
+                catch (Exception ex) when (ex is SocketException || ex is ObjectDisposedException)
+                {
+                    // The listener was stopped.
+                }
+            }
         }
     }
 }

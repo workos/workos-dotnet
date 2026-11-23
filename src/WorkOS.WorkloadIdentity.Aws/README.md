@@ -29,6 +29,8 @@ var client = new WorkOSClient(new WorkOSOptions { Credentials = credentials });
 
 The audience passed to `AwsSts.Create` must match the audience of the trust rule. The region is optional when the AWS SDK can resolve one (`AWS_REGION`, the shared config file, instance metadata). The provider calls STS `GetWebIdentityToken` on that region's endpoint, with the AWS SDK's default credential chain, and requests an `RS256` token.
 
+Each call makes one STS request, with 10 seconds to connect and 10 seconds for the request. The AWS SDK's own retries are off on the provider's STS client, because the WorkOS SDK calls the provider again when it retries the exchange.
+
 This is the only WorkOS package that depends on the AWS SDK (`AWSSDK.SecurityToken`).
 
 See "Workload identity" in the [SDK README](https://github.com/workos/workos-dotnet#workload-identity) for the settings.
