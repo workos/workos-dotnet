@@ -405,6 +405,28 @@ namespace WorkOS
             return delay;
         }
 
+        /// <summary>
+        /// Returns the API key for a request that sends it as <c>client_secret</c>: the User
+        /// Management authenticate calls and the SSO token exchange. A client built with
+        /// <see cref="WorkOSOptions.Credentials"/> has no API key to send, so the call is
+        /// refused here, before any request or token exchange.
+        /// </summary>
+        /// <param name="method">The calling method, named in the error. The compiler fills it in.</param>
+        /// <returns>The non-empty API key.</returns>
+        /// <exception cref="InvalidOperationException">The client was built with credentials and has no API key.</exception>
+        internal string GetClientSecret([System.Runtime.CompilerServices.CallerMemberName] string method = "")
+        {
+            // The constructor accepts an empty key only together with credentials, so an
+            // empty key here means a client that authenticates with credentials.
+            if (string.IsNullOrEmpty(this.ApiKey))
+            {
+                throw new InvalidOperationException(
+                    $"{method} needs an API key: this request sends it as the client secret. A client that authenticates with workload identity has no API key, so use a client built with one for this call.");
+            }
+
+            return this.ApiKey;
+        }
+
         private static Exception MapError(HttpStatusCode statusCode, string body)
         {
             switch ((int)statusCode)
