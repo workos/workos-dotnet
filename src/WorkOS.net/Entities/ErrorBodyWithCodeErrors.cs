@@ -17,6 +17,6 @@ namespace WorkOS
         public string Message { get; set; } = default!;
 
         /// <summary>The list of validation errors.</summary>
-        public List<AuthenticationEmailVerificationFailedDataError> Errors { get; set; } = default!;
+        public List<ErrorBodyWithCode> Errors { get; set; } = default!;
     }
 }

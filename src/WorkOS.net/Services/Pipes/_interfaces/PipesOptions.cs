@@ -327,6 +327,9 @@ namespace WorkOS
         /// <summary>A developer-attested account identifier; null clears it.</summary>
         public string? AccountIdentifier { get; set; }
 
+        /// <summary>Installation-scoped provider configuration for this connection, such as Salesforce salesforce_host. Imports apply supplied values over installation-scoped integration pins and inherit other config from the credential source. Credential-bearing imports must satisfy required configuration even when config is omitted or {}. On update, a supplied object replaces installation-scoped values; omitted config preserves the stored snapshot. Stored integration-scoped values remain bound to the OAuth client and cannot be overridden or replaced with current integration pins. Replacements must satisfy required configuration; {} and empty-string values clear installation-scoped values only when the result is valid. Provider defaults count toward completeness but are resolved at read time, not stored. Only tokenless needs_reauthorization placeholders may remain incomplete; attaching their first tokens validates configuration even when config is omitted. Unrelated updates do not revalidate unchanged configuration. Clearing salesforce_host falls back to login.salesforce.com, which may not work for sandbox or My Domain-only connections.</summary>
+        public Dictionary<string, string>? Config { get; set; }
+
         /// <summary>The OAuth access token for the connected account.</summary>
         public string? AccessToken { get; set; }
 
@@ -345,6 +348,9 @@ namespace WorkOS
         /// <summary>The [User](https://workos.com/docs/reference/authkit/user) identifier of the organization member on whose behalf the connected account is being imported or updated. The user must be an active member of the organization.</summary>
         public string UserId { get; set; } = default!;
 
+        /// <summary>Provider token-response metadata to preserve during import, such as Salesforce instance_url. Only allowlisted, non-sensitive scalar fields from this provider are accepted, including nested fields. Provider refresh responses can update these values. Not accepted on update.</summary>
+        public Dictionary<string, object>? Metadata { get; set; }
+
         /// <summary>Set to `add` to create another connected account. Omit this field for permanent compatibility behavior.</summary>
         public string? ConnectionIntent { get; set; }
 
@@ -358,6 +364,9 @@ namespace WorkOS
 
         /// <summary>A developer-attested account identifier; null clears it.</summary>
         public string? AccountIdentifier { get; set; }
+
+        /// <summary>Installation-scoped provider configuration for this connection, such as Salesforce salesforce_host. Imports apply supplied values over installation-scoped integration pins and inherit other config from the credential source. Credential-bearing imports must satisfy required configuration even when config is omitted or {}. On update, a supplied object replaces installation-scoped values; omitted config preserves the stored snapshot. Stored integration-scoped values remain bound to the OAuth client and cannot be overridden or replaced with current integration pins. Replacements must satisfy required configuration; {} and empty-string values clear installation-scoped values only when the result is valid. Provider defaults count toward completeness but are resolved at read time, not stored. Only tokenless needs_reauthorization placeholders may remain incomplete; attaching their first tokens validates configuration even when config is omitted. Unrelated updates do not revalidate unchanged configuration. Clearing salesforce_host falls back to login.salesforce.com, which may not work for sandbox or My Domain-only connections.</summary>
+        public Dictionary<string, string>? Config { get; set; }
 
         /// <summary>The OAuth access token for the connected account.</summary>
         public string? AccessToken { get; set; }
@@ -430,6 +439,9 @@ namespace WorkOS
         /// <summary>A developer-attested account identifier; null clears it.</summary>
         public string? AccountIdentifier { get; set; }
 
+        /// <summary>Installation-scoped provider configuration for this connection, such as Salesforce salesforce_host. Imports apply supplied values over installation-scoped integration pins and inherit other config from the credential source. Credential-bearing imports must satisfy required configuration even when config is omitted or {}. On update, a supplied object replaces installation-scoped values; omitted config preserves the stored snapshot. Stored integration-scoped values remain bound to the OAuth client and cannot be overridden or replaced with current integration pins. Replacements must satisfy required configuration; {} and empty-string values clear installation-scoped values only when the result is valid. Provider defaults count toward completeness but are resolved at read time, not stored. Only tokenless needs_reauthorization placeholders may remain incomplete; attaching their first tokens validates configuration even when config is omitted. Unrelated updates do not revalidate unchanged configuration. Clearing salesforce_host falls back to login.salesforce.com, which may not work for sandbox or My Domain-only connections.</summary>
+        public Dictionary<string, string>? Config { get; set; }
+
         /// <summary>The OAuth access token for the connected account.</summary>
         public string? AccessToken { get; set; }
 
@@ -444,6 +456,9 @@ namespace WorkOS
 
         /// <summary>Explicitly set the state of the connected account. When omitted, the state is derived from the token combination provided.</summary>
         public ConnectedAccountInputState? State { get; set; }
+
+        /// <summary>Provider token-response metadata to preserve during import, such as Salesforce instance_url. Only allowlisted, non-sensitive scalar fields from this provider are accepted, including nested fields. Provider refresh responses can update these values. Not accepted on update.</summary>
+        public Dictionary<string, object>? Metadata { get; set; }
 
         /// <summary>Set to `add` to create another connected account. Omit this field for permanent compatibility behavior.</summary>
         public string? ConnectionIntent { get; set; }
@@ -461,6 +476,9 @@ namespace WorkOS
 
         /// <summary>A developer-attested account identifier; null clears it.</summary>
         public string? AccountIdentifier { get; set; }
+
+        /// <summary>Installation-scoped provider configuration for this connection, such as Salesforce salesforce_host. Imports apply supplied values over installation-scoped integration pins and inherit other config from the credential source. Credential-bearing imports must satisfy required configuration even when config is omitted or {}. On update, a supplied object replaces installation-scoped values; omitted config preserves the stored snapshot. Stored integration-scoped values remain bound to the OAuth client and cannot be overridden or replaced with current integration pins. Replacements must satisfy required configuration; {} and empty-string values clear installation-scoped values only when the result is valid. Provider defaults count toward completeness but are resolved at read time, not stored. Only tokenless needs_reauthorization placeholders may remain incomplete; attaching their first tokens validates configuration even when config is omitted. Unrelated updates do not revalidate unchanged configuration. Clearing salesforce_host falls back to login.salesforce.com, which may not work for sandbox or My Domain-only connections.</summary>
+        public Dictionary<string, string>? Config { get; set; }
 
         /// <summary>The OAuth access token for the connected account.</summary>
         public string? AccessToken { get; set; }

@@ -4,8 +4,8 @@ namespace WorkOS
 {
     using System.Collections.Generic;
 
-    /// <summary>Represents an SSO required o auth error body with connection ids list email pending authentication token.</summary>
-    public class SSORequiredOAuthErrorBodyWithConnectionIdsListEmailPendingAuthenticationToken
+    /// <summary>Represents an SSO required o auth error body with connection ids list email.</summary>
+    public class SSORequiredOAuthErrorBodyWithConnectionIdsListEmail
     {
 
         /// <summary>The OAuth error code.</summary>

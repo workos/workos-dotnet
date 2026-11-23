@@ -32,5 +32,8 @@ namespace WorkOS
 
         /// <summary>The email address of the user.</summary>
         public string Email { get; set; } = default!;
+
+        /// <summary>The ID of the Radar detection that challenged the authentication.</summary>
+        public string? RadarDetectionId { get; set; }
     }
 }

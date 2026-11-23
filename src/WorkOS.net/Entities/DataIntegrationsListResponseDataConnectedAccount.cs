@@ -85,7 +85,7 @@ namespace WorkOS
         public List<ConnectedAccountWarning>? Warnings { get; set; }
 
         /// <summary>Use `user_id` instead.</summary>
-        [System.Obsolete("This field is deprecated Use `user_id` instead.")]
+        [System.Obsolete("This field is deprecated. Use `user_id` instead.")]
         [JsonProperty("userlandUserId")]
         [STJS.JsonPropertyName("userlandUserId")]
         public string? UserlandUserId { get; set; }

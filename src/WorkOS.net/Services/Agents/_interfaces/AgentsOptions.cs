@@ -31,7 +31,7 @@ namespace WorkOS
         public AgentBlueprintsCreateRequestInvocableAs? InvocableAs { get; set; }
 
         /// <summary>Token and session lifetimes for sessions minted from this blueprint.</summary>
-        public AgentBlueprintSessionSetting? SessionSettings { get; set; }
+        public AgentBlueprintsCreateRequestSessionSetting? SessionSettings { get; set; }
 
     }
 

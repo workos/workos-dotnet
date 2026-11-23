@@ -24,9 +24,9 @@ namespace WorkOS
         /// <param name="client">The HTTP client used to make API requests.</param>
         public ClientApiService(WorkOSClient client) : base(client) { }
 
-        /// <summary>Generate a Client API token</summary>
+        /// <summary>Generate a Widgets API token</summary>
         /// <remarks>
-        /// Generate a short-lived, session-bound token for the Client GraphQL API, scoped to an organization and user.
+        /// Generate a short-lived, session-bound token for the Widgets API, scoped to an organization and user.
         /// </remarks>
         /// <param name="options">Request options.</param>
         /// <param name="requestOptions">Per-request configuration overrides.</param>

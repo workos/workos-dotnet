@@ -22,6 +22,9 @@ namespace WorkOS
         /// <summary>Searchable text to match against Connection names.</summary>
         public string? Search { get; set; }
 
+        /// <summary>Filter Connections by their state.</summary>
+        public ConnectionsState? State { get; set; }
+
     }
 
     /// <summary>Request options for <see cref="SSOService.CreateConnectionAsync"/>: Create a Connection</summary>

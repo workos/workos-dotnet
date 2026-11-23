@@ -1,10 +1,12 @@
 {
   "account_display_name": null,
   "account_identifier": null,
+  "config": null,
   "access_token": null,
   "refresh_token": null,
   "expires_at": null,
   "scopes": null,
   "state": null,
+  "metadata": null,
   "connection_intent": null
 }

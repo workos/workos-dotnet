@@ -71,10 +71,10 @@ namespace WorkOS
         /// <summary>The unique ID of the Organization.</summary>
         public string OrganizationId { get; set; } = default!;
 
-        /// <summary>ISO-8601 value for start of the export range.</summary>
+        /// <summary>ISO-8601 value for start of the export range. The range must span no more than 31 days.</summary>
         public DateTimeOffset RangeStart { get; set; }
 
-        /// <summary>ISO-8601 value for end of the export range.</summary>
+        /// <summary>ISO-8601 value for end of the export range. Must be no more than 31 days after the start.</summary>
         public DateTimeOffset RangeEnd { get; set; }
 
         /// <summary>List of actions to filter against.</summary>

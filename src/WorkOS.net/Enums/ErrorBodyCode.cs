@@ -282,8 +282,6 @@ namespace WorkOS
         PermissionSlugConflict,
         [EnumMember(Value = "phone_number_required")]
         PhoneNumberRequired,
-        [EnumMember(Value = "policy_denied")]
-        PolicyDenied,
         [EnumMember(Value = "production_feature_requires_billing")]
         ProductionFeatureRequiresBilling,
         [EnumMember(Value = "radar_challenge")]

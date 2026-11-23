@@ -22,30 +22,24 @@ namespace WorkOS
 
     }
 
-    /// <summary>Request options for <see cref="DirectorySyncService.ListGroupsAsync"/>: List Directory Groups</summary>
+    /// <summary>Request options for <see cref="DirectorySyncService.ListGroupsAsync"/>: List Groups for a Directory</summary>
     public class DirectorySyncListGroupsOptions : ListOptions
     {
-        /// <summary>Unique identifier of the WorkOS Directory. This value can be obtained from the WorkOS dashboard or from the WorkOS API.</summary>
-        public string? Directory { get; set; }
-
-        /// <summary>Unique identifier of the WorkOS Directory User. This value can be obtained from the WorkOS API.</summary>
+        /// <summary>Filter Directory Groups to those this Directory User belongs to.</summary>
         public string? User { get; set; }
 
     }
 
-    /// <summary>Request options for <see cref="DirectorySyncService.ListUsersAsync"/>: List Directory Users</summary>
+    /// <summary>Request options for <see cref="DirectorySyncService.ListUsersAsync"/>: List Users for a Directory</summary>
     public class DirectorySyncListUsersOptions : ListOptions
     {
-        /// <summary>Unique identifier of the WorkOS Directory. This value can be obtained from the WorkOS dashboard or from the WorkOS API.</summary>
-        public string? Directory { get; set; }
-
-        /// <summary>Unique identifier of the WorkOS Directory Group. This value can be obtained from the WorkOS API.</summary>
+        /// <summary>Filter Directory Users to the members of this Directory Group.</summary>
         public string? Group { get; set; }
 
-        /// <summary>Filter Directory Users by the identity provider's unique identifier (`idp_id`). Requires the `directory` parameter to also be provided.</summary>
+        /// <summary>Filter Directory Users by the identity provider's unique identifier (`idp_id`).</summary>
         public string? IdpId { get; set; }
 
-        /// <summary>Filter Directory Users by their primary email address. Requires the `directory` parameter to also be provided.</summary>
+        /// <summary>Filter Directory Users by their primary email address.</summary>
         public string? Email { get; set; }
 
     }

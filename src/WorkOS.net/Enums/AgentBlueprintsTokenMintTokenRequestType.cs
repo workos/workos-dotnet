@@ -14,12 +14,19 @@ namespace WorkOS
         [EnumMember(Value = "unknown")]
         Unknown,
 
+        /// <summary>How the session is minted: `user_delegated`, `autonomous`, `agent_delegated`, or `refresh`.</summary>
         [EnumMember(Value = "user_delegated")]
         UserDelegated,
+
+        /// <summary>How the session is minted: `user_delegated`, `autonomous`, `agent_delegated`, or `refresh`.</summary>
         [EnumMember(Value = "autonomous")]
         Autonomous,
+
+        /// <summary>How the session is minted: `user_delegated`, `autonomous`, `agent_delegated`, or `refresh`.</summary>
         [EnumMember(Value = "agent_delegated")]
         AgentDelegated,
+
+        /// <summary>How the session is minted: `user_delegated`, `autonomous`, `agent_delegated`, or `refresh`.</summary>
         [EnumMember(Value = "refresh")]
         Refresh,
     }

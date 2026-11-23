@@ -31,7 +31,7 @@ namespace WorkOSTests
         {
             var fixture = System.IO.File.ReadAllText("testdata/data_integration_configuration_list_response.json");
             this.httpMock.MockResponse(HttpMethod.Get, "/organizations/test_organizationId/data_integration_configurations", HttpStatusCode.OK, fixture);
-            var result = await this.service.ListOrganizationDataIntegrationConfigurationsAsync("test_organizationId");
+            var result = await this.service.ListOrganizationDataIntegrationConfigurationsAsync("test_organizationId", new PipesProviderListOrganizationDataIntegrationConfigurationsOptions());
             Assert.NotNull(result);
             this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/organizations/test_organizationId/data_integration_configurations");
         }
@@ -53,35 +53,35 @@ namespace WorkOSTests
         public async Task TestError401()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.Unauthorized, "{\"code\":\"unauthorized\",\"message\":\"Unauthorized\"}");
-            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.ListOrganizationDataIntegrationConfigurationsAsync("test_organizationId"));
+            await Assert.ThrowsAsync<AuthenticationException>(() => this.service.ListOrganizationDataIntegrationConfigurationsAsync("test_organizationId", new PipesProviderListOrganizationDataIntegrationConfigurationsOptions()));
         }
 
         [Fact]
         public async Task TestError404()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.NotFound, "{\"code\":\"not_found\",\"message\":\"Not Found\"}");
-            await Assert.ThrowsAsync<NotFoundException>(() => this.service.ListOrganizationDataIntegrationConfigurationsAsync("test_organizationId"));
+            await Assert.ThrowsAsync<NotFoundException>(() => this.service.ListOrganizationDataIntegrationConfigurationsAsync("test_organizationId", new PipesProviderListOrganizationDataIntegrationConfigurationsOptions()));
         }
 
         [Fact]
         public async Task TestError422()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)422, "{\"code\":\"unprocessable_entity\",\"message\":\"Unprocessable\"}");
-            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.ListOrganizationDataIntegrationConfigurationsAsync("test_organizationId"));
+            await Assert.ThrowsAsync<UnprocessableEntityException>(() => this.service.ListOrganizationDataIntegrationConfigurationsAsync("test_organizationId", new PipesProviderListOrganizationDataIntegrationConfigurationsOptions()));
         }
 
         [Fact]
         public async Task TestError429()
         {
             this.httpMock.MockResponseForAnyRequest((HttpStatusCode)429, "{\"code\":\"too_many_requests\",\"message\":\"Too Many Requests\"}");
-            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.ListOrganizationDataIntegrationConfigurationsAsync("test_organizationId"));
+            await Assert.ThrowsAsync<RateLimitExceededException>(() => this.service.ListOrganizationDataIntegrationConfigurationsAsync("test_organizationId", new PipesProviderListOrganizationDataIntegrationConfigurationsOptions()));
         }
 
         [Fact]
         public async Task TestError500()
         {
             this.httpMock.MockResponseForAnyRequest(HttpStatusCode.InternalServerError, "{\"code\":\"server_error\",\"message\":\"Server Error\"}");
-            await Assert.ThrowsAsync<ServerException>(() => this.service.ListOrganizationDataIntegrationConfigurationsAsync("test_organizationId"));
+            await Assert.ThrowsAsync<ServerException>(() => this.service.ListOrganizationDataIntegrationConfigurationsAsync("test_organizationId", new PipesProviderListOrganizationDataIntegrationConfigurationsOptions()));
         }
     }
 }

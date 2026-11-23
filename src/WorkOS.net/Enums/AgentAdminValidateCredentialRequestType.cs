@@ -14,8 +14,11 @@ namespace WorkOS
         [EnumMember(Value = "unknown")]
         Unknown,
 
+        /// <summary>The kind of credential being validated — an agent API key or an agent access token.</summary>
         [EnumMember(Value = "api_key")]
         ApiKey,
+
+        /// <summary>The kind of credential being validated — an agent API key or an agent access token.</summary>
         [EnumMember(Value = "access_token")]
         AccessToken,
     }
