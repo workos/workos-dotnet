@@ -62,6 +62,25 @@ namespace WorkOS
             return this.UpdateAttemptAsync(id, options, requestOptions, cancellationToken);
         }
 
+        /// <summary>Get a Radar detection</summary>
+        /// <remarks>
+        /// Get a Radar detection from the last 30 days, including the evidence for why Radar fired.
+        /// </remarks>
+        /// <param name="id">The unique ID of the Radar detection.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="RadarDetection"/> result.</returns>
+        public virtual async Task<RadarDetection> GetDetectionAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<RadarDetection>($"/radar/detections/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetDetectionAsync"/>.</summary>
+        public virtual Task<RadarDetection> GetDetection(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetDetectionAsync(id, requestOptions, cancellationToken);
+        }
+
         /// <summary>Add an entry to a Radar list</summary>
         /// <remarks>
         /// Add an entry to a Radar list.

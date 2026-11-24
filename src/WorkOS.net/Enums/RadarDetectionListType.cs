@@ -6,10 +6,10 @@ namespace WorkOS
     using Newtonsoft.Json;
     using STJS = System.Text.Json.Serialization;
 
-    /// <summary>Represents radar list type values.</summary>
+    /// <summary>Represents radar detection list type values.</summary>
     [JsonConverter(typeof(WorkOSNewtonsoftStringEnumConverter))]
     [STJS.JsonConverter(typeof(WorkOSStringEnumConverterFactory))]
-    public enum RadarListType
+    public enum RadarDetectionListType
     {
         [EnumMember(Value = "unknown")]
         Unknown,

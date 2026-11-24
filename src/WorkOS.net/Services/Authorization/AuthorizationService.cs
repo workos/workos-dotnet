@@ -411,7 +411,7 @@ namespace WorkOS
 
         /// <summary>Assign a role</summary>
         /// <remarks>
-        /// Assign a role to an organization membership on a specific resource.
+        /// Assign a role to an organization membership on a specific resource. If the role is already assigned to the membership on that resource, the existing role assignment is returned and no changes are made.
         /// </remarks>
         /// <param name="organizationMembershipId">The ID of the organization membership.</param>
         /// <param name="options">Request options.</param>
@@ -455,6 +455,25 @@ namespace WorkOS
         public virtual Task<UserRoleAssignment> AssignRole(string organizationMembershipId, AuthorizationAssignRoleOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
         {
             return this.AssignRoleAsync(organizationMembershipId, options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Update role assignments for an organization membership</summary>
+        /// <remarks>
+        /// Add and remove role assignments for an organization membership in a single atomic operation. Each entry identifies a role and a resource, either by `resource_id` or by `resource_type_slug` and `resource_external_id`; to change an organization-level role, target the organization resource. Additions that already exist and removals that match no assignment are skipped. An assignment in both lists is rejected, as is a removal of a role granted only through a group. `add` and `remove` must contain between 1 and 100 entries combined.
+        /// </remarks>
+        /// <param name="organizationMembershipId">The ID of the organization membership.</param>
+        /// <param name="options">Request options.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task UpdateRoleAssignmentsAsync(string organizationMembershipId, AuthorizationUpdateRoleAssignmentsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.PatchAsync<object>($"/authorization/organization_memberships/{Uri.EscapeDataString(organizationMembershipId)}/role_assignments", options, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="UpdateRoleAssignmentsAsync"/>.</summary>
+        public virtual Task UpdateRoleAssignments(string organizationMembershipId, AuthorizationUpdateRoleAssignmentsOptions options, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.UpdateRoleAssignmentsAsync(organizationMembershipId, options, requestOptions, cancellationToken);
         }
 
         /// <summary>Remove a role assignment</summary>

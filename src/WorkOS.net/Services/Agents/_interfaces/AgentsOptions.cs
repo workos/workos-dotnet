@@ -21,8 +21,8 @@ namespace WorkOS
         /// <summary>Human-readable description of the agent blueprint.</summary>
         public string? Description { get; set; }
 
-        /// <summary>Permission slugs forming the ceiling on what sessions minted from this blueprint may do. Each slug must exist in the environment.</summary>
-        public List<string>? Permissions { get; set; }
+        /// <summary>Permissions forming the ceiling on what sessions minted from this blueprint may do. Each slug must exist in the environment and may appear once.</summary>
+        public List<OneOf.OneOf<AgentBlueprintsCreateRequestPermission, string>>? Permissions { get; set; }
 
         /// <summary>Who may mint sessions from this blueprint.</summary>
         public AgentBlueprintsCreateRequestInvocableBy? InvocableBy { get; set; }
@@ -44,8 +44,8 @@ namespace WorkOS
         /// <summary>Human-readable description of the agent blueprint. Pass `null` to clear it.</summary>
         public string? Description { get; set; }
 
-        /// <summary>Permission slugs forming the ceiling on what sessions minted from this blueprint may do. Each slug must exist in the environment.</summary>
-        public List<string>? Permissions { get; set; }
+        /// <summary>Permissions forming the ceiling on what sessions minted from this blueprint may do. Each slug must exist in the environment and may appear once.</summary>
+        public List<OneOf.OneOf<AgentBlueprintsCreateRequestPermission, string>>? Permissions { get; set; }
 
         /// <summary>Who may mint sessions from this blueprint. Omitted lists are left unchanged.</summary>
         public AgentBlueprintsCreateRequestInvocableBy? InvocableBy { get; set; }

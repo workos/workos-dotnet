@@ -20,8 +20,12 @@ namespace WorkOS
         /// <summary>Human-readable description of the agent blueprint.</summary>
         public string? Description { get; set; }
 
-        /// <summary>Permission slugs forming the ceiling on what sessions minted from this blueprint may do.</summary>
+        /// <summary>Deprecated: use `scoped_permissions`. Slugs of every permission in the ceiling, across all instance types.</summary>
+        [System.Obsolete("Deprecated. use `scoped_permissions`.")]
         public List<string> Permissions { get; set; } = default!;
+
+        /// <summary>Permissions forming the ceiling on what sessions minted from this blueprint may do, with the instance types that receive each one. Absent from events emitted before this field was added.</summary>
+        public List<AgentBlueprintCreatedDataScopedPermission>? ScopedPermissions { get; set; }
 
         /// <summary>Who may mint sessions from this blueprint.</summary>
         public AgentBlueprintCreatedDataInvocableBy InvocableBy { get; set; } = default!;

@@ -7,6 +7,7 @@
     "crm:read",
     "email:send"
   ],
+  "scoped_permissions": null,
   "invocable_by": {
     "role_slugs": [
       "manager"

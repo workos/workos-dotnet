@@ -44,6 +44,8 @@ namespace WorkOS
         CannotDeleteLastCertificate,
         [EnumMember(Value = "cannot_reactivate_pending_organization_membership")]
         CannotReactivatePendingOrganizationMembership,
+        [EnumMember(Value = "cannot_remove_group_sourced_role")]
+        CannotRemoveGroupSourcedRole,
         [EnumMember(Value = "certificate_expired")]
         CertificateExpired,
         [EnumMember(Value = "chain_depth_exceeded")]
@@ -90,6 +92,8 @@ namespace WorkOS
         DirectorySyncUnsupported,
         [EnumMember(Value = "discovery_endpoint_must_use_https")]
         DiscoveryEndpointMustUseHttps,
+        [EnumMember(Value = "discovery_endpoint_tenant_not_allowed")]
+        DiscoveryEndpointTenantNotAllowed,
         [EnumMember(Value = "domain_already_exists")]
         DomainAlreadyExists,
         [EnumMember(Value = "domain_already_verified")]
@@ -138,6 +142,8 @@ namespace WorkOS
         EmailVerificationCodePreviouslyUsed,
         [EnumMember(Value = "email_verification_required")]
         EmailVerificationRequired,
+        [EnumMember(Value = "entities_not_found")]
+        EntitiesNotFound,
         [EnumMember(Value = "entity_not_found")]
         EntityNotFound,
         [EnumMember(Value = "expires_in_days_too_long")]
@@ -176,6 +182,10 @@ namespace WorkOS
         InvalidIdpSSOUrl,
         [EnumMember(Value = "invalid_invite")]
         InvalidInvite,
+        [EnumMember(Value = "invalid_issuer_metadata")]
+        InvalidIssuerMetadata,
+        [EnumMember(Value = "invalid_issuer_url")]
+        InvalidIssuerUrl,
         [EnumMember(Value = "invalid_locale")]
         InvalidLocale,
         [EnumMember(Value = "invalid_metadata")]
@@ -218,6 +228,8 @@ namespace WorkOS
         InviteRevoked,
         [EnumMember(Value = "ip_address_required")]
         IpAddressRequired,
+        [EnumMember(Value = "issuer_already_trusted")]
+        IssuerAlreadyTrusted,
         [EnumMember(Value = "it_contact_already_exists")]
         ItContactAlreadyExists,
         [EnumMember(Value = "it_contact_invitation_already_active")]
@@ -242,6 +254,8 @@ namespace WorkOS
         NameAlreadyInUse,
         [EnumMember(Value = "no_pending_email_change")]
         NoPendingEmailChange,
+        [EnumMember(Value = "not_claude_issuer")]
+        NotClaudeIssuer,
         [EnumMember(Value = "oidc_options_required")]
         OidcOptionsRequired,
         [EnumMember(Value = "one_time_code_expired")]
@@ -250,8 +264,12 @@ namespace WorkOS
         OneTimeCodePreviouslyUsed,
         [EnumMember(Value = "one_time_code_too_many_attempts")]
         OneTimeCodeTooManyAttempts,
+        [EnumMember(Value = "organization_already_has_trust")]
+        OrganizationAlreadyHasTrust,
         [EnumMember(Value = "organization_blocked_from_sending_invites")]
         OrganizationBlockedFromSendingInvites,
+        [EnumMember(Value = "organization_has_idp_managed_ema")]
+        OrganizationHasIdpManagedEma,
         [EnumMember(Value = "organization_membership_directory_managed")]
         OrganizationMembershipDirectoryManaged,
         [EnumMember(Value = "organization_not_found")]
@@ -262,6 +280,8 @@ namespace WorkOS
         OrganizationRoleSlugConflict,
         [EnumMember(Value = "organization_selection_required")]
         OrganizationSelectionRequired,
+        [EnumMember(Value = "organization_without_verified_domain")]
+        OrganizationWithoutVerifiedDomain,
         [EnumMember(Value = "passkey_progressive_enrollment")]
         PasskeyProgressiveEnrollment,
         [EnumMember(Value = "password_and_password_hash_provided")]
@@ -288,6 +308,8 @@ namespace WorkOS
         RadarChallenge,
         [EnumMember(Value = "radar_sign_up_challenge")]
         RadarSignUpChallenge,
+        [EnumMember(Value = "radar_sms_challenge")]
+        RadarSmsChallenge,
         [EnumMember(Value = "radar_sms_sign_in_challenge")]
         RadarSmsSignInChallenge,
         [EnumMember(Value = "rate_limit_exceeded")]
@@ -298,6 +320,8 @@ namespace WorkOS
         ResourceLimitExceeded,
         [EnumMember(Value = "resource_type_update_in_progress")]
         ResourceTypeUpdateInProgress,
+        [EnumMember(Value = "role_assignment_update_overlap")]
+        RoleAssignmentUpdateOverlap,
         [EnumMember(Value = "role_has_assignments")]
         RoleHasAssignments,
         [EnumMember(Value = "role_has_group_role_mappings")]

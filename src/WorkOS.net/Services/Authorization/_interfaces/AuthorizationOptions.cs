@@ -157,6 +157,17 @@ namespace WorkOS
 
     }
 
+    /// <summary>Request options for <see cref="AuthorizationService.UpdateRoleAssignmentsAsync"/>: Update role assignments for an organization membership</summary>
+    public class AuthorizationUpdateRoleAssignmentsOptions : BaseOptions
+    {
+        /// <summary>Role assignments to add to the organization membership. Assignments that already exist are skipped.</summary>
+        public List<AssignRole>? Add { get; set; }
+
+        /// <summary>Role assignments to remove from the organization membership. Entries that match no assignment are skipped. Roles granted through a group cannot be removed.</summary>
+        public List<AssignRole>? Remove { get; set; }
+
+    }
+
     /// <summary>Request options for <see cref="AuthorizationService.RemoveRoleAsync"/>: Remove a role assignment</summary>
     public class AuthorizationRemoveRoleOptions : BaseOptions
     {

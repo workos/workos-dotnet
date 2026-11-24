@@ -15,7 +15,7 @@ namespace WorkOS
         [STJS.JsonIgnore(Condition = STJS.JsonIgnoreCondition.WhenWritingDefault)]
         public AuthenticationRadarRiskDetectedDataAction Action { get; set; }
 
-        /// <summary>The control action taken for the detected risk.</summary>
+        /// <summary>The Radar control that detected the risk.</summary>
         public string? Control { get; set; }
 
         /// <summary>The type of blocklist that triggered the risk detection.</summary>
@@ -33,7 +33,7 @@ namespace WorkOS
         /// <summary>The email address of the user.</summary>
         public string Email { get; set; } = default!;
 
-        /// <summary>The ID of the Radar detection that challenged the authentication.</summary>
+        /// <summary>The ID of the Radar detection that challenged the authentication. Retrieve the detection with `GET /radar/detections/:id` to see why Radar acted.</summary>
         public string? RadarDetectionId { get; set; }
     }
 }

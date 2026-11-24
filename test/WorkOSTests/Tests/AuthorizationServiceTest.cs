@@ -216,6 +216,14 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestUpdateRoleAssignmentsAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Patch, "/authorization/organization_memberships/test_organization_membership_id/role_assignments", HttpStatusCode.OK, "");
+            await this.service.UpdateRoleAssignmentsAsync("test_organization_membership_id", new AuthorizationUpdateRoleAssignmentsOptions());
+            this.httpMock.AssertRequestWasMade(HttpMethod.Patch, "/authorization/organization_memberships/test_organization_membership_id/role_assignments");
+        }
+
+        [Fact]
         public async Task TestRemoveRoleAsync()
         {
             this.httpMock.MockResponse(HttpMethod.Delete, "/authorization/organization_memberships/test_organization_membership_id/role_assignments", HttpStatusCode.NoContent, "");

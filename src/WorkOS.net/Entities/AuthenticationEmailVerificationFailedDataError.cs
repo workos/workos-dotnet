@@ -13,7 +13,7 @@ namespace WorkOS
         /// <summary>A human-readable error message.</summary>
         public string Message { get; set; } = default!;
 
-        /// <summary>The ID of the Radar detection that blocked the authentication. Only set on `policy_denied` errors.</summary>
+        /// <summary>The ID of the Radar detection that blocked the authentication. Retrieve the detection with `GET /radar/detections/:id` to see why Radar acted. Only set on `policy_denied` errors that a Radar detection caused.</summary>
         public string? RadarDetectionId { get; set; }
     }
 }
