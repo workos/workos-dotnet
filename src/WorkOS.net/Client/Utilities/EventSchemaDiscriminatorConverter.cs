@@ -45,6 +45,8 @@ namespace WorkOS
                 case "api_key.created": target = new ApiKeyCreated(); break;
                 case "api_key.revoked": target = new ApiKeyRevoked(); break;
                 case "api_key.updated": target = new ApiKeyUpdated(); break;
+                case "application.token_exchange_failed": target = new ApplicationTokenExchangeFailed(); break;
+                case "application.token_exchange_succeeded": target = new ApplicationTokenExchangeSucceeded(); break;
                 case "authentication.email_verification_failed": target = new AuthenticationEmailVerificationFailed(); break;
                 case "authentication.email_verification_succeeded": target = new AuthenticationEmailVerificationSucceeded(); break;
                 case "authentication.magic_auth_failed": target = new AuthenticationMagicAuthFailed(); break;
@@ -68,6 +70,7 @@ namespace WorkOS
                 case "connection.deleted": target = new ConnectionDeleted(); break;
                 case "connection.saml_certificate_renewal_required": target = new ConnectionSAMLCertificateRenewalRequired(); break;
                 case "connection.saml_certificate_renewed": target = new ConnectionSAMLCertificateRenewed(); break;
+                case "connection.saml_certificate_replaced": target = new ConnectionSAMLCertificateReplaced(); break;
                 case "dsync.activated": target = new DsyncActivated(); break;
                 case "dsync.deleted": target = new DsyncDeleted(); break;
                 case "dsync.group.created": target = new DsyncGroupCreated(); break;
@@ -102,6 +105,9 @@ namespace WorkOS
                 case "invitation.created": target = new InvitationCreated(); break;
                 case "invitation.resent": target = new InvitationResent(); break;
                 case "invitation.revoked": target = new InvitationRevoked(); break;
+                case "issuer_trust.created": target = new IssuerTrustCreated(); break;
+                case "issuer_trust.deleted": target = new IssuerTrustDeleted(); break;
+                case "issuer_trust.updated": target = new IssuerTrustUpdated(); break;
                 case "magic_auth.created": target = new MagicAuthCreated(); break;
                 case "organization.created": target = new OrganizationCreated(); break;
                 case "organization.deleted": target = new OrganizationDeleted(); break;
