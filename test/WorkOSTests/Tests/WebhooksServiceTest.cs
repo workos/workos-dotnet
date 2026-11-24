@@ -63,6 +63,19 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestGetEndpointAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/webhook_endpoint.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/webhook_endpoints/test_id", HttpStatusCode.OK, fixture);
+            var result = await this.service.GetEndpointAsync("test_id");
+            Assert.NotNull(result);
+            Assert.Equal("we_0123456789", result.Id);
+            Assert.Equal("https://example.com/webhooks", result.EndpointUrl);
+            Assert.Equal("whsec_0FWAiVGkEfGBqqsJH4aNAGBJ4", result.Secret);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/webhook_endpoints/test_id");
+        }
+
+        [Fact]
         public async Task TestUpdateEndpointAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/webhook_endpoint.json");

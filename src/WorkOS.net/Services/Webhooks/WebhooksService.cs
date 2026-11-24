@@ -72,6 +72,25 @@ namespace WorkOS
             return this.CreateEndpointAsync(options, requestOptions, cancellationToken);
         }
 
+        /// <summary>Get a Webhook Endpoint</summary>
+        /// <remarks>
+        /// Get the details of an existing webhook endpoint.
+        /// </remarks>
+        /// <param name="id">Unique identifier of the Webhook Endpoint.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The <see cref="WebhookEndpoint"/> result.</returns>
+        public virtual async Task<WebhookEndpoint> GetEndpointAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return await this.GetAsync<WebhookEndpoint>($"/webhook_endpoints/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="GetEndpointAsync"/>.</summary>
+        public virtual Task<WebhookEndpoint> GetEndpoint(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.GetEndpointAsync(id, requestOptions, cancellationToken);
+        }
+
         /// <summary>Update a Webhook Endpoint</summary>
         /// <remarks>
         /// Update the properties of an existing webhook endpoint.
