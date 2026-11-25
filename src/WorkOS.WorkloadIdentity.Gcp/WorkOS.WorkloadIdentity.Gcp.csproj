@@ -1,0 +1,80 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Description>Google Cloud metadata server identity token provider for workload identity federation with WorkOS.net.</Description>
+    <AssemblyName>WorkOS.WorkloadIdentity.Gcp</AssemblyName>
+    <Authors>WorkOS</Authors>
+    <Copyright>Copyright © WorkOS</Copyright>
+    <PackageId>WorkOS.WorkloadIdentity.Gcp</PackageId>
+    <PackageProjectUrl>https://github.com/workos/workos-dotnet</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RootNamespace>WorkOS.WorkloadIdentity</RootNamespace>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <VersionPrefix>0.0.0</VersionPrefix> <!--x-release-please-version -->
+    <Version>0.0.0</Version> <!--x-release-please-version -->
+  </PropertyGroup>
+
+  <!--
+    The WorkOS.net versions this package accepts. In the repo the SDK is a ProjectReference;
+    when packed it becomes a NuGet dependency with this range.
+  -->
+  <PropertyGroup>
+    <!--
+      WIF-PLACEHOLDER: set this to the first released WorkOS.net version that contains
+      IIdentityTokenProvider. release-please had not assigned that version when this was
+      written. "dotnet pack" fails on purpose until it is replaced.
+    -->
+    <WorkOSSdkMinVersion>WIF-PLACEHOLDER</WorkOSSdkMinVersion>
+    <!-- The next WorkOS.net major, excluded. Raise it on every WorkOS.net major release. -->
+    <WorkOSSdkMaxVersionExclusive>7.0.0</WorkOSSdkMaxVersionExclusive>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WorkOS.net\WorkOS.net.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Stylecop.Analyzers" Version="1.1.118">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\..\_stylecop\StyleCopRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>WorkOS.WorkloadIdentity.GcpTests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <!--
+    A ProjectReference packs as "WorkOS.net >= the version in this checkout", with no upper
+    bound. Replace that with the range above, so a new SDK major cannot be paired with a
+    provider built against the old interface.
+  -->
+  <Target Name="SetWorkOSSdkVersionRange" BeforeTargets="GenerateNuspec">
+    <Error
+      Condition="'$(WorkOSSdkMinVersion)' == 'WIF-PLACEHOLDER'"
+      Text="WorkOSSdkMinVersion is still the placeholder. Set it in $(MSBuildProjectFile) to the first released WorkOS.net version that contains IIdentityTokenProvider." />
+    <ItemGroup>
+      <_ProjectReferencesWithVersions Condition="'%(_ProjectReferencesWithVersions.Filename)' == 'WorkOS.net'">
+        <ProjectVersion>[$(WorkOSSdkMinVersion), $(WorkOSSdkMaxVersionExclusive))</ProjectVersion>
+      </_ProjectReferencesWithVersions>
+    </ItemGroup>
+  </Target>
+</Project>

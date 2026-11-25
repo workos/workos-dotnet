@@ -20,13 +20,17 @@ jobs:
         uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
         with:
           dotnet-version: 8.0.x
+      # The solution holds the SDK, the three workload identity providers and
+      # their test projects; every one of them is linted.
       - name: Restore
-        run: dotnet restore test/WorkOSTests/WorkOSTests.csproj
+        run: dotnet restore WorkOS.net.sln
       - name: Verify formatting
         run: |
-          dotnet format src/WorkOS.net/WorkOS.net.csproj --no-restore --verify-no-changes --severity warn
-          dotnet format test/WorkOSTests/WorkOSTests.csproj --no-restore --verify-no-changes --severity warn
+          for project in src/*/*.csproj test/*/*.csproj; do
+            dotnet format "$project" --no-restore --verify-no-changes --severity warn
+          done
       - name: Verify analyzers
         run: |
-          dotnet build -c Release src/WorkOS.net/WorkOS.net.csproj --no-restore
-          dotnet build -c Release test/WorkOSTests/WorkOSTests.csproj --no-restore
+          for project in src/*/*.csproj test/*/*.csproj; do
+            dotnet build -c Release "$project" --no-restore
+          done
