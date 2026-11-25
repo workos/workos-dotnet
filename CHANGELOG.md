@@ -1,5 +1,19 @@
 # Changelog
 
+## [6.9.0](https://github.com/workos/workos-dotnet/compare/v6.8.0...v6.9.0) (2026-11-25)
+
+
+### Features
+
+* **agents:** Change agents API surface ([#340](https://github.com/workos/workos-dotnet/issues/340)) ([a5e9ffc](https://github.com/workos/workos-dotnet/commit/a5e9ffcb52fa54a48cb3f57120fd55ab508f8449))
+* **sso:** Add SSO API surface ([#340](https://github.com/workos/workos-dotnet/issues/340)) ([a5e9ffc](https://github.com/workos/workos-dotnet/commit/a5e9ffcb52fa54a48cb3f57120fd55ab508f8449))
+* **webhooks:** Add webhook API surface ([#340](https://github.com/workos/workos-dotnet/issues/340)) ([a5e9ffc](https://github.com/workos/workos-dotnet/commit/a5e9ffcb52fa54a48cb3f57120fd55ab508f8449))
+
+
+### Bug Fixes
+
+* **events:** Updated model `EventSchema` ([#340](https://github.com/workos/workos-dotnet/issues/340)) ([a5e9ffc](https://github.com/workos/workos-dotnet/commit/a5e9ffcb52fa54a48cb3f57120fd55ab508f8449))
+
 ## [6.8.0](https://github.com/workos/workos-dotnet/compare/v6.7.1...v6.8.0) (2026-11-13)
 
 * [#334](https://github.com/workos/workos-dotnet/pull/334) feat(generated)!: regenerate from spec (2 changes)
