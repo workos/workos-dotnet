@@ -187,6 +187,14 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestDeleteCorsOriginAsync()
+        {
+            this.httpMock.MockResponse(HttpMethod.Delete, "/user_management/cors_origins/test_id", HttpStatusCode.NoContent, "");
+            await this.service.DeleteCorsOriginAsync("test_id");
+            this.httpMock.AssertRequestWasMade(HttpMethod.Delete, "/user_management/cors_origins/test_id");
+        }
+
+        [Fact]
         public async Task TestGetEmailVerificationAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/email_verification.json");

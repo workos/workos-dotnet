@@ -52,6 +52,19 @@ namespace WorkOSTests
         }
 
         [Fact]
+        public async Task TestGetDetectionAsync()
+        {
+            var fixture = System.IO.File.ReadAllText("testdata/radar_detection.json");
+            this.httpMock.MockResponse(HttpMethod.Get, "/radar/detections/test_id", HttpStatusCode.OK, fixture);
+            var result = await this.service.GetDetectionAsync("test_id");
+            Assert.NotNull(result);
+            Assert.Equal("detection_01HZBC6N1EB1ZY7KG32X", result.Id);
+            Assert.Equal("radar_att_01HZBC6N1EB1ZY7KG32X", result.AttemptId);
+            Assert.Equal("203.0.113.42", result.IpAddress);
+            this.httpMock.AssertRequestWasMade(HttpMethod.Get, "/radar/detections/test_id");
+        }
+
+        [Fact]
         public async Task TestAddListEntryAsync()
         {
             var fixture = System.IO.File.ReadAllText("testdata/radar_list_entry_already_present_response.json");

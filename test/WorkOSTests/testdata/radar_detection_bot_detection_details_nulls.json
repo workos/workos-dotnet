@@ -1,0 +1,14 @@
+{
+  "signals": [
+    {
+      "signal": "risky_ip",
+      "action": "block"
+    }
+  ],
+  "decided_by": null,
+  "ip_risk": null,
+  "email_pattern": null,
+  "browser_signals": null,
+  "ip_sign_ups": null,
+  "domain_sign_ups": null
+}

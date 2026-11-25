@@ -3,12 +3,12 @@
 namespace WorkOS
 {
 
-    /// <summary>Represents an error body with code.</summary>
-    public class ErrorBodyWithCode
+    /// <summary>Represents a radar sms challenge error body.</summary>
+    public class RadarSmsChallengeErrorBody
     {
 
         /// <summary>The error code identifying the type of error.</summary>
-        public string Code { get; set; } = default!;
+        public string Code { get; internal set; } = "radar_sms_challenge";
 
         /// <summary>A human-readable description of the error.</summary>
         public string Message { get; set; } = default!;

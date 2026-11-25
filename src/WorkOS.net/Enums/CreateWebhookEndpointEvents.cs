@@ -86,6 +86,10 @@ namespace WorkOS
         ApiKeyRevoked,
         [EnumMember(Value = "api_key.updated")]
         ApiKeyUpdated,
+        [EnumMember(Value = "application.token_exchange_failed")]
+        ApplicationTokenExchangeFailed,
+        [EnumMember(Value = "application.token_exchange_succeeded")]
+        ApplicationTokenExchangeSucceeded,
         [EnumMember(Value = "connection.activated")]
         ConnectionActivated,
         [EnumMember(Value = "connection.deactivated")]
@@ -94,6 +98,8 @@ namespace WorkOS
         ConnectionSAMLCertificateRenewalRequired,
         [EnumMember(Value = "connection.saml_certificate_renewed")]
         ConnectionSAMLCertificateRenewed,
+        [EnumMember(Value = "connection.saml_certificate_replaced")]
+        ConnectionSAMLCertificateReplaced,
         [EnumMember(Value = "connection.deleted")]
         ConnectionDeleted,
         [EnumMember(Value = "dsync.activated")]
@@ -160,6 +166,12 @@ namespace WorkOS
         InvitationResent,
         [EnumMember(Value = "invitation.revoked")]
         InvitationRevoked,
+        [EnumMember(Value = "issuer_trust.created")]
+        IssuerTrustCreated,
+        [EnumMember(Value = "issuer_trust.deleted")]
+        IssuerTrustDeleted,
+        [EnumMember(Value = "issuer_trust.updated")]
+        IssuerTrustUpdated,
         [EnumMember(Value = "magic_auth.created")]
         MagicAuthCreated,
         [EnumMember(Value = "organization.created")]

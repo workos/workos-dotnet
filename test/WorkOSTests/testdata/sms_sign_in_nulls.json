@@ -1,0 +1,7 @@
+{
+  "type": "sms_sign_in",
+  "trigger": "country_mismatch",
+  "phone_country": null,
+  "line_type": null,
+  "masked_phone_number": null
+}

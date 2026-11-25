@@ -459,6 +459,24 @@ namespace WorkOS
             return this.CreateCorsOriginAsync(options, requestOptions, cancellationToken);
         }
 
+        /// <summary>Delete a CORS origin</summary>
+        /// <remarks>
+        /// Deletes a CORS origin from the API key's application.
+        /// </remarks>
+        /// <param name="id">The ID of the CORS origin to delete.</param>
+        /// <param name="requestOptions">Per-request configuration overrides.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public virtual async Task DeleteCorsOriginAsync(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            await this.DeleteAsync($"/user_management/cors_origins/{Uri.EscapeDataString(id)}", null, requestOptions, cancellationToken);
+        }
+
+        /// <summary>Compatibility wrapper for <see cref="DeleteCorsOriginAsync"/>.</summary>
+        public virtual Task DeleteCorsOrigin(string id, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)
+        {
+            return this.DeleteCorsOriginAsync(id, requestOptions, cancellationToken);
+        }
+
         /// <summary>Get an email verification code</summary>
         /// <remarks>
         /// Get the details of an existing email verification code that can be used to send an email to a user for verification.
